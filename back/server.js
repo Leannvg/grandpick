@@ -7,10 +7,6 @@ const PORT = process.env.PORT || 2022;
 
 const server = http.createServer(app);
 
-server.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
-
 const io = new Server(server, {
   cors: {
     origin: process.env.FRONT_URL,
@@ -39,6 +35,7 @@ io.on("connection", (socket) => {
   });
 });
 
+// 🔥 UN SOLO LISTEN
 server.listen(PORT, () => {
-  console.log(`Servidor F1 iniciado en puerto ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
