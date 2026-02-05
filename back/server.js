@@ -3,13 +3,17 @@ import { Server } from "socket.io";
 import app from "./express.js";
 import "./jobs/predictionsOpenNotification.job.js";
 
-const PORT = 2022;
+const PORT = process.env.PORT || 2022;
 
 const server = http.createServer(app);
 
+server.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.FRONT_URL,
     methods: ["GET", "POST"],
     credentials: true
   }
