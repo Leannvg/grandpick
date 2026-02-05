@@ -19,7 +19,7 @@ const app = express();
    CORS (PRIMERO SIEMPRE)
 ========================= */
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.FRONT_URL,
   credentials: true
 }));
 
@@ -35,6 +35,14 @@ app.set("view engine", "ejs");
    STATIC
 ========================= */
 app.use("/api/static", express.static("uploads"));
+
+/* =========================
+   HEALTH CHECK (RAILWAY)
+========================= */
+app.get("/", (req, res) => {
+  res.status(200).send("🚀 GrandPick API running");
+});
+
 
 /* =========================
    ROUTES
