@@ -1,4 +1,3 @@
-import { MongoClient } from "mongodb";
 import {connectDB} from "./db.services.js"
 
 const db = await connectDB();

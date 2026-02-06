@@ -1,9 +1,10 @@
-import {MongoClient, ObjectId} from "mongodb"
+import {ObjectId} from "mongodb"
 import bcrypt from "bcrypt";
 import crypto from "crypto";
+import {connectDB} from "./db.services.js"
 
-const client = new MongoClient("mongodb://127.0.0.1:27017")
-const db = client.db("GrandPick");
+
+const db = await connectDB();
 const users = db.collection('Users');
 const predictions = db.collection("Predictions");
 const usersPoints = db.collection("Users_Points");

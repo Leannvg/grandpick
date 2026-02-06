@@ -1,4 +1,4 @@
-import {MongoClient, ObjectId} from "mongodb"
+import {ObjectId} from "mongodb"
 import {connectDB} from "./db.services.js"
 
 export async function findAllPredictions() {
