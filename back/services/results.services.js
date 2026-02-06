@@ -76,16 +76,13 @@ export async function findRaceResultById(resultId) {
 
 
 export async function createRaceResults(results) {
-    await client.connect();
-    const db = client.db("F1PredictZone");
+    const db = await connectDB();
     const result = await db.collection("Races_Results").insertOne(results);
     return { insertedId: result.insertedId };
 }
 
 export async function setRaceAsFinished(raceId, resultsId) {
-  await client.connect();
-  const db = client.db("F1PredictZone");
-
+  const db = await connectDB();
   return await db.collection("Races").updateOne(
     { _id: new ObjectId(raceId) },
     {

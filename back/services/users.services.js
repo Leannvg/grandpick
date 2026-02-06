@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 
 const client = new MongoClient("mongodb://127.0.0.1:27017")
-const db = client.db("F1PredictZone");
+const db = client.db("GrandPick");
 const users = db.collection('Users');
 const predictions = db.collection("Predictions");
 const usersPoints = db.collection("Users_Points");
