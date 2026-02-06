@@ -1,7 +1,6 @@
 import http from "http";
 import { Server } from "socket.io";
 import app from "./express.js";
-import "./jobs/predictionsOpenNotification.job.js";
 
 const PORT = process.env.PORT || 2022;
 
@@ -38,4 +37,7 @@ io.on("connection", (socket) => {
 // 🔥 UN SOLO LISTEN
 server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
+
+  // 👇 iniciar jobs recién cuando el server está listo
+  import("./jobs/predictionsOpenNotification.job.js");
 });
