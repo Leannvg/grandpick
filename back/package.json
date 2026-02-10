@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "server": "cls && node server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
