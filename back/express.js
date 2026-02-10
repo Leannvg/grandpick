@@ -18,10 +18,29 @@ const app = express();
 /* =========================
    CORS (PRIMERO SIEMPRE)
 ========================= */
+const allowedOrigins = [
+  process.env.FRONT_URL,
+  "https://grandpick.vercel.app",
+  "http://localhost:5173"
+];
+
 app.use(cors({
-  origin: process.env.FRONT_URL,
-  credentials: true
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    console.log("❌ CORS blocked origin:", origin);
+    return callback(null, false);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+app.options("*", cors());
 
 /* =========================
    MIDDLEWARES
