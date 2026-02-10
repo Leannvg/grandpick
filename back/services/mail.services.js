@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-const API_URL = import.meta.env.API_URL;
+const API_URL = process.env.API_URL;
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
