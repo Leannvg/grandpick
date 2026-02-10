@@ -23,9 +23,11 @@ function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
     setImageFile(file);
   };
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const imageUrl = currentImage && currentImage !== "profile_default.png"
-  ? `http://localhost:2022/api/static/${currentImage}`
-  : `http://localhost:2022/api/static/general/profile_default.png`;
+  ? `${API_URL}/api/static/${currentImage}`
+  : `${API_URL}/api/static/general/profile_default.png`;
 
 
 

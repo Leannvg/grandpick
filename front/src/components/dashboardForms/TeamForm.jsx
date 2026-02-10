@@ -3,6 +3,7 @@ import UploadImage from "./../UploadImage.jsx";
 import CountrySelect from "./../../components/CountrySelect.jsx";
 import CitySelect from "./../../components/CitySelect.jsx";
 import UploadsServices from "./../../services/uploads.services.js";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function TeamForm({
   initialData = {},
@@ -20,7 +21,7 @@ function TeamForm({
   const [country, setCountry] = useState(initialData.country || "");
   const [city, setCity] = useState(initialData.city || "");
   const [color, setColor] = useState(initialData.color || "");
-
+  
   const [logoFile, setLogoFile] = useState(null);
   const [isologoFile, setIsologoFile] = useState(null);
   const [currentLogo, setCurrentLogo] = useState(initialData.logo || "");
@@ -178,7 +179,7 @@ function TeamForm({
         <div className="mt-2">
           <p>Isologo actual:</p>
           <img
-            src={`http://localhost:2022/api/static/${currentIsologo}`}
+            src={`${API_URL}/api/static/${currentIsologo}`}
             alt="Isologo"
             style={{ width: "120px" }}
           />
@@ -195,7 +196,7 @@ function TeamForm({
         <div className="mt-2">
           <p>Logo actual:</p>
           <img
-            src={`http://localhost:2022/api/static/${currentLogo}`}
+            src={`${API_URL}/api/static/${currentLogo}`}
             alt="Logo"
             style={{ width: "120px" }}
           />

@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -23,14 +24,8 @@ export async function sendResetPassword({ email, token }) {
   console.log("MAIL_USER:", process.env.MAIL_USER);
   console.log("MAIL_PASS:", process.env.MAIL_PASS ? "OK" : "MISSING");
 
-  const link = `http://localhost:2022/reset-password?token=${token}`;
-
- /*  await transporter.sendMail({
-    from: process.env.MAIL_USER,
-    to: process.env.MAIL_USER,
-    subject: "TEST MAIL",
-    text: "Si recibís esto, Nodemailer funciona",
-  }); */
+  
+  const link = `${API_URL}/reset-password?token=${token}`;
 
   await transporter.sendMail({
     from: `"Soporte GrandPick" <${process.env.MAIL_USER}>`,

@@ -2,7 +2,7 @@ import http from "http";
 import { Server } from "socket.io";
 import app from "./express.js";
 
-const PORT = process.env.PORT || 2022;
+const PORT = process.env.PORT || 8080;
 
 const server = http.createServer(app);
 

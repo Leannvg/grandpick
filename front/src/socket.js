@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const SOCKET_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 
 let socket = null;
 let listeners = [];
@@ -8,7 +8,7 @@ let listeners = [];
 export function connectSocket(userId) {
   if (socket) return socket;
 
-  socket = io(SOCKET_URL, {
+  socket = io(API_URL, {
     auth: { userId },
     withCredentials: true,
     transports: ["websocket"],

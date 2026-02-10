@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import UploadImage from "./../UploadImage.jsx";
 import CountrySelect from "./../CountrySelect.jsx";
 import TeamsServices from "./../../services/teams.services.js";
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 function DriverForm({
   initialData = {},
@@ -108,7 +108,7 @@ function DriverForm({
           <div className="mt-3">
             <p>Imagen actual:</p>
             <img
-              src={`http://localhost:2022/api/static/${currentImage}`}
+              src={`${API_URL}/api/static/${currentImage}`}
               alt="Piloto"
               style={{ width: "120px", borderRadius: "8px" }}
             />

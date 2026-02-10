@@ -6,6 +6,7 @@ import SearchableSelect from "../SearchableSelect.jsx";
 import CountrySelect from "./../../components/CountrySelect.jsx";
 import CitySelect from "./../../components/CitySelect.jsx";
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 function CircuitForm({
   initialData = {},
@@ -166,7 +167,7 @@ function CircuitForm({
           <div className="mt-2">
             <p>Imagen actual:</p>
             <img
-              src={`http://localhost:2022/api/static/${currentImage}`}
+              src={`${API_URL}/api/static/${currentImage}`}
               alt="Circuito"
               style={{ width: "200px", borderRadius: "8px" }}
             />
