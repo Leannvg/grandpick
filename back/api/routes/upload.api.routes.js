@@ -11,7 +11,7 @@ route.route("/api/upload/:folder")
 
 
 route.route("/api/upload/:folder/:filename")
-    .put([autenticado, admin, multerControl.single("image")], UploadApiController.replaceUpload)
+    .put([autenticado, multerControl.single("image")], UploadApiController.replaceUpload)
     .delete([autenticado, admin], UploadApiController.deleteUpload);
 
 
