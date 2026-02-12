@@ -6,7 +6,7 @@ function Footer() {
                 aria-label="Bootstrap"> <svg className="bi me-2" width="40" height="32" aria-hidden="true">
                     <use xlinkHref="#bootstrap"></use>
                 </svg> </a>
-                <p className="text-body-secondary">© 2025</p>
+                <p className="text-body-secondary">© 2026</p>
             </div>
             <div className="col mb-3"></div>
             <div className="col mb-3">
