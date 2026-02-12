@@ -30,7 +30,6 @@ route.route("/api/users/:id")
     .delete(autenticado, admin, UsersApiController.deleteOne)
     .patch(
         autenticado,
-        selfOrAdmin,
         uploadContext("users"),
         multerControl.single("image"),
         mapImageToBody,
