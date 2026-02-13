@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import DriversServices from "../services/drivers.services";
 import DriverCardDesktop from "../components/drivers/DriverCardDesktop";
 import DriverCardMobile from "../components/drivers/DriverCardMobile";
 
@@ -12,48 +11,26 @@ function Drivers() {
 
   useEffect(() => {
     setLoading(true);
-    Promise.all([
-      TeamsServices.findAllTeams(),
-      DriversServices.findAll()
-    ]).then(([teams, allDrivers]) => {
-      // 1. Filter only active drivers first
-      const activeDrivers = allDrivers.filter(d => d.active === true);
+    TeamsServices.findAllTeams()
+      .then((teams) => {
+        // Flatten drivers from teams and filter by active: true
+        const activeDriversOrdered = teams.flatMap(team =>
+          (team.drivers || [])
+            .filter(driver => driver.active === true)
+            .map(driver => ({
+              ...driver,
+              // Ensure team_id is present if needed by cards, although it might be 'team' in this context
+              team_id: driver.team_id || driver.team || team._id
+            }))
+        );
 
-      const orderedDrivers = [];
-      const assignedIds = new Set();
-
-      // 2. Group active drivers by team order
-      teams.forEach(team => {
-        if (team.drivers && team.drivers.length > 0) {
-          team.drivers.forEach(driverRef => {
-            const driverId = driverRef.$oid || driverRef; // Handle potential variations
-            const driver = activeDrivers.find(d => {
-              const currentId = d._id.$oid || d._id;
-              return currentId === driverId;
-            });
-
-            if (driver && !assignedIds.has(driverId)) {
-              orderedDrivers.push(driver);
-              assignedIds.add(driverId.toString()); // Store as string for Set reliability
-            }
-          });
-        }
+        setDrivers(activeDriversOrdered);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Error loading drivers:", err);
+        setLoading(false);
       });
-
-      // 3. Add any remaining active drivers not in team list
-      activeDrivers.forEach(driver => {
-        const id = (driver._id.$oid || driver._id).toString();
-        if (!assignedIds.has(id)) {
-          orderedDrivers.push(driver);
-        }
-      });
-
-      setDrivers(orderedDrivers);
-      setLoading(false);
-    }).catch(err => {
-      console.error("Error loading drivers:", err);
-      setLoading(false);
-    });
 
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
