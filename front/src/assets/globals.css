@@ -1,0 +1,459 @@
+/* -------------------------------------- */
+/* RESET BÁSICO                           */
+/* -------------------------------------- */
+¡
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+html {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Akshar", sans-serif;
+  background: radial-gradient(circle at top, #315f7a, #071d2c);
+  color: #fff; /* ajustalo si tu texto principal no es blanco */
+  overflow-x: hidden;
+
+}
+
+/* -------------------------------------- */
+/* VARIABLES                              */
+/* -------------------------------------- */
+
+:root {
+  /* Tipografías */
+  --font-primary: 'Akshar', sans-serif;
+
+  /* Tamaños mobile */
+  --title-size: 40px;
+  --subtitle-size: 16px;
+
+  /* Espaciados mobile */
+  --space-nav-first: 60px;
+  --space-title-body: 60px;
+  --space-between-elements: 10px !important;
+
+  /* Radios mobile */
+  --radius-general: 2px;
+
+  /* Colores */
+  --color-body: #0C2C40;
+  --color-accent: #3975A2; 
+  --color-dark-blue: #081D2B;
+  --color-footer: #272727;
+  --color-login: #7AB3DE;
+  --color-logout: #E85F5F;
+  --color-pos1: #DDBF4A;
+  --color-pos2: #D8D8D8;
+  --color-pos3: #D89762;
+  --color-disabled: #727272;
+  --color-soon: #812E9A;
+  --color-next: #D40000;
+  --color-add: #1B6C3A;
+  --color-zero: #B64141;
+  --color-row-wrong: #FFE3E3;
+  --color-row-empty: #CFCFCF;
+  --color-table-disabled: #D9D9D9;
+  --color-confirm: #417AAF;
+  --color-placeholder: #BEBEBE;
+  --color-circuit: #7AB3DE;
+  --color-label-disabled: #B8B8B8;
+  --color-stat-qualy: #E6E6E6;
+  --color-stat-sprint: #FFCD56;
+  --color-stat-race: #D40000;
+  --color-container-bg: #0A2434;
+  --color-edit: #FFC621;
+  --color-delete: #ED535F;
+  --color-suspend: #D9D9D9;
+  --circuit-name: #494949;
+}
+
+
+/* ===============================
+   SECTION HEADERS (GLOBAL)
+================================ */
+
+.page-section {
+  padding-top: 48px;
+  padding-bottom: 56px;
+}
+
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-header p,
+.page-header h1 {
+  margin: 0;
+}
+
+.section-label {
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+.section-title {
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+.section-subtitle {
+  font-weight: 300;
+  font-size: var(--subtitle-size);
+}
+
+/* -------------------------------------- */
+/* TIPOGRAFÍA GLOBAL                      */
+/* -------------------------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-primary);
+  margin-bottom: var(--space-between-elements);
+}
+
+h1 {
+  font-size: var(--title-size);
+  font-weight: 300;
+}
+
+h2, .section-label {
+  font-size: var(--subtitle-size);
+  font-weight: 600;
+}
+
+p {
+  margin-bottom: var(--space-between-elements);
+  line-height: 1.4;
+}
+
+/* -------------------------------------- */
+/* ESPACIADOS ESTÁNDAR                    */
+/* -------------------------------------- */
+
+.section-body {
+  margin-top: var(--space-title-body);
+}
+
+.mt-gap {
+  margin-top: var(--space-between-elements);
+}
+
+/* -------------------------------------- */
+/* NAVBAR                                 */
+/* -------------------------------------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  background-color: var(--color-dark-blue);
+}
+
+/* -------------------------------------- */
+/* PLACEHOLDER                            */
+/* -------------------------------------- */
+
+::placeholder {
+  color: var(--color-placeholder);
+  opacity: 1;
+}
+
+/* -------------------------------------- */
+/* RADIOS                                 */
+/* -------------------------------------- */
+
+.radius {
+  border-radius: var(--radius-general);
+}
+
+/* -------------------------------------- */
+/* BACKGROUNDS GENÉRICOS                  */
+/* -------------------------------------- */
+
+.bg-container {
+  background-color: var(--color-container-bg);
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+}
+
+.bg-darkblue {
+  background-color: var(--color-dark-blue);
+}
+
+.bg-footer {
+  background-color: var(--color-footer);
+}
+
+/* -------------------------------------- */
+/* TEXT COLORS                            */
+/* -------------------------------------- */
+
+.text-disabled {
+  color: var(--color-disabled);
+}
+
+.text-confirm {
+  color: var(--color-confirm);
+}
+
+/* -------------------------------------- */
+/* BOTONES BÁSICOS                        */
+/* -------------------------------------- */
+
+.btn-general {
+  padding: 10px 18px;
+  border-radius: var(--radius-general);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-add {
+  background-color: var(--color-add);
+  color: #fff;
+}
+
+.btn-confirm {
+  background-color: var(--color-confirm);
+  color: #fff;
+}
+
+.btn-delete {
+  background-color: var(--color-delete);
+  color: #fff;
+}
+
+.btn-edit {
+  background-color: var(--color-edit);
+  color: #000;
+}
+
+/* -------------------------------------- */
+/* NEXT RACE CTA                          */
+/* -------------------------------------- */
+
+.nr-cta {
+  background: var(--color-accent);
+  padding: 6px 2px;
+}
+
+.nr-cta__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* INFO */
+.nr-cta__info {
+  flex: 1;
+  min-width: 0;
+  margin-left: 4px;
+}
+
+.nr-cta__country {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  padding-bottom: 6px;
+}
+
+/* Línea horizontal */
+.nr-cta__country::after {
+    content: "";
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 4px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.nr-cta__country img {
+  width: 36px;
+  height: auto;
+  border-radius: 2px;
+}
+
+.nr-cta__country-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.nr-cta__round {
+  font-size: 0;
+}
+
+.nr-cta__date {
+  background-color: #0e2f44;
+  padding: 4px 4px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.nr-cta__action {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.nr-cta__action:hover {
+  opacity: 0.8;
+}
+
+/* COUNTDOWN */
+.nr-cta__countdown {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.nr-cta__time {
+  width: 48px;           
+  padding: 6px 4px;
+  text-align: center;
+  background: #0b2a3d;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.nr-cta__time-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  position: relative;
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+}
+
+.nr-cta__time-value::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.nr-cta__time-label {
+  font-size: 10px;
+  color: #fff;
+}
+
+/* -------------------------------------- */
+/* TABLET Y DESKTOP OVERRIDES             */
+/* -------------------------------------- */
+
+@media (min-width: 768px) {
+  :root {
+    --title-size: 50px;
+    --subtitle-size: 18px;
+  }
+
+  /* NEXT RACE CTA */
+
+  .nr-cta{
+    padding: 8px 50px;
+  }
+  .nr-cta__container {
+    flex-direction: row;   
+    align-items: center;
+  }
+
+  .nr-cta__info {
+    display: flex;
+    flex-direction: column;    
+    gap: 2px;
+    flex: 1;
+  }
+
+  .nr-cta__time {
+    width: 60px;
+    padding: 10px 8px;
+  }
+
+  .nr-cta__action {
+    margin-left: auto;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .nr-cta__meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nr-cta__countdown {
+    width: auto;
+    justify-content: flex-end;
+  }
+
+  .nr-cta__country {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nr-cta__round {
+    background: #0b2a3d;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .nr-cta__date {
+    font-size: 14px;
+    background: none;
+    font-weight: 200;
+  }
+
+  .nr-cta__time-value{
+    font-size: 22px;
+  }
+
+  .nr-cta__time-label{
+    font-size: 14px;
+  }
+}
+
+/* -------------------------------------- */
+/* DESKTOP OVERRIDES                     */
+/* -------------------------------------- */
+
+@media (min-width: 992px) {
+  :root {
+    --title-size: 70px;
+    --subtitle-size: 20px;
+
+    --space-nav-first: 90px;
+    --space-title-body: 90px;
+
+    /* Desktop radio */
+    --radius-general: 6px;
+  }
+
+}
