@@ -10,7 +10,7 @@ const DriverCardMobile = ({ driver }) => {
         <article className="driver-card-vertical">
             <div className="driver-photo-wrapper-vertical">
                 <img
-                    src={`${import.meta.env.VITE_API_URL}/api/static/${img}`}
+                    src={`${import.meta.env.VITE_API_URL}/api/static/drivers/${img}`}
                     alt={full_name}
                     className="driver-photo-vertical"
                 />
