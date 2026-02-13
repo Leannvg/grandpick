@@ -10,10 +10,10 @@ function Drivers() {
   useEffect(() => {
     DriversServices.findAll().then((data) => {
       // Sort drivers by team_id to group teammates
-      const sortedDrivers = data.sort((a, b) => {
-        if (a.team_id < b.team_id) return -1;
-        if (a.team_id > b.team_id) return 1;
-        return 0;
+      const sortedDrivers = [...data].sort((a, b) => {
+        const idA = a.team_id || a.team?.$oid || "";
+        const idB = b.team_id || b.team?.$oid || "";
+        return idA.localeCompare(idB);
       });
       setDrivers(sortedDrivers);
     });
