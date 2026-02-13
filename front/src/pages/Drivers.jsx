@@ -7,39 +7,52 @@ import TeamsServices from "../services/teams.services";
 
 function Drivers() {
   const [drivers, setDrivers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
+    setLoading(true);
     Promise.all([
       TeamsServices.findAllTeams(),
       DriversServices.findAll()
     ]).then(([teams, allDrivers]) => {
+      // 1. Filter only active drivers first
+      const activeDrivers = allDrivers.filter(d => d.active === true);
+
       const orderedDrivers = [];
       const assignedIds = new Set();
 
-      // Group drivers by team order
+      // 2. Group active drivers by team order
       teams.forEach(team => {
         if (team.drivers && team.drivers.length > 0) {
           team.drivers.forEach(driverRef => {
-            const driverId = driverRef.$oid;
-            const driver = allDrivers.find(d => (d._id.$oid || d._id) === driverId);
-            if (driver) {
+            const driverId = driverRef.$oid || driverRef; // Handle potential variations
+            const driver = activeDrivers.find(d => {
+              const currentId = d._id.$oid || d._id;
+              return currentId === driverId;
+            });
+
+            if (driver && !assignedIds.has(driverId)) {
               orderedDrivers.push(driver);
-              assignedIds.add(driverId);
+              assignedIds.add(driverId.toString()); // Store as string for Set reliability
             }
           });
         }
       });
 
-      // Add any remaining drivers that might not be assigned to a team
-      allDrivers.forEach(driver => {
-        const id = driver._id.$oid || driver._id;
+      // 3. Add any remaining active drivers not in team list
+      activeDrivers.forEach(driver => {
+        const id = (driver._id.$oid || driver._id).toString();
         if (!assignedIds.has(id)) {
           orderedDrivers.push(driver);
         }
       });
 
       setDrivers(orderedDrivers);
+      setLoading(false);
+    }).catch(err => {
+      console.error("Error loading drivers:", err);
+      setLoading(false);
     });
 
     const handleResize = () => {
@@ -49,6 +62,16 @@ function Drivers() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Cargando pilotos...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
