@@ -3,19 +3,43 @@ import DriversServices from "../services/drivers.services";
 import DriverCardDesktop from "../components/drivers/DriverCardDesktop";
 import DriverCardMobile from "../components/drivers/DriverCardMobile";
 
+import TeamsServices from "../services/teams.services";
+
 function Drivers() {
   const [drivers, setDrivers] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
-    DriversServices.findAll().then((data) => {
-      // Sort drivers by team_id to group teammates
-      const sortedDrivers = [...data].sort((a, b) => {
-        const idA = a.team_id || a.team?.$oid || "";
-        const idB = b.team_id || b.team?.$oid || "";
-        return idA.localeCompare(idB);
+    Promise.all([
+      TeamsServices.findAllTeams(),
+      DriversServices.findAll()
+    ]).then(([teams, allDrivers]) => {
+      const orderedDrivers = [];
+      const assignedIds = new Set();
+
+      // Group drivers by team order
+      teams.forEach(team => {
+        if (team.drivers && team.drivers.length > 0) {
+          team.drivers.forEach(driverRef => {
+            const driverId = driverRef.$oid;
+            const driver = allDrivers.find(d => (d._id.$oid || d._id) === driverId);
+            if (driver) {
+              orderedDrivers.push(driver);
+              assignedIds.add(driverId);
+            }
+          });
+        }
       });
-      setDrivers(sortedDrivers);
+
+      // Add any remaining drivers that might not be assigned to a team
+      allDrivers.forEach(driver => {
+        const id = driver._id.$oid || driver._id;
+        if (!assignedIds.has(id)) {
+          orderedDrivers.push(driver);
+        }
+      });
+
+      setDrivers(orderedDrivers);
     });
 
     const handleResize = () => {
