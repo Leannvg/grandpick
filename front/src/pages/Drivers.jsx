@@ -1,33 +1,47 @@
 import { useEffect, useState } from "react";
 import DriversServices from "../services/drivers.services";
+import DriverCardDesktop from "../components/drivers/DriverCardDesktop";
+import DriverCardMobile from "../components/drivers/DriverCardMobile";
 
 function Drivers() {
   const [drivers, setDrivers] = useState([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     DriversServices.findAll().then((data) => {
       setDrivers(data);
     });
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
     <div>
-      <section class="drivers-section text-center page-section container">
-       <header class="page-header">
-            <p class="section-label">Temporada actual</p>
-            <h1 class="section-title">PILOTOS</h1>
-            <p class="section-subtitle">Los verdaderos protagonistas de la pista</p>
+      <section className="drivers-section text-center page-section container">
+        <header className="page-header">
+          <p className="section-label">Temporada actual</p>
+          <h1 className="section-title">PILOTOS</h1>
+          <p className="section-subtitle">Los verdaderos protagonistas de la pista</p>
         </header>
 
-        <ul>
-          {drivers.map(({ _id, full_name }) => (
-            <li key={_id}>{full_name}</li>
+        <div className="drivers-grid">
+          {drivers.map((driver) => (
+            isMobile ? (
+              <DriverCardMobile key={driver._id.$oid} driver={driver} />
+            ) : (
+              <DriverCardDesktop key={driver._id.$oid} driver={driver} />
+            )
           ))}
-        </ul>
-
+        </div>
       </section>
     </div>
   );
 }
 
 export default Drivers;
+
