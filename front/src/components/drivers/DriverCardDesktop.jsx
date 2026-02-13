@@ -25,7 +25,7 @@ const DriverCardDesktop = ({ driver }) => {
             </div>
             <div className="driver-photo-wrapper-horizontal">
                 <img
-                    src={`${import.meta.env.VITE_API_URL}/api/static/${img}`}
+                    src={`${import.meta.env.VITE_API_URL}/api/static/drivers/${img}`}
                     alt={full_name}
                     className="driver-photo-horizontal"
                 />
