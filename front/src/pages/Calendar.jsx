@@ -59,9 +59,16 @@ function Calendar() {
         return `${dayStart}–${dayEnd}`;
     }
 
-    function formatMonthShort(date) {
+    function formatMonthShort(startDate, endDate) {
         const months = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
-        return months[new Date(date).getUTCMonth()];
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        const startMonth = months[start.getUTCMonth()];
+        const endMonth = months[end.getUTCMonth()];
+
+        if (startMonth === endMonth) return startMonth;
+        return `${startMonth}-${endMonth}`;
     }
 
     // Split races into two columns for the grid
@@ -95,7 +102,7 @@ function Calendar() {
                                 </div>
                                 <div className={`race-date ${getStatusClass(race)}`}>
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end)}</span>
-                                    <span className="race-month">{formatMonthShort(race.date_gp_start)}</span>
+                                    <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end)}</span>
                                 </div>
                             </article>
                         ))}
@@ -115,7 +122,7 @@ function Calendar() {
                                 </div>
                                 <div className={`race-date ${getStatusClass(race)}`}>
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end)}</span>
-                                    <span className="race-month">{formatMonthShort(race.date_gp_start)}</span>
+                                    <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end)}</span>
                                 </div>
                             </article>
                         ))}
