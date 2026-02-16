@@ -12,6 +12,7 @@ import Profile from "./pages/Profile";
 import Drivers from "./pages/Drivers";
 import Dashboard from "./pages/admin/Dashboard";
 import Predictions from "./pages/Predictions";
+import Calendar from "./pages/Calendar";
 // Admin pages
 import TeamCreate from "./pages/admin/team/TeamCreate";
 import TeamEdit from "./pages/admin/team/TeamEdit";
@@ -24,7 +25,7 @@ import RaceEdit from "./pages/admin/race/RaceEdit";
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
 
-import { connectSocket, disconnectSocket} from "./socket";
+import { connectSocket, disconnectSocket } from "./socket";
 import { useAlert } from "./context/AlertContext";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -118,11 +119,11 @@ function App() {
   return (
     <>
       <NotificationsProvider userId={estaAutenticado ? userId : null}>
-      <AuthListener />
+        <AuthListener />
         <Nav onLogout={onLogout} autenticado={estaAutenticado} esAdmin={esAdmin}></Nav>
         <Routes>
           <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login onLogin={onLogin}/>} />
+          <Route path="/login" element={<Login onLogin={onLogin} />} />
           <Route path="/" element={<Home />} />
 
           <Route path="/profile" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><Profile /></ProtectedRoute>} />
@@ -136,12 +137,13 @@ function App() {
           <Route path="/driver/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><DriverEdit /></ProtectedRoute>} />
           <Route path="/circuit/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><CircuitCreate /></ProtectedRoute>} />
           <Route path="/circuit/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><CircuitEdit /></ProtectedRoute>} />
-          <Route path="/race/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><RaceCreate action="create"/></ProtectedRoute>} />
-          <Route path="/race/:id/edit/:year" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><RaceEdit action="edit"/></ProtectedRoute>} />
+          <Route path="/race/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><RaceCreate action="create" /></ProtectedRoute>} />
+          <Route path="/race/:id/edit/:year" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><RaceEdit action="edit" /></ProtectedRoute>} />
 
 
           <Route path="/drivers" element={<Drivers />} />
-          
+          <Route path="/calendar" element={<Calendar />} />
+
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           {/* <Route path="*" element={<NotFound />} /> */}
