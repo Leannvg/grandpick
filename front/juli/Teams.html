@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>GrandPick</title>
+  <meta name="description" content="Descripción breve del sitio.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/globals.css">
+    <link rel="stylesheet" href="styles/components.css">
+</head>
+<body>
+
+  <!-- NAVBAR (ejemplo placeholder, podés borrar) -->
+  <nav class="navbar navbar-expand-lg" style="background-color: var(--color-dark-blue);">
+    <div class="container">
+      <a class="navbar-brand text-white" href="#">Mi Marca</a>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main>
+    <section class="nr-cta">
+        <div class="nr-cta__container">
+
+            <!-- INFO -->
+            <div class="nr-cta__info">
+
+            <div class="nr-cta__country">
+                <img src="img/australia.svg" alt="Australia">
+                <span class="nr-cta__country-name">AUSTRALIA</span>
+            </div>
+
+            <div class="nr-cta__meta">
+                <span class="nr-cta__round">RONDA 11</span>
+                <span class="nr-cta__date">27–29 JUN</span>
+
+                <a href="/predict" class="nr-cta__action">
+                Predecí tus resultados <span aria-hidden="true">›››</span>
+                </a>
+            </div>
+
+            </div>
+
+            <!-- COUNTDOWN -->
+            <div class="nr-cta__countdown">
+
+            <div class="nr-cta__time">
+                <span class="nr-cta__time-value">01</span>
+                <span class="nr-cta__time-label">DÍAS</span>
+            </div>
+
+            <div class="nr-cta__time">
+                <span class="nr-cta__time-value">09</span>
+                <span class="nr-cta__time-label">HS</span>
+            </div>
+
+            <div class="nr-cta__time">
+                <span class="nr-cta__time-value">34</span>
+                <span class="nr-cta__time-label">MIN</span>
+            </div>
+
+            <div class="nr-cta__time">
+                <span class="nr-cta__time-value">50</span>
+                <span class="nr-cta__time-label">SEG</span>
+            </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="teams-list-section page-section container text-center">
+        <header class="page-header">
+            <p class="section-label">Donde la magia sucede</p>
+            <h1 class="section-title">ESCUDERÍAS</h1>
+            <p class="section-subtitle">
+            Donde se forman los campeones
+            </p>
+        </header>
+        <!-- ==== TEAM CARD ==== -->
+        <section class="teams-list">
+            <article class="team-list-card">
+                <div class="team-logo">
+                    <img src="img/McLaren-Iso.png" alt="McLaren">
+                </div>
+
+                <div class="team-list-info">
+                    <h2 class="team-name">McLaren</h2>
+
+                    <div class="team-driver">
+                        <img src="img/helmetWhite.svg" class="helmet-icon">
+                        Oscar <span class="bold">PIASTRI</span>
+                    </div>
+
+                    <div class="team-driver">
+                        <img src="img/helmetWhite.svg" class="helmet-icon">
+                        Lando <span class="bold">NORRIS</span>
+                    </div>
+                </div>
+
+                <!---<div className="team-accent" style={{ "--accent": team.color }} />-->
+                <a href="TeamDetail.html" class="team-accent" style="--accent: #ff6803;">
+                    <span class="chevron">❯❯</span>
+                </a>
+            </article>
+
+            <!-- ===== EJEMPLO 2 ===== -->
+            <article class="team-list-card">
+                <div class="team-logo">
+                    <img src="img/RacingBulls-Iso.png" alt="Racing Bulls">
+                </div>
+
+                <div class="team-list-info">
+                    <h2 class="team-name">Racing Bulls</h2>
+
+                    <div class="team-driver">
+                        <img src="img/helmetWhite.svg" class="helmet-icon">
+                        Isack <span class="bold">HADJAR</span>
+                    </div>
+                    <div class="team-driver">
+                        <img src="img/helmetWhite.svg" class="helmet-icon">
+                        Liam <span class="bold">LAWSON</span>
+                    </div>
+                </div>
+
+                <!---<div className="team-accent" style={{ "--accent": team.color }} />-->
+                <a href="TeamDetail.html" class="team-accent" style="--accent: #4f89ff;">
+                    <span class="chevron">❯❯</span>
+                </a>
+            </article>
+
+            <!-- ===== EJEMPLO 3 ===== -->
+            <article class="team-list-card">
+                <div class="team-logo">
+                    <img src="img/Haas-Iso.png" alt="Haas">
+                </div>
+
+                <div class="team-list-info">
+                    <h2 class="team-name">Haas</h2>
+
+                    <div class="team-driver">
+                        <img src="img/helmetWhite.svg" class="helmet-icon">
+                        Esteban <span class="bold">OCON</span>
+                    </div>
+                    <div class="team-driver">
+                            <img src="img/helmetWhite.svg" class="helmet-icon">
+                            Oliver <span class="bold">BEARMAN</span>
+                    </div>
+                </div>
+
+                <!---<div className="team-accent" style={{ "--accent": team.color }} />-->
+                <a href="TeamDetail.html" class="team-accent" style="--accent: #A5A5A5;">
+                    <span class="chevron">❯❯</span>
+                </a>
+            </article>
+        </section>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="py-4 mt-5 text-center" style="background-color: var(--color-footer); color: #fff;">
+    <p>© 2025 Mi Sitio Web</p>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script 
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+  </script>
+
+</body>
+</html>
