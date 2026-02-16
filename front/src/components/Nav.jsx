@@ -1,97 +1,177 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import * as authServices from "../services/auth.services"
+import { Link } from "react-router-dom";
 import NotificationsBell from "./NotificationsBell.jsx";
+import logo from "../assets/logo-grandpick_2.svg";
 
-function Nav({onLogout, autenticado, esAdmin} ) {
+function Nav({ onLogout, autenticado, esAdmin }) {
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg bg-light sticky-top">
-        <div className="container">
-          <Link to="/" className="navbar-brand">
-            GrandPick
-          </Link>
+    <nav className="navbar navbar-expand-lg navbar-dark sticky-top">
+      <div className="container">
+        {/* LOGO */}
+        <Link className="navbar-brand me-auto nav-logo" to="/">
+          <img src={logo} alt="GrandPick" height="32" />
+        </Link>
+
+        <div className="d-flex align-items-center ms-auto d-lg-none nav-mobile">
+          {/* 🔔 NOTIFICACIONES MOBILE */}
+          {autenticado && (
+            <div className="nav-notifications d-lg-none me-2 dropdown">
+              <NotificationsBell />
+            </div>
+          )}
+
+          {/* TOGGLE */}
           <button
             className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+            data-bs-target="#mainNav"
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+        </div>
+
+        {/* NAV */}
+        <div className="collapse navbar-collapse" id="mainNav">
+          <ul className="navbar-nav ms-auto align-items-lg-center">
+            <li className="nav-item">
+              <Link className="nav-link" to="/">
+                HOME
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="#">
+                CALENDARIO
+              </Link>
+            </li>
+
+            {autenticado && (
               <li className="nav-item">
-                <Link to="/" className="nav-link">
-                  Home
+                <Link className="nav-link" to="/predictions">
+                  MIS PREDICCIONES
                 </Link>
               </li>
+            )}
+
+            <li className="nav-item">
+              <Link className="nav-link" to="#">
+                RANKING
+              </Link>
+            </li>
+
+            {/* INFO */}
+            <li className="nav-item dropdown dropdown-mega">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                data-bs-toggle="dropdown"
+              >
+                INFO
+              </a>
+              <div className="dropdown-menu mega-menu">
+                <div className="container">
+                  <ul className="row justify-content-center text-center list-unstyled m-0">
+                    <li className="col-12 col-md-4">
+                      <Link to="#" className="mega-link">
+                        ESCUDERÍAS
+                      </Link>
+                    </li>
+                    <li className="col-12 col-md-4">
+                      <Link to="/drivers" className="mega-link">
+                        PILOTOS
+                      </Link>
+                    </li>
+                    <li className="col-12 col-md-4">
+                      <Link to="#" className="mega-link">
+                        CIRCUITOS
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+
+            {/* TUTORIALES */}
+            <li className="nav-item dropdown dropdown-mega">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                data-bs-toggle="dropdown"
+              >
+                TUTORIALES
+              </a>
+              <div className="dropdown-menu mega-menu">
+                <div className="container">
+                  <ul className="row justify-content-center text-center list-unstyled m-0">
+                    <li className="col-12 col-md-4">
+                      <Link to="#" className="mega-link">
+                        CÓMO JUGAR
+                      </Link>
+                    </li>
+                    <li className="col-12 col-md-4">
+                      <Link to="#" className="mega-link">
+                        GUÍA DE F1
+                      </Link>
+                    </li>
+                    <li className="col-12 col-md-4">
+                      <Link to="#" className="mega-link">
+                        F1 TV
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+
+            {/* 🔔 NOTIFICACIONES DESKTOP */}
+            {autenticado && (
+              <li className="nav-item dropdown nav-notifications d-none d-lg-block">
+                <NotificationsBell />
+              </li>
+            )}
+
+            {esAdmin && (
               <li className="nav-item">
-                <Link to="/drivers" className="nav-link">
-                  Pilotos
+                <Link className="nav-link" to="/admin/dashboard">
+                  PANEL CONTROL
                 </Link>
               </li>
-              {autenticado && 
-              <li className="nav-item">
-                <Link to="/predictions" className="nav-link">
-                  Predicciones
-                </Link>
-              </li>
-              } 
-              {!autenticado && 
-              <li className="nav-item">
-                <Link to="/register" className="nav-link">
-                  Registrarse
-                </Link>
-              </li>
-              } 
-              {esAdmin &&
-              <li className="nav-item">
-                <Link to="/admin/dashboard" className="nav-link">
-                  Panel de control
-                </Link>
-              </li>
-               }
-              {!autenticado && 
+            )}
+
+            {autenticado ? (
+              <>
                 <li className="nav-item">
-                <Link to="/login" className="nav-link">
-                  Iniciar Sesión
-                </Link>
-                </li>              
-              }
-              {autenticado && (
-                <li className="nav-item d-flex align-items-center me-2">
-                  <NotificationsBell />
+                  <Link className="nav-link" to="/profile">
+                    MI PERFIL
+                  </Link>
                 </li>
-              )}
-              {(autenticado) && 
-                <li className="nav-item">
-                <Link to="/profile" className="nav-link">
-                  Mi Perfil
-                </Link>
-                </li>              
-              }
-              {autenticado && 
                 <li className="nav-item">
                   <button
-                    type="button"
-                    className="nav-link btn btn-link"
+                    className="nav-link btn btn-link logout"
                     onClick={onLogout}
                   >
-                    Cerrar Sesión
+                    CERRAR SESIÓN
                   </button>
                 </li>
-
-              }
-
-            </ul>
-          </div>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/register">
+                    REGISTRARSE
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link login" to="/login">
+                    INICIAR SESIÓN
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 }
 
