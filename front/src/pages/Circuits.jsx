@@ -49,29 +49,27 @@ function Circuits() {
                 </p>
             </header>
             <div className="container">
-                <div className="row g-4 justify-content-center">
-                    {circuits.map((circuit) => (
-                        <div className="col-12" key={circuit._id}>
-                            <Link to={`/circuits/${circuit._id}`} className="text-decoration-none">
-                                <article className="circuit-card">
-                                    <div className="circuit-info text-start">
-                                        <h3 className="circuit-name">{circuit.circuit_name}</h3>
+                {circuits.map((circuit) => (
 
-                                        <div className="circuit-country">
-                                            <span className="emoji-flag me-2">{circuit.emoji}</span>
-                                            <span>{circuit.country_name}</span>
-                                        </div>
-                                    </div>
+                    <Link to={`/circuits/${circuit._id}`} className="text-decoration-none">
+                        <article className="circuit-card">
+                            <div className="circuit-info text-start">
+                                <h3 className="circuit-name">{circuit.circuit_name}</h3>
 
-                                    <div className="circuit-length">
-                                        <span className="length-value">{circuit.length} km</span>
-                                        <span className="length-label">Longitud</span>
-                                    </div>
-                                </article>
-                            </Link>
-                        </div>
-                    ))}
-                </div>
+                                <div className="circuit-country">
+                                    <span className="emoji-flag me-2">{circuit.emoji}</span>
+                                    <span>{circuit.country_name}</span>
+                                </div>
+                            </div>
+
+                            <div className="circuit-length">
+                                <span className="length-value">{circuit.length} km</span>
+                                <span className="length-label">Longitud</span>
+                            </div>
+                        </article>
+                    </Link>
+
+                ))}
             </div>
         </section>
 
