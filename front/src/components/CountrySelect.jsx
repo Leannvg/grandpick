@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import { getCountries } from "../services/countries.services.js";
 import SearchableSelect from "../components/SearchableSelect.jsx";
 
-function CountrySelect({ countryFunction, defaultValue = "", isInvalid = false, error }) {
+function CountrySelect({
+  countryFunction,
+  defaultValue = "",
+  isInvalid = false,
+  error,
+  hideLabel = false,
+}) {
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(defaultValue);
 
@@ -20,15 +26,15 @@ function CountrySelect({ countryFunction, defaultValue = "", isInvalid = false, 
     countryFunction(value);
   };
 
-    return (
-    <div className="mb-3">
-      <label>País</label>
+  return (
+    <div className={hideLabel ? "" : "mb-3"}>
+      {!hideLabel && <label>País</label>}
 
       <SearchableSelect
         options={countries.map((c) => ({
-          _id: c.iso2,                 // CLAVE: coincide con selectedCountry
+          _id: c.iso2, // CLAVE: coincide con selectedCountry
           name: `${c.emoji} ${c.name}`, // Mostrar bandera + nombre
-          original: c
+          original: c,
         }))}
         value={selectedCountry}
         onChange={handleChange}
@@ -41,6 +47,5 @@ function CountrySelect({ countryFunction, defaultValue = "", isInvalid = false, 
     </div>
   );
 }
-
 
 export default CountrySelect;
