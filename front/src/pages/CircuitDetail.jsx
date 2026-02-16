@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import circuitsServices from "../services/circuits.services";
 import racesServices from "../services/races.services";
-import countriesServices from "../services/countries.services";
+import * as countriesServices from "../services/countries.services";
 import { useLoader } from "../context/LoaderContext";
 import { formatRaceDate } from "../utils/helpers";
 import API_URL from "../services/api";
