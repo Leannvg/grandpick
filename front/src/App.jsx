@@ -10,9 +10,10 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Drivers from "./pages/Drivers";
-import Dashboard from "./pages/admin/Dashboard";
 import Predictions from "./pages/Predictions";
 import Calendar from "./pages/Calendar";
+import Circuits from "./pages/Circuits";
+import CircuitDetail from "./pages/CircuitDetail";
 // Admin pages
 import TeamCreate from "./pages/admin/team/TeamCreate";
 import TeamEdit from "./pages/admin/team/TeamEdit";
@@ -143,6 +144,8 @@ function App() {
 
           <Route path="/drivers" element={<Drivers />} />
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/circuits" element={<Circuits />} />
+          <Route path="/circuits/:id" element={<CircuitDetail />} />
 
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

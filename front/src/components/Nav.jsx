@@ -83,7 +83,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                         </Link>
                       </li>
                       <li className="col-12 col-md-4">
-                        <Link to="#" className="mega-link">
+                        <Link to="/circuits" className="mega-link">
                           CIRCUITOS
                         </Link>
                       </li>
