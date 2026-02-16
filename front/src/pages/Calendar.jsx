@@ -13,10 +13,11 @@ function Calendar() {
             showLoader();
             try {
                 const data = await racesServices.findAll();
+                const sortedData = data.sort((a, b) => new Date(a.date_gp_start) - new Date(b.date_gp_start));
 
                 // Fetch country info for each race circuit to get the flag emoji
                 const racesWithFlags = await Promise.all(
-                    data.map(async (race) => {
+                    sortedData.map(async (race) => {
                         try {
                             const country = await countriesServices.getOneCountry(race.circuit.country);
                             return { ...race, emoji: country?.emoji || "🏁" };
