@@ -6,6 +6,7 @@ import { formatRaceDate } from "../utils/helpers";
 
 function Calendar() {
     const [races, setRaces] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(-1);
     const { showLoader, hideLoader } = useLoader();
 
     useEffect(() => {
@@ -14,6 +15,12 @@ function Calendar() {
             try {
                 const data = await racesServices.findAll();
                 const sortedData = data.sort((a, b) => new Date(a.date_gp_start) - new Date(b.date_gp_start));
+
+                const now = new Date().getTime();
+                const index = sortedData.findIndex(race =>
+                    race.state !== "Finalizado" && new Date(race.date_gp_end).getTime() >= now
+                );
+                setCurrentIndex(index);
 
                 // Fetch country info for each race circuit to get the flag emoji
                 const racesWithFlags = await Promise.all(
@@ -39,13 +46,10 @@ function Calendar() {
         loadRaces();
     }, []);
 
-    function getStatusClass(race) {
-        const now = new Date().getTime();
-        const start = new Date(race.date_race).getTime();
-        const end = start + (race.totalDuration || 0);
-
-        if (now > end) return "race-finished";
-        if (now >= start && now <= end) return "race-current";
+    function getStatusClass(index) {
+        if (currentIndex === -1) return "race-finished"; // Todas terminaron o lista vacía
+        if (index < currentIndex) return "race-finished";
+        if (index === currentIndex) return "race-current";
         return "race-upcoming";
     }
 
@@ -100,7 +104,7 @@ function Calendar() {
                                     </div>
                                     <p className="race-circuit">{race.circuit.circuit_name}</p>
                                 </div>
-                                <div className={`race-date ${getStatusClass(race)}`}>
+                                <div className={`race-date ${getStatusClass(index)}`}>
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end)}</span>
                                     <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end)}</span>
                                 </div>
@@ -120,7 +124,7 @@ function Calendar() {
                                     </div>
                                     <p className="race-circuit">{race.circuit.circuit_name}</p>
                                 </div>
-                                <div className={`race-date ${getStatusClass(race)}`}>
+                                <div className={`race-date ${getStatusClass(midPoint + index)}`}>
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end)}</span>
                                     <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end)}</span>
                                 </div>
