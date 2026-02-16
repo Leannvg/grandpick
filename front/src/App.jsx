@@ -4,7 +4,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AuthListener from "./components/AuthListener";
 import { NotificationsProvider } from "./context/NotificationsContext";
 // Pages
-
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -15,6 +14,7 @@ import Calendar from "./pages/Calendar";
 import Circuits from "./pages/Circuits";
 import CircuitDetail from "./pages/CircuitDetail";
 // Admin pages
+import Dashboard from "./pages/admin/Dashboard";
 import TeamCreate from "./pages/admin/team/TeamCreate";
 import TeamEdit from "./pages/admin/team/TeamEdit";
 import DriverCreate from "./pages/admin/driver/DriverCreate";
