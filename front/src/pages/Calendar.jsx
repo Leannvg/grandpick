@@ -90,7 +90,7 @@ function Calendar() {
                                         <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
                                         <span className="race-round">/ RONDA {index + 1}</span>
                                     </div>
-                                    <p className="race-circuit">{race.circuit.gp_name}</p>
+                                    <p className="race-circuit">{race.circuit.description}</p>
                                 </div>
                                 <div className={`race-date ${getStatusClass(race)}`}>
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end)}</span>
@@ -110,7 +110,7 @@ function Calendar() {
                                         <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
                                         <span className="race-round">/ RONDA {midPoint + index + 1}</span>
                                     </div>
-                                    <p className="race-circuit">{race.circuit.gp_name}</p>
+                                    <p className="race-circuit">{race.circuit.description}</p>
                                 </div>
                                 <div className={`race-date ${getStatusClass(race)}`}>
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end)}</span>
