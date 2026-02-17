@@ -41,7 +41,7 @@ function Teams() {
                         <article className="team-list-card" key={team._id}>
                             <div className="team-logo">
                                 <img
-                                    src={`${import.meta.env.VITE_API_URL}/api/static/teams/${team.isologo}`}
+                                    src={`${API_URL}/api/static/teams/${team.isologo}`}
                                     alt={team.name}
                                     onError={(e) => { e.target.src = "https://via.placeholder.com/150?text=Team"; }}
                                 />
