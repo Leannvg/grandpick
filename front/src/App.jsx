@@ -13,6 +13,9 @@ import Predictions from "./pages/Predictions";
 import Calendar from "./pages/Calendar";
 import Circuits from "./pages/Circuits";
 import CircuitDetail from "./pages/CircuitDetail";
+import Teams from "./pages/Teams";
+import TeamDetail from "./pages/TeamDetail";
+import NextRaceCTA from "./components/NextRaceCTA";
 // Admin pages
 import Dashboard from "./pages/admin/Dashboard";
 import TeamCreate from "./pages/admin/team/TeamCreate";
@@ -122,6 +125,7 @@ function App() {
       <NotificationsProvider userId={estaAutenticado ? userId : null}>
         <AuthListener />
         <Nav onLogout={onLogout} autenticado={estaAutenticado} esAdmin={esAdmin}></Nav>
+        <NextRaceCTA />
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login onLogin={onLogin} />} />
@@ -146,6 +150,8 @@ function App() {
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/circuits" element={<Circuits />} />
           <Route path="/circuits/:id" element={<CircuitDetail />} />
+          <Route path="/teams" element={<Teams />} />
+          <Route path="/teams/:id" element={<TeamDetail />} />
 
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

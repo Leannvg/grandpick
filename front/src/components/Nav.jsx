@@ -73,7 +73,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   <div className="container">
                     <ul className="row justify-content-center text-center list-unstyled m-0">
                       <li className="col-12 col-md-4">
-                        <Link to="#" className="mega-link">
+                        <Link to="/teams" className="mega-link">
                           ESCUDERÍAS
                         </Link>
                       </li>
