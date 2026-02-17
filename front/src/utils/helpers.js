@@ -19,8 +19,8 @@ export function mapRaceToInitialData(apiData) {
   return {
     circuit: id_circuit,
     circuitTimezone: circuit.timezone,
-    dateStart:  DateTime.fromISO(date_gp_start, { zone: "utc" }).toISODate(),
-    dateFinish:  DateTime.fromISO(date_gp_end, { zone: "utc" }).toISODate(),
+    dateStart: DateTime.fromISO(date_gp_start, { zone: "utc" }).toISODate(),
+    dateFinish: DateTime.fromISO(date_gp_end, { zone: "utc" }).toISODate(),
     enabledPoints,
     pointData,
     state: race_types[0]?.state || "Pendiente",
@@ -72,53 +72,53 @@ export function parseErrorMessage(error) {
 }
 
 export function computeRaceState(race) {
-    const now = Date.now();
-    const start = new Date(race.date_race).getTime();
-    const duration = race.totalDuration || 0;
-    const end = start + duration;
+  const now = Date.now();
+  const start = new Date(race.date_race).getTime();
+  const duration = race.totalDuration || 0;
+  const end = start + duration;
 
-    // Finalizado
-    if (race.state === "Finalizado" || now > end) {
-      return { 
-        isClosed: true, 
-        canPredict: false, 
-        isPreWindow: false,
-        timeToOpen: null 
-      };
-    }
-
-    // En curso
-    if (now >= start && now <= end) {
-      return { 
-        isClosed: true, 
-        canPredict: false, 
-        isPreWindow: false,
-        timeToOpen: null 
-      };
-    }
-
-    const diff = start - now;
-
-    // Faltan ≤ 5 días → ventana abierta
-    if (diff <= 5 * 24 * 60 * 60 * 1000) {
-      return { 
-        isClosed: false, 
-        canPredict: true, 
-        isPreWindow: false,
-        timeToOpen: null 
-      };
-    }
-
-    // Faltan > 5 días → PRE-WINDOW
+  // Finalizado
+  if (race.state === "Finalizado" || now > end) {
     return {
       isClosed: true,
       canPredict: false,
-      isPreWindow: true,
-      timeToOpen: diff - (5 * 24 * 60 * 60 * 1000)
+      isPreWindow: false,
+      timeToOpen: null
     };
   }
-  
- export function formatRaceDate(startDate, endDate) {
+
+  // En curso
+  if (now >= start && now <= end) {
+    return {
+      isClosed: true,
+      canPredict: false,
+      isPreWindow: false,
+      timeToOpen: null
+    };
+  }
+
+  const diff = start - now;
+
+  // Faltan ≤ 5 días → ventana abierta
+  if (diff <= 5 * 24 * 60 * 60 * 1000) {
+    return {
+      isClosed: false,
+      canPredict: true,
+      isPreWindow: false,
+      timeToOpen: null
+    };
+  }
+
+  // Faltan > 5 días → PRE-WINDOW
+  return {
+    isClosed: true,
+    canPredict: false,
+    isPreWindow: true,
+    timeToOpen: diff - (5 * 24 * 60 * 60 * 1000)
+  };
+}
+
+export function formatRaceDate(startDate, endDate) {
   const months = [
     "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
     "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
@@ -133,10 +133,10 @@ export function computeRaceState(race) {
   const year = start.getUTCFullYear();
 
   if (dayStart === dayEnd) {
-    return `${dayStart} ${month} ${year}`;
+    return `${dayStart} ${month}`;
   }
 
-  return `${dayStart}-${dayEnd} ${month} ${year}`;
+  return `${dayStart}-${dayEnd} ${month}`;
 }
 
 

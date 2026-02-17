@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import racesServices from "../services/races.services";
 import * as countriesServices from "../services/countries.services";
 import { useLoader } from "../context/LoaderContext";
-import { formatRaceDate } from "../utils/helpers";
 
 function Calendar() {
     const [races, setRaces] = useState([]);
