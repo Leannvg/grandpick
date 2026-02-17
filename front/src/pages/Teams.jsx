@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import teamsServices from "../services/teams.services";
 import { useLoader } from "../context/LoaderContext";
 import API_URL from "../services/api";
-import helmet from "../assets/helmetWhite.png";
+import helmet from "../assets/icons/helmet_white.svg";
 
 function Teams() {
     const [teams, setTeams] = useState([]);
