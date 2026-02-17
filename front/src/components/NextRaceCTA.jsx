@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import racesServices from "../services/races.services";
-import countriesServices from "../services/countries.services";
+import * as countriesServices from "../services/countries.services";
 import { formatRaceDate } from "../utils/helpers";
 import API_URL from "../services/api";
 
