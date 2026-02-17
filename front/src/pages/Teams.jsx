@@ -40,6 +40,7 @@ function Teams() {
                     {teams.map((team) => (
                         <article className="team-list-card" key={team._id}>
                             <div className="team-logo">
+                                <span>{`${import.meta.env.VITE_API_URL}/api/static/teams/${team.isologo}`}</span>
                                 <img
                                     src={`${import.meta.env.VITE_API_URL}/api/static/teams/${team.isologo}`}
                                     alt={team.name}
