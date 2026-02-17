@@ -25,12 +25,14 @@ const DriverCardMobile = ({ driver, teamLogo }) => {
                         <span className="tag-vertical">{country}</span>
                         <span className="tag-vertical team-tag-vertical">
 
-                            <img
-                                src={`${API_URL}/api/static/teams/${driver.team_info.isologo}`}
-                                className="team-logo-vertical"
-                                alt="team"
-                                onError={(e) => { e.target.style.display = 'none'; }}
-                            />
+                            {(driver.team_info?.isologo || teamLogo) && (
+                                <img
+                                    src={`${API_URL}/api/static/teams/${driver.team_info?.isologo || teamLogo}`}
+                                    className="team-logo-vertical"
+                                    alt="team"
+                                    onError={(e) => { e.target.style.display = 'none'; }}
+                                />
+                            )}
 
                         </span>
                         <span className="tag-vertical">{trigram}</span>

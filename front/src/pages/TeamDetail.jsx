@@ -74,7 +74,7 @@ function TeamDetail() {
                         {team.drivers && team.drivers.map((driver) => (
                             <DriverCardMobile
                                 key={driver._id}
-                                driver={driver}
+                                driver={{ ...driver, team_info: team }}
                                 teamLogo={team.img_iso || team.img}
                             />
                         ))}

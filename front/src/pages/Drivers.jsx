@@ -20,7 +20,8 @@ function Drivers() {
             .map(driver => ({
               ...driver,
               // Ensure team_id is present if needed by cards, although it might be 'team' in this context
-              team_id: driver.team_id || driver.team || team._id
+              team_id: driver.team_id || driver.team || team._id,
+              team_info: team // Pass the whole team object as team_info
             }))
         );
 
