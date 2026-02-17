@@ -1,46 +1,61 @@
+import { Link } from "react-router-dom";
+import logo from "../assets/icons/logo_grandpick.svg";
+import instagram from "../assets/icons/instagram.png";
+import xIcon from "../assets/icons/x.png";
+import "../assets/styles/footer.css";
+
 function Footer() {
     return (
-        <div className="container">
-        <footer className="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
-            <div className="col mb-3"> <a href="/" className="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none"
-                aria-label="Bootstrap"> <svg className="bi me-2" width="40" height="32" aria-hidden="true">
-                    <use xlinkHref="#bootstrap"></use>
-                </svg> </a>
-                <p className="text-body-secondary">© 2026</p>
-            </div>
-            <div className="col mb-3"></div>
-            <div className="col mb-3">
-                <h5>Section</h5>
-                <ul className="nav flex-column">
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">Home</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">Features</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">Pricing</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">FAQs</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">About</a></li>
-                </ul>
-            </div>
-            <div className="col mb-3">
-                <h5>Section</h5>
-                <ul className="nav flex-column">
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">Home</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">Features</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">Pricing</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">FAQs</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">About</a></li>
-                </ul>
-            </div>
-            <div className="col mb-3">
-                <h5>Section</h5>
-                <ul className="nav flex-column">
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">Home</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">Features</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">Pricing</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">FAQs</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-body-secondary">About</a></li>
-                </ul>
+        <footer className="site-footer">
+            <div className="footer-container">
+                <div className="footer-grid">
+                    <div className="footer-column">
+                        <h5>INFO</h5>
+                        <ul className="footer-nav">
+                            <li><Link to="/drivers">Pilotos</Link></li>
+                            <li><Link to="/circuits">Circuitos</Link></li>
+                            <li><Link to="/teams">Escuderías</Link></li>
+                        </ul>
+                    </div>
+
+                    <div className="footer-column">
+                        <h5>TUTORIALES</h5>
+                        <ul className="footer-nav">
+                            <li><Link to="#">Cómo jugar</Link></li>
+                            <li><Link to="#">Guía para principiantes</Link></li>
+                        </ul>
+                    </div>
+
+                    <div className="footer-column">
+                        <h5>PREDICCIONES</h5>
+                    </div>
+
+                    <div className="footer-column">
+                        <h5>CALENDARIO</h5>
+                    </div>
+
+                    <div className="footer-column footer-logo-col">
+                        <Link to="/">
+                            <img src={logo} alt="GrandPick" className="footer-logo" />
+                        </Link>
+                        <div className="footer-socials">
+                            <a href="#" target="_blank" rel="noopener noreferrer">
+                                <img src={xIcon} alt="X" className="social-icon" />
+                            </a>
+                            <a href="#" target="_blank" rel="noopener noreferrer">
+                                <img src={instagram} alt="Instagram" className="social-icon" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <hr className="footer-divider" />
+
+                <p className="footer-copyright">
+                    © 2025 Grand Pick Todos los derechos reservados
+                </p>
             </div>
         </footer>
-        </div>
     );
 }
 
