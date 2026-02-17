@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import NotificationsBell from "./NotificationsBell.jsx";
-import logo from "../assets/logo-grandpick_2.svg";
+import logo from "../assets/icons/logo_grandpick.svg";
 
 function Nav({ onLogout, autenticado, esAdmin }) {
   return (
