@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import teamsServices from "../services/teams.services";
 import { useLoader } from "../context/LoaderContext";
-import helmetWhite from "../assets/helmetWhite.svg"; // I need to make sure this asset exists or use a default
 import API_URL from "../services/api";
 
 function Teams() {
