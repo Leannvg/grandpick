@@ -8,9 +8,6 @@ const DriverCardMobile = ({ driver, teamLogo }) => {
     const lastName = nameParts.pop();
     const firstName = nameParts.join(" ");
 
-    // Use passed teamLogo or construct it from team_id
-    const finalTeamLogoUrl = (team_info ? `${API_URL}/api/static/teams/${team_info.isologo}` : null)
-
     return (
         <article className="driver-card-vertical">
             <div className="driver-photo-wrapper-vertical">
@@ -27,14 +24,14 @@ const DriverCardMobile = ({ driver, teamLogo }) => {
                     <div className="driver-tags-vertical">
                         <span className="tag-vertical">{country}</span>
                         <span className="tag-vertical team-tag-vertical">
-                            {finalTeamLogoUrl && (
-                                <img
-                                    src={finalTeamLogoUrl}
-                                    className="team-logo-vertical"
-                                    alt="team"
-                                    onError={(e) => { e.target.style.display = 'none'; }}
-                                />
-                            )}
+
+                            <img
+                                src={`${API_URL}/api/static/teams/${team_info.isologo}`}
+                                className="team-logo-vertical"
+                                alt="team"
+                                onError={(e) => { e.target.style.display = 'none'; }}
+                            />
+
                         </span>
                         <span className="tag-vertical">{trigram}</span>
                     </div>
