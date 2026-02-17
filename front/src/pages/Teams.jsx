@@ -52,8 +52,7 @@ function Teams() {
                                 {team.drivers && team.drivers.map((driver) => (
                                     <div className="team-driver" key={driver._id}>
                                         {/* Using a placeholder if helmet icon is missing */}
-                                        <span className="me-2">🏎️</span>
-                                        {driver.name} <span className="bold">{driver.lastname?.toUpperCase()}</span>
+                                        <img src="../assets/helmetWhite.png" alt="Helmet" className="helmet-icon" />{driver.name} <span className="bold">{driver.lastname?.toUpperCase()}</span>
                                     </div>
                                 ))}
                             </div>
