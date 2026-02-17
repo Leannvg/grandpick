@@ -1,7 +1,7 @@
 import API_URL from "../../services/api";
 
 const DriverCardMobile = ({ driver, teamLogo }) => {
-    const { full_name, number, trigram, img, country, team_id } = driver;
+    const { full_name, number, trigram, img, country, team_info } = driver;
 
     // Split name: first words as firstname, last word as lastname
     const nameParts = full_name.split(" ");
@@ -9,9 +9,7 @@ const DriverCardMobile = ({ driver, teamLogo }) => {
     const firstName = nameParts.join(" ");
 
     // Use passed teamLogo or construct it from team_id
-    const finalTeamLogoUrl = teamLogo
-        ? `${API_URL}/api/static/teams/${teamLogo}`
-        : (team_id ? `${API_URL}/api/static/teams/${team_id}-iso.png` : null);
+    const finalTeamLogoUrl = (team_info ? `${API_URL}/api/static/teams/${team_info.isologo}` : null)
 
     return (
         <article className="driver-card-vertical">

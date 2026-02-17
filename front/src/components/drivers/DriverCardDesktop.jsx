@@ -18,7 +18,7 @@ const DriverCardDesktop = ({ driver }) => {
                     <span className="tag-horizontal">{country}</span>
                     <span className="tag-horizontal team-tag-horizontal">
                         {/* Assuming team logo is available via team_id or similar. Using a generic path for now. */}
-                        <img src={`${import.meta.env.VITE_API_URL}/api/static/teams/${driver.team_id}-iso.png`} className="team-logo-horizontal" alt="team" />
+                        <img src={`${import.meta.env.VITE_API_URL}/api/static/teams/${driver.team_info.isologo}`} className="team-logo-horizontal" alt="team" />
                     </span>
                     <span className="tag-horizontal">{trigram}</span>
                 </div>
