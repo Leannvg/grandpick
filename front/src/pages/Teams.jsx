@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import teamsServices from "../services/teams.services";
 import { useLoader } from "../context/LoaderContext";
 import API_URL from "../services/api";
+import helmet from "../assets/helmetWhite.png";
 
 function Teams() {
     const [teams, setTeams] = useState([]);
@@ -52,7 +53,7 @@ function Teams() {
                                 {team.drivers && team.drivers.map((driver) => (
                                     <div className="team-driver" key={driver._id}>
                                         {/* Using a placeholder if helmet icon is missing */}
-                                        <img src="../assets/helmetWhite.png" alt="Helmet" className="helmet-icon" />{driver.name} <span className="bold">{driver.lastname?.toUpperCase()}</span>
+                                        <img src={helmet} alt="Helmet" className="helmet-icon" />{driver.name} <span className="bold">{driver.lastname?.toUpperCase()}</span>
                                     </div>
                                 ))}
                             </div>
