@@ -9,13 +9,15 @@ const DriverCardMobile = ({ driver, teamLogo }) => {
     const firstName = nameParts.join(" ");
 
     // Use passed teamLogo or construct it from team_id
-    const finalTeamLogo = teamLogo || (team_id ? `${team_id}-iso.png` : null);
+    const finalTeamLogoUrl = teamLogo
+        ? `${API_URL}/api/static/teams/${teamLogo}`
+        : (team_id ? `${API_URL}/api/static/teams/${team_id}-iso.png` : null);
 
     return (
         <article className="driver-card-vertical">
             <div className="driver-photo-wrapper-vertical">
                 <img
-                    src={`${API_URL}/storage/${img}`}
+                    src={`${API_URL}/api/static/drivers/${img}`}
                     alt={full_name}
                     className="driver-photo-vertical"
                     onError={(e) => { e.target.src = "https://via.placeholder.com/300x400?text=Driver"; }}
@@ -27,9 +29,9 @@ const DriverCardMobile = ({ driver, teamLogo }) => {
                     <div className="driver-tags-vertical">
                         <span className="tag-vertical">{country}</span>
                         <span className="tag-vertical team-tag-vertical">
-                            {finalTeamLogo && (
+                            {finalTeamLogoUrl && (
                                 <img
-                                    src={`${API_URL}/storage/${finalTeamLogo}`}
+                                    src={finalTeamLogoUrl}
                                     className="team-logo-vertical"
                                     alt="team"
                                     onError={(e) => { e.target.style.display = 'none'; }}

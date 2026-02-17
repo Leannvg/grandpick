@@ -51,19 +51,19 @@ function TeamDetail() {
                     <div className="team-info-group">
                         <div className="team-info-item">
                             <span className="team-info-label">Base</span>
-                            <span className="team-info-value">{team.base || "N/A"}</span>
+                            <span className="team-info-value">{team.country || "N/A"}</span>
                         </div>
                         <div className="team-info-item">
-                            <span className="team-info-label">Jefe de equipo</span>
-                            <span className="team-info-value">{team.team_chief || "N/A"}</span>
+                            <span className="team-info-label">Director</span>
+                            <span className="team-info-value">{team.chief || "N/A"}</span>
                         </div>
                         <div className="team-info-item">
                             <span className="team-info-label">Motor</span>
                             <span className="team-info-value">{team.power_unit || "N/A"}</span>
                         </div>
                         <div className="team-info-item">
-                            <span className="team-info-label">GP ganados</span>
-                            <span className="team-info-value">{team.won_gps || "0"}</span>
+                            <span className="team-info-label">Campeonatos mundiales</span>
+                            <span className="team-info-value">{team.world_championships || "0"}</span>
                         </div>
                     </div>
                 </section>
