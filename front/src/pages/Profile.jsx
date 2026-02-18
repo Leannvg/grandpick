@@ -132,9 +132,6 @@ function Profile() {
               <span className="chart-center-title">PREDICCIONES</span>
               <span className="chart-center-value">{usuario.stats?.predictions?.total || 0}</span>
             </div>
-            <span className="chart-top-value">{usuario.stats?.predictions?.qualifyng || 0}</span>
-            <span className="chart-right-value">{usuario.stats?.predictions?.race || 0}</span>
-            <span className="chart-left-value">{usuario.stats?.predictions?.sprint || 0}</span>
           </div>
 
           {/* Aciertos Chart */}
@@ -146,9 +143,6 @@ function Profile() {
               <span className="chart-center-title">ACIERTOS</span>
               <span className="chart-center-value">{usuario.stats?.successes?.total || 0}</span>
             </div>
-            <span className="chart-top-value">{usuario.stats?.successes?.qualifyng || 0}</span>
-            <span className="chart-right-value">{usuario.stats?.successes?.race || 0}</span>
-            <span className="chart-left-value">{usuario.stats?.successes?.sprint || 0}</span>
           </div>
 
           {/* Puntos Chart */}
@@ -160,9 +154,6 @@ function Profile() {
               <span className="chart-center-title">PUNTOS</span>
               <span className="chart-center-value">{usuario.stats?.points?.total || 0}</span>
             </div>
-            <span className="chart-top-value">{usuario.stats?.points?.qualifyng || 0}</span>
-            <span className="chart-right-value">{usuario.stats?.points?.race || 0}</span>
-            <span className="chart-left-value">{usuario.stats?.points?.sprint || 0}</span>
           </div>
         </div>
       </section>
