@@ -1,3 +1,5 @@
+import { getFlagEmoji } from "../../utils/helpers";
+
 const DriverCardDesktop = ({ driver }) => {
     const { full_name, number, trigram, img, country } = driver;
 
@@ -15,7 +17,7 @@ const DriverCardDesktop = ({ driver }) => {
                     <span className="driver-lastname-horizontal"> {lastName}</span>
                 </h3>
                 <div className="driver-tags-horizontal">
-                    <span className="tag-horizontal">{country}</span>
+                    <span className="tag-horizontal emoji-flag" title={country}>{getFlagEmoji(country)}</span>
                     <span className="tag-horizontal team-tag-horizontal">
                         {/* Assuming team logo is available via team_id or similar. Using a generic path for now. */}
                         {driver.team_info?.isologo && (

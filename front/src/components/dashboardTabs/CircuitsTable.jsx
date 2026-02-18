@@ -1,4 +1,5 @@
 import { usePagination } from "./../../hooks/usePagination.js";
+import { getFlagEmoji } from "./../../utils/helpers.js";
 
 export default function CircuitsTable({ circuits, onEdit, onDelete }) {
   const {
@@ -11,7 +12,7 @@ export default function CircuitsTable({ circuits, onEdit, onDelete }) {
   } = usePagination(circuits, 10);
 
   return (
-    <>   
+    <>
       {/* SELECT PAGE SIZE */}
       <div className="d-flex justify-content-start mb-2">
         <label className="me-2">Mostrar:</label>
@@ -43,7 +44,10 @@ export default function CircuitsTable({ circuits, onEdit, onDelete }) {
             {paginatedData.map((c) => (
               <tr key={c._id}>
                 <td>{c.circuit_name}</td>
-                <td>{c.country}</td>
+                <td>
+                  <span className="emoji-flag me-1">{getFlagEmoji(c.country)}</span>
+                  {c.country}
+                </td>
                 <td>{c.length}</td>
                 <td>{c.laps}</td>
                 <td>

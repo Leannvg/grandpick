@@ -1,4 +1,5 @@
 import { usePagination } from "./../../hooks/usePagination.js";
+import { getFlagEmoji } from "./../../utils/helpers.js";
 
 export default function TeamsTable({ teams, onEdit, onDelete }) {
   const {
@@ -12,7 +13,7 @@ export default function TeamsTable({ teams, onEdit, onDelete }) {
 
   return (
     <>
-       {/* SELECT PAGE SIZE */}
+      {/* SELECT PAGE SIZE */}
       <div className="d-flex justify-content-start mb-2">
         <label className="me-2">Mostrar:</label>
         <select
@@ -67,7 +68,10 @@ export default function TeamsTable({ teams, onEdit, onDelete }) {
                   )}
                 </td>
 
-                <td>{t.country}</td>
+                <td>
+                  <span className="emoji-flag me-1">{getFlagEmoji(t.country)}</span>
+                  {t.country}
+                </td>
 
                 <td className="d-flex gap-2">
                   <button onClick={() => onEdit(t._id)}>✏️</button>

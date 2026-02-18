@@ -1,17 +1,10 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import circuitsServices from "../services/circuits.services";
-import racesServices from "../services/races.services";
-import * as countriesServices from "../services/countries.services";
-import { useLoader } from "../context/LoaderContext";
-import { formatRaceDate } from "../utils/helpers";
+import { formatRaceDate, getFlagEmoji } from "../utils/helpers";
 import API_URL from "../services/api";
 
 function CircuitDetail() {
     const { id } = useParams();
     const [circuit, setCircuit] = useState(null);
     const [race, setRace] = useState(null);
-    const [emoji, setEmoji] = useState("🏁");
     const [countryName, setCountryName] = useState("");
     const { showLoader, hideLoader } = useLoader();
 
@@ -22,13 +15,12 @@ function CircuitDetail() {
                 const circuitData = await circuitsServices.findOne(id);
                 setCircuit(circuitData);
 
-                // Fetch country info
+                // Fetch country name
                 try {
                     const country = await countriesServices.getOneCountry(circuitData.country);
-                    setEmoji(country?.emoji || "🏁");
                     setCountryName(country?.name || circuitData.country);
                 } catch (err) {
-                    console.error("Error fetching country:", err);
+                    console.error("Error fetching country name:", err);
                     setCountryName(circuitData.country);
                 }
 
@@ -62,7 +54,7 @@ function CircuitDetail() {
                     {/* HEADER */}
                     <header className="page-header">
                         <span className="circuit-country-detail section-label">
-                            <span className="emoji-flag me-2">{emoji}</span>
+                            <span className="emoji-flag me-2">{getFlagEmoji(circuit.country)}</span>
                             {countryName.toUpperCase()}
                         </span>
                         <h1 className="section-title">{circuit.circuit_name}</h1>

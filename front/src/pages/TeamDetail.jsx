@@ -4,6 +4,7 @@ import teamsServices from "../services/teams.services";
 import DriverCardMobile from "../components/drivers/DriverCardMobile";
 import { useLoader } from "../context/LoaderContext";
 import API_URL from "../services/api";
+import { getFlagEmoji } from "../utils/helpers";
 
 function TeamDetail() {
     const { id } = useParams();
@@ -51,7 +52,10 @@ function TeamDetail() {
                     <div className="team-info-group">
                         <div className="team-info-item">
                             <span className="team-info-label">Base</span>
-                            <span className="team-info-value">{team.country || "N/A"}</span>
+                            <span className="team-info-value">
+                                <span className="emoji-flag me-1">{getFlagEmoji(team.country)}</span>
+                                {team.country || "N/A"}
+                            </span>
                         </div>
                         <div className="team-info-item">
                             <span className="team-info-label">Director</span>

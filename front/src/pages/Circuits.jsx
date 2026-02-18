@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import circuitsServices from "../services/circuits.services";
 import * as countriesServices from "../services/countries.services";
 import { useLoader } from "../context/LoaderContext";
+import { getFlagEmoji } from "../utils/helpers";
 
 function Circuits() {
     const [circuits, setCircuits] = useState([]);
@@ -14,20 +15,20 @@ function Circuits() {
             try {
                 const data = await circuitsServices.findAll();
 
-                // Fetch flags for each circuit
-                const circuitsWithFlags = await Promise.all(
+                // Fetch country names for each circuit (if needed) but use getFlagEmoji for flags
+                const circuitsWithNames = await Promise.all(
                     data.map(async (circuit) => {
                         try {
                             const country = await countriesServices.getOneCountry(circuit.country);
-                            return { ...circuit, emoji: country?.emoji || "🏁", country_name: country?.name || circuit.country };
+                            return { ...circuit, country_name: country?.name || circuit.country };
                         } catch (err) {
                             console.error(`Error fetching country for ${circuit.country}:`, err);
-                            return { ...circuit, emoji: "🏁", country_name: circuit.country };
+                            return { ...circuit, country_name: circuit.country };
                         }
                     })
                 );
 
-                setCircuits(circuitsWithFlags);
+                setCircuits(circuitsWithNames);
             } catch (error) {
                 console.error("Error al obtener los circuitos:", error);
             } finally {
@@ -57,7 +58,7 @@ function Circuits() {
                                 <h3 className="circuit-name">{circuit.circuit_name}</h3>
 
                                 <div className="circuit-country">
-                                    <span className="emoji-flag me-2">{circuit.emoji}</span>
+                                    <span className="emoji-flag me-2">{getFlagEmoji(circuit.country)}</span>
                                     <span>{circuit.country_name}</span>
                                 </div>
                             </div>

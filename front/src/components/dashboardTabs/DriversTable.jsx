@@ -1,4 +1,5 @@
 import { usePagination } from "./../../hooks/usePagination.js";
+import { getFlagEmoji } from "./../../utils/helpers.js";
 
 export default function DriversTable({ drivers, onEdit, onDelete, onToggle }) {
   const {
@@ -49,7 +50,10 @@ export default function DriversTable({ drivers, onEdit, onDelete, onToggle }) {
                 <td>{d.full_name}</td>
                 <td>{d.trigram}</td>
                 <td>{d.number}</td>
-                <td>{d.country}</td>
+                <td>
+                  <span className="emoji-flag me-1">{getFlagEmoji(d.country)}</span>
+                  {d.country}
+                </td>
                 <td>{d.team_info?.name || "Sin escudería"}</td>
                 <td>{d.active ? "🟢" : "🔴"}</td>
 

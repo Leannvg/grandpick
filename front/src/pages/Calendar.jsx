@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import racesServices from "../services/races.services";
-import * as countriesServices from "../services/countries.services";
 import { useLoader } from "../context/LoaderContext";
+import { getFlagEmoji } from "../utils/helpers";
 
 function Calendar() {
     const [races, setRaces] = useState([]);
@@ -20,21 +20,7 @@ function Calendar() {
                     race.state !== "Finalizado" && new Date(race.date_gp_end).getTime() >= now
                 );
                 setCurrentIndex(index);
-
-                // Fetch country info for each race circuit to get the flag emoji
-                const racesWithFlags = await Promise.all(
-                    sortedData.map(async (race) => {
-                        try {
-                            const country = await countriesServices.getOneCountry(race.circuit.country);
-                            return { ...race, emoji: country?.emoji || "🏁" };
-                        } catch (err) {
-                            console.error(`Error fetching country for ${race.circuit.country}:`, err);
-                            return { ...race, emoji: "🏁" };
-                        }
-                    })
-                );
-
-                setRaces(racesWithFlags);
+                setRaces(sortedData);
             } catch (error) {
                 console.error("Error al obtener las carreras:", error);
             } finally {
@@ -97,7 +83,7 @@ function Calendar() {
                             <article className="calendar-item" key={race._id || index}>
                                 <div className="race-info">
                                     <div className="race-location">
-                                        <span className="emoji-flag me-2">{race.emoji}</span>
+                                        <span className="emoji-flag me-2">{getFlagEmoji(race.circuit?.country)}</span>
                                         <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
                                         <span className="race-round">/ RONDA {index + 1}</span>
                                     </div>
@@ -117,7 +103,7 @@ function Calendar() {
                             <article className="calendar-item" key={race._id || index}>
                                 <div className="race-info">
                                     <div className="race-location">
-                                        <span className="emoji-flag me-2">{race.emoji}</span>
+                                        <span className="emoji-flag me-2">{getFlagEmoji(race.circuit?.country)}</span>
                                         <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
                                         <span className="race-round">/ RONDA {midPoint + index + 1}</span>
                                     </div>

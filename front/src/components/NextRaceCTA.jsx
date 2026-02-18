@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import racesServices from "../services/races.services";
 import * as countriesServices from "../services/countries.services";
-import { formatRaceDate } from "../utils/helpers";
+import { formatRaceDate, getFlagEmoji } from "../utils/helpers";
 import API_URL from "../services/api";
 
 function NextRaceCTA() {
     const [race, setRace] = useState(null);
-    const [emoji, setEmoji] = useState("🏁");
     const [countryName, setCountryName] = useState("");
     const [timeLeft, setTimeLeft] = useState({
         days: "00",
@@ -23,15 +22,14 @@ function NextRaceCTA() {
                 if (data) {
                     setRace(data);
 
-                    // Fetch country info
+                    // Fetch country info for name if needed, or just use ISO for now
                     const countryIso = data.circuit?.country || data.id_circuit?.country;
                     if (countryIso) {
                         try {
                             const country = await countriesServices.getOneCountry(countryIso);
-                            setEmoji(country?.emoji || "🏁");
                             setCountryName(country?.name || countryIso);
                         } catch (err) {
-                            console.error("Error fetching country flag:", err);
+                            console.error("Error fetching country name:", err);
                         }
                     }
                 }
@@ -75,7 +73,9 @@ function NextRaceCTA() {
                 {/* INFO */}
                 <div className="nr-cta__info">
                     <div className="nr-cta__country">
-                        <span className="emoji-flag me-2" style={{ fontSize: '1.5rem' }}>{emoji}</span>
+                        <span className="emoji-flag me-2" style={{ fontSize: '1.5rem' }}>
+                            {getFlagEmoji(race.circuit?.country || race.id_circuit?.country)}
+                        </span>
                         <span className="nr-cta__country-name">{countryName.toUpperCase()}</span>
                     </div>
 
