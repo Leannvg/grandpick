@@ -3,7 +3,7 @@ import UsersServices from "../services/users.services.js";
 import FloatingEditProfile from "../components/FloatingEditProfile.jsx";
 import FloatingChangePassword from "../components/FloatingChangePassword.jsx";
 import { getFlagEmoji } from "../utils/helpers";
-import helmetIcon from "../assets/icons/helmet_white.png";
+import profileDefault from "../assets/images/profile_default.png";
 import "../assets/styles/profile.css";
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
@@ -77,7 +77,7 @@ function Profile() {
         {/* User Card */}
         <article className="user-card">
           <div className="user-avatar-box">
-            <img src={helmetIcon} alt="Helmet" />
+            <img src={profileDefault} alt="Helmet" />
           </div>
           <div className="user-details">
             <h2>{(usuario.name || "PILOTO").toUpperCase()} {(usuario.last_name || "").toUpperCase()}</h2>
