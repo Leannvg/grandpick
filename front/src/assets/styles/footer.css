@@ -90,7 +90,7 @@
 
 .footer-divider {
     border: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid white;
     margin: 40px 0 20px;
 }
 

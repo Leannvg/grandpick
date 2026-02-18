@@ -1,14 +1,15 @@
 /* -------------------------------------- */
 /* RESET BÁSICO                           */
 /* -------------------------------------- */
-¡
-* {
+¡ * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
@@ -20,9 +21,14 @@ html {
 body {
   font-family: "Akshar", sans-serif;
   background: radial-gradient(circle at top, #315f7a, #071d2c);
-  color: #fff; /* ajustalo si tu texto principal no es blanco */
+  color: #fff;
+  /* ajustalo si tu texto principal no es blanco */
   overflow-x: hidden;
 
+}
+
+.emoji-flag {
+  font-family: "Twemoji Country Flags", system-ui, sans-serif !important;
 }
 
 /* -------------------------------------- */
@@ -47,7 +53,7 @@ body {
 
   /* Colores */
   --color-body: #0C2C40;
-  --color-accent: #3975A2; 
+  --color-accent: #3975A2;
   --color-dark-blue: #081D2B;
   --color-footer: #272727;
   --color-login: #7AB3DE;
@@ -116,7 +122,12 @@ body {
 /* TIPOGRAFÍA GLOBAL                      */
 /* -------------------------------------- */
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-primary);
   margin-bottom: var(--space-between-elements);
 }
@@ -126,7 +137,8 @@ h1 {
   font-weight: 300;
 }
 
-h2, .section-label {
+h2,
+.section-label {
   font-size: var(--subtitle-size);
   font-weight: 600;
 }
@@ -273,13 +285,13 @@ p {
 
 /* Línea horizontal */
 .nr-cta__country::after {
-    content: "";
-    position: absolute;
-    left: 0px;
-    right: 0px;
-    bottom: 4px;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.6);
+  content: "";
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 4px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .nr-cta__country img {
@@ -327,7 +339,7 @@ p {
 }
 
 .nr-cta__time {
-  width: 48px;           
+  width: 48px;
   padding: 6px 4px;
   text-align: center;
   background: #0b2a3d;
@@ -373,17 +385,18 @@ p {
 
   /* NEXT RACE CTA */
 
-  .nr-cta{
+  .nr-cta {
     padding: 8px 50px;
   }
+
   .nr-cta__container {
-    flex-direction: row;   
+    flex-direction: row;
     align-items: center;
   }
 
   .nr-cta__info {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
     gap: 2px;
     flex: 1;
   }
@@ -431,11 +444,11 @@ p {
     font-weight: 200;
   }
 
-  .nr-cta__time-value{
+  .nr-cta__time-value {
     font-size: 22px;
   }
 
-  .nr-cta__time-label{
+  .nr-cta__time-label {
     font-size: 14px;
   }
 }
