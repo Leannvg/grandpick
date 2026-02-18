@@ -2,29 +2,28 @@ import { useEffect, useState } from "react";
 import UsersServices from "../services/users.services.js";
 import FloatingEditProfile from "../components/FloatingEditProfile.jsx";
 import FloatingChangePassword from "../components/FloatingChangePassword.jsx";
+import { getFlagEmoji } from "../utils/helpers";
+import helmetIcon from "../assets/icons/helmet_white.png";
+import "../assets/styles/profile.css";
+
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Profile() {
   const [usuario, setUsuario] = useState({});
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
-  
+
   const API_URL = import.meta.env.VITE_API_URL;
-
-  const imageUrl = currentImage && currentImage !== "profile_default.png"
-  ? `${API_URL}/api/static/${currentImage}`
-  : `${API_URL}/api/static/general/profile_default.png`;
-
-
 
   useEffect(() => {
     if (usuario?.img_user) {
-
-      console.log(usuario.img_user)
       setCurrentImage(usuario.img_user);
     }
   }, [usuario]);
-
 
   const fetchUsuario = async () => {
     try {
@@ -40,93 +39,149 @@ function Profile() {
     fetchUsuario();
   }, []);
 
+  const createChartData = (stats, type) => {
+    const data = stats?.[type] || {};
+    return {
+      datasets: [
+        {
+          data: [data.qualifyng || 0, data.sprint || 0, data.race || 0],
+          backgroundColor: [
+            "#E6E6E6", // Qualy - White/Light Gray
+            "#FFCD56", // Sprint - Yellow
+            "#D40000", // Race - Red
+          ],
+          borderWidth: 0,
+          cutout: "85%",
+        },
+      ],
+    };
+  };
+
+  const chartOptions = {
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: true },
+    },
+    maintainAspectRatio: false,
+  };
+
   return (
-    <div>
-      <div className="container admin">
-        <h1>Tu ficha de piloto</h1>
-        <div className="d-flex w-100">
-          <div className="profile-card mb-2 p-4 d-flex flex-column align-items-center w-75">
-            <div className="mb-3">
-                <div className="mt-3 text-center">
-                  <img
-                    src={imageUrl}
-                    alt="Usuario"
-                    style={{ width: "120px", borderRadius: "8px" }}
-                  />
-                </div>
-            </div>
+    <main className="profile-section container">
+      <header className="profile-header">
+        <p className="section-label">Tu garaje digital</p>
+        <h1 className="section-title">TU FICHA DE PILOTO</h1>
+        <p className="section-subtitle">Seguimiento de predicciones y resultados</p>
+      </header>
 
-            <p>
-              <strong>Nombre de usuario:</strong> {usuario.name} {usuario.last_name}
-            </p>
-            <p>
-              <strong>País:</strong>{" "}
-              <span className="emoji-flag">{usuario.country}</span>
-            </p>
-            <p>
-              <strong>Email:</strong> {usuario.email}
-            </p>
+      <div className="profile-info-grid">
+        {/* User Card */}
+        <article className="user-card">
+          <div className="user-avatar-box">
+            <img src={helmetIcon} alt="Helmet" />
           </div>
-
-          <div className="d-flex gap-2 justify-content-center mb-5 w-25">
-            <div className="d-flex flex-column gap-2">
-              <button
-                className="btn btn-primary"
-                onClick={() => setShowProfileModal(true)}
-              >
-                Editar perfil
-              </button>
-
-              <button
-                className="btn btn-primary"
-                onClick={() => setShowPasswordModal(true)}
-              >
-                Cambiar contraseña
-              </button>
-
-              <FloatingEditProfile 
-                show={showProfileModal}
-                onClose={() => setShowProfileModal(false)}
-                usuario={usuario}
-                onUpdated={fetchUsuario}
-              />
-
-              <FloatingChangePassword 
-                show={showPasswordModal}
-                onClose={() => setShowPasswordModal(false)}
-                usuario={usuario}
-                onUpdated={fetchUsuario}
-              />
+          <div className="user-details">
+            <h2>{(usuario.name || "PILOTO").toUpperCase()} {(usuario.last_name || "").toUpperCase()}</h2>
+            <p className="user-email">{usuario.email}</p>
+            <div className="user-country-tag">
+              <span className="emoji-flag" title={usuario.country}>
+                {getFlagEmoji(usuario.country)}
+              </span>
             </div>
           </div>
-        </div>
-      
+        </article>
 
-        <div className="d-flex justify-content-around stats-container">
-          <div>
-            <h2>Predicciones</h2>
-            <p>Total de predicciones: {usuario.stats?.predictions?.total ?? 0}</p>
-            <p>Predicciones en Clasificación: {usuario.stats?.predictions?.qualifyng ?? 0}</p>
-            <p>Predicciones en Sprint: {usuario.stats?.predictions?.sprint ?? 0}</p>
-            <p>Predicciones en Carrera: {usuario.stats?.predictions?.race ?? 0}</p>
-          </div>
-          <div>
-            <h2>Aciertos</h2>
-            <p>Total de aciertos: {usuario.stats?.successes?.total ?? 0}</p>
-            <p>Aciertos en Clasificación: {usuario.stats?.successes?.qualifyng ?? 0}</p>
-            <p>Aciertos en Sprint: {usuario.stats?.successes?.sprint ?? 0}</p>
-            <p>Aciertos en Carrera: {usuario.stats?.successes?.race ?? 0}</p>
-          </div>
-          <div>
-            <h2>Puntos</h2>
-            <p>Total de puntos: {usuario.stats?.points?.total ?? 0}</p>
-            <p>Puntos en Clasificación: {usuario.stats?.points?.qualifyng ?? 0}</p>
-            <p>Puntos en Sprint: {usuario.stats?.points?.sprint ?? 0}</p>
-            <p>Puntos en Carrera: {usuario.stats?.points?.race ?? 0}</p>
-          </div>
-        </div>
+        {/* Actions */}
+        <aside className="profile-actions">
+          <button className="btn-profile-action">Mis Predicciones</button>
+          <button className="btn-profile-action" onClick={() => setShowPasswordModal(true)}>
+            Cambiar Contraseña
+          </button>
+          <button className="btn-profile-action" onClick={() => setShowProfileModal(true)}>
+            Cambiar Email
+          </button>
+        </aside>
       </div>
-    </div>
+
+      {/* Stats Section */}
+      <section className="stats-section">
+        <div className="stats-title">
+          <span>MIS ESTADISTICAS</span>
+          <div className="stats-legend">
+            <div className="legend-item">
+              <span className="dot" style={{ backgroundColor: "#E6E6E6" }}></span>
+              <span>Qualy</span>
+            </div>
+            <div className="legend-item">
+              <span className="dot" style={{ backgroundColor: "#FFCD56" }}></span>
+              <span>Sprint</span>
+            </div>
+            <div className="legend-item">
+              <span className="dot" style={{ backgroundColor: "#D40000" }}></span>
+              <span>Race</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="charts-grid">
+          {/* Predicciones Chart */}
+          <div className="chart-item">
+            <div style={{ height: "180px" }}>
+              <Doughnut data={createChartData(usuario.stats, "predictions")} options={chartOptions} />
+            </div>
+            <div className="chart-label-center">
+              <span className="chart-center-title">PREDICCIONES</span>
+              <span className="chart-center-value">{usuario.stats?.predictions?.total || 0}</span>
+            </div>
+            <span className="chart-top-value">{usuario.stats?.predictions?.qualifyng || 0}</span>
+            <span className="chart-right-value">{usuario.stats?.predictions?.race || 0}</span>
+            <span className="chart-left-value">{usuario.stats?.predictions?.sprint || 0}</span>
+          </div>
+
+          {/* Aciertos Chart */}
+          <div className="chart-item">
+            <div style={{ height: "180px" }}>
+              <Doughnut data={createChartData(usuario.stats, "successes")} options={chartOptions} />
+            </div>
+            <div className="chart-label-center">
+              <span className="chart-center-title">ACIERTOS</span>
+              <span className="chart-center-value">{usuario.stats?.successes?.total || 0}</span>
+            </div>
+            <span className="chart-top-value">{usuario.stats?.successes?.qualifyng || 0}</span>
+            <span className="chart-right-value">{usuario.stats?.successes?.race || 0}</span>
+            <span className="chart-left-value">{usuario.stats?.successes?.sprint || 0}</span>
+          </div>
+
+          {/* Puntos Chart */}
+          <div className="chart-item">
+            <div style={{ height: "180px" }}>
+              <Doughnut data={createChartData(usuario.stats, "points")} options={chartOptions} />
+            </div>
+            <div className="chart-label-center">
+              <span className="chart-center-title">PUNTOS</span>
+              <span className="chart-center-value">{usuario.stats?.points?.total || 0}</span>
+            </div>
+            <span className="chart-top-value">{usuario.stats?.points?.qualifyng || 0}</span>
+            <span className="chart-right-value">{usuario.stats?.points?.race || 0}</span>
+            <span className="chart-left-value">{usuario.stats?.points?.sprint || 0}</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Modals */}
+      <FloatingEditProfile
+        show={showProfileModal}
+        onClose={() => setShowProfileModal(false)}
+        usuario={usuario}
+        onUpdated={fetchUsuario}
+      />
+
+      <FloatingChangePassword
+        show={showPasswordModal}
+        onClose={() => setShowPasswordModal(false)}
+        usuario={usuario}
+        onUpdated={fetchUsuario}
+      />
+    </main>
   );
 }
 

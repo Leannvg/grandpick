@@ -1,0 +1,237 @@
+.profile-section {
+    padding-top: var(--space-nav-first);
+    padding-bottom: 80px;
+    min-height: 80vh;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.profile-info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+@media (min-width: 992px) {
+    .profile-info-grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+}
+
+/* User Card */
+.user-card {
+    background-color: var(--color-container-bg);
+    padding: 40px;
+    border-radius: var(--radius-general);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .user-card {
+        flex-direction: row;
+        text-align: left;
+        align-items: center;
+        gap: 30px;
+    }
+}
+
+.user-avatar-box {
+    width: 200px;
+    height: 200px;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-general);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+    .user-avatar-box {
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+}
+
+.user-avatar-box img {
+    width: 100px;
+    height: auto;
+}
+
+.user-details h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.user-email {
+    font-size: 16px;
+    color: #ccc;
+    font-weight: 300;
+    margin-bottom: 24px;
+}
+
+.user-country-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    font-size: 24px;
+}
+
+/* Actions Section */
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.btn-profile-action {
+    background-color: var(--color-accent);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-general);
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.btn-profile-action:hover {
+    background-color: #4a86b3;
+}
+
+/* Stats Container */
+.stats-section {
+    margin-top: 40px;
+    background-color: var(--color-dark-blue);
+    padding: 40px;
+    border-radius: var(--radius-general);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.stats-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stats-legend {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+/* Charts Grid */
+.charts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .charts-grid {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}
+
+.chart-item {
+    width: 200px;
+    position: relative;
+    text-align: center;
+}
+
+.chart-label-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+}
+
+.chart-center-title {
+    font-size: 10px;
+    font-weight: 400;
+    color: #aaa;
+    text-transform: uppercase;
+}
+
+.chart-center-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+}
+
+.chart-top-value,
+.chart-bottom-value,
+.chart-left-value,
+.chart-right-value {
+    position: absolute;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.chart-top-value {
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.chart-bottom-value {
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.chart-left-value {
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.chart-right-value {
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
