@@ -455,7 +455,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  clip-path: polygon(0 12%, 100% 0, 100% 100%, 0% 100%);
+  clip-path: polygon(0 25%, 100% 0, 100% 102%, 0% 102%);
 }
 
 /* CTA Dark variant */
