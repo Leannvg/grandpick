@@ -4,7 +4,7 @@ import { validateRegister, validateLogin, validateUpdateSecurity, validateProfil
 import { multerControl } from '../../middleware/multer.middleware.js';
 import { uploadContext } from "../../middleware/uploadContext.middleware.js";
 import { mapImageToBody } from "../../middleware/mapImageToBody.middleware.js";
-import { autenticado, admin, selfOrAdmin} from '../../middleware/auth.middleware.js';
+import { autenticado, admin, selfOrAdmin } from '../../middleware/auth.middleware.js';
 
 const route = express.Router();
 
@@ -22,7 +22,7 @@ route.route("/api/users/reset-password")
     .post(UsersApiController.resetPassword);
 
 // PRIVATE ROUTES
-route.route("/api/user/profile")    
+route.route("/api/user/profile")
     .get(autenticado, UsersApiController.getProfile)
 
 route.route("/api/users/:id")
@@ -52,7 +52,7 @@ route.route("/api/users/:id/stats")
     .get(autenticado, UsersApiController.getUserStats)
 
 route.route("/api/users-stats")
-    .get(autenticado, admin, UsersApiController.getAllUsersStats)
+    .get(autenticado, UsersApiController.getAllUsersStats)
 
 route.route("/api/users/:id/block")
     .post(autenticado, admin, UsersApiController.blockUser)
