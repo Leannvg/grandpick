@@ -55,7 +55,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
               )}
 
               <li className="nav-item">
-                <Link className="nav-link" to="#">
+                <Link className="nav-link" to="/ranking">
                   RANKING
                 </Link>
               </li>

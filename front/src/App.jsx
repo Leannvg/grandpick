@@ -15,6 +15,7 @@ import Circuits from "./pages/Circuits";
 import CircuitDetail from "./pages/CircuitDetail";
 import Teams from "./pages/Teams";
 import TeamDetail from "./pages/TeamDetail";
+import Ranking from "./pages/Ranking";
 import NextRaceCTA from "./components/NextRaceCTA";
 // Admin pages
 import Dashboard from "./pages/admin/Dashboard";
@@ -152,6 +153,7 @@ function App() {
           <Route path="/circuits/:id" element={<CircuitDetail />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/teams/:id" element={<TeamDetail />} />
+          <Route path="/ranking" element={<Ranking />} />
 
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

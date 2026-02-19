@@ -1,0 +1,192 @@
+.ranking-page {
+    min-height: 100vh;
+    padding: 60px 20px;
+    color: #fff;
+}
+
+.ranking-page__header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.ranking-page__eyebrow {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+.ranking-page__title {
+    font-size: clamp(32px, 8vw, 64px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 12px;
+}
+
+.ranking-page__subtitle {
+    font-size: 16px;
+    font-weight: 300;
+    opacity: 0.8;
+}
+
+/* SEARCH & FILTERS */
+.ranking-filters {
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.ranking-filters__year {
+    background: rgba(14, 47, 68, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.ranking-search {
+    display: flex;
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 300px;
+}
+
+.ranking-search__input {
+    flex: 1;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+}
+
+.ranking-search__button {
+    background: #4a90e2;
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* TABLE CARD */
+.ranking-card {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.ranking-table-container {
+    overflow-x: auto;
+}
+
+.ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 14px;
+}
+
+.ranking-table th {
+    background-color: #5c8ab3;
+    color: #fff;
+    font-weight: 400;
+    padding: 16px 12px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.ranking-table td {
+    padding: 14px 12px;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+.ranking-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* POS COLORS */
+.pos-cell {
+    font-weight: 700;
+    width: 50px;
+}
+
+.pos-1 {
+    background-color: var(--color-pos1) !important;
+    color: #000 !important;
+}
+
+.pos-2 {
+    background-color: var(--color-pos2) !important;
+    color: #000 !important;
+}
+
+.pos-3 {
+    background-color: var(--color-pos3) !important;
+    color: #000 !important;
+}
+
+/* USER INFO */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+}
+
+.user-name {
+    font-weight: 400;
+}
+
+.user-lastname {
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.flag-icon {
+    width: 24px;
+    height: auto;
+    border-radius: 2px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 991px) {
+    .ranking-page {
+        padding: 40px 15px;
+    }
+
+    .ranking-filters {
+        justify-content: center;
+    }
+
+    .ranking-search {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+
+    .ranking-table th:nth-child(5),
+    .ranking-table td:nth-child(5),
+    .ranking-table th:nth-child(6),
+    .ranking-table td:nth-child(6),
+    .ranking-table th:nth-child(7),
+    .ranking-table td:nth-child(7) {
+        display: none;
+    }
+}
