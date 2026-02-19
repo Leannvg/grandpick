@@ -19,27 +19,21 @@
 
 @media (min-width: 992px) {
     .profile-info-grid {
-        grid-template-columns: 1fr 1fr;
-        align-items: start;
+        grid-template-columns: 2fr 1fr;
+        align-items: center;
     }
 }
 
 /* User Card */
 .user-card {
-    background-color: var(--color-container-bg);
-    padding: 40px;
-    border-radius: var(--radius-general);
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
 }
 
 @media (min-width: 768px) {
     .user-card {
         flex-direction: row;
         text-align: left;
-        align-items: center;
+        /* align-items: center; */
         gap: 30px;
     }
 }
@@ -52,7 +46,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
 }
 
 @media (min-width: 768px) {
@@ -63,14 +56,20 @@
 }
 
 .user-avatar-box img {
-    width: 100px;
+    /* width: 100px; */
     height: auto;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .user-details h2 {
     font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 4px;
+    font-weight: 500;
+    margin-bottom: 0px;
     text-transform: uppercase;
 }
 
@@ -82,12 +81,10 @@
 }
 
 .user-country-tag {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    padding: 4px 8px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    font-size: 24px;
+    font-size: 34px;
+    line-height: 1;
 }
 
 /* Actions Section */
@@ -189,14 +186,14 @@
 }
 
 .chart-center-title {
-    font-size: 10px;
+    font-size: 14px;
     font-weight: 400;
     color: #aaa;
     text-transform: uppercase;
 }
 
 .chart-center-value {
-    font-size: 28px;
+    font-size: 40px;
     font-weight: 700;
     color: #fff;
     line-height: 1;

@@ -80,8 +80,11 @@ function Profile() {
             <img src={profileDefault} alt="Helmet" />
           </div>
           <div className="user-details">
-            <h2>{(usuario.name || "PILOTO").toUpperCase()} {(usuario.last_name || "").toUpperCase()}</h2>
-            <p className="user-email">{usuario.email}</p>
+            <div>
+              <h2>{(usuario.name || "PILOTO").toUpperCase()} {(usuario.last_name || "").toUpperCase()}</h2>
+              <p className="user-email">{usuario.email}</p>
+            </div>
+
             <div className="user-country-tag">
               <span className="emoji-flag" title={usuario.country}>
                 {getFlagEmoji(usuario.country)}
