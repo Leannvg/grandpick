@@ -18,6 +18,7 @@ import '../assets/styles/home.css';
 const Home = () => {
     return (
         <>
+
             <main>
                 <section className="home-hero">
                     {/* Imagen de fondo */}
