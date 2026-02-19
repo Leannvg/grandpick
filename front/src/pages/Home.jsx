@@ -1,7 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logoImg from '../assets/icons/logo_grandpick.svg';
-import tutorialesImg from '../assets/images/tutoriales.png';
+import tutorialesImg from '../assets/images/home/tutoriales.png';
+import heroDesktop from '../assets/images/home/hero-desktop.png';
+import heroTablet from '../assets/images/home/hero-tablet.png';
+import heroMobile from '../assets/images/home/hero-mobile.png';
+import pilotosImg from '../assets/images/home/pilotos.png';
+import circuitosImg from '../assets/images/home/circuitos.png';
+import escuderiasImg from '../assets/images/home/escuderias.png';
 // Asumiendo que styles/home.css se importa globalmente o aquí si es necesario, 
 // pero en React suele importarse en App.js o index.css. 
 // Si Home.html tenía <link> específicos, deberíamos ver donde ponerlos.
@@ -135,10 +141,10 @@ const Home = () => {
                 <section className="home-hero">
                     {/* Imagen de fondo */}
                     <picture className="hero-bg">
-                        <source srcSet="/img/home/hero-desktop.png" media="(min-width: 992px)" />
-                        <source srcSet="/img/home/hero-tablet.png" media="(min-width: 576px)" />
+                        <source srcSet={heroDesktop} media="(min-width: 992px)" />
+                        <source srcSet={heroTablet} media="(min-width: 576px)" />
                         <img
-                            src="/img/home/hero-mobile.png"
+                            src={heroMobile}
                             alt="Circuito de Fórmula 1"
                             loading="eager"
                         />
@@ -253,7 +259,7 @@ const Home = () => {
 
                 <section className="info-cards">
                     <Link to="/info/pilotos" className="info-card">
-                        <img src="/img/home/pilotos.png" alt="Pilotos de F1" />
+                        <img src={pilotosImg} alt="Pilotos de F1" />
 
                         <div className="info-card__overlay"></div>
 
@@ -282,7 +288,7 @@ const Home = () => {
                     </Link>
 
                     <Link to="/info/circuitos" className="info-card">
-                        <img src="/img/home/circuitos.png" alt="Circuitos de F1" />
+                        <img src={circuitosImg} alt="Circuitos de F1" />
                         <div className="info-card__overlay"></div>
 
                         <div className="info-card__content">
@@ -310,7 +316,7 @@ const Home = () => {
                     </Link>
 
                     <Link to="/info/escuderias" className="info-card">
-                        <img src="/img/home/escuderias.png" alt="Escuderías de F1" />
+                        <img src={escuderiasImg} alt="Escuderías de F1" />
                         <div className="info-card__overlay"></div>
 
                         <div className="info-card__content">
