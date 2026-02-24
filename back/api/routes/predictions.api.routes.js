@@ -6,7 +6,6 @@ const router = express.Router()
 
 router.route('/api/predictions')
     .get(
-        autenticado,
         predictionsApiControllers.findAll
     )
     .post(
