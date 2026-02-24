@@ -1,7 +1,7 @@
 import { authHeaders } from "../utils/helpers.js";
 import API_URL from "./api.js";
 
-async function createPrediction(prediction){
+async function createPrediction(prediction) {
     return fetch(`${API_URL}/api/predictions`, {
         method: 'POST',
         headers: authHeaders({
@@ -9,27 +9,27 @@ async function createPrediction(prediction){
         }),
         body: JSON.stringify(prediction)
     })
-     .then(async (response) => {
-        if (response.ok){
-            return response.json()
-        }
-        else {
-            let errorData;
-            try {
-                errorData = await response.json();
-            } catch {
-                errorData = { message: await response.text() };
+        .then(async (response) => {
+            if (response.ok) {
+                return response.json()
             }
+            else {
+                let errorData;
+                try {
+                    errorData = await response.json();
+                } catch {
+                    errorData = { message: await response.text() };
+                }
 
-            const error = new Error(errorData.message || 'Error al crear la predicción');
-            error.response = { status: response.status, data: errorData };
-            throw error;
-        }
-    })
+                const error = new Error(errorData.message || 'Error al crear la predicción');
+                error.response = { status: response.status, data: errorData };
+                throw error;
+            }
+        })
 }
 
 
-async function editPrediction(prediction, id){
+async function editPrediction(prediction, id) {
     return fetch(`${API_URL}/api/predictions/${id}`, {
         method: 'PATCH',
         headers: authHeaders({
@@ -37,33 +37,33 @@ async function editPrediction(prediction, id){
         }),
         body: JSON.stringify(prediction)
     })
-     .then(async (response) => {
-        if (response.ok){
-            return response.json()
-        }
-        else {
-            let errorData;
-            try {
-                errorData = await response.json();
-            } catch {
-                errorData = { message: await response.text() };
+        .then(async (response) => {
+            if (response.ok) {
+                return response.json()
             }
+            else {
+                let errorData;
+                try {
+                    errorData = await response.json();
+                } catch {
+                    errorData = { message: await response.text() };
+                }
 
-            const error = new Error(errorData.message || 'Error al editar la predicción');
-            error.response = { status: response.status, data: errorData };
-            throw error;
-        }
-    })
+                const error = new Error(errorData.message || 'Error al editar la predicción');
+                error.response = { status: response.status, data: errorData };
+                throw error;
+            }
+        })
 }
 
-async function findPredictionByUserAndRace(userId, raceId){
+async function findPredictionByUserAndRace(userId, raceId) {
     return fetch(`${API_URL}/api/users/${userId}/predictions/${raceId}`, {
         method: 'GET',
         headers: authHeaders({
             "Content-type": "application/json",
         }),
     })
-     .then(async (response) => {
+        .then(async (response) => {
             if (response.ok) {
                 return response.json()
             } else {
@@ -72,9 +72,6 @@ async function findPredictionByUserAndRace(userId, raceId){
             }
         })
 }
-
-
-
 
 
 export default {

@@ -35,7 +35,6 @@ router.route('/api/races/:RaceId/predictions')
 
 router.route('/api/users/:UserId/predictions/:RaceId')
     .get(
-        autenticado,
         predictionsApiControllers.findByUserAndRace
     );
 
