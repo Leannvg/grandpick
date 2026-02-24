@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import UsersServices from "../services/users.services";
 import { getFlagEmoji } from "../utils/helpers";
 import { usePagination } from "../hooks/usePagination";
@@ -43,10 +43,12 @@ function Ranking() {
         fetchStats();
     }, []);
 
-    const filteredStats = stats.filter(userStat => {
-        const fullName = `${userStat.name} ${userStat.last_name}`.toLowerCase();
-        return fullName.includes(searchTerm.toLowerCase());
-    });
+    const filteredStats = useMemo(() => {
+        return stats.filter(userStat => {
+            const fullName = `${userStat.name} ${userStat.last_name}`.toLowerCase();
+            return fullName.includes(searchTerm.toLowerCase());
+        });
+    }, [stats, searchTerm]);
 
     const {
         page,
