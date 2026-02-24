@@ -11,8 +11,28 @@ function Ranking() {
         const fetchStats = async () => {
             try {
                 const data = await UsersServices.getAllUsersStats();
-                // Ordenar por puntos de mayor a menor
-                const sortedData = [...data].sort((a, b) => (b.totalPoints || 0) - (a.totalPoints || 0));
+
+                // Ordenar siguiendo las reglas:
+                // 1. Puntos totales (descendente)
+                // 2. Aciertos totales (descendente)
+                // 3. Promedio de puntos por predicción (descendente)
+                const sortedData = [...data].sort((a, b) => {
+                    // Criterio 1: Puntos totales
+                    const pointsA = a.stats?.points?.total || 0;
+                    const pointsB = b.stats?.points?.total || 0;
+                    if (pointsB !== pointsA) return pointsB - pointsA;
+
+                    // Criterio 2: Aciertos totales
+                    const successesA = a.stats?.successes?.total || 0;
+                    const successesB = b.stats?.successes?.total || 0;
+                    if (successesB !== successesA) return successesB - successesA;
+
+                    // Criterio 3: Promedio de puntos por predicción
+                    const avgA = a.stats?.predictions?.total > 0 ? pointsA / a.stats.predictions.total : 0;
+                    const avgB = b.stats?.predictions?.total > 0 ? pointsB / b.stats.predictions.total : 0;
+                    return avgB - avgA;
+                });
+
                 setStats(sortedData);
             } catch (error) {
                 console.error("Error al cargar el ranking:", error);
@@ -25,7 +45,7 @@ function Ranking() {
     }, []);
 
     const filteredStats = stats.filter(userStat => {
-        const fullName = `${userStat.user?.name} ${userStat.user?.lastname}`.toLowerCase();
+        const fullName = `${userStat.name} ${userStat.last_name}`.toLowerCase();
         return fullName.includes(searchTerm.toLowerCase());
     });
 
@@ -84,28 +104,27 @@ function Ranking() {
                                 const isTop3 = pos <= 3;
                                 const posClass = isTop3 ? `pos-${pos}` : "";
 
+                                const totalPoints = item.stats?.points?.total || 0;
+                                const totalPredictions = item.stats?.predictions?.total || 0;
+                                const totalSuccesses = item.stats?.successes?.total || 0;
+                                const avgPoints = totalPredictions > 0 ? (totalPoints / totalPredictions).toFixed(1) : "0.0";
+
                                 return (
-                                    <tr key={item.user?._id || index}>
+                                    <tr key={item._id || index}>
                                         <td className={`pos-cell ${posClass}`}>{pos}</td>
                                         <td>
                                             <div className="user-info">
-                                                <span className="user-name">{item.user?.name}</span>
-                                                <span className="user-lastname">{item.user?.lastname}</span>
+                                                <span className="user-name">{item.name}</span>
+                                                <span className="user-lastname">{item.last_name}</span>
                                             </div>
                                         </td>
                                         <td>
-                                            {item.user?.country_info?.flag_url && (
-                                                <img
-                                                    src={item.user.country_info.flag_url}
-                                                    alt={item.user.country_info.name}
-                                                    className="flag-icon"
-                                                />
-                                            )}
+                                            <span className="country-flag">{item.country}</span>
                                         </td>
-                                        <td><strong>{item.totalPoints || 0}</strong></td>
-                                        <td>{item.totalPredictions || 0}</td>
-                                        <td>{item.averagePointsPerPrediction?.toFixed(1) || 0}</td>
-                                        <td>{item.totalCorrectPredictions || "-"}</td>
+                                        <td><strong>{totalPoints}</strong></td>
+                                        <td>{totalPredictions}</td>
+                                        <td>{avgPoints}</td>
+                                        <td>{totalSuccesses}</td>
                                     </tr>
                                 );
                             })}
