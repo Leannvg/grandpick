@@ -180,13 +180,8 @@
 }
 
 @media (max-width: 767px) {
-
-    .ranking-table th:nth-child(5),
-    .ranking-table td:nth-child(5),
-    .ranking-table th:nth-child(6),
-    .ranking-table td:nth-child(6),
-    .ranking-table th:nth-child(7),
-    .ranking-table td:nth-child(7) {
-        display: none;
+    .ranking-table {
+        min-width: 800px;
+        /* Enforce min-width to trigger horizontal scroll */
     }
 }
