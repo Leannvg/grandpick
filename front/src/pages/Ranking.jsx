@@ -163,7 +163,7 @@ function Ranking() {
                                             </div>
                                         </td>
                                         <td>
-                                            <span className="country-flag" title={item.country}>
+                                            <span className="emoji-flag" title={item.country}>
                                                 {getFlagEmoji(item.country)}
                                             </span>
                                         </td>

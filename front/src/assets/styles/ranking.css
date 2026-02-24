@@ -83,14 +83,12 @@
 .ranking-card {
     max-width: 1100px;
     margin: 0 auto;
-    background: #fff;
-    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .ranking-table-container {
     overflow-x: auto;
+    border-radius: 12px;
 }
 
 .ranking-table {
@@ -98,6 +96,9 @@
     border-collapse: collapse;
     text-align: center;
     font-size: 14px;
+    box-shadow: 0 10px 30px #0003;
+    background: #fff;
+    border-radius: 12px;
 }
 
 .ranking-table th {
