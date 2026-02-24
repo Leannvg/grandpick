@@ -52,7 +52,7 @@ route.route("/api/users/:id/stats")
     .get(autenticado, UsersApiController.getUserStats)
 
 route.route("/api/users-stats")
-    .get(UsersApiController.getAllUsersStats)
+    .get(autenticado, UsersApiController.getAllUsersStats)
 
 route.route("/api/users/:id/block")
     .post(autenticado, admin, UsersApiController.blockUser)

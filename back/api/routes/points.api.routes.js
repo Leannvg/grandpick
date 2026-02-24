@@ -6,7 +6,6 @@ const router = express.Router()
 
 router.route('/api/points')
     .get(
-        autenticado,
         pointsApiControllers.findAll)
 
 export default router
