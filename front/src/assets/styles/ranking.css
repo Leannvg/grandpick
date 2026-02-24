@@ -42,6 +42,11 @@
     flex-wrap: wrap;
 }
 
+.ranking-filters__left {
+    display: flex;
+    align-items: center;
+}
+
 .ranking-filters__year {
     background: rgba(14, 47, 68, 0.8);
     border: 1px solid rgba(255, 255, 255, 0.1);

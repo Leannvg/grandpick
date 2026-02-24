@@ -76,9 +76,27 @@ function Ranking() {
             </header>
 
             <div className="ranking-filters">
-                <select className="ranking-filters__year">
-                    <option value="2025">2025</option>
-                </select>
+                <div className="ranking-filters__left">
+                    <select className="ranking-filters__year">
+                        <option value="2025">2025</option>
+                    </select>
+
+                    <div className="d-flex align-items-center ms-3">
+                        <label className="me-2 text-light small">Mostrar:</label>
+                        <select
+                            value={pageSize}
+                            onChange={(e) => setPageSize(Number(e.target.value))}
+                            className="form-select form-select-sm bg-dark text-light border-secondary"
+                            style={{ width: "80px" }}
+                        >
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                            <option value={50}>50</option>
+                            <option value={filteredStats.length}>Todos</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div className="ranking-search">
                     <input
@@ -93,42 +111,6 @@ function Ranking() {
             </div>
 
             <div className="ranking-card">
-                <div className="d-flex justify-content-between align-items-center mb-3 px-3">
-                    <div className="d-flex align-items-center">
-                        <label className="me-2 text-light">Mostrar:</label>
-                        <select
-                            value={pageSize}
-                            onChange={(e) => setPageSize(Number(e.target.value))}
-                            className="form-select form-select-sm bg-dark text-light border-secondary"
-                            style={{ width: "80px" }}
-                        >
-                            <option value={5}>5</option>
-                            <option value={10}>10</option>
-                            <option value={20}>20</option>
-                            <option value={50}>50</option>
-                            <option value={filteredStats.length}>Todos</option>
-                        </select>
-                    </div>
-
-                    <div className="pagination-controls d-flex gap-2 align-items-center">
-                        <button
-                            className="btn btn-sm btn-outline-light"
-                            disabled={page === 1}
-                            onClick={() => setPage(page - 1)}
-                        >
-                            <i className="bi bi-chevron-left"></i> Anterior
-                        </button>
-                        <span className="text-light small">{page} / {totalPages || 1}</span>
-                        <button
-                            className="btn btn-sm btn-outline-light"
-                            disabled={page === totalPages || totalPages === 0}
-                            onClick={() => setPage(page + 1)}
-                        >
-                            Siguiente <i className="bi bi-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
-
                 <div className="ranking-table-container table-responsive">
                     <table className="ranking-table">
                         <thead>
@@ -183,6 +165,27 @@ function Ranking() {
                             )}
                         </tbody>
                     </table>
+                </div>
+
+                {/* PAGINACIÓN INFERIOR */}
+                <div className="d-flex justify-content-end align-items-center mt-3 p-3">
+                    <div className="pagination-controls d-flex gap-2 align-items-center">
+                        <button
+                            className="btn btn-sm btn-outline-light"
+                            disabled={page === 1}
+                            onClick={() => setPage(page - 1)}
+                        >
+                            <i className="bi bi-chevron-left"></i> Anterior
+                        </button>
+                        <span className="text-light small">{page} / {totalPages || 1}</span>
+                        <button
+                            className="btn btn-sm btn-outline-light"
+                            disabled={page === totalPages || totalPages === 0}
+                            onClick={() => setPage(page + 1)}
+                        >
+                            Siguiente <i className="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
