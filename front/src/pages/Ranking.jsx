@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import UsersServices from "../services/users.services";
+import { getFlagEmoji } from "../utils/helpers";
+import { usePagination } from "../hooks/usePagination";
 import "../assets/styles/ranking.css";
 
 function Ranking() {
@@ -13,25 +15,22 @@ function Ranking() {
                 const data = await UsersServices.getAllUsersStats();
 
                 // Ordenar siguiendo las reglas:
-                // 1. Puntos totales (descendente)
-                // 2. Aciertos totales (descendente)
-                // 3. Promedio de puntos por predicción (descendente)
                 const sortedData = [...data].sort((a, b) => {
-                    // Criterio 1: Puntos totales
                     const pointsA = a.stats?.points?.total || 0;
                     const pointsB = b.stats?.points?.total || 0;
                     if (pointsB !== pointsA) return pointsB - pointsA;
 
-                    // Criterio 2: Aciertos totales
                     const successesA = a.stats?.successes?.total || 0;
                     const successesB = b.stats?.successes?.total || 0;
                     if (successesB !== successesA) return successesB - successesA;
 
-                    // Criterio 3: Promedio de puntos por predicción
                     const avgA = a.stats?.predictions?.total > 0 ? pointsA / a.stats.predictions.total : 0;
                     const avgB = b.stats?.predictions?.total > 0 ? pointsB / b.stats.predictions.total : 0;
                     return avgB - avgA;
-                });
+                }).map((item, index) => ({
+                    ...item,
+                    globalRank: index + 1
+                }));
 
                 setStats(sortedData);
             } catch (error) {
@@ -48,6 +47,15 @@ function Ranking() {
         const fullName = `${userStat.name} ${userStat.last_name}`.toLowerCase();
         return fullName.includes(searchTerm.toLowerCase());
     });
+
+    const {
+        page,
+        pageSize,
+        setPage,
+        setPageSize,
+        totalPages,
+        paginatedData
+    } = usePagination(filteredStats, 10);
 
     if (loading) {
         return (
@@ -85,7 +93,43 @@ function Ranking() {
             </div>
 
             <div className="ranking-card">
-                <div className="ranking-table-container">
+                <div className="d-flex justify-content-between align-items-center mb-3 px-3">
+                    <div className="d-flex align-items-center">
+                        <label className="me-2 text-light">Mostrar:</label>
+                        <select
+                            value={pageSize}
+                            onChange={(e) => setPageSize(Number(e.target.value))}
+                            className="form-select form-select-sm bg-dark text-light border-secondary"
+                            style={{ width: "80px" }}
+                        >
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                            <option value={50}>50</option>
+                            <option value={filteredStats.length}>Todos</option>
+                        </select>
+                    </div>
+
+                    <div className="pagination-controls d-flex gap-2 align-items-center">
+                        <button
+                            className="btn btn-sm btn-outline-light"
+                            disabled={page === 1}
+                            onClick={() => setPage(page - 1)}
+                        >
+                            <i className="bi bi-chevron-left"></i> Anterior
+                        </button>
+                        <span className="text-light small">{page} / {totalPages || 1}</span>
+                        <button
+                            className="btn btn-sm btn-outline-light"
+                            disabled={page === totalPages || totalPages === 0}
+                            onClick={() => setPage(page + 1)}
+                        >
+                            Siguiente <i className="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div className="ranking-table-container table-responsive">
                     <table className="ranking-table">
                         <thead>
                             <tr>
@@ -99,8 +143,8 @@ function Ranking() {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredStats.map((item, index) => {
-                                const pos = index + 1;
+                            {paginatedData.map((item) => {
+                                const pos = item.globalRank;
                                 const isTop3 = pos <= 3;
                                 const posClass = isTop3 ? `pos-${pos}` : "";
 
@@ -110,7 +154,7 @@ function Ranking() {
                                 const avgPoints = totalPredictions > 0 ? (totalPoints / totalPredictions).toFixed(1) : "0.0";
 
                                 return (
-                                    <tr key={item._id || index}>
+                                    <tr key={item._id || pos}>
                                         <td className={`pos-cell ${posClass}`}>{pos}</td>
                                         <td>
                                             <div className="user-info">
@@ -119,7 +163,9 @@ function Ranking() {
                                             </div>
                                         </td>
                                         <td>
-                                            <span className="country-flag">{item.country}</span>
+                                            <span className="country-flag" title={item.country}>
+                                                {getFlagEmoji(item.country)}
+                                            </span>
                                         </td>
                                         <td><strong>{totalPoints}</strong></td>
                                         <td>{totalPredictions}</td>
@@ -128,7 +174,7 @@ function Ranking() {
                                     </tr>
                                 );
                             })}
-                            {filteredStats.length === 0 && (
+                            {paginatedData.length === 0 && (
                                 <tr>
                                     <td colSpan="7" style={{ padding: '40px', color: '#666' }}>
                                         No se encontraron usuarios
