@@ -127,40 +127,53 @@
     font-weight: 300;
 }
 
-/* FAB */
-.fab-submit {
-    position: fixed;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 72px;
-    height: 72px;
+/* Prediction Actions (Static Button) */
+.prediction-actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.btn-submit-prediction {
+    width: 90px;
+    height: 90px;
     background: #4c86b7;
     border-radius: 50%;
     border: 4px solid rgba(255, 255, 255, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
     cursor: pointer;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
     transition: transform 0.2s, background 0.2s;
-    z-index: 100;
+    padding: 0;
 }
 
-.fab-submit:hover:not(:disabled) {
-    transform: translateX(-50%) scale(1.05);
+.btn-submit-prediction:hover:not(:disabled) {
+    transform: scale(1.1);
     background: #5a96c7;
 }
 
-.fab-submit:disabled {
+.btn-submit-prediction:disabled {
     background: #727272;
     cursor: not-allowed;
     opacity: 0.7;
 }
 
-.fab-icon {
-    font-size: 32px;
+.crystal-ball-icon {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.prediction-select-wrapper {
+    flex: 1;
+}
+
+.prediction-card .react-select-container {
+    width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -170,6 +183,7 @@
 
     .predictions-gp-name {
         font-size: 64px;
+        margin-bottom: 20px;
     }
 
     .prediction-cards-container {
@@ -177,31 +191,23 @@
     }
 
     .prediction-card {
-        height: 36px;
+        height: 44px;
+        /* Un poco más alto para el nuevo select */
         border-radius: 4px;
     }
 
     .prediction-rank {
-        width: 40px;
-        font-size: 12px;
+        width: 60px;
+        font-size: 16px;
     }
 
-    .prediction-color-indicator {
-        height: 20px;
-        width: 4px;
-        margin: 0 10px;
+    .btn-submit-prediction {
+        width: 80px;
+        height: 80px;
     }
 
-    .prediction-driver-info {
-        font-size: 14px;
-    }
-
-    .driver-firstname,
-    .driver-lastname {
-        font-size: 14px;
-    }
-
-    .driver-team {
-        font-size: 12px;
+    .crystal-ball-icon {
+        width: 44px;
+        height: 44px;
     }
 }

@@ -11,6 +11,7 @@ import { useAlert } from "./../context/AlertContext.jsx";
 import { useDialog } from "./../context/DialogContext.jsx";
 import { useLoader } from './../context/LoaderContext.jsx';
 import { computeRaceState, formatRaceDate } from "../utils/helpers.js";
+import crystalBallIcon from "../assets/icons/crystal_ball.png";
 import "../assets/styles/predictions.css";
 
 function Predictions() {
@@ -223,29 +224,11 @@ function Predictions() {
     }
   }
 
-  const getDriverById = (id) => drivers.find(d => d._id === id);
-
-  const getTeamColor = (driver) => {
-    if (!driver || !driver.team) return "#ccc";
-    return driver.team.color || "#ccc";
-  };
-
-  const splitName = (fullName) => {
-    if (!fullName) return { first: "", last: "" };
-    const parts = fullName.split(" ");
-    if (parts.length === 1) return { first: "", last: parts[0] };
-    const last = parts.pop();
-    const first = parts.join(" ");
-    return { first, last };
-  };
-
   return (
     <section className="predictions-page">
       {race && (
         <div className="predictions-header">
-
           <div className="mb-5">
-
             {race.raceCountry && (
               <div className="predictions-country">
                 <span className="emoji-flag">{race.raceCountry.emoji}</span>
@@ -256,7 +239,6 @@ function Predictions() {
             {race.raceCountry && (
               <span className="section-subtitle">{formatRaceDate(race.date_gp_start, race.date_gp_end)}</span>
             )}
-
           </div>
 
           <span className="qualy-label">QUALY</span>
@@ -289,8 +271,6 @@ function Predictions() {
         <div className="prediction-cards-container">
           {pointSystem.map((point, index) => {
             const driverId = predictions[index];
-            const driver = getDriverById(driverId);
-            const { first, last } = splitName(driver?.full_name);
 
             return (
               <div
@@ -301,11 +281,6 @@ function Predictions() {
                   {String(index + 1).padStart(2, '0')}
                 </div>
 
-                <div
-                  className="prediction-color-indicator"
-                  style={{ backgroundColor: getTeamColor(driver) }}
-                ></div>
-
                 <div className="prediction-select-wrapper">
                   <SearchableSelect
                     value={driverId || ""}
@@ -314,34 +289,29 @@ function Predictions() {
                     options={drivers.map((d) => ({
                       _id: d._id,
                       name: d.full_name,
-                      team: d.team // Pass team for potential use in select
+                      teamName: d.team_info?.name || "",
+                      color: d.team_info?.color || "#ccc"
                     }))}
                     placeholder="Seleccione un piloto"
                   />
                 </div>
-
-                {driver && (
-                  <div className="prediction-driver-info">
-                    <span className="driver-firstname">{first}</span>
-                    <span className="driver-lastname">{last}</span>
-                    <span className="driver-team">{driver.team?.name}</span>
-                  </div>
-                )}
               </div>
             );
           })}
-        </div>
-      )}
 
-      {race && !isClosed && (
-        <button
-          className="fab-submit"
-          onClick={onSubmit}
-          disabled={!isFormComplete}
-          title="Guardar predicción"
-        >
-          <div className="fab-icon">🔮</div>
-        </button>
+          {race && !isClosed && (
+            <div className="prediction-actions">
+              <button
+                className="btn-submit-prediction"
+                onClick={onSubmit}
+                disabled={!isFormComplete}
+                title="Guardar predicción"
+              >
+                <img src={crystalBallIcon} alt="Predecir" className="crystal-ball-icon" />
+              </button>
+            </div>
+          )}
+        </div>
       )}
 
       {isClosed && !canPredict && race && (
