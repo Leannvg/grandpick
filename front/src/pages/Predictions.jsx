@@ -240,18 +240,18 @@ function Predictions() {
   };
 
   return (
-    <div className="predictions-page">
+    <section className="predictions-page">
       {race && (
-        <header className="predictions-header">
+        <div className="predictions-header">
           {race.raceCountry && (
             <div className="predictions-country">
               <span className="emoji-flag">{race.raceCountry.emoji}</span>
-              {race.raceCountry.name} <span>/ {formatRaceDate(race.date_gp_start, race.date_gp_end)}</span>
+              {race.raceCountry.name}
             </div>
           )}
           <h1 className="predictions-gp-name">{race.circuit.gp_name}</h1>
           {race.raceCountry && (
-            <span>/ {formatRaceDate(race.date_gp_start, race.date_gp_end)}</span>
+            <span>{formatRaceDate(race.date_gp_start, race.date_gp_end)}</span>
           )}
 
           <span className="qualy-label">QUALY</span>
@@ -273,7 +273,7 @@ function Predictions() {
               onOpen={() => setCanPredict(true)}
             />
           )}
-        </header>
+        </div>
       )}
 
       {race === null && (
@@ -344,7 +344,7 @@ function Predictions() {
           ⚠️ Las predicciones están cerradas
         </p>
       )}
-    </div>
+    </section>
   );
 }
 
