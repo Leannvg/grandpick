@@ -250,6 +250,9 @@ function Predictions() {
             </div>
           )}
           <h1 className="predictions-gp-name">{race.circuit.gp_name}</h1>
+          {race.raceCountry && (
+            <span>/ {formatRaceDate(race.date_gp_start, race.date_gp_end)}</span>
+          )}
 
           <span className="qualy-label">QUALY</span>
 
