@@ -49,8 +49,8 @@ function CountdownToRace({ raceDate, totalDuration, onExpire, onStartRace }) {
   // Carrera aún no empezó
   if (timeToStart > 0) {
     return (
-      <p className="text-warning">
-        ⏳ Tiempo restante para predecir: {formatDHMS(timeToStart)}
+      <p>
+        {formatDHMS(timeToStart)}
       </p>
     );
   }
@@ -62,7 +62,7 @@ function CountdownToRace({ raceDate, totalDuration, onExpire, onStartRace }) {
 
   // Carrera en curso
   return (
-    <p className="text-warning">
+    <p>
       🏁 La carrera está en curso — {formatDHMS(timeToEnd)} restantes
     </p>
   );
