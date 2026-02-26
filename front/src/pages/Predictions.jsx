@@ -260,11 +260,11 @@ function Predictions() {
           <div className="prediction-status-container">
             {currentPrediction ? (
               <div className="prediction-status-banner status-saved">
-                <span>✅ Tu predicción para este GP ya está guardada.</span>
+                <span>✅ Tu predicción ya está guardada, pero podes editarla antes de que el contador llegue a 0.</span>
               </div>
             ) : (
               <div className="prediction-status-banner status-missing">
-                <span>💡 Aún no has realizado tu predicción para este GP.</span>
+                <span>💡 Todavía no realizaste tu predicción.</span>
               </div>
             )}
           </div>
