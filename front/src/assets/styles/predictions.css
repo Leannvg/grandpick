@@ -210,3 +210,46 @@
         height: 38px;
     }
 }
+
+/* Status Banners */
+.prediction-status-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    margin-bottom: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.status-saved {
+    border-color: rgba(76, 175, 80, 0.5);
+    color: #81c784;
+}
+
+.status-missing {
+    border-color: rgba(255, 193, 7, 0.5);
+    color: #ffd54f;
+}
+
+.countdown-label {
+    display: block;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    opacity: 0.7;
+}
+
+.info-message {
+    padding: 20px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    margin: 20px 0;
+    font-size: 16px;
+    color: #fff;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+}

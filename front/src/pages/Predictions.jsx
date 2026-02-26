@@ -241,10 +241,23 @@ function Predictions() {
             )}
           </div>
 
+          <div className="prediction-status-container">
+            {currentPrediction ? (
+              <div className="prediction-status-banner status-saved">
+                <span>✅ Tu predicción para este GP ya está guardada.</span>
+              </div>
+            ) : (
+              <div className="prediction-status-banner status-missing">
+                <span>💡 Aún no has realizado tu predicción para este GP.</span>
+              </div>
+            )}
+          </div>
+
           <span className="qualy-label">QUALY</span>
 
           {!isPreWindow && (canPredict || (race && new Date(race.date_race).getTime() + race.totalDuration > Date.now())) && (
             <div className="predictions-countdown">
+              <span className="countdown-label">Tiempo restante para predecir:</span>
               <CountdownToRace
                 raceDate={race.date_race}
                 totalDuration={race.totalDuration}
@@ -255,16 +268,25 @@ function Predictions() {
           )}
 
           {!canPredict && timeToOpen !== null && (
-            <CountdownToOpen
-              timeToOpen={timeToOpen}
-              onOpen={() => setCanPredict(true)}
-            />
+            <div className="mt-4">
+              <CountdownToOpen
+                timeToOpen={timeToOpen}
+                onOpen={() => setCanPredict(true)}
+              />
+              <p className="info-message">
+                Las predicciones se habilitarán próximamente. <br />
+                ¡Vuelve pronto para cargar tu equipo!
+              </p>
+            </div>
           )}
         </div>
       )}
 
       {race === null && (
-        <p className="text-info">📭 No hay próximas carreras para predecir</p>
+        <div className="info-message">
+          📭 No hay próximas carreras para predecir en este momento. <br />
+          ¡Mantente atento a las próximas fechas!
+        </div>
       )}
 
       {race && !isPreWindow && (
@@ -315,9 +337,9 @@ function Predictions() {
       )}
 
       {isClosed && !canPredict && race && (
-        <p className="text-danger mt-4">
-          ⚠️ Las predicciones están cerradas
-        </p>
+        <div className="info-message text-danger mt-4">
+          ⚠️ Las predicciones están cerradas para esta sesión.
+        </div>
       )}
     </section>
   );
