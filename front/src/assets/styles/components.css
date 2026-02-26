@@ -1282,20 +1282,20 @@ ul .dropdown {
 }
 
 .select-driver-first {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 300;
     color: #333;
 }
 
 .select-driver-last {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
     text-transform: uppercase;
     color: #333;
 }
 
 .select-driver-team {
-    font-size: 12px;
+    font-size: 14px;
     color: #999;
     font-weight: 300;
     margin-left: 4px;
