@@ -30,7 +30,7 @@ function FloatingDialog({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
             >
-              <h5 className="mb-3">{title}</h5>
+              <h5 className="text-dark mb-3">{title}</h5>
               {message && <p className="text-muted mb-4">{message}</p>}
 
               <div className="d-flex justify-content-end gap-2">
