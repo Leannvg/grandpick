@@ -259,6 +259,7 @@ p {
 .nr-cta {
   background: var(--color-accent);
   padding: 6px 2px;
+  box-shadow: 0 8px 30px #0006;
 }
 
 .nr-cta__container {
