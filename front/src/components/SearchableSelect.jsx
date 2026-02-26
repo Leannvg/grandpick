@@ -15,6 +15,7 @@ function SearchableSelect({
     timezone: opt.timezone,
     isDisabled: getOptionDisabled(opt),
     original: opt, // por si luego querés más datos
+    teamName: opt.team?.name || "" // Store for custom filtering
   }));
 
   const currentValue = formattedOptions.find(o => o.value === value) || null;
@@ -22,7 +23,7 @@ function SearchableSelect({
   return (
     <Select
       className={`react-select-container ${isInvalid ? "is-invalid" : ""}`}
-      classNamePrefix="react-select"   // 👈 NECESARIO PARA ESTILOS
+      classNamePrefix="react-select"
       value={currentValue}
       onChange={(selected) => onChange(selected)}
       options={formattedOptions}
@@ -30,6 +31,21 @@ function SearchableSelect({
       isDisabled={isDisabled}
       isOptionDisabled={(opt) => opt.isDisabled}
       placeholder={placeholder}
+      menuPortalTarget={document.body}
+      menuPlacement="auto"
+      blurInputOnSelect={true}
+      openMenuOnFocus={true}
+      filterOption={(option, inputValue) => {
+        const label = option.label.toLowerCase();
+        const team = (option.data.teamName || "").toLowerCase();
+        const search = inputValue.toLowerCase();
+        return label.includes(search) || team.includes(search);
+      }}
+      styles={{
+        menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+        menu: (base) => ({ ...base, color: '#333' }), // Ensure menu text is visible
+        control: (base) => ({ ...base, minHeight: '32px' }),
+      }}
     />
   );
 }
