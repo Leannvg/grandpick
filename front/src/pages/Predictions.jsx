@@ -241,17 +241,7 @@ function Predictions() {
             )}
           </div>
 
-          <div className="prediction-status-container">
-            {currentPrediction ? (
-              <div className="prediction-status-banner status-saved">
-                <span>✅ Tu predicción para este GP ya está guardada.</span>
-              </div>
-            ) : (
-              <div className="prediction-status-banner status-missing">
-                <span>💡 Aún no has realizado tu predicción para este GP.</span>
-              </div>
-            )}
-          </div>
+
 
           <span className="qualy-label">QUALY</span>
 
@@ -266,6 +256,18 @@ function Predictions() {
               />
             </div>
           )}
+
+          <div className="prediction-status-container">
+            {currentPrediction ? (
+              <div className="prediction-status-banner status-saved">
+                <span>✅ Tu predicción para este GP ya está guardada.</span>
+              </div>
+            ) : (
+              <div className="prediction-status-banner status-missing">
+                <span>💡 Aún no has realizado tu predicción para este GP.</span>
+              </div>
+            )}
+          </div>
 
           {!canPredict && timeToOpen !== null && (
             <div className="mt-4">
