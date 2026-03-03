@@ -313,14 +313,28 @@
   color: #fff;
 }
 
-.ranking__table th {
+.ranking__table th,
+.ranking__table td {
   padding: 14px 8px;
+  text-align: center;
+}
+
+.ranking__table th:nth-child(2),
+.ranking__table td:nth-child(2) {
+  text-align: left;
+}
+
+.ranking__table th:first-child,
+.ranking__table td:first-child {
+  width: 60px;
+}
+
+.ranking__table th {
   font-weight: 300;
   font-size: 13px;
 }
 
 .ranking__table td {
-  padding: 14px 8px;
   color: #1a1a1a;
 }
 

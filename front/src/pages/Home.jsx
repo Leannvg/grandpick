@@ -277,7 +277,7 @@ const Home = () => {
                             {!loading && podiumOrder.map((user) => (
                                 <div key={user._id} className={`podium__item podium__item--pos${user.globalRank}`}>
                                     <div className="d-flex justify-content-center">
-                                        <span className="emoji-flag podium__flag" style={{ display: 'block', fontSize: '1.2rem' }}>
+                                        <span className="emoji-flag podium__flag" style={{ display: 'block', fontSize: '1.6rem' }}>
                                             {getFlagEmoji(user.country)}
                                         </span>
                                     </div>
