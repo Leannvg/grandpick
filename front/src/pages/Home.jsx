@@ -1,5 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import UsersServices from "../services/users.services";
+import { getFlagEmoji } from "../utils/helpers";
+import API_URL from "../services/api";
+import profileDefault from "../assets/images/profile_default.png";
+
 import logoImg from '../assets/icons/logo_grandpick.svg';
 import tutorialesImg from '../assets/images/home/tutoriales.png';
 import heroDesktop from '../assets/images/home/hero-desktop.png';
@@ -8,16 +13,53 @@ import heroMobile from '../assets/images/home/hero-mobile.png';
 import pilotosImg from '../assets/images/home/pilotos.png';
 import circuitosImg from '../assets/images/home/circuitos.png';
 import escuderiasImg from '../assets/images/home/escuderias.png';
-// Asumiendo que styles/home.css se importa globalmente o aquí si es necesario, 
-// pero en React suele importarse en App.js o index.css. 
-// Si Home.html tenía <link> específicos, deberíamos ver donde ponerlos.
-// El archivo original tenía: <link rel="stylesheet" href="styles/home.css">
-// Voy a importar el CSS aquí para asegurar que se carguen los estilos.
 import '../assets/styles/home.css';
 
 const Home = () => {
+    const [stats, setStats] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const data = await UsersServices.getAllUsersStats();
+                const sortedData = [...data].sort((a, b) => {
+                    const pointsA = a.stats?.points?.total || 0;
+                    const pointsB = b.stats?.points?.total || 0;
+                    if (pointsB !== pointsA) return pointsB - pointsA;
+
+                    const successesA = a.stats?.successes?.total || 0;
+                    const successesB = b.stats?.successes?.total || 0;
+                    if (successesB !== successesA) return successesB - successesA;
+
+                    const avgA = a.stats?.predictions?.total > 0 ? pointsA / a.stats.predictions.total : 0;
+                    const avgB = b.stats?.predictions?.total > 0 ? pointsB / b.stats.predictions.total : 0;
+                    return avgB - avgA;
+                }).map((item, index) => ({
+                    ...item,
+                    globalRank: index + 1
+                }));
+
+                setStats(sortedData.slice(0, 10));
+            } catch (error) {
+                console.error("Error al cargar el ranking en Home:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchStats();
+    }, []);
+
+    const top3 = stats.slice(0, 3);
+    // Orden para el podio: [2do, 1er, 3er]
+    const podiumOrder = [
+        top3.find(u => u.globalRank === 2),
+        top3.find(u => u.globalRank === 1),
+        top3.find(u => u.globalRank === 3)
+    ].filter(Boolean);
+
     return (
-        <>
+        <div className="home-container">
 
             <main>
                 <section className="home-hero">
@@ -43,7 +85,7 @@ const Home = () => {
                         <h3 className="home-hero__title">CONVERTÍ TU PASIÓN EN PUNTOS.</h3>
                     </div>
 
-                    <Link to="/predicciones" className="cta-predictions">
+                    <Link to="/predictions" className="cta-predictions">
 
                         {/* Flechas iniciales (2) */}
                         <span className="cta-arrows cta-arrows--start"></span>
@@ -70,7 +112,7 @@ const Home = () => {
                                 predicciones y subí en el ranking.
                             </p>
 
-                            <Link to="/como-funciona" className="cta how-it-works__link">
+                            <Link to="/calendar" className="cta how-it-works__link">
                                 Conocé más
                                 <span className="cta__icon">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +182,7 @@ const Home = () => {
                 </section>
 
                 <section className="info-cards">
-                    <Link to="/info/pilotos" className="info-card">
+                    <Link to="/drivers" className="info-card">
                         <img src={pilotosImg} alt="Pilotos de F1" />
 
                         <div className="info-card__overlay"></div>
@@ -169,7 +211,7 @@ const Home = () => {
                         </div>
                     </Link>
 
-                    <Link to="/info/circuitos" className="info-card">
+                    <Link to="/circuits" className="info-card">
                         <img src={circuitosImg} alt="Circuitos de F1" />
                         <div className="info-card__overlay"></div>
 
@@ -197,7 +239,7 @@ const Home = () => {
                         </div>
                     </Link>
 
-                    <Link to="/info/escuderias" className="info-card">
+                    <Link to="/teams" className="info-card">
                         <img src={escuderiasImg} alt="Escuderías de F1" />
                         <div className="info-card__overlay"></div>
 
@@ -229,91 +271,71 @@ const Home = () => {
 
                 <section className="ranking">
                     <div className="ranking__container">
-                        <h2 className="ranking__title">RANKING GLOBAL</h2>
+                        <h2 className="ranking__title">PUNTUACIÓN GLOBAL</h2>
 
                         <div className="ranking__podium">
-
-                            <div className="podium__item podium__item--pos2">
-                                <img className="podium__flag" src="/img/australia.svg" alt="pais" />
-                                <div className="podium__avatar">
-                                    <img src="/img/gasly.png" alt="Nombre del usuario" />
+                            {!loading && podiumOrder.map((user) => (
+                                <div key={user._id} className={`podium__item podium__item--pos${user.globalRank}`}>
+                                    <span className="emoji-flag podium__flag" style={{ display: 'block', fontSize: '1.2rem' }}>
+                                        {getFlagEmoji(user.country)}
+                                    </span>
+                                    <div className="podium__avatar">
+                                        <img
+                                            src={user.img ? `${API_URL}/uploads/users/${user.img}` : profileDefault}
+                                            alt={`${user.name} ${user.last_name}`}
+                                        />
+                                    </div>
+                                    <p className="podium__name">
+                                        {user.name} <strong>{user.last_name}</strong>
+                                    </p>
                                 </div>
-                                <p className="podium__name">Pierre <strong>Gasly</strong></p>
-                            </div>
-
-                            <div className="podium__item podium__item--pos1">
-                                <img className="podium__flag" src="/img/japan.png" alt="pais" />
-                                <div className="podium__avatar">
-                                    <img src="/img/hamilton.png" alt="Nombre del usuario" />
-                                </div>
-                                <p className="podium__name">Lewis <strong>Hamilton</strong></p>
-                            </div>
-
-                            <div className="podium__item podium__item--pos3">
-                                <img className="podium__flag" src="/img/belgica.png" alt="pais" />
-                                <div className="podium__avatar">
-                                    <img src="/img/leclerc.png" alt="Nombre del usuario" />
-                                </div>
-                                <p className="podium__name">Charles <strong>Leclrec</strong></p>
-                            </div>
-
+                            ))}
                         </div>
 
                         <div className="ranking__card">
-                            <table className="ranking__table">
-                                <thead>
-                                    <tr>
-                                        <th>Pos</th>
-                                        <th>Nombre</th>
-                                        <th>País</th>
-                                        <th>Aciertos</th>
-                                        <th>Predicciones</th>
-                                        <th>Puntos</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td className="ranking__posicion">1</td>
-                                        <td>Leandro <span className="ranking__apellido">Vedia</span></td>
-                                        <td><img src="/img/belgica.png" className="race-flag" /></td>
-                                        <td>10</td>
-                                        <td>3</td>
-                                        <td className="ranking__points">23</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="ranking__posicion">2</td>
-                                        <td>Julieta <span className="ranking__apellido">Arias</span></td>
-                                        <td><img src="/img/japan.png" className="race-flag" /></td>
-                                        <td>5</td>
-                                        <td>2</td>
-                                        <td className="ranking__points">19</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="ranking__posicion">3</td>
-                                        <td>Franco <span className="ranking__apellido">Vedia</span></td>
-                                        <td><img src="/img/belgica.png" className="race-flag" /></td>
-                                        <td>3</td>
-                                        <td>4</td>
-                                        <td className="ranking__points">14</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="ranking__posicion">4</td>
-                                        <td>Juan<span className="ranking__apellido">Perez</span></td>
-                                        <td><img src="/img/belgica.png" /></td>
-                                        <td>1</td>
-                                        <td>3</td>
-                                        <td className="ranking__points">9</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="ranking__posicion">5</td>
-                                        <td>Maria <span className="ranking__apellido">Gonzalez</span></td>
-                                        <td><img src="/img/japan.png" /></td>
-                                        <td>1</td>
-                                        <td>2</td>
-                                        <td className="ranking__points">8</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div className="table-responsive">
+                                <table className="ranking__table">
+                                    <thead>
+                                        <tr>
+                                            <th>Pos</th>
+                                            <th>Nombre</th>
+                                            <th>País</th>
+                                            <th>Aciertos</th>
+                                            <th>Predicciones</th>
+                                            <th>Puntos</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {loading ? (
+                                            <tr>
+                                                <td colSpan="6" className="text-center p-4">Cargando...</td>
+                                            </tr>
+                                        ) : (
+                                            stats.map((item) => (
+                                                <tr key={item._id}>
+                                                    <td className="ranking__posicion">{item.globalRank}</td>
+                                                    <td>
+                                                        {item.name} <span className="ranking__apellido">{item.last_name}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span className="emoji-flag" style={{ fontSize: '1.2rem' }}>
+                                                            {getFlagEmoji(item.country)}
+                                                        </span>
+                                                    </td>
+                                                    <td>{item.stats?.successes?.total || 0}</td>
+                                                    <td>{item.stats?.predictions?.total || 0}</td>
+                                                    <td className="ranking__points">{item.stats?.points?.total || 0}</td>
+                                                </tr>
+                                            ))
+                                        )}
+                                        {!loading && stats.length === 0 && (
+                                            <tr>
+                                                <td colSpan="6" className="text-center p-4">No hay datos disponibles</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <Link to="/ranking" className="cta">
@@ -361,8 +383,8 @@ const Home = () => {
                     </div>
                 </section>
             </main>
-        </>
+        </div>
     );
-}
+};
 
 export default Home;
