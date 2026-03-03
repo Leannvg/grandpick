@@ -122,46 +122,48 @@ function App() {
   }
 
   return (
-    <>
+    <div className="app-wrapper">
       <NotificationsProvider userId={estaAutenticado ? userId : null}>
         <AuthListener />
         <Nav onLogout={onLogout} autenticado={estaAutenticado} esAdmin={esAdmin}></Nav>
         <NextRaceCTA />
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login onLogin={onLogin} />} />
-          <Route path="/" element={<Home />} />
+        <div className="main-content">
+          <Routes>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login onLogin={onLogin} />} />
+            <Route path="/" element={<Home />} />
 
-          <Route path="/profile" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><Profile /></ProtectedRoute>} />
-          <Route path="/predictions" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><Predictions /></ProtectedRoute>} />
-
-
-          <Route path="/admin/dashboard" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><Dashboard /></ProtectedRoute>} />
-          <Route path="/team/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><TeamCreate /></ProtectedRoute>} />
-          <Route path="/team/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><TeamEdit /></ProtectedRoute>} />
-          <Route path="/driver/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><DriverCreate /></ProtectedRoute>} />
-          <Route path="/driver/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><DriverEdit /></ProtectedRoute>} />
-          <Route path="/circuit/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><CircuitCreate /></ProtectedRoute>} />
-          <Route path="/circuit/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><CircuitEdit /></ProtectedRoute>} />
-          <Route path="/race/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><RaceCreate action="create" /></ProtectedRoute>} />
-          <Route path="/race/:id/edit/:year" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><RaceEdit action="edit" /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><Profile /></ProtectedRoute>} />
+            <Route path="/predictions" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><Predictions /></ProtectedRoute>} />
 
 
-          <Route path="/drivers" element={<Drivers />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/circuits" element={<Circuits />} />
-          <Route path="/circuits/:id" element={<CircuitDetail />} />
-          <Route path="/teams" element={<Teams />} />
-          <Route path="/teams/:id" element={<TeamDetail />} />
-          <Route path="/ranking" element={<Ranking />} />
+            <Route path="/admin/dashboard" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><Dashboard /></ProtectedRoute>} />
+            <Route path="/team/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><TeamCreate /></ProtectedRoute>} />
+            <Route path="/team/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><TeamEdit /></ProtectedRoute>} />
+            <Route path="/driver/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><DriverCreate /></ProtectedRoute>} />
+            <Route path="/driver/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><DriverEdit /></ProtectedRoute>} />
+            <Route path="/circuit/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><CircuitCreate /></ProtectedRoute>} />
+            <Route path="/circuit/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><CircuitEdit /></ProtectedRoute>} />
+            <Route path="/race/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><RaceCreate action="create" /></ProtectedRoute>} />
+            <Route path="/race/:id/edit/:year" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><RaceEdit action="edit" /></ProtectedRoute>} />
 
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          {/* <Route path="*" element={<NotFound />} /> */}
-        </Routes>
+
+            <Route path="/drivers" element={<Drivers />} />
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/circuits" element={<Circuits />} />
+            <Route path="/circuits/:id" element={<CircuitDetail />} />
+            <Route path="/teams" element={<Teams />} />
+            <Route path="/teams/:id" element={<TeamDetail />} />
+            <Route path="/ranking" element={<Ranking />} />
+
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            {/* <Route path="*" element={<NotFound />} /> */}
+          </Routes>
+        </div>
         <Footer></Footer>
       </NotificationsProvider>
-    </>
+    </div>
   )
 }
 
