@@ -63,7 +63,8 @@ function SearchableSelect({
     isDisabled: getOptionDisabled(opt),
     original: opt,
     teamName: opt.teamName || "",
-    color: opt.color || "#ccc"
+    color: opt.color || "#ccc",
+    timezone: opt.timezone || ""
   }));
 
   const currentValue = formattedOptions.find(o => o.value === value) || null;

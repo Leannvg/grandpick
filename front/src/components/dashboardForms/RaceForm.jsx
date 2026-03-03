@@ -81,7 +81,7 @@ function RaceForm({
 
   const handleCircuit = (selectedOption) => {
     console.log("Selected option:", selectedOption);
-    console.log("Circuit timezone:", selectedOption.timezone);
+    console.log("Circuit timezone:", selectedOption?.timezone);
 
     setCircuit(selectedOption?.value || "");
     setCircuitTimezone(selectedOption?.timezone || "");
@@ -203,7 +203,28 @@ function RaceForm({
       const updates = [];
       const deletes = [];
       const creates = [];
-      const errorsTemp = {};
+      let formValid = true;
+      const newErrors = {};
+
+      if (!circuit) {
+        newErrors.id_circuit = "El circuito es requerido";
+        formValid = false;
+      }
+      if (!dateStart) {
+        newErrors.date_gp_start = "La fecha de inicio es requerida";
+        formValid = false;
+      }
+      if (!dateFinish) {
+        newErrors.date_gp_end = "La fecha de fin es requerida";
+        formValid = false;
+      }
+
+      if (!formValid) {
+        setErrors(newErrors);
+        showAlert("Por favor completa los campos requeridos.", "danger", true);
+        return;
+      }
+
       const anyEnabled = Object.values(enabledPoints).some(Boolean);
       if (!anyEnabled) {
         showAlert("Debe haber al menos una carrera habilitada.", "danger", true);
@@ -275,20 +296,21 @@ function RaceForm({
 
         if (!isEnabled && !existing) continue;
 
-        const startUTC = DateTime.fromISO(dateStart, { zone: circuitTimezone })
-          .startOf("day")
-          .toUTC()
-          .toJSDate();
+        const startDT = DateTime.fromISO(dateStart, { zone: circuitTimezone }).startOf("day");
+        const startUTC = startDT.isValid ? startDT.toUTC().toJSDate() : null;
 
-        const endUTC = DateTime.fromISO(dateFinish, { zone: circuitTimezone })
-          .startOf("day")
-          .toUTC()
-          .toJSDate();
+        const endDT = DateTime.fromISO(dateFinish, { zone: circuitTimezone }).startOf("day");
+        const endUTC = endDT.isValid ? endDT.toUTC().toJSDate() : null;
 
         const dt = DateTime.fromISO(`${data.fecha}T${data.hora}`, {
           zone: circuitTimezone,
         });
-        const fechaUTC = dt.toUTC().toJSDate();
+        const fechaUTC = dt.isValid ? dt.toUTC().toJSDate() : null;
+
+        if (isEnabled && (!startUTC || !endUTC || !fechaUTC)) {
+          showAlert(`Error en las fechas de ${p.type}. Asegúrate de completar fecha y hora.`, "danger", true);
+          return;
+        }
 
         if (existing && isEnabled) {
           updates.push({
@@ -489,8 +511,8 @@ function RaceForm({
 
               <input
                 className={`form-control ${errorsForm.perPoint?.[p._id]?.date && enabledPoints[p._id]
-                    ? "is-invalid"
-                    : ""
+                  ? "is-invalid"
+                  : ""
                   }`}
                 type="date"
                 min={dateStart || yearStart}
@@ -508,8 +530,8 @@ function RaceForm({
               <label>Hora</label>
               <input
                 className={`form-control ${errorsForm.perPoint?.[p._id]?.time && enabledPoints[p._id]
-                    ? "is-invalid"
-                    : ""
+                  ? "is-invalid"
+                  : ""
                   }`}
                 type="time"
                 disabled={!enabledPoints[p._id]}
