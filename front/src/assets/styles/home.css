@@ -786,11 +786,12 @@
   /* Nombre */
 
   .podium__name {
-    font-size: 15px;
+    font-size: 1.2rem;
     color: #fff;
     margin-top: 8px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    display: flex;
+    flex-direction: column;
   }
 
   .podium__name strong {

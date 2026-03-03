@@ -276,9 +276,12 @@ const Home = () => {
                         <div className="ranking__podium">
                             {!loading && podiumOrder.map((user) => (
                                 <div key={user._id} className={`podium__item podium__item--pos${user.globalRank}`}>
-                                    <span className="emoji-flag podium__flag" style={{ display: 'block', fontSize: '1.2rem' }}>
-                                        {getFlagEmoji(user.country)}
-                                    </span>
+                                    <div className="d-flex justify-content-center">
+                                        <span className="emoji-flag podium__flag" style={{ display: 'block', fontSize: '1.2rem' }}>
+                                            {getFlagEmoji(user.country)}
+                                        </span>
+                                    </div>
+
                                     <div className="podium__avatar">
                                         <img
                                             src={user.img ? `${API_URL}/uploads/users/${user.img}` : profileDefault}
