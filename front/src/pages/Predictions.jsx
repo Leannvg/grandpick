@@ -273,19 +273,19 @@ function Predictions() {
 
           {isPreWindow && timeToOpen !== null && (
             <div className="mt-4">
-              <div className="prediction-status-banner status-missing">
-                <CountdownToOpen
-                  timeToOpen={timeToOpen}
-                  onOpen={() => {
-                    setCanPredict(true);
-                    setIsPreWindow(false);
-                  }}
-                />
+              <div className="prediction-status-banner status-missing d-flex flex-column gap-1">
+                <span>
+                  ⏳ Las predicciones se habilitarán próximamente en{" "}
+                  <CountdownToOpen
+                    timeToOpen={timeToOpen}
+                    onOpen={() => {
+                      setCanPredict(true);
+                      setIsPreWindow(false);
+                    }}
+                  />
+                </span>
+                <span>¡Vuelve pronto para cargar tu equipo!</span>
               </div>
-              <p className="info-message">
-                Las predicciones se habilitarán próximamente. <br />
-                ¡Vuelve pronto para cargar tu equipo!
-              </p>
             </div>
           )}
         </div>

@@ -24,10 +24,9 @@ function CountdownToOpen({ timeToOpen, onOpen }) {
   const seconds = totalSeconds % 60;
 
   return (
-    <span>
-      ⏳ Las predicciones se habilitarán en{" "}
+    <strong>
       {days}d {hours}h {minutes}m {seconds}s
-    </span>
+    </strong>
   );
 }
 
