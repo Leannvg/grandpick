@@ -273,8 +273,8 @@ function Predictions() {
 
           {isPreWindow && timeToOpen !== null && (
             <div className="mt-4 info-message">
-              <span>
-                ⏳ Las predicciones se habilitarán próximamente en{" "}
+              <span>⏳ Las predicciones se habilitarán próximamente en</span>
+              <div className="prewindow-countdown">
                 <CountdownToOpen
                   timeToOpen={timeToOpen}
                   onOpen={() => {
@@ -282,8 +282,7 @@ function Predictions() {
                     setIsPreWindow(false);
                   }}
                 />
-              </span>
-              <br />
+              </div>
               <span>¡Vuelve pronto para cargar tu equipo!</span>
             </div>
           )}
