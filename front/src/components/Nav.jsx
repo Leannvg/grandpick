@@ -3,12 +3,31 @@ import NotificationsBell from "./NotificationsBell.jsx";
 import logo from "../assets/icons/logo_grandpick.svg";
 
 function Nav({ onLogout, autenticado, esAdmin }) {
+  const closeMenu = () => {
+    const navBar = document.getElementById("mainNav");
+    if (navBar && navBar.classList.contains("show")) {
+      // Usamos el API de Bootstrap si está disponible globalmente
+      if (window.bootstrap && window.bootstrap.Collapse) {
+        const bsCollapse = window.bootstrap.Collapse.getOrCreateInstance(navBar);
+        bsCollapse.hide();
+      } else {
+        // Fallback en caso de que no esté el JS de bootstrap cargado
+        navBar.classList.remove("show");
+      }
+    }
+  };
+
+  const handleLogout = () => {
+    onLogout();
+    closeMenu();
+  };
+
   return (
-    <header class="site-header">
+    <header className="site-header">
       <nav className="navbar navbar-expand-lg navbar-dark sticky-top">
         <div className="container">
           {/* LOGO */}
-          <Link className="navbar-brand me-auto nav-logo" to="/">
+          <Link className="navbar-brand me-auto nav-logo" to="/" onClick={closeMenu}>
             <img src={logo} alt="GrandPick" height="32" />
           </Link>
 
@@ -35,27 +54,27 @@ function Nav({ onLogout, autenticado, esAdmin }) {
           <div className="collapse navbar-collapse" id="mainNav">
             <ul className="navbar-nav ms-auto align-items-lg-center">
               <li className="nav-item">
-                <Link className="nav-link" to="/">
+                <Link className="nav-link" to="/" onClick={closeMenu}>
                   HOME
                 </Link>
               </li>
 
               <li className="nav-item">
-                <Link className="nav-link" to="/calendar">
+                <Link className="nav-link" to="/calendar" onClick={closeMenu}>
                   CALENDARIO
                 </Link>
               </li>
 
               {autenticado && (
                 <li className="nav-item">
-                  <Link className="nav-link" to="/predictions">
+                  <Link className="nav-link" to="/predictions" onClick={closeMenu}>
                     MIS PREDICCIONES
                   </Link>
                 </li>
               )}
 
               <li className="nav-item">
-                <Link className="nav-link" to="/ranking">
+                <Link className="nav-link" to="/ranking" onClick={closeMenu}>
                   RANKING
                 </Link>
               </li>
@@ -73,17 +92,17 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   <div className="container">
                     <ul className="row justify-content-center text-center list-unstyled m-0">
                       <li className="col-12 col-md-4">
-                        <Link to="/teams" className="mega-link">
+                        <Link to="/teams" className="mega-link" onClick={closeMenu}>
                           ESCUDERÍAS
                         </Link>
                       </li>
                       <li className="col-12 col-md-4">
-                        <Link to="/drivers" className="mega-link">
+                        <Link to="/drivers" className="mega-link" onClick={closeMenu}>
                           PILOTOS
                         </Link>
                       </li>
                       <li className="col-12 col-md-4">
-                        <Link to="/circuits" className="mega-link">
+                        <Link to="/circuits" className="mega-link" onClick={closeMenu}>
                           CIRCUITOS
                         </Link>
                       </li>
@@ -105,17 +124,17 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   <div className="container">
                     <ul className="row justify-content-center text-center list-unstyled m-0">
                       <li className="col-12 col-md-4">
-                        <Link to="#" className="mega-link">
+                        <Link to="#" className="mega-link" onClick={closeMenu}>
                           CÓMO JUGAR
                         </Link>
                       </li>
                       <li className="col-12 col-md-4">
-                        <Link to="#" className="mega-link">
+                        <Link to="#" className="mega-link" onClick={closeMenu}>
                           GUÍA DE F1
                         </Link>
                       </li>
                       <li className="col-12 col-md-4">
-                        <Link to="#" className="mega-link">
+                        <Link to="#" className="mega-link" onClick={closeMenu}>
                           F1 TV
                         </Link>
                       </li>
@@ -133,7 +152,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
 
               {esAdmin && (
                 <li className="nav-item">
-                  <Link className="nav-link" to="/admin/dashboard">
+                  <Link className="nav-link" to="/admin/dashboard" onClick={closeMenu}>
                     PANEL CONTROL
                   </Link>
                 </li>
@@ -142,14 +161,14 @@ function Nav({ onLogout, autenticado, esAdmin }) {
               {autenticado ? (
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/profile">
+                    <Link className="nav-link" to="/profile" onClick={closeMenu}>
                       MI PERFIL
                     </Link>
                   </li>
                   <li className="nav-item">
                     <button
                       className="nav-link btn btn-link logout"
-                      onClick={onLogout}
+                      onClick={handleLogout}
                     >
                       CERRAR SESIÓN
                     </button>
@@ -158,12 +177,12 @@ function Nav({ onLogout, autenticado, esAdmin }) {
               ) : (
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/register">
+                    <Link className="nav-link" to="/register" onClick={closeMenu}>
                       REGISTRARSE
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link login" to="/login">
+                    <Link className="nav-link login" to="/login" onClick={closeMenu}>
                       INICIAR SESIÓN
                     </Link>
                   </li>
