@@ -24,10 +24,10 @@ function CountdownToOpen({ timeToOpen, onOpen }) {
   const seconds = totalSeconds % 60;
 
   return (
-    <p className="text-danger">
+    <span>
       ⏳ Las predicciones se habilitarán en{" "}
       {days}d {hours}h {minutes}m {seconds}s
-    </p>
+    </span>
   );
 }
 

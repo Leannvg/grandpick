@@ -257,24 +257,31 @@ function Predictions() {
             </div>
           )}
 
-          <div className="prediction-status-container">
-            {currentPrediction ? (
-              <div className="prediction-status-banner status-saved">
-                <span>✅ Tu predicción ya está guardada, pero podes editarla antes de que el contador llegue a 0.</span>
-              </div>
-            ) : (
-              <div className="prediction-status-banner status-missing">
-                <span>💡 Todavía no realizaste tu predicción.</span>
-              </div>
-            )}
-          </div>
+          {!isPreWindow && (
+            <div className="prediction-status-container">
+              {currentPrediction ? (
+                <div className="prediction-status-banner status-saved">
+                  <span>✅ Tu predicción ya está guardada, pero podes editarla antes de que el contador llegue a 0.</span>
+                </div>
+              ) : (
+                <div className="prediction-status-banner status-missing">
+                  <span>💡 Todavía no realizaste tu predicción.</span>
+                </div>
+              )}
+            </div>
+          )}
 
-          {!canPredict && timeToOpen !== null && (
+          {isPreWindow && timeToOpen !== null && (
             <div className="mt-4">
-              <CountdownToOpen
-                timeToOpen={timeToOpen}
-                onOpen={() => setCanPredict(true)}
-              />
+              <div className="prediction-status-banner status-missing">
+                <CountdownToOpen
+                  timeToOpen={timeToOpen}
+                  onOpen={() => {
+                    setCanPredict(true);
+                    setIsPreWindow(false);
+                  }}
+                />
+              </div>
               <p className="info-message">
                 Las predicciones se habilitarán próximamente. <br />
                 ¡Vuelve pronto para cargar tu equipo!
@@ -338,7 +345,7 @@ function Predictions() {
         </div>
       )}
 
-      {isClosed && !canPredict && race && (
+      {isClosed && !canPredict && race && !isPreWindow && (
         <div className="info-message text-danger mt-4">
           ⚠️ Las predicciones están cerradas para esta sesión.
         </div>
