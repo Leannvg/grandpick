@@ -727,13 +727,12 @@ ul .dropdown {
 
 /* ----- LEFT COLUM ----- */
 .race-info {
-    padding: 8px 14px;
+    padding: 10px 16px;
 }
 
 .race-location {
     display: flex;
     align-items: center;
-    gap: 10px;
 }
 
 .race-flag {
@@ -752,20 +751,20 @@ ul .dropdown {
 }
 
 .race-circuit {
-    margin: 4px 0 0 0;
-    font-size: 12px;
+    font-size: 1rem;
     font-weight: 300;
     text-align: left;
     color: var(--circuit-name);
+    margin: 0px;
 }
 
 .race-sessions {
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
     color: #4c86b7;
     text-align: left;
-    margin-top: 2px;
+    margin: 0px;
     letter-spacing: 0.5px;
 }
 
