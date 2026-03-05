@@ -759,6 +759,16 @@ ul .dropdown {
     color: var(--circuit-name);
 }
 
+.race-sessions {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #4c86b7;
+    text-align: left;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+}
+
 /* ----- RIGHT COLUM ----- */
 .race-date {
     width: 30%;

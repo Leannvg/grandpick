@@ -12,8 +12,31 @@ function Calendar() {
         async function loadRaces() {
             showLoader();
             try {
-                const data = await racesServices.findAll();
-                const sortedData = data.sort((a, b) => new Date(a.date_gp_start) - new Date(b.date_gp_start));
+                const currentYear = new Date().getFullYear();
+                const data = await racesServices.findAllByYear(currentYear);
+
+                // Group races by circuit and weekend
+                const groupedMap = new Map();
+                data.forEach(race => {
+                    const key = `${race.id_circuit}_${race.date_gp_start}`;
+                    if (!groupedMap.has(key)) {
+                        groupedMap.set(key, {
+                            ...race,
+                            sessionTypes: [race.points_system.type]
+                        });
+                    } else {
+                        const existing = groupedMap.get(key);
+                        if (!existing.sessionTypes.includes(race.points_system.type)) {
+                            existing.sessionTypes.push(race.points_system.type);
+                        }
+                        // Update state: if any session is NOT finished, keep it as NOT finished
+                        if (existing.state === "Finalizado" && race.state !== "Finalizado") {
+                            existing.state = race.state;
+                        }
+                    }
+                });
+
+                const sortedData = Array.from(groupedMap.values()).sort((a, b) => new Date(a.date_gp_start) - new Date(b.date_gp_start));
 
                 const now = new Date().getTime();
                 const index = sortedData.findIndex(race =>
@@ -60,6 +83,23 @@ function Calendar() {
         return `${startMonth}-${endMonth}`;
     }
 
+    function formatSessionTypes(types) {
+        const priority = {
+            'sprint': 1,
+            'qualifyng': 2,
+            'race': 3
+        };
+        const typeLabels = {
+            'race': 'Race',
+            'qualifyng': 'Qualy',
+            'sprint': 'Sprint'
+        };
+        return types
+            .sort((a, b) => (priority[a] || 99) - (priority[b] || 99))
+            .map(t => typeLabels[t] || t.charAt(0).toUpperCase() + t.slice(1))
+            .join(' + ');
+    }
+
     // Split races into two columns for the grid
     const midPoint = Math.ceil(races.length / 2);
     const leftRaces = races.slice(0, midPoint);
@@ -88,6 +128,9 @@ function Calendar() {
                                         <span className="race-round">/ RONDA {index + 1}</span>
                                     </div>
                                     <p className="race-circuit">{race.circuit.circuit_name}</p>
+                                    <p className="race-sessions">
+                                        {formatSessionTypes(race.sessionTypes)}
+                                    </p>
                                 </div>
                                 <div className={`race-date ${getStatusClass(index)}`}>
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end)}</span>
@@ -108,6 +151,9 @@ function Calendar() {
                                         <span className="race-round">/ RONDA {midPoint + index + 1}</span>
                                     </div>
                                     <p className="race-circuit">{race.circuit.circuit_name}</p>
+                                    <p className="race-sessions">
+                                        {formatSessionTypes(race.sessionTypes)}
+                                    </p>
                                 </div>
                                 <div className={`race-date ${getStatusClass(midPoint + index)}`}>
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end)}</span>
