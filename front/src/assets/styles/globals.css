@@ -345,6 +345,7 @@ p {
   font-weight: 500;
   text-decoration: none;
   transition: opacity 0.2s ease;
+  margin: 0px 5px;
 }
 
 .nr-cta__action:hover {
@@ -394,7 +395,8 @@ p {
 }
 
 .nr-cta__meta {
-  gap: 5px;
+  display: flex;
+  align-items: center;
 }
 
 /* -------------------------------------- */
@@ -434,11 +436,6 @@ p {
     margin-left: auto;
     font-size: 14px;
     white-space: nowrap;
-  }
-
-  .nr-cta__meta {
-    display: flex;
-    align-items: center;
   }
 
   .nr-cta__countdown {
