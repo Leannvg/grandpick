@@ -393,6 +393,10 @@ p {
   color: #fff;
 }
 
+.nr-cta__meta {
+  gap: 5px;
+}
+
 /* -------------------------------------- */
 /* TABLET Y DESKTOP OVERRIDES             */
 /* -------------------------------------- */
@@ -435,7 +439,6 @@ p {
   .nr-cta__meta {
     display: flex;
     align-items: center;
-    gap: 12px;
   }
 
   .nr-cta__countdown {
