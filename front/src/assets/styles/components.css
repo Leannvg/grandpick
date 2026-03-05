@@ -129,8 +129,8 @@
 }
 
 .notification-close-btn:hover {
-    color: #e63946;
-    background-color: rgba(230, 57, 70, 0.1);
+    color: #e63946 !important;
+    background-color: rgba(230, 57, 70, 0.1) !important;
 }
 
 .notification-title {
