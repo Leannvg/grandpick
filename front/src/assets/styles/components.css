@@ -106,16 +106,26 @@
     position: absolute !important;
     top: 10px !important;
     right: 10px !important;
-    background: none;
-    border: none;
-    color: #bbb;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.2s;
-    z-index: 10;
+    width: 24px !important;
+    /* Fix inherited width: 100% */
+    height: 24px !important;
+    background: transparent !important;
+    border: none !important;
+    color: #bbb !important;
+    padding: 0 !important;
+    /* Reset inherited padding */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    transition: all 0.2s !important;
+    z-index: 10 !important;
+    cursor: pointer !important;
+    /* Reset other nav-item button properties */
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    font-size: 0 !important;
+    /* Hide potential text if inherited */
 }
 
 .notification-close-btn:hover {
