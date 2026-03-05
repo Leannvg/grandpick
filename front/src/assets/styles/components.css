@@ -88,6 +88,7 @@
 }
 
 .notification-item-wrapper {
+    position: relative;
     transition: background-color 0.2s;
 }
 
@@ -96,15 +97,15 @@
 }
 
 .notification-item {
-    position: relative;
+    display: block;
     transition: opacity 0.2s;
     border-radius: 8px;
 }
 
 .notification-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
     background: none;
     border: none;
     color: #bbb;
@@ -114,7 +115,7 @@
     justify-content: center;
     border-radius: 50%;
     transition: all 0.2s;
-    z-index: 2;
+    z-index: 10;
 }
 
 .notification-close-btn:hover {
