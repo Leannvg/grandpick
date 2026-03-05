@@ -69,9 +69,9 @@ function NextRaceCTA() {
 
     return (
         <section className="nr-cta">
-            <div className="nr-cta__container">
+            <div>
 
-                <div className="container">
+                <div className="nr-cta__container container">
                     {/* INFO */}
                     <div className="nr-cta__info">
                         <div className="nr-cta__country">
