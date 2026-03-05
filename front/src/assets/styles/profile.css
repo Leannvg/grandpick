@@ -4,9 +4,21 @@
     min-height: 80vh;
 }
 
+@media (max-width: 991px) {
+    .profile-section {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
 .profile-header {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
+}
+
+.profile-header h1 {
+    font-weight: 700;
+    margin-bottom: 5px;
 }
 
 .profile-info-grid {
@@ -27,50 +39,86 @@
 /* User Card */
 .user-card {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
     .user-card {
         flex-direction: row;
         text-align: left;
-        /* align-items: center; */
         gap: 30px;
     }
 }
 
 .user-avatar-box {
-    width: 200px;
-    height: 200px;
-    background-color: var(--color-accent);
+    width: 280px;
+    height: 280px;
+    background-color: #4a5a6a;
     border-radius: var(--radius-general);
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 10px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
     .user-avatar-box {
+        width: 200px;
+        height: 200px;
         margin-bottom: 0;
         flex-shrink: 0;
     }
 }
 
 .user-avatar-box img {
-    /* width: 100px; */
-    height: auto;
+    width: auto;
+    height: 60%;
 }
 
 .user-details {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 10px;
 }
 
-.user-details h2 {
+@media (min-width: 992px) {
+    .user-details {
+        justify-content: center;
+    }
+}
+
+.user-name-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 8px;
+}
+
+@media (min-width: 992px) {
+    .user-name-wrapper {
+        justify-content: flex-start;
+    }
+}
+
+.user-name-wrapper h2 {
     font-size: 32px;
-    font-weight: 500;
-    margin-bottom: 0px;
+    font-weight: 400;
+    margin: 0;
     text-transform: uppercase;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.user-name-wrapper h2 strong {
+    font-weight: 700;
+}
+
+.user-details .emoji-flag {
+    font-size: 40px;
 }
 
 .user-email {
@@ -89,24 +137,50 @@
 
 /* Actions Section */
 .profile-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    margin-top: 10px;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.actions-grid .btn-profile-action:last-child {
+    grid-column: span 2;
+    max-width: fit-content;
+    margin: 0 auto;
+    min-width: 200px;
+}
+
+@media (min-width: 992px) {
+    .actions-grid {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .actions-grid .btn-profile-action:last-child {
+        grid-column: auto;
+        max-width: none;
+        margin: 0;
+        min-width: 0;
+    }
 }
 
 .btn-profile-action {
     background-color: var(--color-accent);
     color: #fff;
     border: none;
-    padding: 12px 24px;
+    padding: 12px 20px;
     border-radius: var(--radius-general);
-    font-weight: 600;
+    font-weight: 400;
     font-size: 14px;
     text-transform: uppercase;
     text-decoration: none;
     text-align: center;
     transition: background-color 0.2s;
     cursor: pointer;
+    line-height: 1.2;
 }
 
 .btn-profile-action:hover {
