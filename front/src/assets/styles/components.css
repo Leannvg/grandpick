@@ -194,7 +194,6 @@
     .notifications-body {
         max-height: calc(100vh - 160px) !important;
         overflow-y: auto;
-        padding-bottom: 20px;
     }
 
     .notification-item-wrapper {
