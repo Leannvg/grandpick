@@ -89,7 +89,7 @@ function NextRaceCTA() {
                             </span>
 
                             <Link to="/predictions" className="nr-cta__action">
-                                Predecí tus resultados <span aria-hidden="true">›››</span>
+                                Predecir ahora <span aria-hidden="true">››</span>
                             </Link>
                         </div>
                     </div>
