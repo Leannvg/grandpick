@@ -70,48 +70,51 @@ function NextRaceCTA() {
     return (
         <section className="nr-cta">
             <div className="nr-cta__container">
-                {/* INFO */}
-                <div className="nr-cta__info">
-                    <div className="nr-cta__country">
-                        <span className="emoji-flag me-2" style={{ fontSize: '1.5rem' }}>
-                            {getFlagEmoji(race.circuit?.country || race.id_circuit?.country)}
-                        </span>
-                        <span className="nr-cta__country-name">{countryName.toUpperCase()}</span>
+
+                <div className="container">
+                    {/* INFO */}
+                    <div className="nr-cta__info">
+                        <div className="nr-cta__country">
+                            <span className="emoji-flag me-2" style={{ fontSize: '1.5rem' }}>
+                                {getFlagEmoji(race.circuit?.country || race.id_circuit?.country)}
+                            </span>
+                            <span className="nr-cta__country-name">{countryName.toUpperCase()}</span>
+                        </div>
+
+                        <div className="nr-cta__meta">
+                            {/* Assuming we can get the round from the race object or just hardcode for now if not available */}
+                            <span className="nr-cta__round">RONDA {race.round || "—"}</span>
+                            <span className="nr-cta__date">
+                                {formatRaceDate(race.date_gp_start, race.date_gp_end).toUpperCase()}
+                            </span>
+
+                            <Link to="/predictions" className="nr-cta__action">
+                                Predecí tus resultados <span aria-hidden="true">›››</span>
+                            </Link>
+                        </div>
                     </div>
 
-                    <div className="nr-cta__meta">
-                        {/* Assuming we can get the round from the race object or just hardcode for now if not available */}
-                        <span className="nr-cta__round">RONDA {race.round || "—"}</span>
-                        <span className="nr-cta__date">
-                            {formatRaceDate(race.date_gp_start, race.date_gp_end).toUpperCase()}
-                        </span>
+                    {/* COUNTDOWN */}
+                    <div className="nr-cta__countdown">
+                        <div className="nr-cta__time">
+                            <span className="nr-cta__time-value">{timeLeft.days}</span>
+                            <span className="nr-cta__time-label">DÍAS</span>
+                        </div>
 
-                        <Link to="/predictions" className="nr-cta__action">
-                            Predecí tus resultados <span aria-hidden="true">›››</span>
-                        </Link>
-                    </div>
-                </div>
+                        <div className="nr-cta__time">
+                            <span className="nr-cta__time-value">{timeLeft.hours}</span>
+                            <span className="nr-cta__time-label">HS</span>
+                        </div>
 
-                {/* COUNTDOWN */}
-                <div className="nr-cta__countdown">
-                    <div className="nr-cta__time">
-                        <span className="nr-cta__time-value">{timeLeft.days}</span>
-                        <span className="nr-cta__time-label">DÍAS</span>
-                    </div>
+                        <div className="nr-cta__time">
+                            <span className="nr-cta__time-value">{timeLeft.minutes}</span>
+                            <span className="nr-cta__time-label">MIN</span>
+                        </div>
 
-                    <div className="nr-cta__time">
-                        <span className="nr-cta__time-value">{timeLeft.hours}</span>
-                        <span className="nr-cta__time-label">HS</span>
-                    </div>
-
-                    <div className="nr-cta__time">
-                        <span className="nr-cta__time-value">{timeLeft.minutes}</span>
-                        <span className="nr-cta__time-label">MIN</span>
-                    </div>
-
-                    <div className="nr-cta__time">
-                        <span className="nr-cta__time-value">{timeLeft.seconds}</span>
-                        <span className="nr-cta__time-label">SEG</span>
+                        <div className="nr-cta__time">
+                            <span className="nr-cta__time-value">{timeLeft.seconds}</span>
+                            <span className="nr-cta__time-label">SEG</span>
+                        </div>
                     </div>
                 </div>
             </div>
