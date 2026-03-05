@@ -1,7 +1,7 @@
 import { useNotifications } from "../context/NotificationsContext";
 import { Link } from "react-router-dom";
 
-function NotificationsBell() {
+function NotificationsBell({ onToggle }) {
   const { notifications, deleteNotification } = useNotifications();
   const unread = notifications.filter(n => !n.seen).length;
 
@@ -11,6 +11,7 @@ function NotificationsBell() {
         className="nav-link btn btn-link position-relative"
         data-bs-toggle="dropdown"
         aria-label="Notificaciones"
+        onClick={onToggle}
       >
         <svg
           className="icon-submit"

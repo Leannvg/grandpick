@@ -152,18 +152,32 @@
     .notifications-dropdown {
         position: fixed !important;
         top: 60px !important;
-        /* Adjusted to better match navbar height */
         left: 0 !important;
         right: 0 !important;
         width: 100vw !important;
-        height: calc(100dvh - 60px) !important;
+        height: auto !important;
+        max-height: calc(100vh - 100px) !important;
         margin: 0 !important;
         border-radius: 0 !important;
         border: none !important;
-        transform: none !important;
         background-color: var(--color-dark-blue) !important;
-        box-shadow: none !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
         z-index: 1030;
+
+        /* Animation properties */
+        display: block !important;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(-20px) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        pointer-events: none;
+    }
+
+    .notifications-dropdown.show {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0) !important;
+        pointer-events: auto;
     }
 
     .notifications-header {
@@ -178,9 +192,9 @@
     }
 
     .notifications-body {
-        max-height: none !important;
-        height: 100%;
-        padding-bottom: 80px;
+        max-height: calc(100vh - 160px) !important;
+        overflow-y: auto;
+        padding-bottom: 20px;
     }
 
     .notification-item-wrapper {
