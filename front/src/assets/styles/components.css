@@ -43,38 +43,93 @@
 }
 
 .notifications-dropdown {
-    width: 260px;
+    width: 320px;
     z-index: 1055;
-    padding: 10px 10px;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.notifications-header {
+    background-color: #f8f9fa;
+}
+
+.notifications-header .dropdown-header {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    color: #1f3b4d;
+    font-weight: 700;
+}
+
+.notifications-body {
+    max-height: 380px;
+    overflow-y: auto;
+}
+
+/* Custom scrollbar for notifications */
+.notifications-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notifications-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.notifications-body::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.notifications-body::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+}
+
+.notification-item-wrapper {
+    transition: background-color 0.2s;
+}
+
+.notification-item-wrapper:hover {
+    background-color: #f8f9fa;
 }
 
 .notification-item {
     position: relative;
-
+    transition: opacity 0.2s;
     border-radius: 8px;
 }
 
-.notification-item:hover {
-    background-color: rgba(127, 179, 213, 0.15);
+.notification-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #bbb;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+    z-index: 2;
 }
 
-.dropdown-header {
-    padding: 0;
-    color: #1f3b4d;
-    font-weight: 500;
-    font-size: 18px;
+.notification-close-btn:hover {
+    color: #e63946;
+    background-color: rgba(230, 57, 70, 0.1);
 }
 
-.notification-p {
-    color: #272727 !important;
+.notification-title {
+    font-size: 14px;
+    color: #1f3b4d !important;
 }
 
-.notification-span {
-    color: #0a2540 !important;
-    font-size: 0.9rem;
-    text-decoration: none;
-    display: block;
-    font-weight: 500;
+.notification-message {
+    font-size: 12px;
+    color: #6c757d !important;
 }
 
 .nav-notifications .nav-link {
