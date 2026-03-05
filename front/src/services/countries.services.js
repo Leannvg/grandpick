@@ -1,7 +1,7 @@
 const API_BASE = "https://api.countrystatecity.in/v1";
 
 const headers = new Headers({
-    "X-CSCAPI-KEY": import.meta.env.VITE_CSC_API_KEY
+    "X-CSCAPI-KEY": import.meta.env.COUNTRIES_API_KEY
 });
 
 const requestOptions = {
