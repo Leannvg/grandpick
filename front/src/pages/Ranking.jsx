@@ -70,11 +70,11 @@ function Ranking() {
     }
 
     return (
-        <div className="ranking-page">
-            <header className="ranking-page__header">
-                <p className="ranking-page__eyebrow">Todos quieren subirse al podio</p>
-                <h1 className="ranking-page__title">PUNTUACIÓN GLOBAL</h1>
-                <p className="ranking-page__subtitle">Campeonato de predicciones</p>
+        <section className="ranking-page page-section container text-center">
+            <header className="page-header">
+                <p className="section-label">Todos quieren subirse al podio</p>
+                <h1 className="section-title">PUNTUACIÓN GLOBAL</h1>
+                <p className="section-subtitle">Campeonato de predicciones</p>
             </header>
 
             <div className="ranking-filters">
@@ -191,7 +191,7 @@ function Ranking() {
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }
 
