@@ -1331,6 +1331,7 @@ ul .dropdown {
 
     .driver-name-horizontal {
         font-size: 20px;
+        text-transform: uppercase;
     }
 
     /* Teams */

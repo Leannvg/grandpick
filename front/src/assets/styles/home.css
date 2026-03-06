@@ -585,7 +585,6 @@
   .split-section {
     flex-direction: row;
     align-items: stretch;
-    min-height: 500px;
   }
 
   .split-section__content {
