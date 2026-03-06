@@ -3,7 +3,7 @@ import * as pointsServices from './../../services/points.services.js'
 import * as racesServices from './../../services/races.services.js'
 /* import * as notificationsServices from "../../services/notifications.services.js"; */
 import { sendGlobalNotification } from "./../../services/realtimeNotifications.services.js";
-import {ObjectId} from "mongodb"
+import { ObjectId } from "mongodb"
 
 export async function findAll(req, res) {
     try {
@@ -38,13 +38,13 @@ export async function findNext(req, res) {
 }
 
 export async function findCurrentOrNext(req, res) {
-  try {
-    const race = await racesServices.findCurrentOrNextRace();
-    res.status(200).json(race);
-  } catch (error) {
-    console.error("Error en findCurrentOrNext:", error);
-    res.status(500).json({ error: error.message });
-  }
+    try {
+        const race = await racesServices.findCurrentOrNextRace();
+        res.status(200).json(race);
+    } catch (error) {
+        console.error("Error en findCurrentOrNext:", error);
+        res.status(500).json({ error: error.message });
+    }
 }
 
 export async function findById(req, res) {
@@ -83,14 +83,16 @@ export async function create(req, res) {
             newRace.state = "Finalizado";
         }
 
-        const race = await racesServices.createRace(newRace);
+        const raceResult = await racesServices.createRace(newRace);
+        const createdRace = await racesServices.findRaceById(raceResult.result.insertedId);
+
         await sendGlobalNotification(req.app, {
             title: "Nueva carrera creada",
             message: "Ya podés predecir tus proximos resultados",
             link: `/predictions`,
             type: "success"
         });
-        res.status(200).json(race);
+        res.status(200).json(createdRace);
     } catch (error) {
         console.error("Error al crear la carrera:", error);
         res.status(500).json({ error: error.message });
@@ -104,7 +106,7 @@ export async function editById(req, res) {
         const raceId = req.params.raceId;
         const data = req.body
         const updates = {};
-        
+
         if (data.id_circuit) updates.id_circuit = new ObjectId(data.id_circuit);
         if (data.date_gp_start) updates.date_gp_start = new Date(data.date_gp_start);
         if (data.date_gp_end) updates.date_gp_end = new Date(data.date_gp_end);
@@ -113,16 +115,16 @@ export async function editById(req, res) {
         if (data.state) updates.state = data.state;
 
         if (data.results) {
-        const hasAnyDriver = data.results.some(r => r.driver);
-        updates.results = hasAnyDriver
-            ? data.results.map(r => ({
-                position: r.position,
-                driver: new ObjectId(r.driver)
-            }))
-            : [];
+            const hasAnyDriver = data.results.some(r => r.driver);
+            updates.results = hasAnyDriver
+                ? data.results.map(r => ({
+                    position: r.position,
+                    driver: new ObjectId(r.driver)
+                }))
+                : [];
         }
 
-        if(updates.results && updates.results.length > 0 && updates.state !== "Finalizado") {
+        if (updates.results && updates.results.length > 0 && updates.state !== "Finalizado") {
             updates.state = "Finalizado"
         }
 
@@ -134,7 +136,7 @@ export async function editById(req, res) {
         }
 
         const resultsWereUpdated =
-        Array.isArray(updates.results) && updates.results.length > 0;
+            Array.isArray(updates.results) && updates.results.length > 0;
 
         if (resultsWereUpdated) {
             updates.state = "Finalizado";
