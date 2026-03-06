@@ -22,7 +22,7 @@ export async function findById(req, res) {
   res.status(201).json(result);
 } */
 
-  export async function create(req, res, next) {
+export async function create(req, res, next) {
   try {
     const logoFile = req.files?.logo?.[0];
     const isologoFile = req.files?.isologo?.[0];
@@ -46,7 +46,7 @@ export async function findById(req, res) {
     };
 
     const result = await teamsServices.createTeam(teamData);
-    const newTeam = await teamsServices.findTeamById(result.insertedId);
+    const newTeam = await teamsServices.findTeamById(result.result.insertedId);
 
     res.status(201).json(newTeam);
   } catch (err) {

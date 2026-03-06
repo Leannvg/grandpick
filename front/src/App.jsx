@@ -31,8 +31,9 @@ import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
 
 import { connectSocket, disconnectSocket } from "./socket";
+import { useLoader } from "./context/LoaderContext";
 import { useAlert } from "./context/AlertContext";
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import UsersServices from "./services/users.services.js";
@@ -41,11 +42,15 @@ import UsersServices from "./services/users.services.js";
 function App() {
 
   const navigate = useNavigate();
+  const location = useLocation();
   const [userId, setUserId] = useState(null);
   const [estaAutenticado, setAutenticado] = useState(false);
   const [esAdmin, setAdmin] = useState(false);
   const [cargando, setCargando] = useState(true);
   const { showAlert } = useAlert();
+  const { loading } = useLoader();
+
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     const initAuth = async () => {
@@ -117,49 +122,55 @@ function App() {
     navigate("/login", { replace: true });
   }
 
-  if (cargando) {
-    return <div>Cargando...</div>;
-  }
-
   return (
     <div className="app-wrapper">
       <NotificationsProvider userId={estaAutenticado ? userId : null}>
         <AuthListener />
         <Nav onLogout={onLogout} autenticado={estaAutenticado} esAdmin={esAdmin}></Nav>
         <NextRaceCTA />
-        <div className="main-content">
-          <Routes>
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login onLogin={onLogin} />} />
-            <Route path="/" element={<Home />} />
+        <div className={`main-content ${isHome ? 'home-content' : ''} ${(loading || cargando) ? 'is-loading' : ''}`}>
+          {(loading || cargando) && (
+            <div className="loader-overlay">
+              <div className="loader-box">
+                <div className="custom-spinner"></div>
+                <span>{cargando ? "Iniciando..." : "Cargando..."}</span>
+              </div>
+            </div>
+          )}
+          {!cargando && (
+            <Routes>
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login onLogin={onLogin} />} />
+              <Route path="/" element={<Home />} />
 
-            <Route path="/profile" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><Profile /></ProtectedRoute>} />
-            <Route path="/predictions" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><Predictions /></ProtectedRoute>} />
-
-
-            <Route path="/admin/dashboard" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><Dashboard /></ProtectedRoute>} />
-            <Route path="/team/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><TeamCreate /></ProtectedRoute>} />
-            <Route path="/team/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><TeamEdit /></ProtectedRoute>} />
-            <Route path="/driver/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><DriverCreate /></ProtectedRoute>} />
-            <Route path="/driver/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><DriverEdit /></ProtectedRoute>} />
-            <Route path="/circuit/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><CircuitCreate /></ProtectedRoute>} />
-            <Route path="/circuit/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><CircuitEdit /></ProtectedRoute>} />
-            <Route path="/race/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><RaceCreate action="create" /></ProtectedRoute>} />
-            <Route path="/race/:id/edit/:year" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><RaceEdit action="edit" /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><Profile /></ProtectedRoute>} />
+              <Route path="/predictions" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><Predictions /></ProtectedRoute>} />
 
 
-            <Route path="/drivers" element={<Drivers />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/circuits" element={<Circuits />} />
-            <Route path="/circuits/:id" element={<CircuitDetail />} />
-            <Route path="/teams" element={<Teams />} />
-            <Route path="/teams/:id" element={<TeamDetail />} />
-            <Route path="/ranking" element={<Ranking />} />
+              <Route path="/admin/dashboard" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><Dashboard /></ProtectedRoute>} />
+              <Route path="/team/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><TeamCreate /></ProtectedRoute>} />
+              <Route path="/team/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><TeamEdit /></ProtectedRoute>} />
+              <Route path="/driver/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><DriverCreate /></ProtectedRoute>} />
+              <Route path="/driver/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><DriverEdit /></ProtectedRoute>} />
+              <Route path="/circuit/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><CircuitCreate /></ProtectedRoute>} />
+              <Route path="/circuit/:id/edit" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><CircuitEdit /></ProtectedRoute>} />
+              <Route path="/race/create" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><RaceCreate action="create" /></ProtectedRoute>} />
+              <Route path="/race/:id/edit/:year" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><RaceEdit action="edit" /></ProtectedRoute>} />
 
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            {/* <Route path="*" element={<NotFound />} /> */}
-          </Routes>
+
+              <Route path="/drivers" element={<Drivers />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/circuits" element={<Circuits />} />
+              <Route path="/circuits/:id" element={<CircuitDetail />} />
+              <Route path="/teams" element={<Teams />} />
+              <Route path="/teams/:id" element={<TeamDetail />} />
+              <Route path="/ranking" element={<Ranking />} />
+
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              {/* <Route path="*" element={<NotFound />} /> */}
+            </Routes>
+          )}
         </div>
         <Footer></Footer>
       </NotificationsProvider>

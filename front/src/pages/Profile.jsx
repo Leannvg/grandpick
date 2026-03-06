@@ -80,28 +80,29 @@ function Profile() {
             <img src={profileDefault} alt="Helmet" />
           </div>
           <div className="user-details">
-            <div>
-              <h2>{(usuario.name || "PILOTO").toUpperCase()} {(usuario.last_name || "").toUpperCase()}</h2>
+            <div className="user-main-info">
+              <div className="user-name-wrapper">
+                <span className="emoji-flag" title={usuario.country}>
+                  {getFlagEmoji(usuario.country)}
+                </span>
+                <h2>{(usuario.name || "PILOTO").toUpperCase()} <strong>{(usuario.last_name || "").toUpperCase()}</strong></h2>
+              </div>
               <p className="user-email">{usuario.email}</p>
-            </div>
-
-            <div className="user-country-tag">
-              <span className="emoji-flag" title={usuario.country}>
-                {getFlagEmoji(usuario.country)}
-              </span>
             </div>
           </div>
         </article>
 
         {/* Actions */}
         <aside className="profile-actions">
-          <button className="btn-profile-action">Mis Predicciones</button>
-          <button className="btn-profile-action" onClick={() => setShowPasswordModal(true)}>
-            Cambiar Contraseña
-          </button>
-          <button className="btn-profile-action" onClick={() => setShowProfileModal(true)}>
-            Cambiar Email
-          </button>
+          <div className="actions-grid">
+            <button className="btn-profile-action">Mis Predicciones</button>
+            <button className="btn-profile-action" onClick={() => setShowPasswordModal(true)}>
+              Cambiar Contraseña
+            </button>
+            <button className="btn-profile-action" onClick={() => setShowProfileModal(true)}>
+              Cambiar Email
+            </button>
+          </div>
         </aside>
       </div>
 

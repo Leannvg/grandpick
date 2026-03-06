@@ -31,15 +31,15 @@ function CircuitForm({
 
   useEffect(() => {
     if (isEdit && initialData && Object.keys(initialData).length > 0) {
-        setCircuitName(initialData.circuit_name || "");
-        setGpName(initialData.gp_name || "");
-        setLength(initialData.length || "");
-        setLaps(initialData.laps || "");
-        setDescription(initialData.description || "");
-        setCountry(initialData.country || "");
-        setCity(initialData.city || "");
-        setTimezone(initialData.timezone || "");
-        setCurrentImage(initialData.img || "");
+      setCircuitName(initialData.circuit_name || "");
+      setGpName(initialData.gp_name || "");
+      setLength(initialData.length || "");
+      setLaps(initialData.laps || "");
+      setDescription(initialData.description || "");
+      setCountry(initialData.country || "");
+      setCity(initialData.city || "");
+      setTimezone(initialData.timezone || "");
+      setCurrentImage(initialData.img || "");
     }
   }, [initialData, isEdit]);
 
@@ -83,21 +83,24 @@ function CircuitForm({
         )}
       </div>
 
-      <CountrySelect 
-        countryFunction={setCountry} 
+      <CountrySelect
+        countryFunction={setCountry}
         defaultValue={country}
         isInvalid={!!errorsForm.country}
         error={errorsForm.country}
       />
 
-      <CitySelect 
-        cityFunction={setCity} 
-        country={country} 
-        defaultValue={city} 
+      <CitySelect
+        cityFunction={(id, tz) => {
+          setCity(id);
+          setTimezone(tz);
+        }}
+        country={country}
+        defaultValue={city}
         isInvalid={!!errorsForm.city}
         error={errorsForm.city}
       />
-    
+
       {timezone && (
         <div className="mb-3">
           <label>Timezone detectado</label>

@@ -1,5 +1,11 @@
 import { formatRaceDate, getFlagEmoji } from "../utils/helpers";
 import API_URL from "../services/api";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import circuitsServices from "../services/circuits.services";
+import * as countriesServices from "../services/countries.services";
+import racesServices from "../services/races.services";
+import { useLoader } from "../context/LoaderContext";
 
 function CircuitDetail() {
     const { id } = useParams();
@@ -68,7 +74,7 @@ function CircuitDetail() {
                     {/* TRACK MAP */}
                     <div className="circuit-map">
                         <img
-                            src={`${API_URL}/storage/${circuit.img}`}
+                            src={`${API_URL}/api/static/circuits/${circuit.img}`}
                             alt={circuit.circuit_name}
                             onError={(e) => { e.target.src = "https://via.placeholder.com/600x400?text=Circuito"; }}
                         />

@@ -36,7 +36,7 @@ function TeamDetail() {
                     <p className="section-label">Escudería</p>
                     <h1 className="section-title">{team.name.toUpperCase()}</h1>
                     <p className="section-subtitle">
-                        {team.full_name || `${team.name} Formula One Team`}
+                        {team.full_team_name}
                     </p>
                 </header>
 

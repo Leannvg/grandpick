@@ -13,7 +13,7 @@
 }
 
 .nav-logo img {
-    height: 36px;
+    height: 28px;
     margin-left: 10px;
 }
 
@@ -43,39 +43,184 @@
 }
 
 .notifications-dropdown {
-    width: 260px;
+    width: 320px;
     z-index: 1055;
-    padding: 10px 10px;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.notifications-header {
+    background-color: #f8f9fa;
+}
+
+.notifications-header .dropdown-header {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    color: #1f3b4d;
+    font-weight: 700;
+}
+
+.notifications-body {
+    max-height: 380px;
+    overflow-y: auto;
+}
+
+/* Custom scrollbar for notifications */
+.notifications-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notifications-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.notifications-body::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.notifications-body::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+}
+
+.notification-item-wrapper {
+    position: relative;
+    transition: background-color 0.2s;
+}
+
+.notification-item-wrapper:hover {
+    background-color: #f8f9fa;
 }
 
 .notification-item {
-    position: relative;
-
+    display: block;
+    transition: opacity 0.2s;
     border-radius: 8px;
 }
 
-.notification-item:hover {
-    background-color: rgba(127, 179, 213, 0.15);
+.notification-close-btn {
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    width: 24px !important;
+    /* Fix inherited width: 100% */
+    height: 24px !important;
+    background: transparent !important;
+    border: none !important;
+    color: #bbb !important;
+    padding: 0 !important;
+    /* Reset inherited padding */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    transition: all 0.2s !important;
+    z-index: 10 !important;
+    cursor: pointer !important;
+    /* Reset other nav-item button properties */
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    font-size: 0 !important;
+    /* Hide potential text if inherited */
 }
 
-.dropdown-header {
-    padding: 0;
-    color: #1f3b4d;
-    font-weight: 500;
-    font-size: 18px;
+.notification-close-btn:hover {
+    color: #e63946 !important;
+    background-color: rgba(230, 57, 70, 0.1) !important;
 }
 
-.notification-p {
-    color: #272727 !important;
+.notification-title {
+    font-size: 14px;
+    color: #1f3b4d !important;
 }
 
-.notification-span {
-    color: #0a2540 !important;
-    font-size: 0.9rem;
-    text-decoration: none;
-    display: block;
-    font-weight: 500;
+.notification-message {
+    font-size: 12px;
+    color: #6c757d !important;
 }
+
+/* Mobile full-width notifications */
+@media (max-width: 991px) {
+    .nav-notifications.dropdown {
+        position: static;
+    }
+
+    .notifications-dropdown {
+        position: fixed !important;
+        top: 60px !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100vw !important;
+        height: auto !important;
+        max-height: calc(100vh - 100px) !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        border: none !important;
+        background-color: var(--color-dark-blue) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+        z-index: 1030;
+
+        /* Animation properties */
+        display: block !important;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(-20px) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        pointer-events: none;
+    }
+
+    .notifications-dropdown.show {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0) !important;
+        pointer-events: auto;
+    }
+
+    .notifications-header {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .notifications-header .dropdown-header {
+        color: #fff !important;
+        padding: 15px !important;
+        font-weight: 700;
+    }
+
+    .notifications-body {
+        max-height: calc(100vh - 160px) !important;
+        overflow-y: auto;
+    }
+
+    .notification-item-wrapper {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        background-color: transparent !important;
+    }
+
+    .notification-item-wrapper:hover {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .notification-title {
+        color: #fff !important;
+        font-size: 16px;
+    }
+
+    .notification-message {
+        color: rgba(255, 255, 255, 0.7) !important;
+        font-size: 14px;
+    }
+
+    .notification-close-btn {
+        color: #fff !important;
+    }
+}
+
+
 
 .nav-notifications .nav-link {
     display: inline-block;
@@ -582,13 +727,23 @@ ul .dropdown {
 
 /* ----- LEFT COLUM ----- */
 .race-info {
-    padding: 8px 14px;
+    width: 100%;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.race-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .race-location {
     display: flex;
     align-items: center;
-    gap: 10px;
 }
 
 .race-flag {
@@ -607,11 +762,21 @@ ul .dropdown {
 }
 
 .race-circuit {
-    margin: 4px 0 0 0;
-    font-size: 12px;
+    font-size: 1rem;
     font-weight: 300;
     text-align: left;
     color: var(--circuit-name);
+    margin: 0px;
+}
+
+.race-sessions {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #4c86b7;
+    text-align: end;
+    margin: 0px;
+    letter-spacing: 0.5px;
 }
 
 /* ----- RIGHT COLUM ----- */
@@ -628,11 +793,11 @@ ul .dropdown {
 }
 
 .race-day {
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .race-month {
-    font-size: 12px;
+    font-size: 14px;
     margin-top: -4px;
     opacity: 0.9;
 }

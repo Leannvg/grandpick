@@ -1,7 +1,7 @@
 import { useNotifications } from "../context/NotificationsContext";
 import { Link } from "react-router-dom";
 
-function NotificationsBell() {
+function NotificationsBell({ onToggle }) {
   const { notifications, deleteNotification } = useNotifications();
   const unread = notifications.filter(n => !n.seen).length;
 
@@ -11,6 +11,7 @@ function NotificationsBell() {
         className="nav-link btn btn-link position-relative"
         data-bs-toggle="dropdown"
         aria-label="Notificaciones"
+        onClick={onToggle}
       >
         <svg
           className="icon-submit"
@@ -30,42 +31,52 @@ function NotificationsBell() {
         {unread > 0 && <span className="notification-badge">{unread}</span>}
       </button>
 
-      <div className="dropdown-menu dropdown-menu-end notifications-dropdown p-3">
-        <p className="dropdown-header">Notificaciones</p>
+      <div className="dropdown-menu dropdown-menu-end notifications-dropdown shadow-lg">
+        <div className="notifications-header p-3 border-bottom">
+          <p className="dropdown-header m-0 p-0 text-dark fw-bold">Notificaciones</p>
+        </div>
 
-        <div className="list-group list-group-flush">
-          {notifications.length === 0 ? (
-            <p className="text-center text-muted py-3 m-0">No hay notificaciones</p>
-          ) : (
-            notifications.map((n) => (
-              <div
-                key={n.id}
-                className="list-group-item list-group-item-action d-flex gap-3 py-3"
-              >
-                <span className="notification-icon">{n.icon || "🏁"}</span>
-
-                <div className="d-flex gap-2 w-100 justify-content-between">
+        <div className="notifications-body">
+          <div className="list-group list-group-flush">
+            {notifications.length === 0 ? (
+              <p className="text-center text-light py-4 m-0">No hay notificaciones</p>
+            ) : (
+              notifications.map((n) => (
+                <div
+                  key={n.id}
+                  className="notification-item-wrapper position-relative border-bottom"
+                >
                   <Link
-                    to={n.link}
-                    className="text-decoration-none"
+                    to={n.link?.startsWith("/results") ? "/ranking" : (n.link || "/predictions")}
+                    className="notification-item d-flex gap-3 p-3 text-decoration-none"
                     onClick={() => deleteNotification(n.id)}
                   >
-                    <div>
-                      <span className="notification-span">{n.title}</span>
-                      <p className="notification-p mb-0">{n.message}</p>
+                    <span className="notification-icon fs-4">{n.icon || "🏁"}</span>
+                    <div className="notification-content">
+                      <span className="notification-title fw-semibold text-dark d-block">{n.title}</span>
+                      <p className="notification-message mb-0 text-muted small">{n.message}</p>
                     </div>
                   </Link>
 
                   <button
                     type="button"
-                    className="btn-close notification-close"
-                    aria-label="Close"
-                    onClick={() => deleteNotification(n.id)}
-                  ></button>
+                    className="notification-close-btn"
+                    aria-label="Borrar notificación"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      deleteNotification(n.id);
+                    }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
                 </div>
-              </div>
-            ))
-          )}
+              ))
+            )}
+          </div>
         </div>
       </div>
     </>
