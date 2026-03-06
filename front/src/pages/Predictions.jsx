@@ -229,11 +229,12 @@ function Predictions() {
       {race && (
         <header className="page-header">
           {race.raceCountry && (
-            <div className="section-label">
-              <span className="emoji-flag">{race.raceCountry.emoji}</span>
+            <span className="circuit-country-detail section-label">
+              <span className="emoji-flag me-2">{race.raceCountry.emoji}</span>
               {race.raceCountry.name}
-            </div>
+            </span>
           )}
+
           <h1 className="section-title">{race.circuit.gp_name}</h1>
           {race.raceCountry && (
             <span className="section-subtitle">{formatRaceDate(race.date_gp_start, race.date_gp_end)}</span>
