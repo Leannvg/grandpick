@@ -183,6 +183,7 @@ body {
 .section-title {
   margin-bottom: 6px;
   color: #fff;
+  text-transform: uppercase;
 }
 
 .section-subtitle {
