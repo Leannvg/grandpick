@@ -731,6 +731,13 @@ ul .dropdown {
     padding: 10px 16px;
 }
 
+.race-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 .race-location {
     display: flex;
     align-items: center;

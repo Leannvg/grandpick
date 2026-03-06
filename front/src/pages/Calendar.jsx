@@ -122,13 +122,15 @@ function Calendar() {
                         {leftRaces.map((race, index) => (
                             <article className="calendar-item" key={race._id || index}>
                                 <div className="race-info">
-                                    <p className="race-sessions">
-                                        {formatSessionTypes(race.sessionTypes)}
-                                    </p>
-                                    <div className="race-location">
-                                        <span className="emoji-flag me-2">{getFlagEmoji(race.circuit?.country)}</span>
-                                        <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
-                                        <span className="race-round">/ RONDA {index + 1}</span>
+                                    <div className="race-top">
+                                        <div className="race-location">
+                                            <span className="emoji-flag me-2">{getFlagEmoji(race.circuit?.country)}</span>
+                                            <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
+                                            <span className="race-round">/ RONDA {index + 1}</span>
+                                        </div>
+                                        <p className="race-sessions">
+                                            {formatSessionTypes(race.sessionTypes)}
+                                        </p>
                                     </div>
                                     <p className="race-circuit">{race.circuit.circuit_name}</p>
 
@@ -146,15 +148,17 @@ function Calendar() {
                         {rightRaces.map((race, index) => (
                             <article className="calendar-item" key={race._id || index}>
                                 <div className="race-info">
-                                    <div className="race-location">
-                                        <span className="emoji-flag me-2">{getFlagEmoji(race.circuit?.country)}</span>
-                                        <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
-                                        <span className="race-round">/ RONDA {midPoint + index + 1}</span>
+                                    <div className="race-top">
+                                        <div className="race-location">
+                                            <span className="emoji-flag me-2">{getFlagEmoji(race.circuit?.country)}</span>
+                                            <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
+                                            <span className="race-round">/ RONDA {midPoint + index + 1}</span>
+                                        </div>
+                                        <p className="race-sessions">
+                                            {formatSessionTypes(race.sessionTypes)}
+                                        </p>
                                     </div>
                                     <p className="race-circuit">{race.circuit.circuit_name}</p>
-                                    <p className="race-sessions">
-                                        {formatSessionTypes(race.sessionTypes)}
-                                    </p>
                                 </div>
                                 <div className={`race-date ${getStatusClass(midPoint + index)}`}>
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end)}</span>
