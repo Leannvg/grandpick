@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getStatesByCountry } from "../services/countries.services.js";
+import { getStatesByCountry, getStateDetails } from "../services/countries.services.js";
 import SearchableSelect from "../components/SearchableSelect.jsx";
 
 function CitySelect({ cityFunction, country, defaultValue = "", isInvalid = false, error }) {
