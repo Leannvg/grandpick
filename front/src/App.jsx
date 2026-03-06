@@ -31,6 +31,7 @@ import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
 
 import { connectSocket, disconnectSocket } from "./socket";
+import { useLoader } from "./context/LoaderContext";
 import { useAlert } from "./context/AlertContext";
 import { Routes, Route, useNavigate, Navigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -47,6 +48,7 @@ function App() {
   const [esAdmin, setAdmin] = useState(false);
   const [cargando, setCargando] = useState(true);
   const { showAlert } = useAlert();
+  const { loading } = useLoader();
 
   const isHome = location.pathname === "/";
 
@@ -131,6 +133,11 @@ function App() {
         <Nav onLogout={onLogout} autenticado={estaAutenticado} esAdmin={esAdmin}></Nav>
         <NextRaceCTA />
         <div className={`main-content ${isHome ? 'home-content' : ''}`}>
+          {loading && (
+            <div className="loader-overlay">
+              <div className="loader-box">Cargando...</div>
+            </div>
+          )}
           <Routes>
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login onLogin={onLogin} />} />

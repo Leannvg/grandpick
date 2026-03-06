@@ -16,12 +16,6 @@ export function LoaderProvider({ children }) {
   return (
     <LoaderContext.Provider value={{ loading, showLoader, hideLoader }}>
       {children}
-
-      {loading && (
-        <div style={styles.overlay}>
-          <div style={styles.box}>Cargando...</div>
-        </div>
-      )}
     </LoaderContext.Provider>
   );
 }
