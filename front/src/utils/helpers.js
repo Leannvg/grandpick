@@ -5,11 +5,12 @@ export function mapRaceToInitialData(apiData) {
 
   const enabledPoints = {};
   const pointData = {};
+  const tz = circuit?.timezone || "UTC";
 
   race_types.forEach((rt) => {
     enabledPoints[rt.points_system._id] = true;
 
-    const dt = DateTime.fromISO(rt.date_race).setZone(circuit.timezone);
+    const dt = DateTime.fromISO(rt.date_race).setZone(tz);
     pointData[rt.points_system._id] = {
       fecha: dt.toISODate(),
       hora: dt.toFormat("HH:mm"),
@@ -18,9 +19,9 @@ export function mapRaceToInitialData(apiData) {
 
   return {
     circuit: id_circuit,
-    circuitTimezone: circuit.timezone,
-    dateStart: DateTime.fromISO(date_gp_start, { zone: "utc" }).toISODate(),
-    dateFinish: DateTime.fromISO(date_gp_end, { zone: "utc" }).toISODate(),
+    circuitTimezone: tz,
+    dateStart: DateTime.fromISO(date_gp_start).setZone(tz).toISODate(),
+    dateFinish: DateTime.fromISO(date_gp_end).setZone(tz).toISODate(),
     enabledPoints,
     pointData,
     state: race_types[0]?.state || "Pendiente",
@@ -31,11 +32,12 @@ export function mapRaceToInitialData(apiData) {
 
 export const formatDate = (isoDate) => {
   if (!isoDate) return "N/A";
-  return new Date(isoDate).toLocaleDateString("es-ES", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+  return DateTime.fromISO(isoDate).setZone("local").toFormat("dd/MM/yyyy");
+};
+
+export const formatDateInTimezone = (isoDate, timezone = "utc") => {
+  if (!isoDate) return "N/A";
+  return DateTime.fromISO(isoDate).setZone(timezone).toFormat("dd/MM/yyyy");
 };
 
 
@@ -124,13 +126,15 @@ export function formatRaceDate(startDate, endDate) {
     "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
   ];
 
-  const start = new Date(startDate);
-  const end = new Date(endDate);
+  if (!startDate || !endDate) return "N/A";
 
-  const dayStart = start.getUTCDate();
-  const dayEnd = end.getUTCDate();
-  const month = months[start.getUTCMonth()];
-  const year = start.getUTCFullYear();
+  const start = DateTime.fromISO(startDate).setZone("local");
+  const end = DateTime.fromISO(endDate).setZone("local");
+
+  const dayStart = start.day;
+  const dayEnd = end.day;
+  const month = months[start.month - 1];
+  const year = start.year;
 
   if (dayStart === dayEnd) {
     return `${dayStart} ${month}`;
@@ -138,6 +142,7 @@ export function formatRaceDate(startDate, endDate) {
 
   return `${dayStart}-${dayEnd} ${month}`;
 }
+
 
 
 export function authHeaders(extraHeaders = {}) {

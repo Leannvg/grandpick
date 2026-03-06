@@ -1,8 +1,8 @@
 import { usePagination } from "./../../hooks/usePagination.js";
-import { formatDate } from "../../utils/helpers.js";
+import { formatDateInTimezone } from "../../utils/helpers.js";
 
 export default function RacesTable({ races, onEdit, onDelete }) {
- const {
+  const {
     page,
     pageSize,
     setPage,
@@ -10,10 +10,10 @@ export default function RacesTable({ races, onEdit, onDelete }) {
     totalPages,
     paginatedData
   } = usePagination(races, 10);
-  
+
   return (
     <>
-       {/* SELECT PAGE SIZE */}
+      {/* SELECT PAGE SIZE */}
       <div className="d-flex justify-content-start mb-2">
         <label className="me-2">Mostrar:</label>
         <select
@@ -53,8 +53,8 @@ export default function RacesTable({ races, onEdit, onDelete }) {
                 <td>{r.round}</td>
                 <td>{r.country}</td>
                 <td>{r.gp_name}</td>
-                <td>{formatDate(r.dateStart)}</td>
-                <td>{formatDate(r.dateEnd)}</td>
+                <td>{formatDateInTimezone(r.dateStart, r.timezone)}</td>
+                <td>{formatDateInTimezone(r.dateEnd, r.timezone)}</td>
                 <td>{r.raceTypes}</td>
                 <td>
                   <button onClick={() => onEdit(r.circuitId, r.year)}>✏️</button>

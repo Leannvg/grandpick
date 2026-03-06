@@ -42,6 +42,7 @@ const groupRacesByCircuitAndYear = (races) => {
         country: race.circuit?.country || "N/A",
         dateStart: race.date_gp_start,
         dateEnd: race.date_gp_end,
+        timezone: race.circuit?.timezone || "UTC",
         raceTypes: new Set(),
         gpRaceId: race._id,
         year,
@@ -88,7 +89,7 @@ function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterYear, setFilterYear] = useState("Todos");
   const [availableYears, setAvailableYears] = useState([]);
-  
+
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab") || TABS.RACES;
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -207,7 +208,7 @@ function Dashboard() {
   };
 
   const handleDelete = async (id, name) => {
-  try {
+    try {
       // --- CIRCUITOS ---
       if (activeTab === TABS.CIRCUITS) {
         const races = await RacesServices.findAll();
@@ -297,122 +298,122 @@ function Dashboard() {
     }
   };
 
-useEffect(() => {
-  const tabFromUrl = searchParams.get("tab");
-  if (tabFromUrl) {
-    const normalized = tabFromUrl.trim().toLowerCase();
+  useEffect(() => {
+    const tabFromUrl = searchParams.get("tab");
+    if (tabFromUrl) {
+      const normalized = tabFromUrl.trim().toLowerCase();
 
-    const matchedTab = Object.values(TABS).find(
-      (t) => t.toLowerCase() === normalized
-    );
+      const matchedTab = Object.values(TABS).find(
+        (t) => t.toLowerCase() === normalized
+      );
 
-    if (matchedTab) {
-      setActiveTab(matchedTab);
+      if (matchedTab) {
+        setActiveTab(matchedTab);
+      }
     }
-  }
-}, [searchParams]);
+  }, [searchParams]);
 
 
 
   const handleToggleBlockUser = async (user) => {
-  const action = user.blocked ? "Desbloquear" : "Bloquear";
-  console.log(user);
-  await confirmDialog({
-    title: `¿Deseas ${action} al usuario "${user.name} ${user.last_name}"?`,
-    message: "Esta acción cambiará el estado del usuario, pero no será eliminado de nuestros registros.",
-    confirmText: `${action}`,
-    cancelText: "Cancelar",
-    confirmVariant: `${(action === 'Bloquear') ? 'danger' : 'success'}`,
-  });
+    const action = user.blocked ? "Desbloquear" : "Bloquear";
+    console.log(user);
+    await confirmDialog({
+      title: `¿Deseas ${action} al usuario "${user.name} ${user.last_name}"?`,
+      message: "Esta acción cambiará el estado del usuario, pero no será eliminado de nuestros registros.",
+      confirmText: `${action}`,
+      cancelText: "Cancelar",
+      confirmVariant: `${(action === 'Bloquear') ? 'danger' : 'success'}`,
+    });
 
-  try {
-    if (user.blocked) {
-      await UsersServices.unblockUser(user._id);
-      showAlert(`✅ Usuario "${user.name} ${user.last_name}" desbloqueado correctamente`, "success");
-    } else {
-      await UsersServices.blockUser(user._id);
-      showAlert(`✅ Usuario "${user.name} ${user.last_name}" bloqueado correctamente`, "success");
+    try {
+      if (user.blocked) {
+        await UsersServices.unblockUser(user._id);
+        showAlert(`✅ Usuario "${user.name} ${user.last_name}" desbloqueado correctamente`, "success");
+      } else {
+        await UsersServices.blockUser(user._id);
+        showAlert(`✅ Usuario "${user.name} ${user.last_name}" bloqueado correctamente`, "success");
+      }
+
+      fetchUsers();
+    } catch (err) {
+      console.error("Error al cambiar estado de usuario:", err);
+      showAlert(`❌ No se pudo actualizar el estado del usuario`, "danger", true);
     }
-
-    fetchUsers();
-  } catch (err) {
-    console.error("Error al cambiar estado de usuario:", err);
-    showAlert(`❌ No se pudo actualizar el estado del usuario`, "danger", true);
-  }
   };
 
   const handleToggleDriver = async (driver) => {
-  try {
-   
-    if (!driver.active && driver.team_info && driver.team_info._id) {
-      
-      const activeDriversInTeam = drivers.filter(
-        (d) =>
-          d.team_info &&
-          d.team_info._id === driver.team_info._id &&
-          d.active !== false &&
-          d._id !== driver._id
-      );
+    try {
 
-      if (activeDriversInTeam.length >= 2) {
-        showAlert(`❌ No puedes habilitar a "${driver.full_name}" porque el equipo "${driver.team_info.name}" ya tiene 2 pilotos activos.`, "danger", true);
-        return;
+      if (!driver.active && driver.team_info && driver.team_info._id) {
+
+        const activeDriversInTeam = drivers.filter(
+          (d) =>
+            d.team_info &&
+            d.team_info._id === driver.team_info._id &&
+            d.active !== false &&
+            d._id !== driver._id
+        );
+
+        if (activeDriversInTeam.length >= 2) {
+          showAlert(`❌ No puedes habilitar a "${driver.full_name}" porque el equipo "${driver.team_info.name}" ya tiene 2 pilotos activos.`, "danger", true);
+          return;
+        }
       }
+
+      const action = driver.active ? "Deshabilitar" : "Habilitar";
+
+      await confirmDialog({
+        title: `¿Deseas ${action.toLowerCase()} al piloto "${driver.full_name}"?`,
+        message: "Esta acción cambiará el estado del piloto, pero no será eliminado de nuestros registros.",
+        confirmText: `${action}`,
+        cancelText: "Cancelar",
+        confirmVariant: `${(action === 'Deshabilitar') ? 'danger' : 'success'}`,
+      });
+
+      if (driver.active) {
+        await DriversServices.disableDriver(driver._id);
+        showAlert(`✅ Piloto deshabilitado correctamente`, "success");
+      } else {
+        await DriversServices.enableDriver(driver._id);
+        showAlert(`✅ Piloto habilitado correctamente`, "success");
+      }
+
+      fetchDrivers();
+    } catch (err) {
+      console.error("Error al cambiar estado del piloto:", err);
     }
-
-    const action = driver.active ? "Deshabilitar" : "Habilitar";
-
-    await confirmDialog({
-      title: `¿Deseas ${action.toLowerCase()} al piloto "${driver.full_name}"?`,
-      message: "Esta acción cambiará el estado del piloto, pero no será eliminado de nuestros registros.",
-      confirmText: `${action}`,
-      cancelText: "Cancelar",
-      confirmVariant: `${(action === 'Deshabilitar') ? 'danger' : 'success'}`,
-    });
-
-    if (driver.active) {
-      await DriversServices.disableDriver(driver._id);
-      showAlert(`✅ Piloto deshabilitado correctamente`, "success");
-    } else {
-      await DriversServices.enableDriver(driver._id);
-      showAlert(`✅ Piloto habilitado correctamente`, "success");
-    }
-
-    fetchDrivers(); 
-  } catch (err) {
-    console.error("Error al cambiar estado del piloto:", err);
-  }
-};
+  };
 
   const renderTabContent = () => {
-  switch (activeTab) {
-    case TABS.RACES:
-      return <RacesTable races={filterData(
-    races.filter((r) => filterYear === "Todos" || r.year === Number(filterYear)),
-    ["country", "gp_name", "raceTypes"]
-  )} onEdit={handleEdit} onDelete={handleDelete} />;
-    case TABS.CIRCUITS:
-      return <CircuitsTable circuits={filterData(circuits, ["circuit_name", "country", "city", "length", "laps"])} onEdit={handleEdit} onDelete={handleDelete} />;
-    case TABS.DRIVERS:
-      return (
-        <DriversTable
-          drivers={filterData(drivers, ["full_name", "trigram", "country", "number", "team_info.name"])}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onToggle={handleToggleDriver}
-        />
-      );
-    case TABS.TEAMS:
-      console.log(teams);
-      return <TeamsTable teams={filterData(teams, ["name", "chief", "power_unit", "country", "drivers.full_name"])} onEdit={handleEdit} onDelete={handleDelete} />;
-    case TABS.USERS:
-      return <UsersTable users={filterData(users, ["name", "last_name", "email", "country", "points", "date_register"])} onToggleBlock={handleToggleBlockUser} />;
-    case TABS.ASSIGNMENTS:
-      return <TeamsDriversAdmin />;
-    default:
-      return <p>Selecciona una pestaña.</p>;
-  }
-};
+    switch (activeTab) {
+      case TABS.RACES:
+        return <RacesTable races={filterData(
+          races.filter((r) => filterYear === "Todos" || r.year === Number(filterYear)),
+          ["country", "gp_name", "raceTypes"]
+        )} onEdit={handleEdit} onDelete={handleDelete} />;
+      case TABS.CIRCUITS:
+        return <CircuitsTable circuits={filterData(circuits, ["circuit_name", "country", "city", "length", "laps"])} onEdit={handleEdit} onDelete={handleDelete} />;
+      case TABS.DRIVERS:
+        return (
+          <DriversTable
+            drivers={filterData(drivers, ["full_name", "trigram", "country", "number", "team_info.name"])}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onToggle={handleToggleDriver}
+          />
+        );
+      case TABS.TEAMS:
+        console.log(teams);
+        return <TeamsTable teams={filterData(teams, ["name", "chief", "power_unit", "country", "drivers.full_name"])} onEdit={handleEdit} onDelete={handleDelete} />;
+      case TABS.USERS:
+        return <UsersTable users={filterData(users, ["name", "last_name", "email", "country", "points", "date_register"])} onToggleBlock={handleToggleBlockUser} />;
+      case TABS.ASSIGNMENTS:
+        return <TeamsDriversAdmin />;
+      default:
+        return <p>Selecciona una pestaña.</p>;
+    }
+  };
 
 
   return (
@@ -420,37 +421,37 @@ useEffect(() => {
       <h2>Panel de control</h2>
 
       <div className="tabs-header d-flex align-items-center flex-wrap gap-2 justify-content-between">
-         <div className="d-flex align-items-center gap-2">
-        {![TABS.ASSIGNMENTS, TABS.USERS].includes(activeTab) && (
-          <button
-            className="btn btn-success me-2"
-            onClick={() => {
-              if (activeTab === TABS.RACES) navigate("/race/create");
-              else if (activeTab === TABS.CIRCUITS) navigate("/circuit/create");
-              else if (activeTab === TABS.DRIVERS) navigate("/driver/create");
-              else if (activeTab === TABS.TEAMS) navigate("/team/create");
-            }}
-          >
-            {activeTab === TABS.RACES && "Agregar Carrera"}
-            {activeTab === TABS.CIRCUITS && "Agregar Circuito"}
-            {activeTab === TABS.DRIVERS && "Agregar Piloto"}
-            {activeTab === TABS.TEAMS && "Agregar Escudería"}
-          </button>
-        )}
+        <div className="d-flex align-items-center gap-2">
+          {![TABS.ASSIGNMENTS, TABS.USERS].includes(activeTab) && (
+            <button
+              className="btn btn-success me-2"
+              onClick={() => {
+                if (activeTab === TABS.RACES) navigate("/race/create");
+                else if (activeTab === TABS.CIRCUITS) navigate("/circuit/create");
+                else if (activeTab === TABS.DRIVERS) navigate("/driver/create");
+                else if (activeTab === TABS.TEAMS) navigate("/team/create");
+              }}
+            >
+              {activeTab === TABS.RACES && "Agregar Carrera"}
+              {activeTab === TABS.CIRCUITS && "Agregar Circuito"}
+              {activeTab === TABS.DRIVERS && "Agregar Piloto"}
+              {activeTab === TABS.TEAMS && "Agregar Escudería"}
+            </button>
+          )}
 
-        {Object.values(TABS).map((tabName) => (
-          <button
-            key={tabName}
-            className={activeTab === tabName ? "tab-button active" : "tab-button"}
-            onClick={() => {
-              setActiveTab(tabName);
-              setSearchTerm("");
-              navigate({ search: `?tab=${tabName}` });
-            }}
-          >
-            {tabName}
-          </button>
-        ))}
+          {Object.values(TABS).map((tabName) => (
+            <button
+              key={tabName}
+              className={activeTab === tabName ? "tab-button active" : "tab-button"}
+              onClick={() => {
+                setActiveTab(tabName);
+                setSearchTerm("");
+                navigate({ search: `?tab=${tabName}` });
+              }}
+            >
+              {tabName}
+            </button>
+          ))}
 
         </div>
 
@@ -486,7 +487,7 @@ useEffect(() => {
 
       </div>
 
-      
+
 
 
       <div className="tab-content">{renderTabContent()}</div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import racesServices from "../services/races.services";
 import { useLoader } from "../context/LoaderContext";
 import { getFlagEmoji } from "../utils/helpers";
+import { DateTime } from "luxon";
 
 function Calendar() {
     const [races, setRaces] = useState([]);
@@ -62,10 +63,10 @@ function Calendar() {
     }
 
     function formatDayRange(startDate, endDate) {
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-        const dayStart = start.getUTCDate();
-        const dayEnd = end.getUTCDate();
+        const start = DateTime.fromISO(startDate).setZone("local");
+        const end = DateTime.fromISO(endDate).setZone("local");
+        const dayStart = start.day;
+        const dayEnd = end.day;
 
         if (dayStart === dayEnd) return `${dayStart}`;
         return `${dayStart}–${dayEnd}`;
@@ -73,11 +74,11 @@ function Calendar() {
 
     function formatMonthShort(startDate, endDate) {
         const months = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
-        const start = new Date(startDate);
-        const end = new Date(endDate);
+        const start = DateTime.fromISO(startDate).setZone("local");
+        const end = DateTime.fromISO(endDate).setZone("local");
 
-        const startMonth = months[start.getUTCMonth()];
-        const endMonth = months[end.getUTCMonth()];
+        const startMonth = months[start.month - 1];
+        const endMonth = months[end.month - 1];
 
         if (startMonth === endMonth) return startMonth;
         return `${startMonth}-${endMonth}`;
