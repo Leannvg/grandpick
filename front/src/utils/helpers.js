@@ -120,7 +120,7 @@ export function computeRaceState(race) {
   };
 }
 
-export function formatRaceDate(startDate, endDate) {
+export function formatRaceDate(startDate, endDate, timezone = "local") {
   const months = [
     "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
     "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
@@ -128,8 +128,8 @@ export function formatRaceDate(startDate, endDate) {
 
   if (!startDate || !endDate) return "N/A";
 
-  const start = DateTime.fromISO(startDate).setZone("local");
-  const end = DateTime.fromISO(endDate).setZone("local");
+  const start = DateTime.fromISO(startDate).setZone(timezone);
+  const end = DateTime.fromISO(endDate).setZone(timezone);
 
   const dayStart = start.day;
   const dayEnd = end.day;

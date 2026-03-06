@@ -85,7 +85,7 @@ function NextRaceCTA() {
                             {/* Assuming we can get the round from the race object or just hardcode for now if not available */}
                             <span className="nr-cta__round">RONDA {race.round || "—"}</span>
                             <span className="nr-cta__date">
-                                {formatRaceDate(race.date_gp_start, race.date_gp_end).toUpperCase()}
+                                {formatRaceDate(race.date_gp_start, race.date_gp_end, race.circuit?.timezone).toUpperCase()}
                             </span>
 
                             <Link to="/predictions" className="nr-cta__action">

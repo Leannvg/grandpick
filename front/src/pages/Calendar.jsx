@@ -62,9 +62,9 @@ function Calendar() {
         return "race-upcoming";
     }
 
-    function formatDayRange(startDate, endDate) {
-        const start = DateTime.fromISO(startDate).setZone("local");
-        const end = DateTime.fromISO(endDate).setZone("local");
+    function formatDayRange(startDate, endDate, timezone = "local") {
+        const start = DateTime.fromISO(startDate).setZone(timezone);
+        const end = DateTime.fromISO(endDate).setZone(timezone);
         const dayStart = start.day;
         const dayEnd = end.day;
 
@@ -72,10 +72,10 @@ function Calendar() {
         return `${dayStart}–${dayEnd}`;
     }
 
-    function formatMonthShort(startDate, endDate) {
+    function formatMonthShort(startDate, endDate, timezone = "local") {
         const months = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
-        const start = DateTime.fromISO(startDate).setZone("local");
-        const end = DateTime.fromISO(endDate).setZone("local");
+        const start = DateTime.fromISO(startDate).setZone(timezone);
+        const end = DateTime.fromISO(endDate).setZone(timezone);
 
         const startMonth = months[start.month - 1];
         const endMonth = months[end.month - 1];
@@ -137,8 +137,8 @@ function Calendar() {
 
                                 </div>
                                 <div className={`race-date ${getStatusClass(index)}`}>
-                                    <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end)}</span>
-                                    <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end)}</span>
+                                    <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
+                                    <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
                                 </div>
                             </article>
                         ))}
@@ -162,8 +162,8 @@ function Calendar() {
                                     <p className="race-circuit">{race.circuit.circuit_name}</p>
                                 </div>
                                 <div className={`race-date ${getStatusClass(midPoint + index)}`}>
-                                    <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end)}</span>
-                                    <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end)}</span>
+                                    <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
+                                    <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
                                 </div>
                             </article>
                         ))}
