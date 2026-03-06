@@ -52,6 +52,10 @@ body {
   margin: 0px;
 }
 
+.main-content.is-loading {
+  margin: 0px;
+}
+
 /* LOADER DINÁMICO */
 .loader-overlay {
   position: absolute;
@@ -59,8 +63,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #000e18;
-  /* Fondo opaco para ocultar la carga trasera */
+  background: radial-gradient(circle at top, #3081b1, #000e18) no-repeat fixed;
   display: flex;
   justify-content: center;
   align-items: center;

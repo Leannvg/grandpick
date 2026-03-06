@@ -132,7 +132,7 @@ function App() {
         <AuthListener />
         <Nav onLogout={onLogout} autenticado={estaAutenticado} esAdmin={esAdmin}></Nav>
         <NextRaceCTA />
-        <div className={`main-content ${isHome ? 'home-content' : ''}`}>
+        <div className={`main-content ${isHome ? 'home-content' : ''} ${loading ? 'is-loading' : ''}`}>
           {loading && (
             <div className="loader-overlay">
               <div className="loader-box">
