@@ -3,7 +3,7 @@ import API_URL from "../services/api";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import circuitsServices from "../services/circuits.services";
-import countriesServices from "../services/countries.services";
+import * as countriesServices from "../services/countries.services";
 import racesServices from "../services/races.services";
 import { useLoader } from "../context/LoaderContext";
 
