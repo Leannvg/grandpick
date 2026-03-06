@@ -14,7 +14,6 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 8px;
-    opacity: 0.9;
 }
 
 .ranking-page__title {
@@ -27,7 +26,6 @@
 .ranking-page__subtitle {
     font-size: 16px;
     font-weight: 300;
-    opacity: 0.8;
 }
 
 /* SEARCH & FILTERS */

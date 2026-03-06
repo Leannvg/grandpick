@@ -169,10 +169,10 @@ body {
   margin-bottom: 32px;
 }
 
-.page-header p,
+/*.page-header p,
 .page-header h1 {
   margin: 0;
-}
+}*/
 
 .section-label {
   letter-spacing: 1px;
@@ -183,6 +183,7 @@ body {
 .section-title {
   margin-bottom: 6px;
   color: #fff;
+  text-transform: uppercase;
 }
 
 .section-subtitle {
@@ -548,7 +549,7 @@ p {
 @media (min-width: 992px) {
   :root {
     --title-size: 70px;
-    --subtitle-size: 20px;
+    --subtitle-size: 18px;
 
     --space-nav-first: 90px;
     --space-title-body: 90px;
