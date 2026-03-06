@@ -135,7 +135,10 @@ function App() {
         <div className={`main-content ${isHome ? 'home-content' : ''}`}>
           {loading && (
             <div className="loader-overlay">
-              <div className="loader-box">Cargando...</div>
+              <div className="loader-box">
+                <div className="custom-spinner"></div>
+                <span>Cargando...</span>
+              </div>
             </div>
           )}
           <Routes>
