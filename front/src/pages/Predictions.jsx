@@ -229,8 +229,8 @@ function Predictions() {
       {race && (
         <header className="page-header">
           {race.raceCountry && (
-            <div>
-              <span className="emoji-flag section-label">{race.raceCountry.emoji}</span>
+            <div className="section-label">
+              <span className="emoji-flag">{race.raceCountry.emoji}</span>
               {race.raceCountry.name}
             </div>
           )}

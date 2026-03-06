@@ -919,7 +919,8 @@ ul .dropdown {
     color: #fff;
 }
 
-.circuit-country-detail .emoji-flag {
+.circuit-country-detail .emoji-flag,
+.section-label .emoji-flag {
     font-size: 1.5em;
 }
 

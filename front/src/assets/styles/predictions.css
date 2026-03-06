@@ -1,33 +1,3 @@
-.predictions-page {
-    padding-top: 40px;
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.predictions-header {
-    margin-bottom: 40px;
-}
-
-.predictions-country {
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.predictions-country span {
-    font-weight: 400;
-    opacity: 0.8;
-}
-
-.predictions-gp-name {
-    font-size: 48px;
-    line-height: 1.1;
-    text-transform: uppercase;
-    margin: 0;
-    font-weight: 300;
-}
-
 .qualy-label {
     display: block;
     font-size: 24px;
@@ -176,14 +146,6 @@
 }
 
 @media (min-width: 768px) {
-    .predictions-page {
-        max-width: 800px;
-    }
-
-    .predictions-gp-name {
-        font-size: 64px;
-    }
-
     .prediction-cards-container {
         padding: 0;
     }
