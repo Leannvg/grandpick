@@ -917,14 +917,11 @@ ul .dropdown {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 12px;
-    letter-spacing: 1px;
     color: #fff;
 }
 
-.circuit-country-detail img {
-    width: 18px;
-    height: auto;
+.circuit-country-detail .emoji-flag {
+    font-size: 1.5em;
 }
 
 .circuit-date {
