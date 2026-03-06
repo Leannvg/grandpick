@@ -312,12 +312,14 @@ function Predictions() {
                     value={driverId || ""}
                     onChange={(selected) => handleChange(index, selected?.value || "")}
                     isDisabled={isClosed}
-                    options={drivers.map((d) => ({
-                      _id: d._id,
-                      name: d.full_name,
-                      teamName: d.team_info?.name || "",
-                      color: d.team_info?.color || "#ccc"
-                    }))}
+                    options={drivers
+                      .filter((d) => d.active === true || d._id === driverId)
+                      .map((d) => ({
+                        _id: d._id,
+                        name: d.full_name,
+                        teamName: d.team_info?.name || "",
+                        color: d.team_info?.color || "#ccc"
+                      }))}
                     placeholder="Seleccione un piloto"
                   />
                 </div>

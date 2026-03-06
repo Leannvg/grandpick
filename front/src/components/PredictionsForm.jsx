@@ -53,11 +53,11 @@ function PredictionsForm({ points = {}, race_types = [], onDriverChange }) {
     const updated = [...selections];
     const newInvalids = [...invalidIndexes];
 
-    if (value !== ""){
+    if (value !== "") {
 
       const existingIndex = updated.findIndex((d, i) => d === value && i !== index);
       if (existingIndex !== -1) {
-        updated[existingIndex] = ""; 
+        updated[existingIndex] = "";
         if (!newInvalids.includes(existingIndex)) {
           newInvalids.push(existingIndex);
         }
@@ -84,22 +84,26 @@ function PredictionsForm({ points = {}, race_types = [], onDriverChange }) {
           <label>{index + 1}</label>
 
           <div className={`react-select-container ${invalidIndexes.includes(index) ? "is-invalid" : ""}`}>
-          <SearchableSelect
-            value={selections[index] || ""}
-            onChange={(selected) => handleChange(index, selected?.value || "")}
-            options={drivers.map((d) => ({
-              _id: d._id,
-              name: d.full_name,
-            }))}
-            placeholder="Seleccione un piloto"
-          />
-        </div>
-
-        {invalidIndexes.includes(index) && (
-          <div className="invalid-feedback d-block">
-            Este piloto fue reasignado a otra posición.
+            <SearchableSelect
+              value={selections[index] || ""}
+              onChange={(selected) => handleChange(index, selected?.value || "")}
+              options={drivers
+                .filter((d) => d.active === true || d._id === selections[index])
+                .map((d) => ({
+                  _id: d._id,
+                  name: d.full_name,
+                  teamName: d.team_info?.name || "",
+                  color: d.team_info?.color || "#ccc",
+                }))}
+              placeholder="Seleccione un piloto"
+            />
           </div>
-        )}
+
+          {invalidIndexes.includes(index) && (
+            <div className="invalid-feedback d-block">
+              Este piloto fue reasignado a otra posición.
+            </div>
+          )}
         </div>
       ))}
     </div>
