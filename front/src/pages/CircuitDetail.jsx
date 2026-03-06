@@ -6,6 +6,7 @@ import circuitsServices from "../services/circuits.services";
 import * as countriesServices from "../services/countries.services";
 import racesServices from "../services/races.services";
 import { useLoader } from "../context/LoaderContext";
+import "../assets/styles/globals.css";
 
 function CircuitDetail() {
     const { id } = useParams();
