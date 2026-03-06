@@ -294,7 +294,7 @@ function Predictions() {
       )}
 
       {race && !isPreWindow && (
-        <div className="prediction-cards-container">
+        <div className="prediction-cards-container container">
           {pointSystem.map((point, index) => {
             const driverId = predictions[index];
 
