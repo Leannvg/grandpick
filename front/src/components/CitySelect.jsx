@@ -6,7 +6,7 @@ function CitySelect({ cityFunction, country, defaultValue = "", isInvalid = fals
   const [states, setStates] = useState([]);
   const [selectedCity, setSelectedCity] = useState("");
 
-  // Cargar estados cuando cambia el país
+  // Cargar estados cuando cambia el país o el valor por defecto
   useEffect(() => {
     if (!country) {
       setStates([]);
@@ -14,19 +14,31 @@ function CitySelect({ cityFunction, country, defaultValue = "", isInvalid = fals
       return;
     }
 
-    getStatesByCountry(country).then((data) => {
+    getStatesByCountry(country).then(async (data) => {
       setStates(data);
 
-      // setear default SOLO cuando se cargan los estados
       if (defaultValue) {
         const match = data.find(s => s.name === defaultValue || s.iso2 === defaultValue);
         if (match) {
           setSelectedCity(match.iso2);
-          cityFunction(match.iso2, match.timezone);
+
+          let tz = match.timezone;
+          if (!tz) {
+            try {
+              const details = await getStateDetails(country, match.iso2);
+              tz = details?.timezone || "";
+            } catch (e) {
+              console.error("Error fetching state details during init:", e);
+            }
+          }
+
+          if (tz) {
+            cityFunction(match.iso2, tz);
+          }
         }
       }
     });
-  }, [country]);
+  }, [country, defaultValue]);
 
   const handleChange = async (selected) => {
     const value = selected?.value || "";
