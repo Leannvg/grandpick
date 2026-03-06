@@ -22,16 +22,28 @@ function CitySelect({ cityFunction, country, defaultValue = "", isInvalid = fals
         const match = data.find(s => s.name === defaultValue || s.iso2 === defaultValue);
         if (match) {
           setSelectedCity(match.iso2);
-          cityFunction(match.iso2);
+          cityFunction(match.iso2, match.timezone);
         }
       }
     });
   }, [country]);
 
-  const handleChange = (selected) => {
+  const handleChange = async (selected) => {
     const value = selected?.value || "";
+    let tz = selected?.timezone || "";
+
+    // Si no tiene timezone en el listado, intentamos buscar el detalle del estado
+    if (value && !tz) {
+      try {
+        const details = await getStateDetails(country, value)
+        tz = details?.timezone || ""
+      } catch (e) {
+        console.error("Error fetching state details:", e)
+      }
+    }
+
     setSelectedCity(value);
-    cityFunction(value);
+    cityFunction(value, tz);
   };
 
   return (
@@ -49,7 +61,7 @@ function CitySelect({ cityFunction, country, defaultValue = "", isInvalid = fals
         placeholder={!country ? "Seleccione un país primero" : "Seleccione una opción"}
         isDisabled={!country}
         isInvalid={isInvalid}
-        
+
       />
 
       {error && <div className="invalid-feedback d-block">{error}</div>}
