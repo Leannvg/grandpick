@@ -729,6 +729,9 @@ ul .dropdown {
 .race-info {
     width: 100%;
     padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .race-top {
