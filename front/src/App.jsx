@@ -32,7 +32,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 
 import { connectSocket, disconnectSocket } from "./socket";
 import { useAlert } from "./context/AlertContext";
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import UsersServices from "./services/users.services.js";
@@ -41,11 +41,14 @@ import UsersServices from "./services/users.services.js";
 function App() {
 
   const navigate = useNavigate();
+  const location = useLocation();
   const [userId, setUserId] = useState(null);
   const [estaAutenticado, setAutenticado] = useState(false);
   const [esAdmin, setAdmin] = useState(false);
   const [cargando, setCargando] = useState(true);
   const { showAlert } = useAlert();
+
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     const initAuth = async () => {
@@ -127,7 +130,7 @@ function App() {
         <AuthListener />
         <Nav onLogout={onLogout} autenticado={estaAutenticado} esAdmin={esAdmin}></Nav>
         <NextRaceCTA />
-        <div className="main-content">
+        <div className={`main-content ${isHome ? 'home-content' : ''}`}>
           <Routes>
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login onLogin={onLogin} />} />

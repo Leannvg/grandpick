@@ -46,6 +46,10 @@ body {
   margin: 65px 0px;
 }
 
+.main-content.home-content {
+  margin: 0px;
+}
+
 .emoji-flag {
   font-family: "Twemoji Country Flags", system-ui, sans-serif !important;
 }
