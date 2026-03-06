@@ -225,23 +225,19 @@ function Predictions() {
   }
 
   return (
-    <section className="predictions-page">
+    <section className="predictions-page page-section container text-center">
       {race && (
-        <div className="predictions-header">
-          <div className="mb-5">
-            {race.raceCountry && (
-              <div className="predictions-country">
-                <span className="emoji-flag">{race.raceCountry.emoji}</span>
-                {race.raceCountry.name}
-              </div>
-            )}
-            <h1 className="predictions-gp-name">{race.circuit.gp_name}</h1>
-            {race.raceCountry && (
-              <span className="section-subtitle">{formatRaceDate(race.date_gp_start, race.date_gp_end)}</span>
-            )}
-          </div>
-
-
+        <header className="page-header">
+          {race.raceCountry && (
+            <div>
+              <span className="emoji-flag section-label">{race.raceCountry.emoji}</span>
+              {race.raceCountry.name}
+            </div>
+          )}
+          <h1 className="section-title">{race.circuit.gp_name}</h1>
+          {race.raceCountry && (
+            <span className="section-subtitle">{formatRaceDate(race.date_gp_start, race.date_gp_end)}</span>
+          )}
 
           <span className="qualy-label">QUALY</span>
 
@@ -286,7 +282,7 @@ function Predictions() {
               <span>¡Vuelve pronto para cargar tu equipo!</span>
             </div>
           )}
-        </div>
+        </header>
       )}
 
       {race === null && (
