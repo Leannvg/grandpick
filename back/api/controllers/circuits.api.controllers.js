@@ -1,16 +1,16 @@
 import * as circuitsServices from './../../services/circuits.services.js'
 import { resolveImage } from '../../middleware/helpers.middleware.js'
 
-export async function findAll(req, res){
-    let circuits = await circuitsServices.findAllCircuits()
-    res.status(200).json(circuits)
+export async function findAll(req, res) {
+  let circuits = await circuitsServices.findAllCircuits()
+  res.status(200).json(circuits)
 }
 
 export async function findById(req, res) {
-    let circuitId = req.params.circuitId
-    
-    let circuit = await circuitsServices.findCircuitById(circuitId)
-    res.status(200).json(circuit)
+  let circuitId = req.params.circuitId
+
+  let circuit = await circuitsServices.findCircuitById(circuitId)
+  res.status(200).json(circuit)
 }
 
 export async function editById(req, res, next) {
@@ -63,7 +63,7 @@ export async function create(req, res, next) {
 
     const result = await circuitsServices.createCircuit(circuit);
 
-    const newCircuit = await circuitsServices.findCircuitById(result.insertedId);
+    const newCircuit = await circuitsServices.findCircuitById(result.result.insertedId);
 
     res.status(201).json(newCircuit);
 
@@ -75,18 +75,18 @@ export async function create(req, res, next) {
 
 
 export async function deleteById(req, res) {
-    const circuitId = req.params.circuitId;
+  const circuitId = req.params.circuitId;
 
-    try {
-        const result = await circuitsServices.deleteCircuit(circuitId);
+  try {
+    const result = await circuitsServices.deleteCircuit(circuitId);
 
-        if (result.deletedCount > 0) {
-            res.status(200).json({ message: "Circuito eliminado exitosamente." });
-        } else {
-            res.status(404).json({ message: "Circuito no encontrado." });
-        }
-    } catch (error) {
-        console.error("Error al eliminar circuito:", error);
-        res.status(500).json({ message: "Error interno del servidor." });
+    if (result.deletedCount > 0) {
+      res.status(200).json({ message: "Circuito eliminado exitosamente." });
+    } else {
+      res.status(404).json({ message: "Circuito no encontrado." });
     }
+  } catch (error) {
+    console.error("Error al eliminar circuito:", error);
+    res.status(500).json({ message: "Error interno del servidor." });
+  }
 }
