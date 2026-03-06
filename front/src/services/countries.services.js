@@ -32,7 +32,7 @@ async function getStateDetails(countryIso2, stateIso2) {
     return res.json();
 }
 
-export default {
+export {
     getCountries,
     getOneCountry,
     getStatesByCountry,
