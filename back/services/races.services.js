@@ -190,7 +190,7 @@ export async function findCurrentOrNextRace() {
         const db = await connectDB();
 
         const now = new Date();
-        const duration = 2 * 60 * 60 * 1000; // 2 horas en ms
+        const duration = 1.5 * 60 * 60 * 1000; // 1.5 horas en ms
 
         const races = await db.collection("Races").aggregate([
             {

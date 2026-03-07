@@ -46,7 +46,7 @@ function NextRaceCTA() {
         const interval = setInterval(() => {
             const now = Date.now();
             const startMs = new Date(race.date_race).getTime();
-            const duration = race.totalDuration || 7200000;
+            const duration = race.totalDuration || 5400000;
             const endMs = startMs + duration;
 
             const currentStatus = computeRaceState(race);

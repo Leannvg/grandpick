@@ -242,7 +242,7 @@ function Predictions() {
 
           <span className="qualy-label">QUALY</span>
 
-          {!isPreWindow && (canPredict || (race && new Date(race.date_race).getTime() + (race.totalDuration || 7200000) > Date.now())) && (
+          {!isPreWindow && (canPredict || (race && new Date(race.date_race).getTime() + (race.totalDuration || 5400000) > Date.now())) && (
             <div className="predictions-countdown">
               {!isClosed && <span className="countdown-label">Tiempo restante para predecir:</span>}
               <CountdownToRace

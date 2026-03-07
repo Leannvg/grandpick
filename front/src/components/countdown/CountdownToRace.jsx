@@ -16,7 +16,7 @@ function CountdownToRace({ raceDate, totalDuration, onExpire, onStartRace }) {
     return () => clearInterval(interval);
   }, []);
 
-  const runTime = totalDuration || 7200000; // 2 horas por defecto (ms)
+  const runTime = totalDuration || 5400000; // 1.5 horas por defecto (ms)
   const timeToStart = start - now;
   const timeToEnd = start + runTime - now;
 
