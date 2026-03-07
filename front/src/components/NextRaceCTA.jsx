@@ -97,8 +97,7 @@ function NextRaceCTA() {
 
                         {status.isInProgress && (
                             <span className={`nr-cta__session-tag session-${race.points_system?.type || 'race'}`}>
-                                {race.points_system?.type?.toUpperCase() === 'QUALIFYNG' ? 'QUALY' :
-                                    race.points_system?.type?.toUpperCase() === 'SPRINT' ? 'SPRINT' : 'CARRERA'} EN CURSO
+                                {race.points_system?.type?.toUpperCase()} EN CURSO
                             </span>
                         )}
 
