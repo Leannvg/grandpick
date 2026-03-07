@@ -103,7 +103,7 @@ function NextRaceCTA() {
 
                         {status.canPredict && (
                             <Link to="/predictions" className="nr-cta__action">
-                                Predecir ahora <span aria-hidden="true">››</span>
+                                Predecir ahora
                             </Link>
                         )}
                     </div>
