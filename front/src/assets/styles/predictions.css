@@ -12,6 +12,25 @@
     color: #fff;
 }
 
+.countdown-in-progress p {
+    margin: 5px 0;
+    line-height: 1.2;
+}
+
+.countdown-in-progress p:first-child {
+    font-size: 1.2rem;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+.countdown-in-progress p:last-child {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.7;
+}
+
+
 /* Prediction Cards */
 .prediction-cards-container {
     display: flex;

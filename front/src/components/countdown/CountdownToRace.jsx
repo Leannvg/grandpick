@@ -62,9 +62,11 @@ function CountdownToRace({ raceDate, totalDuration, onExpire, onStartRace }) {
 
   // Carrera en curso
   return (
-    <p>
-      🏁 La carrera está en curso — {formatDHMS(timeToEnd)} restantes
-    </p>
+    <div className="countdown-in-progress">
+      <p>🏁 La sesión está en curso</p>
+      <p>{formatDHMS(timeToEnd)}</p>
+      <p>restantes</p>
+    </div>
   );
 }
 
