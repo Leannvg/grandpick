@@ -270,7 +270,11 @@ async function forgotPassword(req, res) {
     });
   } catch (err) {
     console.error("FORGOT PASSWORD ERROR:", err);
-    res.status(500).json({ message: "Error interno" });
+    res.status(500).json({
+      message: "Error interno",
+      error: err.message,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
   }
 }
 
