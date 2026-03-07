@@ -205,10 +205,10 @@ export async function findCurrentOrNextRace() {
             {
                 $match: {
                     $or: [
-                        // 1) Carrera en curso (start <= now <= end)
-                        { start: { $lte: now }, end: { $gte: now } },
+                        // 1) Sesión en curso que NO esté finalizada
+                        { start: { $lte: now }, end: { $gte: now }, state: { $ne: "Finalizado" } },
 
-                        // 2) Próxima futura
+                        // 2) Próxima futura (sin importar el estado, aunque suele ser Pendiente)
                         { start: { $gt: now } }
                     ]
                 }

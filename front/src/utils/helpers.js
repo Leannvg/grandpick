@@ -83,16 +83,18 @@ export function computeRaceState(race) {
   if (race.state === "Finalizado" || now > end) {
     return {
       isClosed: true,
+      isInProgress: false,
       canPredict: false,
       isPreWindow: false,
       timeToOpen: null
     };
   }
 
-  // En curso
+  // En curso (In Progress)
   if (now >= start && now <= end) {
     return {
       isClosed: true,
+      isInProgress: true, // Nueva propiedad
       canPredict: false,
       isPreWindow: false,
       timeToOpen: null

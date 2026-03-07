@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import racesServices from "../services/races.services";
 import * as countriesServices from "../services/countries.services";
 import { formatRaceDate, getFlagEmoji, computeRaceState } from "../utils/helpers";
-import API_URL from "../services/api";
 
 function NextRaceCTA() {
     const [race, setRace] = useState(null);
@@ -14,7 +13,7 @@ function NextRaceCTA() {
         minutes: "00",
         seconds: "00"
     });
-    const [status, setStatus] = useState({ isClosed: false, canPredict: false, isPreWindow: false });
+    const [status, setStatus] = useState({ isClosed: false, isInProgress: false, canPredict: false, isPreWindow: false });
 
     useEffect(() => {
         async function fetchNextRace() {
@@ -23,7 +22,6 @@ function NextRaceCTA() {
                 if (data) {
                     setRace(data);
 
-                    // Fetch country info for name if needed, or just use ISO for now
                     const countryIso = data.circuit?.country || data.id_circuit?.country;
                     if (countryIso) {
                         try {
@@ -46,9 +44,22 @@ function NextRaceCTA() {
         if (!race) return;
 
         const interval = setInterval(() => {
-            const targetMs = new Date(race.date_race).getTime();
             const now = Date.now();
-            let difference = targetMs - now;
+            const startMs = new Date(race.date_race).getTime();
+            const duration = race.totalDuration || 7200000;
+            const endMs = startMs + duration;
+
+            const currentStatus = computeRaceState(race);
+            setStatus(currentStatus);
+
+            let difference = 0;
+            if (currentStatus.isInProgress) {
+                // Si está en curso, el contador muestra cuánto falta para el FIN de las 2 horas
+                difference = endMs - now;
+            } else {
+                // Si es futura, muestra cuánto falta para el INICIO
+                difference = startMs - now;
+            }
 
             if (difference <= 0) {
                 difference = 0;
@@ -60,7 +71,6 @@ function NextRaceCTA() {
             const seconds = String(Math.floor((difference / 1000) % 60)).padStart(2, "0");
 
             setTimeLeft({ days, hours, minutes, seconds });
-            setStatus(computeRaceState(race));
         }, 1000);
 
         return () => clearInterval(interval);
@@ -71,7 +81,6 @@ function NextRaceCTA() {
     return (
         <section className="nr-cta">
             <div className="nr-cta__container container">
-                {/* INFO */}
                 <div className="nr-cta__info">
                     <div className="nr-cta__country">
                         <span className="emoji-flag me-2 nr-cta__flag">
@@ -86,7 +95,7 @@ function NextRaceCTA() {
                             {formatRaceDate(race.date_gp_start, race.date_gp_end, race.circuit?.timezone).toUpperCase()}
                         </span>
 
-                        {status.isClosed && !status.isPreWindow && (
+                        {status.isInProgress && (
                             <span className={`nr-cta__session-tag session-${race.points_system?.type || 'race'}`}>
                                 {race.points_system?.type?.toUpperCase() === 'QUALY' ? 'QUALY' :
                                     race.points_system?.type?.toUpperCase() === 'SPRINT' ? 'SPRINT' : 'CARRERA'} EN CURSO
@@ -101,7 +110,6 @@ function NextRaceCTA() {
                     </div>
                 </div>
 
-                {/* COUNTDOWN */}
                 <div className="nr-cta__countdown">
                     <div className="nr-cta__time">
                         <span className="nr-cta__time-value">{timeLeft.days}</span>
