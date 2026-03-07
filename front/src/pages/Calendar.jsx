@@ -19,7 +19,9 @@ function Calendar() {
                 // Group races by circuit and weekend
                 const groupedMap = new Map();
                 data.forEach(race => {
-                    const key = `${race.id_circuit}_${race.date_gp_start}`;
+                    const circuitId = race.id_circuit?._id || race.id_circuit || (race.circuit?._id);
+                    const key = `${circuitId}_${race.date_gp_start}`;
+
                     if (!groupedMap.has(key)) {
                         groupedMap.set(key, {
                             ...race,
@@ -30,7 +32,18 @@ function Calendar() {
                         if (!existing.sessionTypes.includes(race.points_system.type)) {
                             existing.sessionTypes.push(race.points_system.type);
                         }
-                        // Update state: if any session is NOT finished, keep it as NOT finished
+
+                        // Mantener la fecha de fin más tardía del grupo
+                        if (new Date(race.date_gp_end) > new Date(existing.date_gp_end)) {
+                            existing.date_gp_end = race.date_gp_end;
+                        }
+
+                        // Mantener la fecha de inicio más temprana (por si acaso)
+                        if (new Date(race.date_gp_start) < new Date(existing.date_gp_start)) {
+                            existing.date_gp_start = race.date_gp_start;
+                        }
+
+                        // Actualizar estado: si alguna sesión NO está finalizada, el GP sigue vigente
                         if (existing.state === "Finalizado" && race.state !== "Finalizado") {
                             existing.state = race.state;
                         }
@@ -39,10 +52,15 @@ function Calendar() {
 
                 const sortedData = Array.from(groupedMap.values()).sort((a, b) => new Date(a.date_gp_start) - new Date(b.date_gp_start));
 
-                const now = new Date().getTime();
-                const index = sortedData.findIndex(race =>
-                    race.state !== "Finalizado" && new Date(race.date_gp_end).getTime() >= now
-                );
+                const now = DateTime.now().toMillis();
+                const index = sortedData.findIndex(race => {
+                    const isFinished = race.state === "Finalizado";
+                    // Consideramos que no ha terminado si el día de fin aún no termina (en la zona del circuito)
+                    const tz = race.circuit?.timezone || "local";
+                    const endTime = DateTime.fromISO(race.date_gp_end).setZone(tz).endOf('day').toMillis();
+
+                    return !isFinished && endTime >= now;
+                });
                 setCurrentIndex(index);
                 setRaces(sortedData);
             } catch (error) {

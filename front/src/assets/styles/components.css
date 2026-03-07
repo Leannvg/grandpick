@@ -806,17 +806,17 @@ ul .dropdown {
 /* COLORES POR ESTADO                     */
 /* -------------------------------------- */
 
-/* Próximamente */
+/* Carrera finalizada */
 .race-finished {
     background: var(--color-disabled);
 }
 
-/* Carrera en curso */
+/* Carrera en curso / actual */
 .race-current {
     background: var(--color-soon);
 }
 
-/* Carrera finalizada */
+/* Carrera futura / próxima */
 .race-upcoming {
     background: var(--color-next);
 }
