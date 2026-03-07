@@ -242,7 +242,7 @@ function Predictions() {
 
           <span className="qualy-label">QUALY</span>
 
-          {!isPreWindow && (canPredict || (race && new Date(race.date_race).getTime() + race.totalDuration > Date.now())) && (
+          {!isPreWindow && (canPredict || (race && new Date(race.date_race).getTime() + (race.totalDuration || 7200000) > Date.now())) && (
             <div className="predictions-countdown">
               <span className="countdown-label">Tiempo restante para predecir:</span>
               <CountdownToRace
@@ -254,7 +254,7 @@ function Predictions() {
             </div>
           )}
 
-          {!isPreWindow && (
+          {!isPreWindow && !isClosed && (
             <div className="prediction-status-container">
               {currentPrediction ? (
                 <div className="prediction-status-banner status-saved">
@@ -301,7 +301,7 @@ function Predictions() {
             return (
               <div
                 key={index}
-                className={`prediction-card ${invalidIndexes.includes(index) ? "is-invalid" : ""}`}
+                className={`prediction-card ${invalidIndexes.includes(index) ? "is-invalid" : ""} ${isClosed ? "is-disabled" : ""}`}
               >
                 <div className="prediction-rank">
                   {String(index + 1).padStart(2, '0')}

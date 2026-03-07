@@ -76,7 +76,7 @@ export function parseErrorMessage(error) {
 export function computeRaceState(race) {
   const now = Date.now();
   const start = new Date(race.date_race).getTime();
-  const duration = race.totalDuration || 0;
+  const duration = race.totalDuration || 7200000; // 2 horas por defecto (ms)
   const end = start + duration;
 
   // Finalizado
