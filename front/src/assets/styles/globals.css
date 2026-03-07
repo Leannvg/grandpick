@@ -409,14 +409,44 @@ p {
 .nr-cta__action {
   color: #fff;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 700;
   text-decoration: none;
-  transition: opacity 0.2s ease;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 6px 12px;
+  border-radius: 99px;
   margin: 0px 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  animation: cta-pulse 2s infinite ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .nr-cta__action:hover {
-  opacity: 0.8;
+  background: #fff;
+  color: var(--color-accent);
+  transform: scale(1.05);
+  animation-play-state: paused;
+}
+
+@keyframes cta-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+  }
+
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
 }
 
 .nr-cta__session-tag {
@@ -531,6 +561,7 @@ p {
   .nr-cta__action {
     margin-left: auto;
     font-size: 14px;
+    padding: 8px 20px;
     white-space: nowrap;
   }
 
