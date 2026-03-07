@@ -33,13 +33,41 @@
 
 .notification-badge {
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: 4px;
+    right: 4px;
     background: #e63946;
     color: #fff;
     font-size: 0.65rem;
     padding: 2px 5px;
     border-radius: 999px;
+    z-index: 10;
+}
+
+@keyframes bell-ring {
+
+    0%,
+    100% {
+        transform: rotate(0);
+    }
+
+    10%,
+    30% {
+        transform: rotate(10deg);
+    }
+
+    20%,
+    40% {
+        transform: rotate(-10deg);
+    }
+
+    50% {
+        transform: rotate(0);
+    }
+}
+
+.nav-notifications .icon-submit.unread {
+    animation: bell-ring 4s ease-in-out infinite;
+    transform-origin: top center;
 }
 
 .notifications-dropdown {
