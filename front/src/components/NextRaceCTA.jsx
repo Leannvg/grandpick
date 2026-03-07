@@ -90,7 +90,7 @@ function NextRaceCTA() {
                     </div>
 
                     <div className="nr-cta__meta">
-                        <span className="nr-cta__round">RONDA {race.round || "—"}</span>
+                        <span className="nr-cta__round">{race.points_system?.type?.toUpperCase() || "RACE"}</span>
                         <span className="nr-cta__date">
                             {formatRaceDate(race.date_gp_start, race.date_gp_end, race.circuit?.timezone).toUpperCase()}
                         </span>
