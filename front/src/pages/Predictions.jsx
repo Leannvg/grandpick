@@ -240,7 +240,9 @@ function Predictions() {
             <span className="section-subtitle">{formatRaceDate(race.date_gp_start, race.date_gp_end)}</span>
           )}
 
-          <span className="qualy-label">QUALY</span>
+          <span className="qualy-label">
+            {race.points_system?.type?.toUpperCase() || "RACE"}
+          </span>
 
           {!isPreWindow && (canPredict || (race && new Date(race.date_race).getTime() + (race.totalDuration || 5400000) > Date.now())) && (
             <div className="predictions-countdown">
