@@ -1,5 +1,5 @@
-import {ObjectId} from "mongodb"
-import {connectDB} from "./db.services.js"
+import { ObjectId } from "mongodb"
+import { connectDB } from "./db.services.js"
 
 
 export async function findAllRaces() {
@@ -190,7 +190,7 @@ export async function findCurrentOrNextRace() {
         const db = await connectDB();
 
         const now = new Date();
-        const duration = 1 * 60 * 1000;
+        const duration = 2 * 60 * 60 * 1000; // 2 horas en ms
 
         const races = await db.collection("Races").aggregate([
             {
