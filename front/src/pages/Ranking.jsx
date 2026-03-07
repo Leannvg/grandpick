@@ -80,7 +80,7 @@ function Ranking() {
             <div className="ranking-filters">
                 <div className="ranking-filters__left">
                     <select className="ranking-filters__year">
-                        <option value="2025">2025</option>
+                        <option value={new Date().getFullYear()}>{new Date().getFullYear()}</option>
                     </select>
 
                     <div className="d-flex align-items-center ms-3">

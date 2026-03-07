@@ -52,7 +52,7 @@ function Footer() {
                 <hr className="footer-divider" />
 
                 <p className="footer-copyright">
-                    © 2025 Grand Pick Todos los derechos reservados
+                    © {new Date().getFullYear()} Grand Pick Todos los derechos reservados
                 </p>
             </div>
         </footer>
