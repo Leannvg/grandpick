@@ -92,8 +92,7 @@ const Home = () => {
 
                         {/* Texto */}
                         <span className="cta-content">
-                            <span className="cta-title">Poné a prueba tu conocimiento</span>
-                            <span className="cta-timer">PREDECÍ TUS PRÓXIMOS RESULTADOS</span>
+                            <span className="cta-timer">Predecí tus próximos resultados</span>
                         </span>
 
                         {/* Flechas finales (auto fill) */}
