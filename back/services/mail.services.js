@@ -1,48 +1,27 @@
-import nodemailer from "nodemailer";
+import { Resend } from 'resend';
 
 export async function sendResetPassword({ email, token }) {
   const FRONT_URL = process.env.FRONT_URL;
-  const MAIL_USER = process.env.MAIL_USER;
-  const MAIL_PASS = process.env.MAIL_PASS;
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
-  if (!MAIL_USER || !MAIL_PASS) {
-    throw new Error("Configuración de correo (MAIL_USER / MAIL_PASS) no detectada.");
+  if (!RESEND_API_KEY) {
+    throw new Error("RESEND_API_KEY no detectada en las variables de entorno.");
   }
 
   if (!FRONT_URL) {
     throw new Error("FRONT_URL no definido en las variables de entorno.");
   }
 
-  // Creamos el transporter AQUÍ mismo para asegurar que lea las variables más frescas y forzar IPv4
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: MAIL_USER,
-      pass: MAIL_PASS,
-    },
-    // Forzamos IPv4 ya que a veces IPv6 da problemas de ruteo en proveedores de nube
-    connectionTimeout: 10000,
-    greetingTimeout: 5000,
-    socketTimeout: 15000,
-    debug: true, // Habilitamos debug para ver más info en los logs si falla
-    logger: true
-  });
-
+  const resend = new Resend(RESEND_API_KEY);
   const link = `${FRONT_URL}/reset-password?token=${token}`;
 
   try {
-    const fromAddress = MAIL_USER.includes("@")
-      ? `"Soporte GrandPick" <${MAIL_USER}>`
-      : `"Soporte GrandPick" <no-reply@grandpick.app>`;
+    console.log(`� Intentando enviar mail de recuperación a ${email} vía Resend API...`);
 
-    console.log(`📡 Intentando conectar a SMTP para enviar mail a ${email}...`);
-
-    await transporter.sendMail({
-      from: fromAddress,
-      to: email,
-      subject: "Recuperar contraseña",
+    const { data, error } = await resend.emails.send({
+      from: 'GrandPick <onboarding@resend.dev>', // Ver nota sobre dominios personalizados
+      to: [email],
+      subject: 'Recuperar contraseña - GrandPick',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
           <h2 style="color: #e10600;">Recuperar contraseña</h2>
@@ -58,11 +37,15 @@ export async function sendResetPassword({ email, token }) {
         </div>
       `,
     });
-    console.log(`✅ Mail enviado con éxito a ${email}`);
+
+    if (error) {
+      console.error("❌ Error devuelto por Resend:", error);
+      throw new Error(error.message);
+    }
+
+    console.log(`✅ Mail enviado con éxito vía Resend. ID: ${data.id}`);
   } catch (error) {
-    console.error(`❌ Error detallado enviando mail a ${email}:`, error);
+    console.error(`❌ Error crítico enviando mail a ${email}:`, error);
     throw new Error(`Error al enviar el correo: ${error.message}`);
-  } finally {
-    transporter.close(); // Cerramos la conexión para limpiar recursos
   }
 }
