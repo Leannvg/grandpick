@@ -1,31 +1,28 @@
 import nodemailer from "nodemailer";
-const API_URL = process.env.API_URL;
+const FRONT_URL = process.env.FRONT_URL;
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
-  secure: false,
+  secure: false, // TLS
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS,
   },
 });
 
+// Verificar conexión al inicio
+transporter.verify((error, success) => {
+  if (error) {
+    console.error("❌ SMTP connection error:", error);
+  } else {
+    console.log("✅ SMTP connection ready");
+  }
+});
+
 export async function sendResetPassword({ email, token }) {
 
-  transporter.verify((error, success) => {
-    if (error) {
-      console.error("SMTP ERROR:", error);
-    } else {
-      console.log("SMTP READY");
-    }
-  });
-  
-  console.log("MAIL_USER:", process.env.MAIL_USER);
-  console.log("MAIL_PASS:", process.env.MAIL_PASS ? "OK" : "MISSING");
-
-  
-  const link = `${API_URL}/reset-password?token=${token}`;
+  const link = `${FRONT_URL}/reset-password?token=${token}`;
 
   await transporter.sendMail({
     from: `"Soporte GrandPick" <${process.env.MAIL_USER}>`,

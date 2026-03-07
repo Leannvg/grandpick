@@ -5,80 +5,80 @@ import * as tokenServices from '../../services/token.services.js'
 import { resolveImage } from '../../middleware/helpers.middleware.js'
 import * as MailService from '../../services/mail.services.js'
 
-function getAll(req, res){
+function getAll(req, res) {
 
-    /* const token = req.headers['auth-token']
+  /* const token = req.headers['auth-token']
 
-    if(!token) {
-        res.status(401).json({ message: 'No se envió un token' })
-        return;
-    } */
+  if(!token) {
+      res.status(401).json({ message: 'No se envió un token' })
+      return;
+  } */
 
-    UsersServices.getUsers()
-        .then(function(users){
-            res.status(200).json(users)
-        })
+  UsersServices.getUsers()
+    .then(function (users) {
+      res.status(200).json(users)
+    })
 }
 
-function getById(req, res){
+function getById(req, res) {
 
-    const id = req.params.id;
+  const id = req.params.id;
 
-    UsersServices.getUserById(id)
-        .then(function(user){
-            res.status(200).json(user)
-        })
+  UsersServices.getUserById(id)
+    .then(function (user) {
+      res.status(200).json(user)
+    })
 
 }
 
-async function addNew (req, res){
+async function addNew(req, res) {
 
-    try {
-        const user = {
-            name: req.body.name,
-            last_name: req.body.last_name,
-            email: req.body.email,
-            password: req.body.password,
-            country: req.body.country,
-            points: 0,
-            date_register: new Date(),
-            rol: "guest",
-        };
+  try {
+    const user = {
+      name: req.body.name,
+      last_name: req.body.last_name,
+      email: req.body.email,
+      password: req.body.password,
+      country: req.body.country,
+      points: 0,
+      date_register: new Date(),
+      rol: "guest",
+    };
 
-        const newUser = await UsersServices.createUser(user);
-        res.status(200).json(newUser);
+    const newUser = await UsersServices.createUser(user);
+    res.status(200).json(newUser);
 
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-    
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+
 }
 
-function login(req, res){
-    UsersServices.login(req.body)
-        .then(function(user){
-            const token = jwt.sign(
-                {
-                    id: user._id, 
-                    email: user.email,
-                    rol: user.rol
-                }, 'grandpick123')
-            
-            tokenServices.createToken({token, user_id: user._id})
+function login(req, res) {
+  UsersServices.login(req.body)
+    .then(function (user) {
+      const token = jwt.sign(
+        {
+          id: user._id,
+          email: user.email,
+          rol: user.rol
+        }, 'grandpick123')
 
-            res.status(200).json({ token, user })
-        })
-        .catch(err => {
-            res.status(400).json({ message: err.message });
-        })
+      tokenServices.createToken({ token, user_id: user._id })
+
+      res.status(200).json({ token, user })
+    })
+    .catch(err => {
+      res.status(400).json({ message: err.message });
+    })
 }
 
-function logout(req, res){
-    const token = req.headers['auth-token']
+function logout(req, res) {
+  const token = req.headers['auth-token']
 
-    tokenServices.deleteByToken(token)
+  tokenServices.deleteByToken(token)
 
-    res.json({ message: 'Logout exitoso' })
+  res.json({ message: 'Logout exitoso' })
 }
 
 
@@ -179,25 +179,25 @@ async function updateSecurity(req, res) {
 }
 
 
-function deleteOne(req,res){
-    const id = req.params.id;
+function deleteOne(req, res) {
+  const id = req.params.id;
 
-    UsersServices.removeUser(id)
-        .then(function(user){
-            if(user){
-                res.status(200).json({message: "User eliminado con éxito"})
-            } else {
-                res.status(404).json({message: "User no encontrado"})
-            }
-        })
+  UsersServices.removeUser(id)
+    .then(function (user) {
+      if (user) {
+        res.status(200).json({ message: "User eliminado con éxito" })
+      } else {
+        res.status(404).json({ message: "User no encontrado" })
+      }
+    })
 }
 
-function getProfile(req, res){
-    const token = req.headers['auth-token']
-    const payload = jwt.verify(token, 'grandpick123')
-    UsersServices.getUserById(payload.id)
-    .then(function(user){
-        res.status(200).json(user)
+function getProfile(req, res) {
+  const token = req.headers['auth-token']
+  const payload = jwt.verify(token, 'grandpick123')
+  UsersServices.getUserById(payload.id)
+    .then(function (user) {
+      res.status(200).json(user)
     })
 }
 
@@ -224,31 +224,31 @@ async function getAllUsersStats(req, res) {
 }
 
 async function blockUser(req, res) {
-    const id = req.params.id;
-    try {
-      const user = await UsersServices.blockUser(id);
-        if (user) {
-            res.status(200).json({ message: "Usuario bloqueado con éxito" });
-        } else {
-            res.status(404).json({ message: "Usuario no encontrado" });
-        }
-    } catch (err) {
-        res.status(400).json({ message: err.message });
+  const id = req.params.id;
+  try {
+    const user = await UsersServices.blockUser(id);
+    if (user) {
+      res.status(200).json({ message: "Usuario bloqueado con éxito" });
+    } else {
+      res.status(404).json({ message: "Usuario no encontrado" });
     }
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 }
 
 async function unblockUser(req, res) {
-    const id = req.params.id;
-    try {
-      const user = await UsersServices.unblockUser(id);
-        if (user) {
-            res.status(200).json({ message: "Usuario desbloqueado con éxito" });
-        } else {
-            res.status(404).json({ message: "Usuario no encontrado" });
-        }
-    } catch (err) {
-        res.status(400).json({ message: err.message });
+  const id = req.params.id;
+  try {
+    const user = await UsersServices.unblockUser(id);
+    if (user) {
+      res.status(200).json({ message: "Usuario desbloqueado con éxito" });
+    } else {
+      res.status(404).json({ message: "Usuario no encontrado" });
     }
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 }
 
 async function forgotPassword(req, res) {
@@ -256,10 +256,13 @@ async function forgotPassword(req, res) {
     const token = await UsersServices.forgotPassword(req.body.email);
 
     if (token) {
+      console.log(`📧 Enviando mail de recuperación a: ${req.body.email}`);
       await MailService.sendResetPassword({
         email: req.body.email,
         token,
       });
+    } else {
+      console.log(`⚠️ Intento de recuperación para email no registrado: ${req.body.email}`);
     }
 
     res.json({
@@ -285,20 +288,20 @@ async function resetPassword(req, res) {
 }
 
 
-export{
-    getAll,
-    addNew,
-    login,
-    getById,
-    logout,
-    editOne,
-    deleteOne,
-    getProfile,
-    getUserStats,
-    getAllUsersStats,
-    blockUser,
-    unblockUser,
-    updateSecurity,
-    forgotPassword,
-    resetPassword
+export {
+  getAll,
+  addNew,
+  login,
+  getById,
+  logout,
+  editOne,
+  deleteOne,
+  getProfile,
+  getUserStats,
+  getAllUsersStats,
+  blockUser,
+  unblockUser,
+  updateSecurity,
+  forgotPassword,
+  resetPassword
 }
