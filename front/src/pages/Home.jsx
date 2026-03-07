@@ -309,9 +309,18 @@ const Home = () => {
                                     </thead>
                                     <tbody>
                                         {loading ? (
-                                            <tr>
-                                                <td colSpan="6" className="text-center p-4">Cargando...</td>
-                                            </tr>
+                                            Array.from({ length: 5 }).map((_, i) => (
+                                                <tr key={`skeleton-${i}`} className="ranking__skeleton-row">
+                                                    <td className="ranking__posicion"><div className="skeleton skeleton-pos"></div></td>
+                                                    <td>
+                                                        <div className="skeleton skeleton-text skeleton-name"></div>
+                                                    </td>
+                                                    <td><div className="skeleton skeleton-flag"></div></td>
+                                                    <td><div className="skeleton skeleton-text skeleton-stat"></div></td>
+                                                    <td><div className="skeleton skeleton-text skeleton-stat"></div></td>
+                                                    <td><div className="skeleton skeleton-text skeleton-points"></div></td>
+                                                </tr>
+                                            ))
                                         ) : (
                                             stats.map((item) => (
                                                 <tr key={item._id}>

@@ -355,21 +355,70 @@
 
 /* ===== Podio (Top 3) ===== */
 
-.ranking__table tr:nth-child(1) td:first-child {
+.ranking__table tbody tr:not(.ranking__skeleton-row):nth-child(1) td:first-child {
   background-color: var(--color-pos1);
 }
 
-.ranking__table tr:nth-child(2) td:first-child {
+.ranking__table tbody tr:not(.ranking__skeleton-row):nth-child(2) td:first-child {
   background-color: var(--color-pos2);
 }
 
-.ranking__table tr:nth-child(3) td:first-child {
+.ranking__table tbody tr:not(.ranking__skeleton-row):nth-child(3) td:first-child {
   background-color: var(--color-pos3);
 }
 
 .ranking__posicion {
   font-weight: 700;
   text-align: center;
+}
+
+/* SKELETON LOADING */
+.skeleton {
+  background: #e0e0e0;
+  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+.skeleton-text {
+  height: 12px;
+  width: 100%;
+}
+
+.skeleton-pos {
+  width: 20px;
+  height: 20px;
+  margin: 0 auto;
+}
+
+.skeleton-name {
+  width: 80%;
+}
+
+.skeleton-flag {
+  width: 24px;
+  height: 16px;
+  margin: 0 auto;
+}
+
+.skeleton-stat {
+  width: 30px;
+  height: 12px;
+  margin: 0 auto;
+}
+
+.skeleton-points {
+  width: 40px;
+  height: 14px;
+  margin: 0 auto;
+  font-weight: 700;
 }
 
 .ranking__apellido {
