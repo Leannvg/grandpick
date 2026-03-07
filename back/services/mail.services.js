@@ -1,29 +1,19 @@
 import nodemailer from "nodemailer";
-const FRONT_URL = process.env.FRONT_URL;
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465, // Usamos puerto 465 para SSL/TLS (suele ser más estable en Railway/Vercel)
-  secure: true,
-  auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
-  },
-  connectionTimeout: 10000, // 10 segundos de timeout
-  greetingTimeout: 5000,
-  socketTimeout: 15000,
-});
-
-// Verificar conexión al inicio
-transporter.verify((error, success) => {
-  if (error) {
-    console.error("❌ SMTP connection error:", error);
-  } else {
-    console.log("✅ SMTP connection ready");
-  }
-});
+// Usamos una función para obtener el transporter y asegurar que las variables estén cargadas
+const getTransporter = () => {
+  return nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS,
+    },
+  });
+};
 
 export async function sendResetPassword({ email, token }) {
+  const FRONT_URL = process.env.FRONT_URL;
+
   if (!process.env.MAIL_USER || !process.env.MAIL_PASS) {
     throw new Error("Configuración de correo (MAIL_USER / MAIL_PASS) no detectada.");
   }
@@ -32,6 +22,7 @@ export async function sendResetPassword({ email, token }) {
     throw new Error("FRONT_URL no definido en las variables de entorno.");
   }
 
+  const transporter = getTransporter();
   const link = `${FRONT_URL}/reset-password?token=${token}`;
 
   try {
