@@ -79,13 +79,16 @@
 }
 
 .cta-title {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 200;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .cta-timer {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .cta-arrows {
