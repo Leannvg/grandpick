@@ -244,7 +244,7 @@ function Predictions() {
 
           {!isPreWindow && (canPredict || (race && new Date(race.date_race).getTime() + (race.totalDuration || 7200000) > Date.now())) && (
             <div className="predictions-countdown">
-              <span className="countdown-label">Tiempo restante para predecir:</span>
+              {!isClosed && <span className="countdown-label">Tiempo restante para predecir:</span>}
               <CountdownToRace
                 raceDate={race.date_race}
                 totalDuration={race.totalDuration}

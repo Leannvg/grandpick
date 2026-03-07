@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import racesServices from "../services/races.services";
 import * as countriesServices from "../services/countries.services";
-import { formatRaceDate, getFlagEmoji } from "../utils/helpers";
+import { formatRaceDate, getFlagEmoji, computeRaceState } from "../utils/helpers";
 import API_URL from "../services/api";
 
 function NextRaceCTA() {
@@ -14,6 +14,7 @@ function NextRaceCTA() {
         minutes: "00",
         seconds: "00"
     });
+    const [status, setStatus] = useState({ isClosed: false, canPredict: false, isPreWindow: false });
 
     useEffect(() => {
         async function fetchNextRace() {
@@ -51,7 +52,6 @@ function NextRaceCTA() {
 
             if (difference <= 0) {
                 difference = 0;
-                clearInterval(interval);
             }
 
             const days = String(Math.floor(difference / (1000 * 60 * 60 * 24))).padStart(2, "0");
@@ -60,6 +60,7 @@ function NextRaceCTA() {
             const seconds = String(Math.floor((difference / 1000) % 60)).padStart(2, "0");
 
             setTimeLeft({ days, hours, minutes, seconds });
+            setStatus(computeRaceState(race));
         }, 1000);
 
         return () => clearInterval(interval);
@@ -69,52 +70,57 @@ function NextRaceCTA() {
 
     return (
         <section className="nr-cta">
-            <div>
+            <div className="nr-cta__container container">
+                {/* INFO */}
+                <div className="nr-cta__info">
+                    <div className="nr-cta__country">
+                        <span className="emoji-flag me-2 nr-cta__flag">
+                            {getFlagEmoji(race.circuit?.country || race.id_circuit?.country)}
+                        </span>
+                        <span className="nr-cta__country-name">{countryName.toUpperCase()}</span>
+                    </div>
 
-                <div className="nr-cta__container container">
-                    {/* INFO */}
-                    <div className="nr-cta__info">
-                        <div className="nr-cta__country">
-                            <span className="emoji-flag me-2 nr-cta__flag">
-                                {getFlagEmoji(race.circuit?.country || race.id_circuit?.country)}
+                    <div className="nr-cta__meta">
+                        <span className="nr-cta__round">RONDA {race.round || "—"}</span>
+                        <span className="nr-cta__date">
+                            {formatRaceDate(race.date_gp_start, race.date_gp_end, race.circuit?.timezone).toUpperCase()}
+                        </span>
+
+                        {status.isClosed && !status.isPreWindow && (
+                            <span className={`nr-cta__session-tag session-${race.points_system?.type || 'race'}`}>
+                                {race.points_system?.type?.toUpperCase() === 'QUALY' ? 'QUALY' :
+                                    race.points_system?.type?.toUpperCase() === 'SPRINT' ? 'SPRINT' : 'CARRERA'} EN CURSO
                             </span>
-                            <span className="nr-cta__country-name">{countryName.toUpperCase()}</span>
-                        </div>
+                        )}
 
-                        <div className="nr-cta__meta">
-                            {/* Assuming we can get the round from the race object or just hardcode for now if not available */}
-                            <span className="nr-cta__round">RONDA {race.round || "—"}</span>
-                            <span className="nr-cta__date">
-                                {formatRaceDate(race.date_gp_start, race.date_gp_end, race.circuit?.timezone).toUpperCase()}
-                            </span>
-
+                        {status.canPredict && (
                             <Link to="/predictions" className="nr-cta__action">
                                 Predecir ahora <span aria-hidden="true">››</span>
                             </Link>
-                        </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* COUNTDOWN */}
+                <div className="nr-cta__countdown">
+                    <div className="nr-cta__time">
+                        <span className="nr-cta__time-value">{timeLeft.days}</span>
+                        <span className="nr-cta__time-label">DÍAS</span>
                     </div>
 
-                    {/* COUNTDOWN */}
-                    <div className="nr-cta__countdown">
-                        <div className="nr-cta__time">
-                            <span className="nr-cta__time-value">{timeLeft.days}</span>
-                            <span className="nr-cta__time-label">DÍAS</span>
-                        </div>
+                    <div className="nr-cta__time">
+                        <span className="nr-cta__time-value">{timeLeft.hours}</span>
+                        <span className="nr-cta__time-label">HS</span>
+                    </div>
 
-                        <div className="nr-cta__time">
-                            <span className="nr-cta__time-value">{timeLeft.hours}</span>
-                            <span className="nr-cta__time-label">HS</span>
-                        </div>
+                    <div className="nr-cta__time">
+                        <span className="nr-cta__time-value">{timeLeft.minutes}</span>
+                        <span className="nr-cta__time-label">MIN</span>
+                    </div>
 
-                        <div className="nr-cta__time">
-                            <span className="nr-cta__time-value">{timeLeft.minutes}</span>
-                            <span className="nr-cta__time-label">MIN</span>
-                        </div>
-
-                        <div className="nr-cta__time">
-                            <span className="nr-cta__time-value">{timeLeft.seconds}</span>
-                            <span className="nr-cta__time-label">SEG</span>
-                        </div>
+                    <div className="nr-cta__time">
+                        <span className="nr-cta__time-value">{timeLeft.seconds}</span>
+                        <span className="nr-cta__time-label">SEG</span>
                     </div>
                 </div>
             </div>

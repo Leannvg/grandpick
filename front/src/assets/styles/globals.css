@@ -413,6 +413,34 @@ p {
   opacity: 0.8;
 }
 
+.nr-cta__session-tag {
+  background-color: #fff;
+  color: var(--color-accent);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-left: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.nr-cta__session-tag.session-qualy {
+  background-color: #f1c40f;
+  color: #000;
+}
+
+.nr-cta__session-tag.session-sprint {
+  background-color: #e67e22;
+  color: #fff;
+}
+
+.nr-cta__session-tag.session-race {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+
 /* COUNTDOWN */
 .nr-cta__countdown {
   display: flex;
