@@ -3,12 +3,15 @@ const FRONT_URL = process.env.FRONT_URL;
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // TLS
+  port: 465, // Usamos puerto 465 para SSL/TLS (suele ser más estable en Railway/Vercel)
+  secure: true,
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS,
   },
+  connectionTimeout: 10000, // 10 segundos de timeout
+  greetingTimeout: 5000,
+  socketTimeout: 15000,
 });
 
 // Verificar conexión al inicio
