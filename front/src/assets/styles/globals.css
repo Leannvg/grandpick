@@ -408,17 +408,17 @@ p {
 
 .nr-cta__action {
   color: #fff;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  padding: 6px 12px;
+  background: #ffffff26;
+  border: 1px solid rgba(255, 255, 255, .4);
+  padding: 2px 8px;
   border-radius: 99px;
-  margin: 0px 5px;
+  margin: 0 5px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
+  letter-spacing: .5px;
+  transition: all .3s ease;
   animation: cta-pulse 2s infinite ease-in-out;
   display: inline-flex;
   align-items: center;
@@ -560,8 +560,8 @@ p {
 
   .nr-cta__action {
     margin-left: auto;
-    font-size: 14px;
-    padding: 8px 20px;
+    font-size: 12px;
+    padding: 3px 19px;
     white-space: nowrap;
   }
 
