@@ -1,20 +1,11 @@
 import nodemailer from "nodemailer";
 
-// Usamos una función para obtener el transporter y asegurar que las variables estén cargadas
-const getTransporter = () => {
-  return nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
-    },
-  });
-};
-
 export async function sendResetPassword({ email, token }) {
   const FRONT_URL = process.env.FRONT_URL;
+  const MAIL_USER = process.env.MAIL_USER;
+  const MAIL_PASS = process.env.MAIL_PASS;
 
-  if (!process.env.MAIL_USER || !process.env.MAIL_PASS) {
+  if (!MAIL_USER || !MAIL_PASS) {
     throw new Error("Configuración de correo (MAIL_USER / MAIL_PASS) no detectada.");
   }
 
@@ -22,13 +13,31 @@ export async function sendResetPassword({ email, token }) {
     throw new Error("FRONT_URL no definido en las variables de entorno.");
   }
 
-  const transporter = getTransporter();
+  // Creamos el transporter AQUÍ mismo para asegurar que lea las variables más frescas y forzar IPv4
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: MAIL_USER,
+      pass: MAIL_PASS,
+    },
+    // Forzamos IPv4 ya que a veces IPv6 da problemas de ruteo en proveedores de nube
+    connectionTimeout: 10000,
+    greetingTimeout: 5000,
+    socketTimeout: 15000,
+    debug: true, // Habilitamos debug para ver más info en los logs si falla
+    logger: true
+  });
+
   const link = `${FRONT_URL}/reset-password?token=${token}`;
 
   try {
-    const fromAddress = process.env.MAIL_USER.includes("@")
-      ? `"Soporte GrandPick" <${process.env.MAIL_USER}>`
+    const fromAddress = MAIL_USER.includes("@")
+      ? `"Soporte GrandPick" <${MAIL_USER}>`
       : `"Soporte GrandPick" <no-reply@grandpick.app>`;
+
+    console.log(`📡 Intentando conectar a SMTP para enviar mail a ${email}...`);
 
     await transporter.sendMail({
       from: fromAddress,
@@ -51,7 +60,9 @@ export async function sendResetPassword({ email, token }) {
     });
     console.log(`✅ Mail enviado con éxito a ${email}`);
   } catch (error) {
-    console.error(`❌ Error en transporter.sendMail a ${email}:`, error);
+    console.error(`❌ Error detallado enviando mail a ${email}:`, error);
     throw new Error(`Error al enviar el correo: ${error.message}`);
+  } finally {
+    transporter.close(); // Cerramos la conexión para limpiar recursos
   }
 }
