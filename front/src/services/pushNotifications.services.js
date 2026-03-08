@@ -2,8 +2,7 @@ import { messaging, VAPID_KEY } from "../firebase-config";
 import { getToken, onMessage } from "firebase/messaging";
 import axios from "axios";
 
-// URL base del backend
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080/api";
+import API_URL from "./api.js";
 
 /**
  * Pide permiso al usuario y obtiene el token de FCM
@@ -39,7 +38,7 @@ export const requestNotificationPermission = async (userId) => {
 const saveTokenInBackend = async (userId, token) => {
     try {
         const authToken = localStorage.getItem("auth-token");
-        await axios.post(`${API_URL}/users/fcm-token`,
+        await axios.post(`${API_URL}/api/users/fcm-token`,
             { userId, token },
             { headers: { "auth-token": authToken } }
         );
