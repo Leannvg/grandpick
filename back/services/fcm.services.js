@@ -18,12 +18,19 @@ export const initFirebase = () => {
             });
             */
 
+            // Manejar las variables de entorno de forma segura, removiendo comillas si hosting como Railway las añadió
+            let privateKey = process.env.FIREBASE_PRIVATE_KEY || "";
+            if (privateKey) {
+                // Remover comillas del inicio y final (si existen) y formatear los enter literales a saltos de linea reales
+                privateKey = privateKey.replace(/^"|"$/g, '').replace(/\\n/g, '\n');
+            }
+
             // Opción B: Usando variables de entorno (más seguro para Heroku/Vercel)
             admin.initializeApp({
                 credential: admin.credential.cert({
                     projectId: process.env.FIREBASE_PROJECT_ID,
                     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-                    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+                    privateKey: privateKey,
                 })
             });
 
