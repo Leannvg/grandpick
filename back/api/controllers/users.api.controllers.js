@@ -340,5 +340,7 @@ export {
   unblockUser,
   updateSecurity,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  addFcmToken,
+  sendTestPush
 }
