@@ -103,8 +103,8 @@ export function computeRaceState(race) {
 
   const diff = start - now;
 
-  // Faltan ≤ 5 días → ventana abierta
-  if (diff <= 5 * 24 * 60 * 60 * 1000) {
+  // Faltan ≤ 24 hs (1 día) → ventana abierta
+  if (diff <= 24 * 60 * 60 * 1000) {
     return {
       isClosed: false,
       canPredict: true,
@@ -113,12 +113,12 @@ export function computeRaceState(race) {
     };
   }
 
-  // Faltan > 5 días → PRE-WINDOW
+  // Faltan > 24 hs → PRE-WINDOW
   return {
     isClosed: true,
     canPredict: false,
     isPreWindow: true,
-    timeToOpen: diff - (5 * 24 * 60 * 60 * 1000)
+    timeToOpen: diff - (24 * 60 * 60 * 1000)
   };
 }
 
