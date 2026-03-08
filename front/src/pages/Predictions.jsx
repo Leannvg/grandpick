@@ -237,7 +237,7 @@ function Predictions() {
 
           <h1 className="section-title">{race.circuit.gp_name}</h1>
           {race.raceCountry && (
-            <span className="section-subtitle">{formatRaceDate(race.date_gp_start, race.date_gp_end)}</span>
+            <span className="section-subtitle">{formatRaceDate(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
           )}
 
           <span className="qualy-label">
