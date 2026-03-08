@@ -13,8 +13,14 @@ export const requestNotificationPermission = async (userId) => {
         if (permission === "granted") {
             console.log("Permiso concedido");
 
+            // Obtener el service worker que registramos en main.jsx (con las variables de entorno)
+            const registration = await navigator.serviceWorker.ready;
+
             // Obtener el token del dispositivo
-            const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+            const token = await getToken(messaging, {
+                vapidKey: VAPID_KEY,
+                serviceWorkerRegistration: registration
+            });
 
             if (token) {
                 console.log("Token obtenido:", token);
