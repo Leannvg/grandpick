@@ -50,6 +50,11 @@ export const sendPushNotification = async (token, notification, data = {}) => {
             title: notification.title,
             body: notification.body,
         },
+        webpush: {
+            notification: {
+                icon: 'https://grandpick.vercel.app/icons/GP-192x192.png'
+            }
+        },
         data: data, // Datos extra (ej: { link: '/races/123' })
         token: token
     };
@@ -78,6 +83,11 @@ export const sendPushToMultipleTokens = async (tokens, notification, data = {}) 
         notification: {
             title: notification.title,
             body: notification.body,
+        },
+        webpush: {
+            notification: {
+                icon: 'https://grandpick.vercel.app/icons/GP-192x192.png'
+            }
         },
         data: data,
         tokens: tokens // Firebase soporta enviar a múltiples tokens

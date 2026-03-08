@@ -24,14 +24,18 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
     console.log('[firebase-messaging-sw.js] Mensaje recibido en segundo plano ', payload);
 
-    const notificationTitle = payload.notification.title;
-    const notificationOptions = {
-        body: payload.notification.body,
-        icon: payload.notification.icon || '/icons/GP-192x192.png', // Ajusta según tus assets
-        data: payload.data
-    };
-
-    self.registration.showNotification(notificationTitle, notificationOptions);
+    // Si Firebase detecta un objeto "notification" en el payload, él MISMO dibuja 
+    // la notificación automáticamente. Solo dibujamos la manual si Firebase no lo hizo 
+    // (por ejemplo si solo mandamos "data" desde el backend).
+    if (!payload.notification) {
+        const notificationTitle = payload.data?.title || 'GrandPick';
+        const notificationOptions = {
+            body: payload.data?.body || 'Nueva notificación',
+            icon: '/icons/GP-192x192.png',
+            data: payload.data
+        };
+        self.registration.showNotification(notificationTitle, notificationOptions);
+    }
 });
 
 // Para que la PWA sea instalable, Chrome exige que el Service Worker tenga un evento fetch.
