@@ -8,6 +8,19 @@ import { LoaderProvider } from './context/LoaderContext.jsx'
 import { polyfillCountryFlagEmojis } from "country-flag-emoji-polyfill"
 polyfillCountryFlagEmojis()
 
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/firebase-messaging-sw.js")
+      .then((registration) => {
+        console.log("Service Worker registrado con éxito:", registration);
+      })
+      .catch((error) => {
+        console.log("Error al registrar el Service Worker:", error);
+      });
+  });
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>

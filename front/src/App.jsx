@@ -37,6 +37,7 @@ import { Routes, Route, useNavigate, Navigate, useLocation } from "react-router-
 import { useState, useEffect } from "react";
 
 import UsersServices from "./services/users.services.js";
+import { requestNotificationPermission, onForegroundMessage } from "./services/pushNotifications.services.js";
 
 
 function App() {
@@ -72,6 +73,9 @@ function App() {
           setAdmin(true);
         }
 
+        requestNotificationPermission(perfil._id);
+        onForegroundMessage();
+
       } catch (error) {
         console.error("Error al restaurar sesión:", error);
         localStorage.clear();
@@ -103,6 +107,9 @@ function App() {
     if (user.rol === 'admin') {
       setAdmin(true);
     }
+
+    requestNotificationPermission(user._id);
+    onForegroundMessage();
 
     localStorage.setItem('auth-token', token);
 

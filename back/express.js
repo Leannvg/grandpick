@@ -12,8 +12,10 @@ import usersApiRoutes from "./api/routes/users.api.routes.js";
 import uploadApiRoutes from "./api/routes/upload.api.routes.js";
 import notificationsRoutes from "./api/routes/notifications.routes.js";
 import { errorHandler } from "./middleware/errorHandler.middleware.js";
+import { initFirebase } from "./services/fcm.services.js";
 
 const app = express();
+initFirebase();
 
 /* =========================
    CORS (PRIMERO SIEMPRE)

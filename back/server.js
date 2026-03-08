@@ -40,4 +40,5 @@ server.listen(PORT, () => {
 
   // 👇 iniciar jobs recién cuando el server está listo
   import("./jobs/predictionsOpenNotification.job.js");
+  import("./jobs/pushNotifications.job.js");
 });

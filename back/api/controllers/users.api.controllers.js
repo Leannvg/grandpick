@@ -292,6 +292,39 @@ async function resetPassword(req, res) {
 }
 
 
+async function addFcmToken(req, res) {
+  try {
+    const { userId, token } = req.body;
+    await UsersServices.addFcmToken(userId, token);
+    res.status(200).json({ message: "Token FCM guardado con éxito" });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+async function sendTestPush(req, res) {
+  try {
+    const { userId, title, body } = req.body;
+    const user = await UsersServices.getUserById(userId);
+
+    if (!user || !user.fcmTokens || user.fcmTokens.length === 0) {
+      return res.status(400).json({ message: "Usuario no encontrado o sin tokens registrados" });
+    }
+
+    const { sendPushNotification } = await import("../../services/fcm.services.js");
+
+    const promises = user.fcmTokens.map(token =>
+      sendPushNotification(token, { title, body })
+    );
+
+    await Promise.all(promises);
+
+    res.status(200).json({ message: "Push de prueba enviado" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
 export {
   getAll,
   addNew,

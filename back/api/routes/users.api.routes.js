@@ -60,6 +60,12 @@ route.route("/api/users/:id/block")
 route.route("/api/users/:id/unblock")
     .post(autenticado, admin, UsersApiController.unblockUser)
 
+route.route("/api/users/fcm-token")
+    .post(autenticado, UsersApiController.addFcmToken)
+
+route.route("/api/users/test-push")
+    .post(autenticado, admin, UsersApiController.sendTestPush)
+
 
 
 

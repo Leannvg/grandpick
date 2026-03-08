@@ -1,7 +1,7 @@
-import {ObjectId} from "mongodb"
+import { ObjectId } from "mongodb"
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-import {connectDB} from "./db.services.js"
+import { connectDB } from "./db.services.js"
 
 
 const db = await connectDB();
@@ -177,7 +177,6 @@ async function forgotPassword(email) {
   return token;
 }
 
-
 async function resetPassword(token, newPassword) {
   const hashedPassword = await bcrypt.hash(newPassword, 10);
 
@@ -203,8 +202,12 @@ async function resetPassword(token, newPassword) {
   }
 }
 
-
-
+async function addFcmToken(userId, token) {
+  return users.updateOne(
+    { _id: new ObjectId(userId) },
+    { $addToSet: { fcmTokens: token } }
+  );
+}
 
 export {
   getUsers,
@@ -218,5 +221,6 @@ export {
   blockUser,
   unblockUser,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  addFcmToken
 };
