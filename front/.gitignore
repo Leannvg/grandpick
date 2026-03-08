@@ -13,6 +13,10 @@ lerna-debug.log*
 .env.local
 .env.*.local
 
+# Build output
+dist
+dist-ssr
+
 node_modules
 
 # Editor directories and files
