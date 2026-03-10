@@ -122,24 +122,31 @@ function PredictionHistory() {
                         return (
                             <div
                                 key={item.circuit._id}
-                                className={`circuit-item ${isSelected ? 'is-selected' : ''} ${isFinished || hasStarted ? 'is-active' : ''}`}
+                                className={`calendar-item history-circuit-card ${isSelected ? 'is-selected' : ''}`}
                                 onClick={() => handleCircuitClick(item.circuit._id)}
                             >
-                                <div className="circuit-info">
-                                    <div className="circuit-flag-indicator" style={{ backgroundColor: item.circuit.color || '#e10600' }}></div>
-                                    <span className="circuit-name">{item.circuit.gp_name}</span>
+                                <div className="race-info">
+                                    <div className="race-top">
+                                        <div className="race-location">
+                                            <span className="emoji-flag me-2">{getFlagEmoji(item.circuit.country)}</span>
+                                            <span className="race-country">{item.circuit.gp_name}</span>
+                                        </div>
+                                    </div>
+                                    <p className="race-circuit">{item.circuit.circuit_name}</p>
                                 </div>
-                                {isFinished || hasStarted ? (
-                                    <div className="circuit-points-total">
-                                        <span className="points-value">{item.totalPoints}</span>
-                                        <span className="points-label">PUNTOS</span>
-                                    </div>
-                                ) : (
-                                    <div className="circuit-date-range">
-                                        <img src={calendarioIcon} alt="Calendar" />
-                                        <span>{formatRaceDate(item.date_gp_start, item.date_gp_end).replace('Marzo ', '')}</span>
-                                    </div>
-                                )}
+                                <div className={`race-date ${isFinished || hasStarted ? (item.totalPoints > 0 ? 'race-current' : 'race-finished') : 'race-upcoming'}`}>
+                                    {isFinished || hasStarted ? (
+                                        <>
+                                            <span className="race-day">{item.totalPoints}</span>
+                                            <span className="race-month">PTS</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span className="race-day">{new Date(item.date_gp_start).getDate()}</span>
+                                            <span className="race-month">{new Date(item.date_gp_start).toLocaleDateString('es-ES', { month: 'short' }).replace('.', '').toUpperCase()}</span>
+                                        </>
+                                    )}
+                                </div>
                             </div>
                         );
                     })}
@@ -160,43 +167,32 @@ function PredictionHistory() {
                                     const isSelected = selectedSessionType === type;
                                     const status = getSessionButtonStatus(session);
 
-                                    if (!session) {
-                                        return (
-                                            <div key={type} className="session-tab is-disabled">
-                                                <div className="tab-main">
-                                                    <span className="tab-type">{sessionDef.label}</span>
-                                                    <span className="tab-date">-</span>
-                                                </div>
-                                                <div className="tab-status status-na">
-                                                    <img src={cruzIcon} alt="No aplica" />
-                                                    <span>NO APLICA</span>
-                                                </div>
-                                            </div>
-                                        );
-                                    }
-
                                     return (
                                         <button
                                             key={type}
-                                            className={`session-tab ${isSelected ? 'is-selected' : ''} ${status === 'upcoming' ? 'is-upcoming' : ''}`}
+                                            className={`calendar-item session-tab ${isSelected ? 'is-selected' : ''} ${status === 'upcoming' ? 'is-upcoming' : ''}`}
                                             onClick={() => status !== 'upcoming' && setSelectedSessionType(type)}
-                                            disabled={status === 'upcoming'}
+                                            disabled={status === 'upcoming' || !session}
                                         >
-                                            <div className="tab-main">
-                                                <span className="tab-type">{sessionDef.label}</span>
-                                                <span className="tab-date">{new Date(session.date_race).toLocaleDateString('es-AR')}</span>
+                                            <div className="race-info">
+                                                <div className="race-top">
+                                                    <span className="race-country" style={{ fontSize: '1.2rem' }}>{sessionDef.label}</span>
+                                                </div>
+                                                <p className="race-circuit">{session ? new Date(session.date_race).toLocaleDateString('es-AR') : '-'}</p>
                                             </div>
-                                            {status === 'finished' ? (
-                                                <div className="tab-status status-points">
-                                                    <span className="points-value">{session.points}</span>
-                                                    <span className="points-label">PUNTOS</span>
-                                                </div>
-                                            ) : status === 'upcoming' ? (
-                                                <div className="tab-status status-upcoming">
-                                                    <img src={cronometroIcon} alt="Próximamente" />
-                                                    <span>PRÓXIMAMENTE</span>
-                                                </div>
-                                            ) : null}
+
+                                            <div className={`race-date ${status === 'finished' ? 'race-current' : (status === 'upcoming' ? 'race-upcoming' : 'race-finished')}`} style={{ minWidth: '80px' }}>
+                                                {status === 'finished' ? (
+                                                    <>
+                                                        <span className="race-day">{session.points}</span>
+                                                        <span className="race-month">PTS</span>
+                                                    </>
+                                                ) : status === 'upcoming' ? (
+                                                    <img src={cronometroIcon} alt="Upcoming" style={{ width: '22px', filter: 'brightness(0) invert(1)' }} />
+                                                ) : (
+                                                    <img src={cruzIcon} alt="N/A" style={{ width: '18px', filter: 'brightness(0) invert(1)' }} />
+                                                )}
+                                            </div>
                                         </button>
                                     );
                                 })}
