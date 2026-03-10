@@ -116,6 +116,22 @@
     box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);
 }
 
+/* New color classes for history page */
+.race-date.status-points {
+    background-color: var(--color-add) !important;
+    /* Green */
+}
+
+.race-date.status-upcoming {
+    background-color: var(--color-soon) !important;
+    /* Violet */
+}
+
+.race-date.status-na {
+    background-color: var(--color-disabled) !important;
+    /* Gray */
+}
+
 .history-circuit-card {
     min-height: 80px;
 }
@@ -174,8 +190,6 @@
 .table-row {
     display: grid;
     grid-template-columns: 80px 1fr 1fr 120px;
-    padding: 15px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     align-items: center;
 }
 

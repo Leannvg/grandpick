@@ -67,15 +67,20 @@ function PredictionHistory() {
         }
     };
 
-    const getSessionButtonStatus = (session) => {
+    const getSessionButtonStatus = (session, allSessions) => {
         if (!session) return "none";
         if (session.state === "Finalizado" || (session.results && session.results.length > 0)) return "finished";
-        if (session.state === "Pendiente") {
-            // Check if it's the next session
-            // For now, let's assume it's "upcoming" if it's pending and after now
+
+        // Find the next session among those pending
+        const upcomingSession = allSessions
+            .filter(s => s.state === "Pendiente")
+            .sort((a, b) => new Date(a.date_race) - new Date(b.date_race))[0];
+
+        if (upcomingSession && upcomingSession.type === session.type) {
             return "upcoming";
         }
-        return "none";
+
+        return "pending";
     };
 
     const renderPoints = (session) => {
@@ -134,7 +139,7 @@ function PredictionHistory() {
                                     </div>
                                     <p className="race-circuit">{item.circuit.circuit_name}</p>
                                 </div>
-                                <div className={`race-date ${isFinished || hasStarted ? (item.totalPoints > 0 ? 'race-current' : 'race-finished') : 'race-upcoming'}`}>
+                                <div className={`race-date ${isFinished || hasStarted ? 'status-points' : 'race-upcoming'}`}>
                                     {isFinished || hasStarted ? (
                                         <>
                                             <span className="race-day">{item.totalPoints}</span>
@@ -165,14 +170,14 @@ function PredictionHistory() {
                                     const type = sessionDef.id;
                                     const session = currentCircuit.sessions.find(s => s.type === type);
                                     const isSelected = selectedSessionType === type;
-                                    const status = getSessionButtonStatus(session);
+                                    const status = getSessionButtonStatus(session, currentCircuit.sessions);
 
                                     return (
                                         <button
                                             key={type}
-                                            className={`calendar-item session-tab ${isSelected ? 'is-selected' : ''} ${status === 'upcoming' ? 'is-upcoming' : ''}`}
-                                            onClick={() => status !== 'upcoming' && setSelectedSessionType(type)}
-                                            disabled={status === 'upcoming' || !session}
+                                            className={`calendar-item session-tab ${isSelected ? 'is-selected' : ''}`}
+                                            onClick={() => (status === 'finished') && setSelectedSessionType(type)}
+                                            disabled={status !== 'finished'}
                                         >
                                             <div className="race-info">
                                                 <div className="race-top">
@@ -181,7 +186,7 @@ function PredictionHistory() {
                                                 <p className="race-circuit">{session ? new Date(session.date_race).toLocaleDateString('es-AR') : '-'}</p>
                                             </div>
 
-                                            <div className={`race-date ${status === 'finished' ? 'race-current' : (status === 'upcoming' ? 'race-upcoming' : 'race-finished')}`} style={{ minWidth: '80px' }}>
+                                            <div className={`race-date ${status === 'finished' ? 'status-points' : (status === 'upcoming' ? 'status-upcoming' : 'status-na')}`} style={{ minWidth: '80px' }}>
                                                 {status === 'finished' ? (
                                                     <>
                                                         <span className="race-day">{session.points}</span>
