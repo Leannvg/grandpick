@@ -1,5 +1,5 @@
-import {ObjectId} from "mongodb"
-import {connectDB} from "./db.services.js"
+import { ObjectId } from "mongodb"
+import { connectDB } from "./db.services.js"
 
 export async function findAllPredictions() {
     try {
@@ -248,4 +248,144 @@ export async function findPredictionByUserAndRace(userId, raceId) {
         console.error("Error al obtener predicción por usuario y carrera:", err);
         throw err;
     }
+}
+
+export async function getUserPredictionHistory(userId, year) {
+    try {
+        const db = await connectDB();
+        const startOfYear = new Date(`${year}-01-01T00:00:00.000Z`);
+        const endOfYear = new Date(`${year}-12-31T23:59:59.999Z`);
+
+        // 1. Get all Races for the year
+        const races = await db.collection("Races").aggregate([
+            {
+                $match: {
+                    date_gp_start: { $gte: startOfYear, $lte: endOfYear }
+                }
+            },
+            {
+                $lookup: {
+                    from: "Circuits",
+                    localField: "id_circuit",
+                    foreignField: "_id",
+                    as: "circuit"
+                }
+            },
+            { $unwind: "$circuit" },
+            {
+                $lookup: {
+                    from: "Points_System",
+                    localField: "points_system",
+                    foreignField: "_id",
+                    as: "points_system"
+                }
+            },
+            { $unwind: "$points_system" },
+            {
+                $lookup: {
+                    from: "Predictions",
+                    let: { raceId: "$_id", userId: new ObjectId(userId) },
+                    pipeline: [
+                        { $match: { $expr: { $and: [{ $eq: ["$raceId", "$$raceId"] }, { $eq: ["$userId", "$$userId"] }] } } }
+                    ],
+                    as: "userPrediction"
+                }
+            },
+            { $unwind: { path: "$userPrediction", preserveNullAndEmptyArrays: true } },
+            {
+                $lookup: {
+                    from: "Users_Points",
+                    let: { raceId: "$_id", userId: new ObjectId(userId) },
+                    pipeline: [
+                        { $match: { $expr: { $and: [{ $eq: ["$raceId", "$$raceId"] }, { $eq: ["$userId", "$$userId"] }] } } }
+                    ],
+                    as: "userPoints"
+                }
+            },
+            { $unwind: { path: "$userPoints", preserveNullAndEmptyArrays: true } },
+            {
+                $sort: { date_race: 1 }
+            }
+        ]).toArray();
+
+        // 2. Fetch all unique driver IDs from predictions and results to enrich them
+        const driverIds = new Set();
+        races.forEach(r => {
+            if (r.results) r.results.forEach(res => driverIds.add(res.driver.toString()));
+            if (r.userPrediction?.prediction) r.userPrediction.prediction.forEach(p => driverIds.add(p.driver.toString()));
+        });
+
+        const drivers = await db.collection("Drivers").find({ _id: { $in: Array.from(driverIds).map(id => new ObjectId(id)) } }).toArray();
+        const driverMap = new Map(drivers.map(d => [d._id.toString(), d]));
+
+        // Lookup teams for drivers
+        const teamIds = new Set(drivers.map(d => d.teamId?.toString()).filter(Boolean));
+        const teams = await db.collection("Teams").find({ _id: { $in: Array.from(teamIds).map(id => new ObjectId(id)) } }).toArray();
+        const teamMap = new Map(teams.map(t => [t._id.toString(), t]));
+
+        // Enrich races
+        const enrichedRaces = races.map(r => {
+            const enrich = (list) => list?.map(item => ({
+                ...item,
+                driver: {
+                    ...driverMap.get(item.driver.toString()),
+                    team_info: teamMap.get(driverMap.get(item.driver.toString())?.teamId?.toString())
+                }
+            })) || [];
+
+            return {
+                ...r,
+                results: enrich(r.results),
+                userPrediction: r.userPrediction ? {
+                    ...r.userPrediction,
+                    prediction: enrich(r.userPrediction.prediction)
+                } : null,
+                pointsEarned: r.userPoints?.points || 0
+            };
+        });
+
+        // 3. Group by Circuit
+        const groupedByCircuit = enrichedRaces.reduce((acc, race) => {
+            const circuitId = race.id_circuit.toString();
+            if (!acc[circuitId]) {
+                acc[circuitId] = {
+                    circuit: race.circuit,
+                    date_gp_start: race.date_gp_start,
+                    date_gp_end: race.date_gp_end,
+                    totalPoints: 0,
+                    sessions: []
+                };
+            }
+            acc[circuitId].sessions.push({
+                _id: race._id,
+                type: race.points_system.type,
+                date_race: race.date_race,
+                state: race.state,
+                results: race.results,
+                prediction: race.userPrediction?.prediction || null,
+                points: race.pointsEarned,
+                points_system: race.points_system
+            });
+            acc[circuitId].totalPoints += race.pointsEarned;
+            return acc;
+        }, {});
+
+        return Object.values(groupedByCircuit).sort((a, b) => new Date(a.date_gp_start) - new Date(b.date_gp_start));
+
+    } catch (err) {
+        console.error("Error al obtener historial de predicciones:", err);
+        throw err;
+    }
+}
+
+export default {
+    createPrediction,
+    editPrediction: updatePrediction,
+    findPredictionByUserAndRace,
+    findPredictionsByUserId,
+    findPredictionsByRaceId,
+    findAllPredictions,
+    findPredictionById,
+    deletePrediction,
+    getUserPredictionHistory
 }

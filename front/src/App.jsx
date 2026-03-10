@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Drivers from "./pages/Drivers";
 import Predictions from "./pages/Predictions";
+import PredictionHistory from "./pages/PredictionHistory";
 import Calendar from "./pages/Calendar";
 import Circuits from "./pages/Circuits";
 import CircuitDetail from "./pages/CircuitDetail";
@@ -152,6 +153,7 @@ function App() {
 
               <Route path="/profile" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><Profile /></ProtectedRoute>} />
               <Route path="/predictions" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><Predictions /></ProtectedRoute>} />
+              <Route path="/prediction-history" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><PredictionHistory /></ProtectedRoute>} />
 
 
               <Route path="/admin/dashboard" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><Dashboard /></ProtectedRoute>} />

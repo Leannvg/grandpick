@@ -86,11 +86,18 @@ function Nav({ onLogout, autenticado, esAdmin }) {
               </li>
 
               {autenticado && (
-                <li className="nav-item">
-                  <Link className="nav-link" to="/predictions" onClick={closeMenu}>
-                    MIS PREDICCIONES
-                  </Link>
-                </li>
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/predictions" onClick={closeMenu}>
+                      MIS PREDICCIONES
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/prediction-history" onClick={closeMenu}>
+                      HISTORIAL
+                    </Link>
+                  </li>
+                </>
               )}
 
               <li className="nav-item">

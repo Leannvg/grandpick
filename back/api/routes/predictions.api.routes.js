@@ -39,4 +39,10 @@ router.route('/api/users/:UserId/predictions/:RaceId')
         predictionsApiControllers.findByUserAndRace
     );
 
+router.route('/api/users/:UserId/predictions-history')
+    .get(
+        autenticado,
+        predictionsApiControllers.getHistoryByUserId
+    );
+
 export default router

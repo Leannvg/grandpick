@@ -1,14 +1,14 @@
 import * as predictionsServices from './../../services/predictions.services.js'
-import {ObjectId} from "mongodb"
+import { ObjectId } from "mongodb"
 
-export async function findAll(req, res){
+export async function findAll(req, res) {
     let productos = await predictionsServices.findAllPredictions()
     res.status(200).json(productos)
 }
 
 export async function findById(req, res) {
     let predictionId = req.params.predictionId
-    
+
     let prediction = await predictionsServices.findPredictionById(predictionId)
     res.status(200).json(prediction)
 }
@@ -80,6 +80,17 @@ export async function findByUserAndRace(req, res) {
             return res.status(404).json({ message: "No existe predicción para este usuario y carrera" });
         }
         res.status(200).json(prediction);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
+export async function getHistoryByUserId(req, res) {
+    const { UserId } = req.params;
+    const { year } = req.query;
+    try {
+        const history = await predictionsServices.getUserPredictionHistory(UserId, year || new Date().getFullYear());
+        res.status(200).json(history);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

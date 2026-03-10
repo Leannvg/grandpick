@@ -73,9 +73,27 @@ async function findPredictionByUserAndRace(userId, raceId) {
         })
 }
 
+async function findHistoryByUser(userId, year) {
+    return fetch(`${API_URL}/api/users/${userId}/predictions-history?year=${year}`, {
+        method: 'GET',
+        headers: authHeaders({
+            "Content-type": "application/json",
+        }),
+    })
+        .then(async (response) => {
+            if (response.ok) {
+                return response.json()
+            } else {
+                const errorMessage = await response.text();
+                throw new Error(errorMessage);
+            }
+        })
+}
+
 
 export default {
     createPrediction,
     editPrediction,
-    findPredictionByUserAndRace
+    findPredictionByUserAndRace,
+    findHistoryByUser
 }
