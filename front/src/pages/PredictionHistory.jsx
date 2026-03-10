@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import PredictionServices from "../services/predictions.services";
 import UsersServices from "../services/users.services";
 import { useLoader } from "../context/LoaderContext";
-import { formatRaceDate } from "../utils/helpers";
+import { getFlagEmoji } from "../utils/helpers";
 import calendarioIcon from "../assets/icons/calendario.svg";
 import cronometroIcon from "../assets/icons/cronometro.svg";
 import cruzIcon from "../assets/icons/cruz.svg";
