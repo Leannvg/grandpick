@@ -150,7 +150,7 @@ function PredictionHistory() {
                     {currentCircuit ? (
                         <>
                             <div className="session-tabs">
-                                {['qualy', 'sprint', 'race'].map(type => {
+                                {['qualifying', 'sprint', 'race'].map(type => {
                                     const session = currentCircuit.sessions.find(s => s.type === type);
                                     const isSelected = selectedSessionType === type;
                                     const status = getSessionButtonStatus(session);
