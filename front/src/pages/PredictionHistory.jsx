@@ -139,7 +139,7 @@ function PredictionHistory() {
                                     </div>
                                     <p className="race-circuit">{item.circuit.circuit_name}</p>
                                 </div>
-                                <div className={`race-date ${isFinished || hasStarted ? 'status-points' : 'race-upcoming'}`}>
+                                <div className={`race-date race-description ${isFinished || hasStarted ? 'status-points' : 'race-upcoming'}`}>
                                     {isFinished || hasStarted ? (
                                         <>
                                             <span className="race-day">{item.totalPoints}</span>
@@ -186,7 +186,7 @@ function PredictionHistory() {
                                                 <p className="race-circuit">{session ? new Date(session.date_race).toLocaleDateString('es-AR') : '-'}</p>
                                             </div>
 
-                                            <div className={`race-date ${status === 'finished' ? 'status-points' : (status === 'upcoming' ? 'status-upcoming' : 'status-na')}`} style={{ minWidth: '80px' }}>
+                                            <div className={`race-date race-description ${status === 'finished' ? 'status-points' : (status === 'upcoming' ? 'status-upcoming' : 'status-na')}`} style={{ minWidth: '80px' }}>
                                                 {status === 'finished' ? (
                                                     <>
                                                         <span className="race-day">{session.points}</span>

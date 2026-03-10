@@ -103,7 +103,6 @@
 /* Calendar Item Overrides for History Page */
 .calendar-item {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 2px solid transparent;
 }
 
 .calendar-item:hover {
@@ -114,6 +113,10 @@
     border-color: #4a90e2 !important;
     background: #fff !important;
     box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);
+}
+
+.race-description {
+    font-weight: 400;
 }
 
 /* New color classes for history page */
