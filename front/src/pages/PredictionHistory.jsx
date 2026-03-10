@@ -96,9 +96,9 @@ function PredictionHistory() {
     return (
         <section className="prediction-history-page page-section container">
             <header className="history-header text-center">
-                <span className="history-label">Historial</span>
-                <h1 className="history-title">PREDICCIONES</h1>
-                <p className="history-subtitle">Esto fue lo que pensaste en los anteriores GP</p>
+                <span className="section-label">Historial</span>
+                <h1 className="section-title">PREDICCIONES</h1>
+                <p className="section-subtitle">Esto fue lo que pensaste en los anteriores GP</p>
             </header>
 
             <div className="history-filters">
