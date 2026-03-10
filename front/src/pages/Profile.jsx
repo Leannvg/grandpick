@@ -44,7 +44,7 @@ function Profile() {
     return {
       datasets: [
         {
-          data: [data.qualifyng || 0, data.sprint || 0, data.race || 0],
+          data: [data.qualifying || 0, data.sprint || 0, data.race || 0],
           backgroundColor: [
             "#E6E6E6", // Qualy - White/Light Gray
             "#FFCD56", // Sprint - Yellow

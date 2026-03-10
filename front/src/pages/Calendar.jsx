@@ -105,12 +105,12 @@ function Calendar() {
     function formatSessionTypes(types) {
         const priority = {
             'sprint': 1,
-            'qualifyng': 2,
+            'qualifying': 2,
             'race': 3
         };
         const typeLabels = {
             'race': 'Race',
-            'qualifyng': 'Qualy',
+            'qualifying': 'Qualy',
             'sprint': 'Sprint'
         };
         return types

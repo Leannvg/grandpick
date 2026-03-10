@@ -87,9 +87,9 @@ async function getUserWithStats(userId, racesInfo = null, psystems = null) {
   const pointsByRace = await usersPoints.find({ userId: new ObjectId(userId) }).toArray();
 
   const stats = {
-    predictions: { total: preds.length, qualifyng: 0, sprint: 0, race: 0 },
-    successes: { total: 0, qualifyng: 0, sprint: 0, race: 0 },
-    points: { total: 0, qualifyng: 0, sprint: 0, race: 0 }
+    predictions: { total: preds.length, qualifying: 0, sprint: 0, race: 0 },
+    successes: { total: 0, qualifying: 0, sprint: 0, race: 0 },
+    points: { total: 0, qualifying: 0, sprint: 0, race: 0 }
   };
 
   for (const p of preds) {
