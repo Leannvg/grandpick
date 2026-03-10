@@ -139,16 +139,16 @@ function PredictionHistory() {
                                     </div>
                                     <p className="race-circuit">{item.circuit.circuit_name}</p>
                                 </div>
-                                <div className={`race-date race-description ${isFinished || hasStarted ? 'status-points' : 'race-upcoming'}`}>
+                                <div className={`race-date ${isFinished || hasStarted ? 'status-points' : 'race-upcoming'}`}>
                                     {isFinished || hasStarted ? (
                                         <>
                                             <span className="race-day">{item.totalPoints}</span>
-                                            <span className="race-month">PTS</span>
+                                            <span className="race-month     race-description">PTS</span>
                                         </>
                                     ) : (
                                         <>
                                             <span className="race-day">{new Date(item.date_gp_start).getDate()}</span>
-                                            <span className="race-month">{new Date(item.date_gp_start).toLocaleDateString('es-ES', { month: 'short' }).replace('.', '').toUpperCase()}</span>
+                                            <span className="race-month race-description">{new Date(item.date_gp_start).toLocaleDateString('es-ES', { month: 'short' }).replace('.', '').toUpperCase()}</span>
                                         </>
                                     )}
                                 </div>
@@ -186,11 +186,11 @@ function PredictionHistory() {
                                                 <p className="race-circuit">{session ? new Date(session.date_race).toLocaleDateString('es-AR') : '-'}</p>
                                             </div>
 
-                                            <div className={`race-date race-description ${status === 'finished' ? 'status-points' : (status === 'upcoming' ? 'status-upcoming' : 'status-na')}`} style={{ minWidth: '80px' }}>
+                                            <div className={`race-date ${status === 'finished' ? 'status-points' : (status === 'upcoming' ? 'status-upcoming' : 'status-na')}`} style={{ minWidth: '80px' }}>
                                                 {status === 'finished' ? (
                                                     <>
                                                         <span className="race-day">{session.points}</span>
-                                                        <span className="race-month">PTS</span>
+                                                        <span className="race-month race-description">PTS</span>
                                                     </>
                                                 ) : status === 'upcoming' ? (
                                                     <img src={cronometroIcon} alt="Upcoming" style={{ width: '22px', filter: 'brightness(0) invert(1)' }} />
