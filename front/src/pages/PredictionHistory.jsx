@@ -150,7 +150,12 @@ function PredictionHistory() {
                     {currentCircuit ? (
                         <>
                             <div className="session-tabs">
-                                {['qualifying', 'sprint', 'race'].map(type => {
+                                {[
+                                    { id: 'qualifyng', label: 'QUALY' },
+                                    { id: 'sprint', label: 'SPRINT' },
+                                    { id: 'race', label: 'RACE' }
+                                ].map(sessionDef => {
+                                    const type = sessionDef.id;
                                     const session = currentCircuit.sessions.find(s => s.type === type);
                                     const isSelected = selectedSessionType === type;
                                     const status = getSessionButtonStatus(session);
@@ -159,7 +164,7 @@ function PredictionHistory() {
                                         return (
                                             <div key={type} className="session-tab is-disabled">
                                                 <div className="tab-main">
-                                                    <span className="tab-type">{type.toUpperCase()}</span>
+                                                    <span className="tab-type">{sessionDef.label}</span>
                                                     <span className="tab-date">-</span>
                                                 </div>
                                                 <div className="tab-status status-na">
@@ -178,7 +183,7 @@ function PredictionHistory() {
                                             disabled={status === 'upcoming'}
                                         >
                                             <div className="tab-main">
-                                                <span className="tab-type">{type.toUpperCase()}</span>
+                                                <span className="tab-type">{sessionDef.label}</span>
                                                 <span className="tab-date">{new Date(session.date_race).toLocaleDateString('es-AR')}</span>
                                             </div>
                                             {status === 'finished' ? (
