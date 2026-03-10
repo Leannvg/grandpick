@@ -163,8 +163,8 @@ function PredictionHistory() {
                         <>
                             <div className="session-tabs">
                                 {[
-                                    { id: 'qualifying', label: 'QUALY' },
                                     { id: 'sprint', label: 'SPRINT' },
+                                    { id: 'qualifying', label: 'QUALY' },
                                     { id: 'race', label: 'RACE' }
                                 ].map(sessionDef => {
                                     const type = sessionDef.id;
