@@ -319,7 +319,7 @@ export async function getUserPredictionHistory(userId, year) {
         const driverMap = new Map(drivers.map(d => [d._id.toString(), d]));
 
         // Lookup teams for drivers
-        const teamIds = new Set(drivers.map(d => d.teamId?.toString()).filter(Boolean));
+        const teamIds = new Set(drivers.map(d => d.team?.toString()).filter(Boolean));
         const teams = await db.collection("Teams").find({ _id: { $in: Array.from(teamIds).map(id => new ObjectId(id)) } }).toArray();
         const teamMap = new Map(teams.map(t => [t._id.toString(), t]));
 
@@ -329,7 +329,7 @@ export async function getUserPredictionHistory(userId, year) {
                 ...item,
                 driver: {
                     ...driverMap.get(item.driver.toString()),
-                    team_info: teamMap.get(driverMap.get(item.driver.toString())?.teamId?.toString())
+                    team_info: teamMap.get(driverMap.get(item.driver.toString())?.team?.toString())
                 }
             })) || [];
 

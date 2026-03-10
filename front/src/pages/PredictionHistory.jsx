@@ -224,7 +224,7 @@ function PredictionHistory() {
                                                 <div className="col-pred">
                                                     {pred ? (
                                                         <>
-                                                            <div className="driver-color-bar" style={{ backgroundColor: pred.driver.team_info?.color }}></div>
+                                                            <div className="driver-color-bar" style={{ backgroundColor: pred.driver.team_info?.color || '#ccc' }}></div>
                                                             <span className="driver-name">{pred.driver.full_name.split(' ')[0]} <strong>{pred.driver.full_name.split(' ').slice(1).join(' ')}</strong></span>
                                                         </>
                                                     ) : '-'}
@@ -232,7 +232,7 @@ function PredictionHistory() {
                                                 <div className="col-real">
                                                     {real ? (
                                                         <>
-                                                            <div className="driver-color-bar" style={{ backgroundColor: real.driver.team_info?.color }}></div>
+                                                            <div className="driver-color-bar" style={{ backgroundColor: real.driver.team_info?.color || '#ccc' }}></div>
                                                             <span className="driver-name">{real.driver.full_name.split(' ')[0]} <strong>{real.driver.full_name.split(' ').slice(1).join(' ')}</strong></span>
                                                         </>
                                                     ) : '-'}
