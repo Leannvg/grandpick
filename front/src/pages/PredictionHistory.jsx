@@ -134,7 +134,7 @@ function PredictionHistory() {
                                     <div className="race-top">
                                         <div className="race-location">
                                             <span className="emoji-flag me-2">{getFlagEmoji(item.circuit.country)}</span>
-                                            <span className="race-country">{item.circuit.gp_name}</span>
+                                            <span className="circuit-gp">{item.circuit.gp_name}</span>
                                         </div>
                                     </div>
                                     <p className="race-circuit">{item.circuit.circuit_name}</p>
@@ -181,7 +181,7 @@ function PredictionHistory() {
                                         >
                                             <div className="race-info">
                                                 <div className="race-top">
-                                                    <span className="race-country" style={{ fontSize: '1.2rem' }}>{sessionDef.label}</span>
+                                                    <span className="circuit-gp" style={{ fontSize: '1.2rem' }}>{sessionDef.label}</span>
                                                 </div>
                                                 <p className="race-circuit">{session ? new Date(session.date_race).toLocaleDateString('es-AR') : '-'}</p>
                                             </div>
