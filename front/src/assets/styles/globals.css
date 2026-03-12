@@ -55,7 +55,6 @@ body {
 .main-content.is-loading {
   margin: 0px;
   min-height: 80vh;
-  /* Fixed height to keep the loader centered and consistent */
 }
 
 /* LOADER DINÁMICO REPLACED BY LoaderCar */
