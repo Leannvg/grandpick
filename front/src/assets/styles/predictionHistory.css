@@ -99,7 +99,6 @@
 .history-sidebar {
     display: flex;
     flex-direction: column;
-    gap: 12px;
     max-height: 70vh;
     overflow-y: auto;
     padding-right: 10px;
@@ -114,40 +113,100 @@
     border-radius: 2px;
 }
 
-/* Calendar Item Overrides for History Page */
-.calendar-item {
+/* History Circuit Card (Unique classes to avoid collision) */
+.history-circuit-card {
+    background: #F3F3F3;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    overflow: hidden;
+    margin-bottom: 10px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    min-height: 70px;
 }
 
-.calendar-item:hover {
+.history-circuit-card:hover {
     transform: translateX(5px);
 }
 
-.calendar-item.is-selected {
-    border-color: #4a90e2 !important;
-    background: #fff !important;
+.history-circuit-card.is-selected {
+    border: 1px solid #4a90e2;
+    background: #fff;
     box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);
 }
 
-.race-description {
+.history-card-info {
+    width: 100%;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.history-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.history-card-location {
+    display: flex;
+    align-items: center;
+}
+
+.history-gp-name {
+    color: black;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.history-card-circuit {
+    font-size: 1rem;
+    font-weight: 300;
+    text-align: left;
+    color: #555;
+    margin: 0;
+}
+
+.history-card-date {
+    width: 30%;
+    padding: 10px 0;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.history-card-day {
+    font-size: 24px;
+}
+
+.history-card-month {
+    font-size: 14px;
+    margin-top: -4px;
+    opacity: 0.9;
+}
+
+.history-desc {
     font-weight: 400;
 }
 
-/* Color classes for circuit cards */
-.race-date.status-points {
+/* Status Colors for Circuit Cards */
+.history-card-date.h-status-points {
     background-color: var(--color-add) !important;
 }
 
-.race-date.status-upcoming {
+.history-card-date.h-status-upcoming {
     background-color: var(--color-soon) !important;
 }
 
-.race-date.status-na {
+.history-card-date.h-status-na {
     background-color: var(--color-disabled) !important;
-}
-
-.history-circuit-card {
-    min-height: 70px;
 }
 
 /* Session Selection Tabs (Desktop) */
@@ -157,7 +216,7 @@
     margin-bottom: 20px;
 }
 
-.session-tab {
+.history-session-tab {
     flex: 1;
     border: none;
     padding: 0;
@@ -201,15 +260,15 @@
     padding: 10px;
 }
 
-.session-tab.status-finished .session-status-block {
+.history-session-tab.status-finished .session-status-block {
     background-color: var(--color-add);
 }
 
-.session-tab.status-upcoming .session-status-block {
+.history-session-tab.status-upcoming .session-status-block {
     background-color: var(--color-soon);
 }
 
-.session-tab.status-none .session-status-block {
+.history-session-tab.status-none .session-status-block {
     background-color: var(--color-disabled);
 }
 
@@ -231,11 +290,11 @@
     margin-bottom: 4px;
 }
 
-.session-tab:disabled {
+.history-session-tab:disabled {
     cursor: default;
 }
 
-.session-tab.is-selected {
+.history-session-tab.is-selected {
     box-shadow: 0 0 15px rgba(74, 144, 226, 0.3);
     border: 1px solid #4a90e2;
 }
@@ -331,12 +390,6 @@
     opacity: 0.5;
 }
 
-.circuit-gp {
-    color: black;
-    font-weight: 500;
-    font-size: 18px;
-}
-
 /* Mobile Drawer Styles */
 .history-drawer-overlay {
     position: fixed;
@@ -367,6 +420,12 @@
     margin-bottom: 20px;
 }
 
+.history-gp-title {
+    color: black;
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
 @media (max-width: 1200px) {
     .prediction-history-page {
         padding-top: 20px;
@@ -395,7 +454,7 @@
         max-height: none;
         padding-right: 0;
         gap: 0;
-        /* Remove gap between items on mobile */
+        /* No gap for mobile items */
     }
 
     .history-detail {
@@ -422,10 +481,6 @@
         display: flex;
     }
 
-    .drawer-header-mobile .circuit-gp {
-        font-size: 1.2rem;
-    }
-
     .prediction-comparison-table {
         flex: 1;
         overflow-y: auto;
@@ -441,7 +496,7 @@
         gap: 8px;
     }
 
-    .session-tab {
+    .history-session-tab {
         height: 80px;
         flex-direction: column;
         border-radius: 10px !important;
@@ -463,7 +518,7 @@
         padding: 0;
         display: flex;
         flex-direction: row;
-        /* Text side by side in mobile drawer */
+        /* Horizontal text in mobile drawer */
         justify-content: center;
         gap: 8px;
     }
@@ -516,7 +571,26 @@
         display: none;
     }
 
-    .session-tab.is-selected {
+    .history-session-tab.is-selected {
         border: 2px solid #4a90e2 !important;
+    }
+
+    /* Fix card layout for mobile */
+    .history-circuit-card {
+        border-radius: 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        margin-bottom: 0;
+    }
+
+    .history-card-info {
+        padding: 10px 12px;
+    }
+
+    .history-gp-name {
+        font-size: 16px;
+    }
+
+    .history-card-circuit {
+        font-size: 0.9rem;
     }
 }

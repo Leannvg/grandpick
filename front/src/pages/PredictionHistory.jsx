@@ -151,28 +151,28 @@ function PredictionHistory() {
                             return (
                                 <div
                                     key={item.circuit._id}
-                                    className={`calendar-item history-circuit-card ${isSelected ? 'is-selected' : ''}`}
+                                    className={`history-circuit-card ${isSelected ? 'is-selected' : ''}`}
                                     onClick={() => handleCircuitClick(item.circuit._id)}
                                 >
-                                    <div className="race-info">
-                                        <div className="race-top">
-                                            <div className="race-location">
+                                    <div className="history-card-info">
+                                        <div className="history-card-top">
+                                            <div className="history-card-location">
                                                 <span className="emoji-flag me-2">{getFlagEmoji(item.circuit.country)}</span>
-                                                <span className="circuit-gp">{item.circuit.gp_name}</span>
+                                                <span className="history-gp-name">{item.circuit.gp_name}</span>
                                             </div>
                                         </div>
-                                        <p className="race-circuit">{item.circuit.circuit_name}</p>
+                                        <p className="history-card-circuit">{item.circuit.circuit_name}</p>
                                     </div>
-                                    <div className={`race-date ${isFinished || hasStarted ? 'status-points' : 'race-upcoming'}`}>
+                                    <div className={`history-card-date ${isFinished || hasStarted ? 'h-status-points' : 'h-status-upcoming'}`}>
                                         {isFinished || hasStarted ? (
                                             <>
-                                                <span className="race-day">{item.totalPoints}</span>
-                                                <span className="race-month race-description">PTS</span>
+                                                <span className="history-card-day">{item.totalPoints}</span>
+                                                <span className="history-card-month history-desc">PTS</span>
                                             </>
                                         ) : (
                                             <>
-                                                <span className="race-day">{new Date(item.date_gp_start).getDate()}</span>
-                                                <span className="race-month race-description">{new Date(item.date_gp_start).toLocaleDateString('es-ES', { month: 'short' }).replace('.', '').toUpperCase()}</span>
+                                                <span className="history-card-day">{new Date(item.date_gp_start).getDate()}</span>
+                                                <span className="history-card-month history-desc">{new Date(item.date_gp_start).toLocaleDateString('es-ES', { month: 'short' }).replace('.', '').toUpperCase()}</span>
                                             </>
                                         )}
                                     </div>
@@ -209,7 +209,7 @@ function PredictionHistory() {
 
                                         <div className="drawer-header-mobile">
                                             <span className="emoji-flag me-2">{getFlagEmoji(currentCircuit.circuit.country)}</span>
-                                            <span className="circuit-gp">{currentCircuit.circuit.gp_name}</span>
+                                            <span className="history-gp-title">{currentCircuit.circuit.gp_name}</span>
                                         </div>
 
                                         <div className="session-tabs">
@@ -228,7 +228,7 @@ function PredictionHistory() {
                                                 return (
                                                     <button
                                                         key={type}
-                                                        className={`calendar-item session-tab status-${status} ${isSelected ? 'is-selected' : ''}`}
+                                                        className={`history-session-tab status-${status} ${isSelected ? 'is-selected' : ''}`}
                                                         onClick={(e) => {
                                                             e.stopPropagation();
                                                             if (status === 'finished') setSelectedSessionType(type);
@@ -335,7 +335,7 @@ function PredictionHistory() {
                                         return (
                                             <button
                                                 key={type}
-                                                className={`calendar-item session-tab status-${status} ${isSelected ? 'is-selected' : ''}`}
+                                                className={`history-session-tab status-${status} ${isSelected ? 'is-selected' : ''}`}
                                                 onClick={() => {
                                                     if (status === 'finished') setSelectedSessionType(type);
                                                 }}
