@@ -17,11 +17,11 @@ function PredictionHistory() {
     const [searchTerm, setSearchTerm] = useState("");
     const [user, setUser] = useState(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1200);
     const { showLoader, hideLoader } = useLoader();
 
     useEffect(() => {
-        const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
+        const handleResize = () => setIsDesktop(window.innerWidth >= 1200);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -89,7 +89,7 @@ function PredictionHistory() {
             setSelectedSessionType(bestSession?.type || "race");
         }
         // Open drawer on mobile
-        if (window.innerWidth < 1024) {
+        if (window.innerWidth < 1200) {
             setIsDrawerOpen(true);
         }
     };
