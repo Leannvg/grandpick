@@ -26,6 +26,20 @@ function PredictionHistory() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Bloquear scroll del body cuando el drawer está abierto en mobile
+    useEffect(() => {
+        if (isDrawerOpen && !isDesktop) {
+            document.body.classList.add("body-scroll-lock");
+        } else {
+            document.body.classList.remove("body-scroll-lock");
+        }
+
+        // Limpieza al desmontar el componente
+        return () => {
+            document.body.classList.remove("body-scroll-lock");
+        };
+    }, [isDrawerOpen, isDesktop]);
+
     useEffect(() => {
         async function loadData() {
             showLoader();

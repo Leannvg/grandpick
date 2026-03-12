@@ -6,6 +6,12 @@
     padding-bottom: 80px;
 }
 
+/* Scroll Lock */
+.body-scroll-lock {
+    overflow: hidden !important;
+    height: 100%;
+}
+
 .history-label {
     font-size: 1.2rem;
     font-weight: 300;
@@ -60,6 +66,7 @@
 }
 
 .btn-search {
+    width: 30%;
     background: #4a90e2;
     color: #fff;
     border: none;
