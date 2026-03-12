@@ -15,6 +15,7 @@ function PredictionHistory() {
     const [year, setYear] = useState(new Date().getFullYear());
     const [searchTerm, setSearchTerm] = useState("");
     const [user, setUser] = useState(null);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const { showLoader, hideLoader } = useLoader();
 
     useEffect(() => {
@@ -65,6 +66,10 @@ function PredictionHistory() {
             const bestSession = circuit.sessions.find(s => s.results?.length > 0 || s.prediction) || circuit.sessions[0];
             setSelectedSessionType(bestSession?.type || "race");
         }
+        // Open drawer on mobile
+        if (window.innerWidth < 1024) {
+            setIsDrawerOpen(true);
+        }
     };
 
     const getSessionButtonStatus = (session, allSessions) => {
@@ -81,16 +86,6 @@ function PredictionHistory() {
         }
 
         return "pending";
-    };
-
-    const renderPoints = (session) => {
-        if (!session || session.points === undefined) return null;
-        return (
-            <div className="session-points-badge">
-                <span className="points-value">{session.points}</span>
-                <span className="points-label">PUNTOS</span>
-            </div>
-        );
     };
 
     return (
@@ -117,7 +112,7 @@ function PredictionHistory() {
             </div>
 
             <div className="history-content">
-                {/* Sidebar */}
+                {/* Sidebar / List */}
                 <aside className="history-sidebar">
                     {filteredHistory.map((item) => {
                         const isSelected = selectedCircuitId === item.circuit._id;
@@ -143,7 +138,7 @@ function PredictionHistory() {
                                     {isFinished || hasStarted ? (
                                         <>
                                             <span className="race-day">{item.totalPoints}</span>
-                                            <span className="race-month     race-description">PTS</span>
+                                            <span className="race-month race-description">PTS</span>
                                         </>
                                     ) : (
                                         <>
@@ -157,10 +152,24 @@ function PredictionHistory() {
                     })}
                 </aside>
 
-                {/* Main View */}
-                <main className="history-detail">
+                {/* Drawer Overlay for Mobile */}
+                <div
+                    className={`history-drawer-overlay ${isDrawerOpen ? 'is-open' : ''}`}
+                    onClick={() => setIsDrawerOpen(false)}
+                ></div>
+
+                {/* Main View / Drawer Content */}
+                <main className={`history-detail ${isDrawerOpen ? 'is-open' : ''}`}>
                     {currentCircuit ? (
                         <>
+                            {/* Drawer Handle for mobile */}
+                            <div className="drawer-handle" onClick={() => setIsDrawerOpen(false)}></div>
+
+                            <div className="drawer-header-mobile">
+                                <span className="emoji-flag me-2">{getFlagEmoji(currentCircuit.circuit.country)}</span>
+                                <span className="circuit-gp">{currentCircuit.circuit.gp_name}</span>
+                            </div>
+
                             <div className="session-tabs">
                                 {[
                                     { id: 'sprint', label: 'SPRINT' },
@@ -176,27 +185,19 @@ function PredictionHistory() {
                                         <button
                                             key={type}
                                             className={`calendar-item session-tab ${isSelected ? 'is-selected' : ''}`}
-                                            onClick={() => (status === 'finished') && setSelectedSessionType(type)}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                if (status === 'finished') setSelectedSessionType(type);
+                                            }}
                                             disabled={status !== 'finished'}
                                         >
                                             <div className="race-info">
                                                 <div className="race-top">
-                                                    <span className="circuit-gp" style={{ fontSize: '1.2rem' }}>{sessionDef.label}</span>
+                                                    <span className="circuit-gp session-type-label">{sessionDef.label}</span>
                                                 </div>
-                                                <p className="race-circuit">{session ? new Date(session.date_race).toLocaleDateString('es-AR') : '-'}</p>
-                                            </div>
-
-                                            <div className={`race-date ${status === 'finished' ? 'status-points' : (status === 'upcoming' ? 'status-upcoming' : 'status-na')}`} style={{ minWidth: '80px' }}>
-                                                {status === 'finished' ? (
-                                                    <>
-                                                        <span className="race-day">{session.points}</span>
-                                                        <span className="race-month race-description">PTS</span>
-                                                    </>
-                                                ) : status === 'upcoming' ? (
-                                                    <img src={cronometroIcon} alt="Upcoming" style={{ width: '22px', filter: 'brightness(0) invert(1)' }} />
-                                                ) : (
-                                                    <img src={cruzIcon} alt="N/A" style={{ width: '18px', filter: 'brightness(0) invert(1)' }} />
-                                                )}
+                                                <p className="race-circuit session-status-sublabel">
+                                                    {status === 'finished' ? `${session.points} Puntos` : (status === 'upcoming' ? 'Próximamente' : 'No aplica')}
+                                                </p>
                                             </div>
                                         </button>
                                     );
