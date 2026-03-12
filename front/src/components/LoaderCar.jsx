@@ -1,6 +1,4 @@
-import React from 'react';
 import '../assets/styles/loaderCar.css';
-import cronometroIcon from "../assets/icons/cronometro.svg"; // Keeping consistency if needed, but not used in the car svg itself
 
 const LoaderCar = ({ message = "Cargando..." }) => {
     return (
