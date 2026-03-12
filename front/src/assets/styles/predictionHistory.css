@@ -85,7 +85,6 @@
 .history-sidebar {
     display: flex;
     flex-direction: column;
-    gap: 12px;
     max-height: 70vh;
     overflow-y: auto;
     padding-right: 10px;
@@ -183,7 +182,6 @@
 .session-status-block {
     width: 90px;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     color: #fff;
@@ -457,7 +455,7 @@
     .session-tabs {
         flex-direction: row;
         background: transparent;
-        margin: 0 10px 20px;
+        margin: 0px 10px 0px;
         padding: 0;
         gap: 8px;
     }
