@@ -47,7 +47,7 @@ function NotificationsBell({ onToggle }) {
                   className="notification-item-wrapper position-relative border-bottom"
                 >
                   <Link
-                    to={n.link?.startsWith("/results") ? "/ranking" : (n.link || "/predictions")}
+                    to={n.link?.startsWith("/results") ? "/prediction-history" : (n.link || "/predictions")}
                     className="notification-item d-flex gap-3 p-3 text-decoration-none"
                     onClick={() => deleteNotification(n.id)}
                   >

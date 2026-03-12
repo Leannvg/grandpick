@@ -57,11 +57,17 @@ const saveTokenInBackend = async (userId, token) => {
 /**
  * Escucha mensajes mientras la app está abierta (foreground)
  */
-export const onForegroundMessage = () => {
+export const onForegroundMessage = (navigate) => {
     onMessage(messaging, (payload) => {
         console.log("Mensaje recibido en primer plano:", payload);
-        // Aquí puedes mostrar un Toast o una notificación personalizada dentro de la UI
-        // porque la notificación del sistema NO aparece automáticamente si la pestaña está activa
-        alert(`${payload.notification.title}: ${payload.notification.body}`);
+
+        // Si el usuario quiere redirección automática cuando llega un mensaje de resultados
+        if (payload.data?.link?.startsWith("/results") || payload.notification?.title?.toLowerCase().includes("resultado")) {
+            if (navigate) {
+                navigate("/prediction-history");
+            }
+        } else {
+            alert(`${payload.notification.title}: ${payload.notification.body}`);
+        }
     });
 };

@@ -75,7 +75,7 @@ function App() {
         }
 
         requestNotificationPermission(perfil._id);
-        onForegroundMessage();
+        onForegroundMessage(navigate);
 
       } catch (error) {
         console.error("Error al restaurar sesión:", error);
@@ -110,7 +110,7 @@ function App() {
     }
 
     requestNotificationPermission(user._id);
-    onForegroundMessage();
+    onForegroundMessage(navigate);
 
     localStorage.setItem('auth-token', token);
 
