@@ -1,4 +1,5 @@
 import Nav from "./components/Nav";
+import LoaderCar from "./components/LoaderCar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthListener from "./components/AuthListener";
@@ -137,14 +138,7 @@ function App() {
         <Nav onLogout={onLogout} autenticado={estaAutenticado} esAdmin={esAdmin}></Nav>
         <NextRaceCTA />
         <div className={`main-content ${isHome ? 'home-content' : ''} ${(loading || cargando) ? 'is-loading' : ''}`}>
-          {(loading || cargando) && (
-            <div className="loader-overlay">
-              <div className="loader-box">
-                <div className="custom-spinner"></div>
-                <span>{cargando ? "Iniciando..." : "Cargando..."}</span>
-              </div>
-            </div>
-          )}
+          {(loading || cargando) && <LoaderCar message={cargando ? "Iniciando..." : "Cargando..."} />}
           {!cargando && (
             <Routes>
               <Route path="/register" element={<Register />} />
