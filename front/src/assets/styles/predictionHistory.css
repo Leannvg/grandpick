@@ -33,7 +33,6 @@
     justify-content: center;
     align-items: center;
     gap: 0;
-    margin: 40px 0;
 }
 
 .year-selector {
@@ -48,7 +47,8 @@
     background: #fff;
     border-radius: 0 8px 8px 0;
     overflow: hidden;
-    width: 300px;
+    width: 100%;
+    max-width: 400px;
 }
 
 .search-bar input {
@@ -78,7 +78,14 @@
     display: grid;
     grid-template-columns: .5fr 1fr;
     gap: 30px;
-    margin-top: 20px;
+    margin-top: 40px;
+    align-items: flex-start;
+}
+
+.history-sidebar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 /* Sidebar */
@@ -119,27 +126,24 @@
     font-weight: 400;
 }
 
-/* New color classes for history page */
+/* Color classes for circuit cards */
 .race-date.status-points {
     background-color: var(--color-add) !important;
-    /* Green */
 }
 
 .race-date.status-upcoming {
     background-color: var(--color-soon) !important;
-    /* Violet */
 }
 
 .race-date.status-na {
     background-color: var(--color-disabled) !important;
-    /* Gray */
 }
 
 .history-circuit-card {
     min-height: 70px;
 }
 
-/* Session Selection Tabs */
+/* Session Selection Tabs (Desktop) */
 .session-tabs {
     display: flex;
     gap: 15px;
@@ -186,20 +190,20 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #fff;
+    color: #ffffff !important;
     padding: 10px;
 }
 
-.session-status-block.status-finished {
-    background-color: var(--color-add) !important;
+.session-tab.status-finished .session-status-block {
+    background-color: var(--color-add);
 }
 
-.session-status-block.status-upcoming {
-    background-color: var(--color-soon) !important;
+.session-tab.status-upcoming .session-status-block {
+    background-color: var(--color-soon);
 }
 
-.session-status-block.status-none {
-    background-color: var(--color-disabled) !important;
+.session-tab.status-none .session-status-block {
+    background-color: var(--color-disabled);
 }
 
 .status-val {
@@ -263,7 +267,6 @@
 .table-row.no-match {
     background: rgba(220, 53, 69, 0.12);
 }
-
 
 .col-pos,
 .col-pred,
@@ -336,17 +339,11 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
     z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.history-drawer-overlay.is-open {
-    opacity: 1;
-    visibility: visible;
 }
 
 .drawer-handle {
+    display: none;
+    /* Hide on desktop */
     width: 60px;
     height: 5px;
     background: #ccc;
@@ -357,23 +354,10 @@
 
 .drawer-header-mobile {
     display: none;
-    /* Hide on desktop */
     align-items: center;
     padding: 0 20px 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
-}
-
-.session-tab.status-finished .session-status-block {
-    background-color: var(--color-add);
-}
-
-.session-tab.status-upcoming .session-status-block {
-    background-color: var(--color-soon);
-}
-
-.session-tab.status-none .session-status-block {
-    background-color: var(--color-disabled);
 }
 
 @media (max-width: 1024px) {
@@ -393,23 +377,20 @@
         display: block;
     }
 
-    .history-sidebar {
-        max-height: none;
-        padding-right: 0;
-    }
-
-    /* Filters on mobile */
     .history-filters {
         flex-direction: row;
         width: 100%;
         margin: 20px 0;
+        justify-content: center;
     }
 
-    .search-bar {
-        width: 100%;
+    .history-sidebar {
+        max-height: none;
+        padding-right: 0;
+        gap: 0;
+        /* Remove gap between items on mobile */
     }
 
-    /* Drawer Behavior */
     .history-detail {
         position: fixed;
         bottom: 0;
@@ -418,19 +399,16 @@
         height: 100vh;
         max-height: 85vh;
         background: #F3F3F3;
-        /* Light background for the drawer content */
         z-index: 1001;
         border-radius: 30px 30px 0 0;
-        transform: translateY(100%);
-        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         display: flex;
         flex-direction: column;
         padding: 0;
         overflow: hidden;
     }
 
-    .history-detail.is-open {
-        transform: translateY(0);
+    .drawer-handle {
+        display: block;
     }
 
     .drawer-header-mobile {
@@ -441,11 +419,6 @@
         font-size: 1.2rem;
     }
 
-    /* Wrap detail content for scrolling on mobile */
-    .history-detail>* {
-        flex-shrink: 0;
-    }
-
     .prediction-comparison-table {
         flex: 1;
         overflow-y: auto;
@@ -453,11 +426,10 @@
         margin: 10px;
     }
 
-    /* Session Tabs on mobile */
     .session-tabs {
         flex-direction: row;
         background: transparent;
-        margin: 0 10px 20px;
+        margin: 0 10px 10px;
         padding: 0;
         gap: 8px;
     }
@@ -472,36 +444,9 @@
 
     .session-main {
         order: -1;
-        /* Keep it at top if needed, but flex-direction column handles it */
         width: 100%;
         height: 40px;
         padding: 0;
-    }
-
-
-    .session-tab.status-finished .session-status-block {
-        background-color: var(--color-add);
-    }
-
-    .session-tab.status-upcoming .session-status-block {
-        background-color: var(--color-soon);
-    }
-
-    .session-tab.status-none .session-status-block {
-        background-color: var(--color-disabled);
-    }
-
-
-    /* Map status colors to the TOP block on mobile */
-
-    .session-type-name {
-        font-size: 1rem !important;
-        text-transform: uppercase;
-    }
-
-    .session-date {
-        display: none;
-        /* Hide date on mobile as per image */
     }
 
     .session-status-block {
@@ -509,35 +454,35 @@
         height: 40px;
         color: #ffffff !important;
         padding: 0;
+        display: flex;
+        flex-direction: row;
+        /* Text side by side in mobile drawer */
+        justify-content: center;
+        gap: 8px;
     }
 
     .status-lbl {
         font-size: 11px !important;
-        text-transform: uppercase;
-        font-weight: 700;
         margin: 0;
     }
 
     .status-val {
         font-size: 11px !important;
-        margin-right: 4px;
-    }
-
-    /* On mobile we show "3 PUNTOS" in one line */
-    .session-status-block.status-finished {
-        flex-direction: row;
+        margin: 0;
     }
 
     .status-icon {
         display: none;
-        /* Hide icons on mobile tabs as per image */
     }
 
-    .session-tab.is-selected {
-        border: 2px solid #4a90e2 !important;
+    .session-date {
+        display: none;
     }
 
-    /* Table adjustments */
+    .session-type-name {
+        font-size: 1rem !important;
+    }
+
     .table-header,
     .table-row {
         grid-template-columns: 50px 1.2fr 1.2fr 60px;
@@ -562,5 +507,9 @@
 
     .no-selection-message {
         display: none;
+    }
+
+    .session-tab.is-selected {
+        border: 2px solid #4a90e2 !important;
     }
 }
