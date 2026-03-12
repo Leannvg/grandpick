@@ -150,23 +150,83 @@
     flex: 1;
     border: none;
     padding: 0;
-    /* Let inner content handle padding */
     cursor: pointer;
-    background: #F3F3F3;
+    background: #fff;
     height: 70px;
+    display: flex;
+    overflow: hidden;
+    border-radius: 8px;
 }
 
-.session-tab .race-info {
-    padding: 12px 16px;
+.session-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    color: #000;
+}
+
+.session-type-name {
+    font-weight: 800;
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.session-date {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin-top: 4px;
+}
+
+.session-status-block {
+    width: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    padding: 10px;
+}
+
+.session-status-block.status-finished {
+    background-color: var(--color-add) !important;
+}
+
+.session-status-block.status-upcoming {
+    background-color: var(--color-soon) !important;
+}
+
+.session-status-block.status-none {
+    background-color: var(--color-disabled) !important;
+}
+
+.status-val {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.status-lbl {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.status-icon {
+    width: 20px;
+    filter: brightness(0) invert(1);
+    margin-bottom: 4px;
 }
 
 .session-tab:disabled {
     cursor: default;
-    opacity: 0.7;
 }
 
 .session-tab.is-selected {
-    background: #fff;
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.3);
+    border: 1px solid #4a90e2;
 }
 
 /* Comparison Table */
@@ -384,49 +444,84 @@
     /* Session Tabs on mobile */
     .session-tabs {
         flex-direction: row;
-        background: #e9ecef;
-        margin: 0 20px 20px;
-        border-radius: 15px;
-        padding: 5px;
-        gap: 5px;
+        background: transparent;
+        margin: 0 10px 20px;
+        padding: 0;
+        gap: 8px;
     }
 
     .session-tab {
-        height: 60px;
-        border-radius: 12px !important;
-        background: transparent;
-        box-shadow: none !important;
-        transform: none !important;
-    }
-
-    .session-tab.is-selected {
-        background: #fff !important;
-    }
-
-    .session-tab .race-info {
-        padding: 8px;
-        text-align: center;
-        display: flex;
+        height: 80px;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        border-radius: 10px !important;
+        background: #fff !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
     }
 
-    .session-tab .race-top {
+    .session-main {
+        order: -1;
+        /* Keep it at top if needed, but flex-direction column handles it */
+        width: 100%;
+        height: 40px;
+        padding: 0;
+        color: #fff;
+    }
+
+    /* Map status colors to the TOP block on mobile */
+    .session-tab.status-finished .session-main {
+        background-color: var(--color-add);
+    }
+
+    .session-tab.status-upcoming .session-main {
+        background-color: var(--color-soon);
+    }
+
+    .session-tab.status-none .session-main {
+        background-color: var(--color-disabled);
+    }
+
+    .session-type-name {
+        font-size: 1rem !important;
+        text-transform: uppercase;
+    }
+
+    .session-date {
+        display: none;
+        /* Hide date on mobile as per image */
+    }
+
+    .session-status-block {
+        width: 100% !important;
+        height: 40px;
+        background: #fff !important;
+        color: #666 !important;
+        padding: 0;
+    }
+
+    .status-lbl {
+        font-size: 11px !important;
+        text-transform: uppercase;
+        font-weight: 700;
         margin: 0;
     }
 
-    .session-type-label {
-        font-size: 14px !important;
-        font-weight: 700 !important;
-        color: #1b263b;
+    .status-val {
+        font-size: 11px !important;
+        margin-right: 4px;
     }
 
-    .session-status-sublabel {
-        font-size: 11px !important;
-        margin: 0 !important;
-        opacity: 0.6;
-        color: #1b263b;
+    /* On mobile we show "3 PUNTOS" in one line */
+    .session-status-block.status-finished {
+        flex-direction: row;
+    }
+
+    .status-icon {
+        display: none;
+        /* Hide icons on mobile tabs as per image */
+    }
+
+    .session-tab.is-selected {
+        border: 2px solid #4a90e2 !important;
     }
 
     /* Table adjustments */

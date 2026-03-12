@@ -180,24 +180,43 @@ function PredictionHistory() {
                                     const session = currentCircuit.sessions.find(s => s.type === type);
                                     const isSelected = selectedSessionType === type;
                                     const status = getSessionButtonStatus(session, currentCircuit.sessions);
+                                    const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' ? 'PRÓXIMAMENTE' : 'NO APLICA');
+                                    const statusValue = status === 'finished' ? session.points : '';
 
                                     return (
                                         <button
                                             key={type}
-                                            className={`calendar-item session-tab ${isSelected ? 'is-selected' : ''}`}
+                                            className={`calendar-item session-tab status-${status} ${isSelected ? 'is-selected' : ''}`}
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 if (status === 'finished') setSelectedSessionType(type);
                                             }}
                                             disabled={status !== 'finished'}
                                         >
-                                            <div className="race-info">
-                                                <div className="race-top">
-                                                    <span className="circuit-gp session-type-label">{sessionDef.label}</span>
-                                                </div>
-                                                <p className="race-circuit session-status-sublabel">
-                                                    {status === 'finished' ? `${session.points} Puntos` : (status === 'upcoming' ? 'Próximamente' : 'No aplica')}
-                                                </p>
+                                            <div className="session-main">
+                                                <span className="session-type-name">{sessionDef.label}</span>
+                                                <span className="session-date">
+                                                    {session ? new Date(session.date_race).toLocaleDateString('es-AR') : '-'}
+                                                </span>
+                                            </div>
+
+                                            <div className={`session-status-block status-${status}`}>
+                                                {status === 'finished' ? (
+                                                    <>
+                                                        <span className="status-val">{statusValue}</span>
+                                                        <span className="status-lbl">{statusLabel}</span>
+                                                    </>
+                                                ) : status === 'upcoming' ? (
+                                                    <>
+                                                        <img src={cronometroIcon} alt="Icon" className="status-icon" />
+                                                        <span className="status-lbl">{statusLabel}</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <img src={cruzIcon} alt="Icon" className="status-icon" />
+                                                        <span className="status-lbl">{statusLabel}</span>
+                                                    </>
+                                                )}
                                             </div>
                                         </button>
                                     );
