@@ -202,7 +202,7 @@
 }
 
 .history-card-date.h-status-upcoming {
-    background-color: var(--color-soon) !important;
+    background-color: var(--color-next) !important;
 }
 
 .history-card-date.h-status-na {
@@ -573,13 +573,6 @@
 
     .history-session-tab.is-selected {
         border: 2px solid #4a90e2 !important;
-    }
-
-    /* Fix card layout for mobile */
-    .history-circuit-card {
-        border-radius: 0;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        margin-bottom: 0;
     }
 
     .history-card-info {

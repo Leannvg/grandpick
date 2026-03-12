@@ -94,20 +94,11 @@ function PredictionHistory() {
         }
     };
 
-    const getSessionButtonStatus = (session, allSessions) => {
+    const getSessionButtonStatus = (session) => {
         if (!session) return "none";
         if (session.state === "Finalizado" || (session.results && session.results.length > 0)) return "finished";
-
-        // Find the next session among those pending
-        const upcomingSession = allSessions
-            .filter(s => s.state === "Pendiente")
-            .sort((a, b) => new Date(a.date_race) - new Date(b.date_race))[0];
-
-        if (upcomingSession && upcomingSession.type === session.type) {
-            return "upcoming";
-        }
-
-        return "pending";
+        if (session.state === "Pendiente") return "upcoming";
+        return "none";
     };
 
     // Swipe to close functionality
@@ -219,10 +210,12 @@ function PredictionHistory() {
                                                 { id: 'race', label: 'RACE' }
                                             ].map(sessionDef => {
                                                 const type = sessionDef.id;
-                                                const session = currentCircuit.sessions.find(s => s.type === type);
+                                                const session = currentCircuit.sessions.find(s =>
+                                                    s.type === type || (type === 'qualifying' && s.type === 'qualy')
+                                                );
                                                 const isSelected = selectedSessionType === type;
-                                                const status = getSessionButtonStatus(session, currentCircuit.sessions);
-                                                const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' ? 'PRÓXIMAMENTE' : 'NO APLICA');
+                                                const status = getSessionButtonStatus(session);
+                                                const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' || status === 'pending' ? 'PRÓXIMAMENTE' : 'NO APLICA');
                                                 const statusValue = status === 'finished' ? session.points : '';
 
                                                 return (
@@ -326,10 +319,12 @@ function PredictionHistory() {
                                         { id: 'race', label: 'RACE' }
                                     ].map(sessionDef => {
                                         const type = sessionDef.id;
-                                        const session = currentCircuit.sessions.find(s => s.type === type);
+                                        const session = currentCircuit.sessions.find(s =>
+                                            s.type === type || (type === 'qualifying' && s.type === 'qualy')
+                                        );
                                         const isSelected = selectedSessionType === type;
-                                        const status = getSessionButtonStatus(session, currentCircuit.sessions);
-                                        const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' ? 'PRÓXIMAMENTE' : 'NO APLICA');
+                                        const status = getSessionButtonStatus(session);
+                                        const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' || status === 'pending' ? 'PRÓXIMAMENTE' : 'NO APLICA');
                                         const statusValue = status === 'finished' ? session.points : '';
 
                                         return (
