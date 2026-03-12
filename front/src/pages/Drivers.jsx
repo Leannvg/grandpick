@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLoader } from "../context/LoaderContext";
 import DriverCardDesktop from "../components/drivers/DriverCardDesktop";
 import DriverCardMobile from "../components/drivers/DriverCardMobile";
 
@@ -6,11 +7,11 @@ import TeamsServices from "../services/teams.services";
 
 function Drivers() {
   const [drivers, setDrivers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { showLoader, hideLoader } = useLoader();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
   useEffect(() => {
-    setLoading(true);
+    showLoader();
     TeamsServices.findAllTeams()
       .then((teams) => {
         // Flatten drivers from teams and filter by active: true
@@ -26,11 +27,12 @@ function Drivers() {
         );
 
         setDrivers(activeDriversOrdered);
-        setLoading(false);
       })
       .catch(err => {
         console.error("Error loading drivers:", err);
-        setLoading(false);
+      })
+      .finally(() => {
+        hideLoader();
       });
 
     const handleResize = () => {
@@ -41,15 +43,6 @@ function Drivers() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (loading) {
-    return (
-      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Cargando pilotos...</span>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLoader } from "../context/LoaderContext";
 import UsersServices from "../services/users.services.js";
 import FloatingEditProfile from "../components/FloatingEditProfile.jsx";
 import FloatingChangePassword from "../components/FloatingChangePassword.jsx";
@@ -13,6 +14,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Profile() {
   const [usuario, setUsuario] = useState({});
+  const { showLoader, hideLoader } = useLoader();
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
@@ -26,12 +28,15 @@ function Profile() {
   }, [usuario]);
 
   const fetchUsuario = async () => {
+    showLoader();
     try {
       const perfil = await UsersServices.getUserProfile();
       const stats = await UsersServices.getUserStats(perfil._id);
       setUsuario(stats);
     } catch (error) {
       console.error("Error al obtener usuario:", error);
+    } finally {
+      hideLoader();
     }
   };
 

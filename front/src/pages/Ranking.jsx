@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { useLoader } from "../context/LoaderContext";
 import UsersServices from "../services/users.services";
 import { getFlagEmoji } from "../utils/helpers";
 import { usePagination } from "../hooks/usePagination";
@@ -6,15 +7,15 @@ import "../assets/styles/ranking.css";
 
 function Ranking() {
     const [stats, setStats] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { showLoader, hideLoader } = useLoader();
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         const fetchStats = async () => {
+            showLoader();
             try {
                 const data = await UsersServices.getAllUsersStats();
-
-                // Ordenar siguiendo las reglas:
+                // ... sorting logic ...
                 const sortedData = [...data].sort((a, b) => {
                     const pointsA = a.stats?.points?.total || 0;
                     const pointsB = b.stats?.points?.total || 0;
@@ -36,7 +37,7 @@ function Ranking() {
             } catch (error) {
                 console.error("Error al cargar el ranking:", error);
             } finally {
-                setLoading(false);
+                hideLoader();
             }
         };
 
@@ -59,15 +60,6 @@ function Ranking() {
         paginatedData
     } = usePagination(filteredStats, 10);
 
-    if (loading) {
-        return (
-            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
-                <div className="spinner-border text-light" role="status">
-                    <span className="visually-hidden">Cargando ranking...</span>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <section className="ranking-page page-section container text-center">
