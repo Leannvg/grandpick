@@ -200,7 +200,7 @@ function PredictionHistory() {
                                                 </span>
                                             </div>
 
-                                            <div className={`session-status-block status-${status}`}>
+                                            <div className={`session-status-block`}>
                                                 {status === 'finished' ? (
                                                     <>
                                                         <span className="status-val">{statusValue}</span>
