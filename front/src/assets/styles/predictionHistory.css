@@ -183,6 +183,7 @@
 .session-status-block {
     width: 90px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     color: #fff;
