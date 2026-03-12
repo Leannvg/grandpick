@@ -54,7 +54,6 @@
     border-radius: 0 8px 8px 0;
     overflow: hidden;
     width: 100%;
-    max-width: 400px;
 }
 
 .search-bar input {
@@ -280,7 +279,6 @@
 
 .status-lbl {
     font-size: 0.75rem;
-    font-weight: 600;
     margin-top: 2px;
 }
 
@@ -524,12 +522,12 @@
     }
 
     .status-lbl {
-        font-size: 11px !important;
+        font-size: 1rem !important;
         margin: 0;
     }
 
     .status-val {
-        font-size: 11px !important;
+        font-size: 1rem !important;
         margin: 0;
     }
 
