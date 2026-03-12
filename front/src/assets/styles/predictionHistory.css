@@ -476,21 +476,9 @@
         width: 100%;
         height: 40px;
         padding: 0;
-        color: #fff;
     }
 
     /* Map status colors to the TOP block on mobile */
-    .session-tab.status-finished .session-main {
-        background-color: var(--color-add);
-    }
-
-    .session-tab.status-upcoming .session-main {
-        background-color: var(--color-soon);
-    }
-
-    .session-tab.status-none .session-main {
-        background-color: var(--color-disabled);
-    }
 
     .session-type-name {
         font-size: 1rem !important;
