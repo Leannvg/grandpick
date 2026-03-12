@@ -364,6 +364,18 @@
     margin-bottom: 20px;
 }
 
+.session-tab.status-finished .session-status-block {
+    background-color: var(--color-add);
+}
+
+.session-tab.status-upcoming .session-status-block {
+    background-color: var(--color-soon);
+}
+
+.session-tab.status-none .session-status-block {
+    background-color: var(--color-disabled);
+}
+
 @media (max-width: 1024px) {
     .prediction-history-page {
         padding-top: 20px;
