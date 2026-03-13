@@ -196,11 +196,12 @@ function PredictionHistory() {
                             >
                                 {currentCircuit && (
                                     <>
-                                        <div className="drawer-handle"></div>
-
                                         <div className="drawer-header-mobile">
-                                            <span className="emoji-flag me-2">{getFlagEmoji(currentCircuit.circuit.country)}</span>
-                                            <span className="history-gp-title">{currentCircuit.circuit.gp_name}</span>
+                                            <div className="drawer-handle"></div>
+                                            <div className="history-gp-title">
+                                                <span className="emoji-flag me-2">{getFlagEmoji(currentCircuit.circuit.country)}</span>
+                                                {currentCircuit.circuit.gp_name}
+                                            </div>
                                         </div>
 
                                         <div className="session-tabs">
