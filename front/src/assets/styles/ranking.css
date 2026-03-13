@@ -162,20 +162,106 @@
 }
 
 .ranking-table__user-row td {
-    background-color: #e3f2fd !important; /* Light blue highlight */
-    color: #0d47a1 !important;
-    border-bottom: 2px solid #4a90e2;
+    background-color: #e3f2fd !important;
+    font-weight: 600;
 }
 
-.ranking-table__user-row .pos-cell {
-    border-right: 2px solid #4a90e2;
+/* User Floating Stats (UX Approach) */
+.user-floating-stats {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(14, 47, 68, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    padding: 10px 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    z-index: 1050;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    min-width: 280px;
+    opacity: 1;
+    visibility: visible;
 }
 
-.ranking-table__spacer td {
-    height: 12px;
-    padding: 0;
-    background-color: #0e2f44 !important; /* Match page background */
+/* Hide when user is already visible in the table page */
+.user-floating-stats.is-visible-in-table {
+    opacity: 0.2;
+    transform: translateX(-50%) translateY(100px);
+    pointer-events: none;
+}
+
+.user-floating-stats__content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    white-space: nowrap;
+}
+
+.user-floating-stats__rank {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding-right: 20px;
+}
+
+.rank-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--color-red);
+    letter-spacing: 1px;
+}
+
+.rank-number {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+}
+
+.user-floating-stats__info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-floating-stats__info .user-name {
+    font-size: 14px;
+    color: #fff;
+}
+
+.user-floating-stats__info .user-points {
+    font-size: 12px;
+    font-weight: 700;
+    color: #4a90e2;
+}
+
+.btn-jump-to-me {
+    background: var(--color-red);
     border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: auto;
+}
+
+.btn-jump-to-me:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--color-red);
+}
+
+@media (max-width: 767px) {
+    .user-floating-stats {
+        bottom: 20px;
+        min-width: calc(100% - 40px);
+    }
 }
 
 .flag-icon {

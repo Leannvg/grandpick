@@ -130,37 +130,6 @@ function Ranking() {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* Fila del usuario logueado destacada */}
-                            {currentUserStat && !searchTerm && (
-                                <tr className="ranking-table__user-row shadow-sm">
-                                    <td className={`pos-cell ${currentUserStat.globalRank <= 3 ? `pos-${currentUserStat.globalRank}` : ""}`}>
-                                        {currentUserStat.globalRank}
-                                    </td>
-                                    <td>
-                                        <div className="user-info">
-                                            <span className="user-name">{currentUserStat.name}</span>
-                                            <span className="user-lastname">{currentUserStat.last_name}</span>
-                                            <span className="badge bg-primary ms-2" style={{ fontSize: '10px' }}>TU POSICIÓN</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span className="emoji-flag" title={currentUserStat.country}>
-                                            {getFlagEmoji(currentUserStat.country)}
-                                        </span>
-                                    </td>
-                                    <td><strong>{currentUserStat.stats?.points?.total || 0}</strong></td>
-                                    <td>{currentUserStat.stats?.predictions?.total || 0}</td>
-                                    <td>{currentUserStat.stats?.predictions?.total > 0 ? (currentUserStat.stats.points.total / currentUserStat.stats.predictions.total).toFixed(1) : "0.0"}</td>
-                                    <td>{currentUserStat.stats?.successes?.total || 0}</td>
-                                </tr>
-                            )}
-                            
-                            {/* Espaciador si hay fila de usuario */}
-                            {currentUserStat && !searchTerm && (
-                                <tr className="ranking-table__spacer">
-                                    <td colSpan="7"></td>
-                                </tr>
-                            )}
                             {paginatedData.map((item) => {
                                 const pos = item.globalRank;
                                 const isTop3 = pos <= 3;
@@ -224,6 +193,38 @@ function Ranking() {
                     </div>
                 </div>
             </div>
+
+            {/* Floating User Status (Modern UX Approach) */}
+            {currentUserStat && (
+                <div className={`user-floating-stats ${paginatedData.some(u => u._id === currentUserStat._id) ? 'is-visible-in-table' : ''}`}>
+                    <div className="user-floating-stats__content">
+                        <div className="user-floating-stats__rank">
+                            <span className="rank-label">TU POSICIÓN</span>
+                            <span className="rank-number">#{currentUserStat.globalRank}</span>
+                        </div>
+                        <div className="user-floating-stats__info">
+                            <span className="user-name">{currentUserStat.name} <strong>{currentUserStat.last_name}</strong></span>
+                            <span className="user-points">{currentUserStat.stats?.points?.total || 0} PTS</span>
+                        </div>
+                        {/* Botón para "Saltar a mi posición" - UX Mejora */}
+                        {!paginatedData.some(u => u._id === currentUserStat._id) && (
+                            <button 
+                                className="btn-jump-to-me"
+                                onClick={() => {
+                                    const userIndex = filteredStats.findIndex(u => u._id === currentUserStat._id);
+                                    if (userIndex !== -1) {
+                                        setPage(Math.floor(userIndex / pageSize) + 1);
+                                    }
+                                }}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: 16 }}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11.25l-3-3m0 0l-3 3m3-3v7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </button>
+                        )}
+                    </div>
+                </div>
+            )}
         </section>
     );
 }
