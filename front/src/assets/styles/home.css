@@ -49,27 +49,6 @@
   margin-bottom: 0 !important;
 }
 
-.home-hero__register-teaser {
-  margin-top: 15px;
-  font-size: 15px;
-  font-weight: 300;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.home-hero__register-teaser .register-link {
-  color: var(--color-red);
-  text-decoration: none;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  width: fit-content;
-}
-
-.home-hero__register-teaser .register-link:hover {
-  text-decoration: underline;
-}
 
 /* CTA */
 .cta-predictions {

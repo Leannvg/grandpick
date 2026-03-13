@@ -109,6 +109,13 @@ function Login({ onLogin }) {
               </svg>
             </button>
           </form>
+
+          <div className="auth-teaser mt-4">
+            <p className="text-white opacity-75 mb-1" style={{ fontSize: '14px' }}>¿Todavía no tenés una cuenta?</p>
+            <Link to="/register" style={{ color: "var(--color-red)", fontWeight: "600", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              Registrate acá
+            </Link>
+          </div>
         </div>
       </section>
     </main>
