@@ -54,7 +54,8 @@ body {
 
 .main-content.is-loading {
   margin: 0px;
-  min-height: 80vh;
+  height: 80vh; /* Fixed height during loading */
+  overflow: hidden; /* Prevent content from stretching the container */
 }
 
 /* LOADER DINÁMICO REPLACED BY LoaderCar */

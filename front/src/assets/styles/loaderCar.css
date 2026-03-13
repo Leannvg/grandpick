@@ -1,9 +1,9 @@
 .loader-car-overlay {
-    position: absolute;
-    top: 0;
+    position: fixed; /* Fixed relative to viewport for perfect centering */
+    top: 110px; /* Offset to not cover Nav (~65px) + CTA (~45px) */
     left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 110px);
     background: radial-gradient(circle at top, #3081b1, #000e18) no-repeat fixed;
     display: flex;
     flex-direction: column;
@@ -13,7 +13,7 @@
 }
 
 .loader-car-container {
-    width: 160px;
+    width: 200px;
     height: auto;
     --stroke-dash: 46;
     --stroke-dash-negative: -46;
