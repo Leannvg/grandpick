@@ -190,7 +190,7 @@
         border: none !important;
         background-color: var(--color-dark-blue) !important;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
-        z-index: 1030;
+        z-index: 2031;
 
         /* Animation properties */
         display: block !important;

@@ -79,10 +79,13 @@ const Home = () => {
 
                     {/* Contenido */}
                     <div className="home-hero__content">
-
                         <h2 className="home-hero__eyebrow">UN JUEGO DE PREDICCIÓN PARA LA F1</h2>
-
                         <h3 className="home-hero__title">CONVERTÍ TU PASIÓN EN PUNTOS.</h3>
+                        
+                        <div className="home-hero__register-teaser">
+                            <span>¿Todavía no tenés una cuenta?</span>
+                            <Link to="/register" className="register-link">Registrate acá</Link>
+                        </div>
                     </div>
 
                     <Link to="/predictions" className="cta-predictions">

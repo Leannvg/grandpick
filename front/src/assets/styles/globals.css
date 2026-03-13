@@ -303,7 +303,7 @@ p {
   padding: 6px 2px;
   box-shadow: 0 8px 30px #0006;
   position: relative;
-  z-index: 2030;
+  z-index: 2020;
   /* Por encima del loader pero debajo del nav */
 }
 
