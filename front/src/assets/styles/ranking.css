@@ -241,7 +241,7 @@
 }
 
 .btn-jump-to-me {
-    background: var(--color-red);
+    background: #ff3333; /* Brighter red as requested */
     border: none;
     width: 26px;
     height: 26px;
@@ -282,7 +282,7 @@
 
 .btn-jump-to-me:hover {
     transform: scale(1.1);
-    background: #ff3333;
+    background: #ff4d4d; /* Slightly lighter on hover */
 }
 
 /* Adjustments for Filters with User Bar */
