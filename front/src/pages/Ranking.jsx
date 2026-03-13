@@ -7,6 +7,7 @@ import "../assets/styles/ranking.css";
 
 function Ranking() {
     const [stats, setStats] = useState([]);
+    const [currentUserStat, setCurrentUserStat] = useState(null);
     const { showLoader, hideLoader } = useLoader();
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -34,6 +35,15 @@ function Ranking() {
                 }));
 
                 setStats(sortedData);
+                
+                // Buscar la posición del usuario logueado
+                const profile = await UsersServices.getUserProfile();
+                if (profile) {
+                    const userFound = sortedData.find(u => u._id === profile._id);
+                    if (userFound) {
+                        setCurrentUserStat(userFound);
+                    }
+                }
             } catch (error) {
                 console.error("Error al cargar el ranking:", error);
             } finally {
@@ -58,7 +68,7 @@ function Ranking() {
         setPageSize,
         totalPages,
         paginatedData
-    } = usePagination(filteredStats, 10);
+    } = usePagination(filteredStats, 20);
 
 
     return (
@@ -120,6 +130,37 @@ function Ranking() {
                             </tr>
                         </thead>
                         <tbody>
+                            {/* Fila del usuario logueado destacada */}
+                            {currentUserStat && !searchTerm && (
+                                <tr className="ranking-table__user-row shadow-sm">
+                                    <td className={`pos-cell ${currentUserStat.globalRank <= 3 ? `pos-${currentUserStat.globalRank}` : ""}`}>
+                                        {currentUserStat.globalRank}
+                                    </td>
+                                    <td>
+                                        <div className="user-info">
+                                            <span className="user-name">{currentUserStat.name}</span>
+                                            <span className="user-lastname">{currentUserStat.last_name}</span>
+                                            <span className="badge bg-primary ms-2" style={{ fontSize: '10px' }}>TU POSICIÓN</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span className="emoji-flag" title={currentUserStat.country}>
+                                            {getFlagEmoji(currentUserStat.country)}
+                                        </span>
+                                    </td>
+                                    <td><strong>{currentUserStat.stats?.points?.total || 0}</strong></td>
+                                    <td>{currentUserStat.stats?.predictions?.total || 0}</td>
+                                    <td>{currentUserStat.stats?.predictions?.total > 0 ? (currentUserStat.stats.points.total / currentUserStat.stats.predictions.total).toFixed(1) : "0.0"}</td>
+                                    <td>{currentUserStat.stats?.successes?.total || 0}</td>
+                                </tr>
+                            )}
+                            
+                            {/* Espaciador si hay fila de usuario */}
+                            {currentUserStat && !searchTerm && (
+                                <tr className="ranking-table__spacer">
+                                    <td colSpan="7"></td>
+                                </tr>
+                            )}
                             {paginatedData.map((item) => {
                                 const pos = item.globalRank;
                                 const isTop3 = pos <= 3;

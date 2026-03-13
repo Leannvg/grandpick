@@ -161,6 +161,23 @@
     text-transform: uppercase;
 }
 
+.ranking-table__user-row td {
+    background-color: #e3f2fd !important; /* Light blue highlight */
+    color: #0d47a1 !important;
+    border-bottom: 2px solid #4a90e2;
+}
+
+.ranking-table__user-row .pos-cell {
+    border-right: 2px solid #4a90e2;
+}
+
+.ranking-table__spacer td {
+    height: 12px;
+    padding: 0;
+    background-color: #0e2f44 !important; /* Match page background */
+    border: none;
+}
+
 .flag-icon {
     width: 24px;
     height: auto;
