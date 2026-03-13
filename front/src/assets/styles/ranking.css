@@ -31,31 +31,28 @@
 /* SEARCH & FILTERS */
 .ranking-filters {
     max-width: 1100px;
-    margin: 0 auto;
-    padding: 20px 0;
+    margin: 0 auto 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 16px;
     flex-wrap: wrap;
-    position: sticky;
-    top: 60px; /* Offset for Nav */
-    z-index: 1000;
-    background-color: var(--color-body); /* Prevent content bleed */
 }
 
 .ranking-filters__left {
     display: flex;
     align-items: center;
+    height: 44px;
 }
 
 .ranking-filters__year {
     background: rgba(14, 47, 68, 0.8);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #fff;
-    padding: 8px 16px;
+    padding: 0 16px;
     border-radius: 4px;
     font-size: 14px;
+    height: 100%;
 }
 
 .ranking-search {
@@ -65,25 +62,28 @@
     overflow: hidden;
     width: 100%;
     max-width: 300px;
+    height: 44px;
 }
 
 .ranking-search__input {
     flex: 1;
     border: none;
-    padding: 8px 16px;
+    padding: 0 16px;
     font-size: 14px;
     color: #333;
     outline: none;
+    height: 100%;
 }
 
 .ranking-search__button {
     background: #4a90e2;
     color: #fff;
     border: none;
-    padding: 8px 20px;
+    padding: 0 20px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
+    height: 100%;
 }
 
 /* TABLE CARD */
@@ -174,47 +174,44 @@
 /* User Ranking Status Bar (Integrated UX) */
 .ranking-user-status {
     flex: 1;
-    min-width: 300px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 8px 16px;
-    transition: all 0.3s ease;
-}
-
-.ranking-user-status:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
+    min-width: 250px;
+    background: rgba(255, 255, 255, 0.08); /* Reverted to subtle transparency */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    padding: 0 16px;
+    height: 44px;
+    display: flex;
+    align-items: center;
 }
 
 .ranking-user-status__content {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     justify-content: space-between;
+    width: 100%;
 }
 
 .ranking-user-status__rank {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-    padding-right: 16px;
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    padding-right: 12px;
 }
 
 .ranking-user-status__rank .rank-label {
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 700;
     color: var(--color-red);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     line-height: 1;
     margin-bottom: 2px;
 }
 
 .ranking-user-status__rank .rank-number {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 800;
     color: #fff;
     line-height: 1;
@@ -228,22 +225,24 @@
 }
 
 .ranking-user-status__info .user-name {
-    font-size: 13px;
+    font-size: 12px;
     color: rgba(255, 255, 255, 0.9);
+    line-height: 1.2;
 }
 
 .ranking-user-status__info .user-points {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: #4a90e2;
+    line-height: 1.2;
 }
 
 .btn-jump-to-me {
     background: var(--color-red);
     border: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    border-radius: 4px;
     color: #fff;
     display: flex;
     align-items: center;

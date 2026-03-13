@@ -90,8 +90,7 @@ function Ranking() {
                         <select
                             value={pageSize}
                             onChange={(e) => setPageSize(Number(e.target.value))}
-                            className="form-select form-select-sm bg-dark text-light border-secondary"
-                            style={{ width: "80px" }}
+                            className="form-select bg-dark text-light border-secondary"
                         >
                             <option value={2}>2</option>
                             <option value={5}>5</option>
