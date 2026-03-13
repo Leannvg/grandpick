@@ -106,19 +106,28 @@ function Ranking() {
                 {currentUserStat && !searchTerm && (
                     <div className="ranking-user-status">
                         <div className="ranking-user-status__content">
-                            <div className="ranking-user-status__rank">
-                                <span className="rank-label">TU PUESTO</span>
-                                <span className="rank-number">#{currentUserStat.globalRank}</span>
+                            <div className="status-item status-item--rank">
+                                <span className="status-label">TU PUESTO</span>
+                                <span className="status-value">#{currentUserStat.globalRank}</span>
                             </div>
-                            <div className="ranking-user-status__info">
-                                <span className="user-name">{currentUserStat.name} <strong>{currentUserStat.last_name}</strong></span>
-                                <div className="d-flex align-items-center gap-2">
-                                    <span className="user-points">{currentUserStat.stats?.points?.total || 0} PTS</span>
-                                    <span className="user-avg text-muted" style={{ fontSize: '11px' }}>
-                                        ({currentUserStat.stats?.predictions?.total > 0 ? (currentUserStat.stats.points.total / currentUserStat.stats.predictions.total).toFixed(1) : "0.0"} avg)
-                                    </span>
-                                </div>
+                            
+                            <div className="status-item status-item--user">
+                                <span className="status-label">USUARIO</span>
+                                <span className="status-value">{currentUserStat.name} {currentUserStat.last_name}</span>
                             </div>
+
+                            <div className="status-item status-item--avg">
+                                <span className="status-label">PROMEDIO</span>
+                                <span className="status-value">
+                                    {currentUserStat.stats?.predictions?.total > 0 ? (currentUserStat.stats.points.total / currentUserStat.stats.predictions.total).toFixed(1) : "0.0"}
+                                </span>
+                            </div>
+
+                            <div className="status-item status-item--points">
+                                <span className="status-label">PUNTOS</span>
+                                <span className="status-value">{currentUserStat.stats?.points?.total || 0}</span>
+                            </div>
+
                             {!paginatedData.some(u => u._id === currentUserStat._id) && (
                                 <button 
                                     className="btn-jump-to-me"

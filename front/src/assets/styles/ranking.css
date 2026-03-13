@@ -192,15 +192,21 @@
     width: 100%;
 }
 
-.ranking-user-status__rank {
+.status-item {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    padding-right: 16px;
     border-right: 1px solid rgba(255, 255, 255, 0.15);
-    padding-right: 12px;
+    flex-shrink: 0;
 }
 
-.ranking-user-status__rank .rank-label {
+.status-item:last-of-type {
+    border-right: none;
+    padding-right: 0;
+}
+
+.status-label {
     font-size: 8px;
     font-weight: 700;
     color: var(--color-red);
@@ -210,31 +216,30 @@
     margin-bottom: 2px;
 }
 
-.ranking-user-status__rank .rank-number {
+.status-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+
+.status-item--rank .status-value {
     font-size: 16px;
     font-weight: 800;
-    color: #fff;
-    line-height: 1;
 }
 
-.ranking-user-status__info {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    flex-grow: 1;
-}
-
-.ranking-user-status__info .user-name {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.9);
-    line-height: 1.2;
-}
-
-.ranking-user-status__info .user-points {
-    font-size: 13px;
-    font-weight: 700;
+.status-item--avg .status-value,
+.status-item--points .status-value {
     color: #4a90e2;
-    line-height: 1.2;
+}
+
+.status-item--user {
+    flex-grow: 1;
+    min-width: 0; /* Allow ellipsis to work */
 }
 
 .btn-jump-to-me {
