@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import * as authServices from "../services/auth.services.js";
 import CountrySelect from "../components/CountrySelect.jsx";
 import * as helpers from "../utils/helpers.js";
@@ -175,6 +175,13 @@ function Register() {
               </svg>
             </button>
           </form>
+
+          <div className="auth-teaser mt-4">
+            <p className="text-white opacity-75 mb-1" style={{ fontSize: '14px' }}>¿Ya tenés una cuenta?</p>
+            <Link to="/login" style={{ color: "var(--color-red)", fontWeight: "600", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              Iniciá sesión acá
+            </Link>
+          </div>
         </div>
       </section>
     </main>
