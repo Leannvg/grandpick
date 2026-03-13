@@ -6,11 +6,7 @@
     padding-bottom: 80px;
 }
 
-/* Scroll Lock */
-.body-scroll-lock {
-    overflow: hidden !important;
-    height: 100%;
-}
+/* Scroll Lock will be global */
 
 .history-label {
     font-size: 1.2rem;

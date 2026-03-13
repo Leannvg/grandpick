@@ -1,6 +1,14 @@
+import { useEffect } from 'react';
 import '../assets/styles/loaderCar.css';
 
 const LoaderCar = ({ message = "Cargando..." }) => {
+    useEffect(() => {
+        document.body.classList.add('body-scroll-lock');
+        return () => {
+            document.body.classList.remove('body-scroll-lock');
+        };
+    }, []);
+
     return (
         <div className="loader-car-overlay">
             <div className="loader-car-container">
