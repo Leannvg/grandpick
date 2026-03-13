@@ -1,8 +1,20 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import NotificationsBell from "./NotificationsBell.jsx";
 import logo from "../assets/icons/logo_grandpick.svg";
 
 function Nav({ onLogout, autenticado, esAdmin }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.classList.add("body-scroll-lock");
+    } else {
+      document.body.classList.remove("body-scroll-lock");
+    }
+    return () => document.body.classList.remove("body-scroll-lock");
+  }, [isMenuOpen]);
+
   const closeNotifications = () => {
     const dropdown = document.querySelector(".notifications-dropdown");
     if (dropdown && dropdown.classList.contains("show")) {
@@ -26,13 +38,32 @@ function Nav({ onLogout, autenticado, esAdmin }) {
         navBar.classList.remove("show");
       }
     }
+    setIsMenuOpen(false);
   };
 
   const handleMenuToggle = () => {
     closeNotifications();
-    // Bootstrap handle the rest via data-bs-toggle, but we can ensure it here if needed.
-    // However, data-bs-toggle="collapse" is already on the button.
-    // If we want manual control, we'd remove data-bs-toggle and use the API.
+    const navBar = document.getElementById("mainNav");
+    const isOpening = !navBar.classList.contains("show");
+
+    if (isOpening) {
+      // Cierra cualquier solapa abierta antes de abrir el menú
+      window.dispatchEvent(new CustomEvent('close-all-drawers'));
+      
+      // Pequeño delay para que se sienta la transición si es necesario
+      setTimeout(() => {
+        if (window.bootstrap && window.bootstrap.Collapse) {
+          const bsCollapse = window.bootstrap.Collapse.getOrCreateInstance(navBar);
+          bsCollapse.show();
+          setIsMenuOpen(true);
+        } else {
+          navBar.classList.add("show");
+          setIsMenuOpen(true);
+        }
+      }, 50);
+    } else {
+      closeMenu();
+    }
   };
 
 
@@ -42,7 +73,8 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   };
 
   return (
-    <header className="site-header">
+    <>
+      <header className="site-header">
       <nav className="navbar navbar-expand-lg navbar-dark sticky-top">
         <div className="container">
           {/* LOGO */}
@@ -62,8 +94,6 @@ function Nav({ onLogout, autenticado, esAdmin }) {
             <button
               className="navbar-toggler"
               type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#mainNav"
               onClick={handleMenuToggle}
             >
               <span className="navbar-toggler-icon"></span>
@@ -220,6 +250,23 @@ function Nav({ onLogout, autenticado, esAdmin }) {
         </div>
       </nav>
     </header>
+    {/* Overlay para cerrar el menú al hacer clic fuera */}
+    {isMenuOpen && (
+      <div 
+        className="menu-overlay d-lg-none" 
+        onClick={closeMenu}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          zIndex: 1020 // Below header (2030)
+        }}
+      ></div>
+    )}
+    </>
   );
 }
 

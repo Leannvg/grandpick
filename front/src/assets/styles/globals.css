@@ -56,8 +56,10 @@ body {
 
 .main-content.is-loading {
   margin: 0px;
-  height: 80vh; /* Fixed height during loading */
-  overflow: hidden; /* Prevent content from stretching the container */
+  height: 80vh;
+  /* Fixed height during loading */
+  overflow: hidden;
+  /* Prevent content from stretching the container */
 }
 
 /* LOADER DINÁMICO REPLACED BY LoaderCar */
@@ -207,7 +209,7 @@ p {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 1030;
+  z-index: 2030;
   background-color: var(--color-dark-blue);
 }
 
@@ -301,7 +303,7 @@ p {
   padding: 6px 2px;
   box-shadow: 0 8px 30px #0006;
   position: relative;
-  z-index: 1020;
+  z-index: 2030;
   /* Por encima del loader pero debajo del nav */
 }
 

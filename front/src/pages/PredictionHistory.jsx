@@ -22,8 +22,15 @@ function PredictionHistory() {
 
     useEffect(() => {
         const handleResize = () => setIsDesktop(window.innerWidth >= 1200);
+        const handleCloseDrawers = () => setIsDrawerOpen(false);
+
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        window.addEventListener('close-all-drawers', handleCloseDrawers);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('close-all-drawers', handleCloseDrawers);
+        };
     }, []);
 
     // Bloquear scroll del body cuando el drawer está abierto en mobile
