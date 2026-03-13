@@ -128,22 +128,39 @@ function Ranking() {
                                 <span className="status-value">{currentUserStat.stats?.points?.total || 0}</span>
                             </div>
 
-                            {!paginatedData.some(u => u._id === currentUserStat._id) && (
-                                <button 
-                                    className="btn-jump-to-me"
-                                    title="Ir a mi posición"
-                                    onClick={() => {
-                                        const userIndex = filteredStats.findIndex(u => u._id === currentUserStat._id);
-                                        if (userIndex !== -1) {
-                                            setPage(Math.floor(userIndex / pageSize) + 1);
+                            <button 
+                                className="btn-jump-to-me"
+                                title="Ir a mi posición"
+                                onClick={() => {
+                                    if (!currentUserStat) return;
+                                    
+                                    const userIndex = filteredStats.findIndex(u => u._id === currentUserStat._id);
+                                    if (userIndex === -1) return;
+
+                                    const targetPage = Math.floor(userIndex / pageSize) + 1;
+                                    
+                                    // Cambiar de página si es necesario
+                                    if (page !== targetPage) {
+                                        setPage(targetPage);
+                                    }
+
+                                    // Esperar al renderizado para scrollear y resaltar
+                                    setTimeout(() => {
+                                        const element = document.getElementById(`user-row-${currentUserStat._id}`);
+                                        if (element) {
+                                            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                            element.classList.add('row-highlight-pulse');
+                                            setTimeout(() => {
+                                                element.classList.remove('row-highlight-pulse');
+                                            }, 3000);
                                         }
-                                    }}
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: 14 }}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 11.25l-3-3m0 0l-3 3m3-3v7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </button>
-                            )}
+                                    }, page !== targetPage ? 300 : 50); // Más tiempo si hay cambio de página
+                                }}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: 14 }}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11.25l-3-3m0 0l-3 3m3-3v7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                 )}
@@ -186,7 +203,11 @@ function Ranking() {
                                 const avgPoints = totalPredictions > 0 ? (totalPoints / totalPredictions).toFixed(1) : "0.0";
 
                                 return (
-                                    <tr key={item._id || pos}>
+                                    <tr 
+                                        key={item._id || pos} 
+                                        id={item._id ? `user-row-${item._id}` : undefined}
+                                        className={currentUserStat?._id === item._id ? 'is-current-user' : ''}
+                                    >
                                         <td className={`pos-cell ${posClass}`}>{pos}</td>
                                         <td>
                                             <div className="user-info">
