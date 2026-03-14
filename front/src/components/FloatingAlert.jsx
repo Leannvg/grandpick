@@ -15,20 +15,26 @@ function FloatingAlert({
 
  
   const positionClasses = {
-    "top-start": "top-0 start-0",
-    "top-center": "top-0 start-50 translate-middle-x",
-    "top-end": "top-0 end-0",
+    "top-start": "start-0",
+    "top-center": "start-50 translate-middle-x",
+    "top-end": "end-0",
     "bottom-start": "bottom-0 start-0",
     "bottom-center": "bottom-0 start-50 translate-middle-x",
     "bottom-end": "bottom-0 end-0",
   };
 
+  const isTop = position.startsWith("top");
+
   return (
     <AnimatePresence>
       {show && (
         <motion.div
-          className={`position-fixed ${positionClasses[position]} p-3 w-100`}
-          style={{ zIndex: 3000, maxWidth: "500px" }}
+           className={`position-fixed ${positionClasses[position]} p-3 w-100`}
+           style={{ 
+             zIndex: 3000, 
+             maxWidth: "500px",
+             top: isTop ? "115px" : "auto" 
+           }}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
