@@ -1,43 +1,23 @@
-import { authHeaders } from "../utils/helpers.js";
-import API_URL from "./api.js";
+import API_URL, { apiFetch } from "./api.js";
 
-const BASE_URL = `${API_URL}/api/notifications`;
-
-export async function getMyNotifications() {
-  const response = await fetch(`${BASE_URL}/me`, {
-    method: "GET",
-    headers: authHeaders(),
-    credentials: "include",
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al obtener notificaciones");
-  }
-
-  return response.json();
+async function findByUser(userId) {
+    return apiFetch(`/api/users/${userId}/notifications`);
 }
 
-export async function markAsSeen(id) {
-  const response = await fetch(`${BASE_URL}/${id}/seen`, {
-    method: "PATCH",
-    headers: authHeaders(),
-    credentials: "include",
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al marcar notificación como vista");
-  }
+async function markAsRead(userId, notificationId) {
+    return apiFetch(`/api/users/${userId}/notifications/${notificationId}/read`, {
+        method: 'POST',
+    });
 }
 
+async function markAllAsRead(userId) {
+    return apiFetch(`/api/users/${userId}/notifications/read-all`, {
+        method: 'POST',
+    });
+}
 
-
-export async function deleteNotification(id) {
-  const response = await fetch(`${BASE_URL}/${id}`, {
-    method: "DELETE",
-    headers: authHeaders()
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al eliminar notificación");
-  }
+export default {
+    findByUser,
+    markAsRead,
+    markAllAsRead
 }
