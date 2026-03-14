@@ -352,6 +352,21 @@ async function sendBroadcastPush(req, res) {
   }
 }
 
+async function forceLogoutAll(req, res) {
+  try {
+    const { connectDB } = await import("../../services/db.services.js");
+    const database = await connectDB();
+    
+    // Only keep current admin token or delete all. To simplify, we'll delete all.
+    // The admin will also be logged out, which is safe.
+    await database.collection("Tokens").deleteMany({});
+    
+    res.status(200).json({ message: "Se han cerrado todas las sesiones de todos los usuarios." });
+  } catch(err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
 export {
   getAll,
   addNew,
@@ -370,5 +385,6 @@ export {
   resetPassword,
   addFcmToken,
   sendTestPush,
-  sendBroadcastPush
+  sendBroadcastPush,
+  forceLogoutAll
 }

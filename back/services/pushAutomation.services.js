@@ -29,53 +29,119 @@ export const checkAndTriggerPushNotifications = async () => {
         const now = new Date();
 
         // 1. Notificación 30 min antes de que cierre el envío de predicciones
-        // En este proyecto, las predicciones cierran cuando empieza la carrera (date_race)
         const thirtyMinFromNow = new Date(now.getTime() + 30 * 60 * 1000);
 
-        const closingSoon = await db.collection("Races").find({
-            date_race: { $gt: now, $lte: thirtyMinFromNow },
-            predictions_closing_notified: { $ne: true }
-        }).toArray();
+        const closingSoon = await db.collection("Races").aggregate([
+            {
+                $match: {
+                    date_race: { $gt: now, $lte: thirtyMinFromNow },
+                    predictions_closing_notified: { $ne: true }
+                }
+            },
+            {
+                $lookup: {
+                    from: "Circuits",
+                    localField: "id_circuit",
+                    foreignField: "_id",
+                    as: "circuit"
+                }
+            },
+            {
+                $lookup: {
+                    from: "Points_System",
+                    localField: "points_system",
+                    foreignField: "_id",
+                    as: "points_system"
+                }
+            },
+            { $unwind: { path: "$circuit", preserveNullAndEmptyArrays: true } },
+            { $unwind: { path: "$points_system", preserveNullAndEmptyArrays: true } }
+        ]).toArray();
 
         for (const race of closingSoon) {
+            const typeName = race.points_system?.type || 'la sesión';
+            const circuitName = race.circuit?.circuit_name || 'el circuito';
             await notifyAllUsers({
                 title: "¡Últimos 30 minutos!",
-                body: `Faltan 30 minutos para que cierren las predicciones de ${race.type} en ${race.circuit_name || 'el circuito'}.`
-            }, { link: `/predictions/${race._id}` });
+                body: `Faltan 30 minutos para que cierren las predicciones de ${typeName} en ${circuitName}.`
+            }, { link: `/predictions` }); // Redirige a predicciones
 
             await db.collection("Races").updateOne({ _id: race._id }, { $set: { predictions_closing_notified: true } });
         }
 
         // 2. Notificación cuando empieza la sesión
-        const sessionsStarting = await db.collection("Races").find({
-            date_race: { $lte: now },
-            state: "Pendiente",
-            session_started_notified: { $ne: true }
-        }).toArray();
+        const sessionsStarting = await db.collection("Races").aggregate([
+            {
+                $match: {
+                    date_race: { $lte: now },
+                    state: { $ne: "Finalizado" }, // Solo si no está finalizado (en curso)
+                    session_started_notified: { $ne: true }
+                }
+            },
+            {
+                $lookup: {
+                    from: "Points_System",
+                    localField: "points_system",
+                    foreignField: "_id",
+                    as: "points_system"
+                }
+            },
+            { $unwind: { path: "$points_system", preserveNullAndEmptyArrays: true } }
+        ]).toArray();
 
         for (const race of sessionsStarting) {
+            const typeName = race.points_system?.type || 'la carrera';
             await notifyAllUsers({
-                title: `¡Empieza la ${race.type}!`,
-                body: `La sesión de ${race.type} acaba de comenzar. ¡Mucha suerte!`
-            });
+                title: `¡Empieza ${typeName}!`,
+                body: `El contador llegó a cero y la sesión de ${typeName} acaba de comenzar. ¡Mucha suerte a todos!`
+            }, { link: `/predictions` });
 
             await db.collection("Races").updateOne({ _id: race._id }, { $set: { session_started_notified: true } });
         }
 
-        // 3. Notificación cuando se publican resultados
-        const resultsPublished = await db.collection("Races").find({
-            state: "Finalizado",
-            results: { $exists: true, $not: { $size: 0 } },
-            results_notified: { $ne: true }
-        }).toArray();
+        // 3. Notificación cuando se abren predicciones para la próxima sesión
+        // Calculamos la proxima sesion. Si abrió (now >= date_race de la sesion ANTERIOR), y es "Pendiente" y no notificada
+        // Pero es más fácil chequear si current_or_next race ya está en periodo de 24h previas a su inicio
+        const twentyFourHoursFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+        
+        const sessionsOpening = await db.collection("Races").aggregate([
+            {
+                $match: {
+                    date_race: { $gt: now, $lte: twentyFourHoursFromNow },
+                    predictions_opening_notified: { $ne: true },
+                    state: "Pendiente"
+                }
+            },
+            {
+                $lookup: {
+                    from: "Points_System",
+                    localField: "points_system",
+                    foreignField: "_id",
+                    as: "points_system"
+                }
+            },
+            {
+                $lookup: {
+                    from: "Circuits",
+                    localField: "id_circuit",
+                    foreignField: "_id",
+                    as: "circuit"
+                }
+            },
+            { $unwind: { path: "$points_system", preserveNullAndEmptyArrays: true } },
+            { $unwind: { path: "$circuit", preserveNullAndEmptyArrays: true } }
+        ]).toArray();
 
-        for (const race of resultsPublished) {
-            await notifyAllUsers({
-                title: "Resultados publicados",
-                body: `Ya están disponibles los resultados de ${race.type}. ¡Revisa tus puntos!`
-            }, { link: `/results/${race._id}` });
+        for (const race of sessionsOpening) {
+             const typeName = race.points_system?.type || 'la carrera';
+             const gpName = race.circuit?.gp_name || '';
+             
+             await notifyAllUsers({
+                title: `Predicciones habilitadas ${gpName}`,
+                body: `Ya podés hacer tus predicciones para la sesión de ${typeName}.`
+            }, { link: `/predictions` });
 
-            await db.collection("Races").updateOne({ _id: race._id }, { $set: { results_notified: true } });
+            await db.collection("Races").updateOne({ _id: race._id }, { $set: { predictions_opening_notified: true } });
         }
 
     } catch (error) {

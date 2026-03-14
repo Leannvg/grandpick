@@ -69,6 +69,9 @@ route.route("/api/users/test-push")
 route.route("/api/users/broadcast-push")
     .post(autenticado, admin, UsersApiController.sendBroadcastPush)
 
+route.route("/api/users/force-logout-all")
+    .post(autenticado, admin, UsersApiController.forceLogoutAll)
+
 
 
 

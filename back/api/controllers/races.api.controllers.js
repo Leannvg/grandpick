@@ -144,8 +144,8 @@ export async function editById(req, res) {
 
             await sendGlobalNotification(req.app, {
                 title: "Resultados disponibles",
-                message: "Ya podés revisar los resultados de la carrera",
-                link: `/results/${raceId}`,
+                message: "Ya podés revisar si hiciste match con los resultados. Toca aquí para ver tus puntos en el historial.",
+                link: `/prediction-history`,
                 type: "success"
             });
         }

@@ -11,7 +11,6 @@ export async function sendGlobalNotification(app, {
 
   if (!io) {
     console.warn("⚠️ Socket.io no inicializado");
-    return;
   }
 
   const users = await usersServices.getUsers();
@@ -31,6 +30,20 @@ export async function sendGlobalNotification(app, {
   );
 
   for (const user of users) {
-    io.to(`user:${user._id.toString()}`).emit("notifications:new");
+    if (io) io.to(`user:${user._id.toString()}`).emit("notifications:new");
+  }
+
+  // ALSO send Push notification
+  try {
+    const { sendPushToMultipleTokens } = await import("./fcm.services.js");
+    const allTokens = users.flatMap(u => u.fcmTokens || []);
+    if (allTokens.length > 0) {
+      await sendPushToMultipleTokens(allTokens, {
+        title: title,
+        body: message,
+      }, link ? { link } : {});
+    }
+  } catch(e) {
+    console.warn("⚠️ Push no se pudo enviar globalmente", e.message);
   }
 }
