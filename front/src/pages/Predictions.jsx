@@ -41,7 +41,7 @@ function Predictions() {
       try {
         await Promise.all([
           UsersServices.getUserProfile().then(setUser),
-          DriversServices.find().then(setDrivers),
+          DriversServices.findAll().then(setDrivers),
           fetchRace(),
         ]);
       } finally {

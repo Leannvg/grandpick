@@ -50,6 +50,9 @@ export default {
     findById,
     findCurrentOrNext,
     createRace,
+    create: createRace,
     updateRace,
-    deleteRace
+    update: updateRace,
+    deleteRace,
+    remove: deleteRace
 }

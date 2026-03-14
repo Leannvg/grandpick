@@ -184,7 +184,7 @@ function Dashboard() {
 
   const fetchUsers = async () => {
     try {
-      setUsers(await UsersServices.find());
+      setUsers(await UsersServices.findAll());
     } catch (err) {
       console.error("Error al cargar usuarios:", err);
     }

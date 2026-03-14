@@ -1,39 +1,43 @@
 import API_URL, { apiFetch } from "./api.js";
 
-async function find(){
+async function findAll(){
     return apiFetch("/api/circuits");
 }
 
-async function findById(id){
+async function findOne(id){
     return apiFetch(`/api/circuits/${id}`);
 }
 
-async function create(circuit){
+async function createCircuit(circuit){
     return apiFetch("/api/circuits", {
         method: 'POST',
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(circuit),
+        body: circuit instanceof FormData ? circuit : JSON.stringify(circuit),
+        headers: circuit instanceof FormData ? {} : { "Content-type": "application/json" }
     });
 }
 
-async function edit(id, circuit){
+async function updateCircuit(id, circuit){
     return apiFetch(`/api/circuits/${id}`, {
         method: 'PATCH',
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(circuit),
+        body: circuit instanceof FormData ? circuit : JSON.stringify(circuit),
+        headers: circuit instanceof FormData ? {} : { "Content-type": "application/json" }
     });
 }
 
-async function remove(id){
+async function deleteCircuit(id){
     return apiFetch(`/api/circuits/${id}`, {
         method: 'DELETE',
     });
 }
 
 export default {
-    find,
-    findById,
-    create,
-    edit,
-    remove
+    findAll,
+    findById: findOne,
+    findOne,
+    createCircuit,
+    create: createCircuit,
+    updateCircuit,
+    edit: updateCircuit,
+    deleteCircuit,
+    remove: deleteCircuit
 }

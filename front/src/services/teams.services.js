@@ -1,39 +1,44 @@
 import API_URL, { apiFetch } from "./api.js";
 
-async function find(){
+async function findAllTeams(){
     return apiFetch("/api/teams");
 }
 
-async function findById(id){
+async function findTeamById(id){
     return apiFetch(`/api/teams/${id}`);
 }
 
-async function create(team){
+async function createTeam(team){
     return apiFetch("/api/teams", {
         method: 'POST',
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(team),
+        body: team instanceof FormData ? team : JSON.stringify(team),
+        headers: team instanceof FormData ? {} : { "Content-type": "application/json" }
     });
 }
 
-async function edit(id, team){
+async function editTeam(id, team){
     return apiFetch(`/api/teams/${id}`, {
         method: 'PATCH',
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(team),
+        body: team instanceof FormData ? team : JSON.stringify(team),
+        headers: team instanceof FormData ? {} : { "Content-type": "application/json" }
     });
 }
 
-async function remove(id){
+async function deleteTeam(id){
     return apiFetch(`/api/teams/${id}`, {
         method: 'DELETE',
     });
 }
 
 export default {
-    find,
-    findById,
-    create,
-    edit,
-    remove
+    findAllTeams,
+    findAll: findAllTeams,
+    findTeamById,
+    findById: findTeamById,
+    createTeam,
+    create: createTeam,
+    editTeam,
+    edit: editTeam,
+    deleteTeam,
+    remove: deleteTeam
 }

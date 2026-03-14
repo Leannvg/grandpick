@@ -1,6 +1,6 @@
 import API_URL, { apiFetch } from "./api.js";
 
-async function find() {
+async function findAll() {
     return apiFetch("/api/users");
 }
 
@@ -56,7 +56,7 @@ async function unblockUser(id) {
 }
 
 export default {
-    find,
+    findAll,
     findById,
     update,
     remove,
