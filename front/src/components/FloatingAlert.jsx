@@ -27,8 +27,8 @@ function FloatingAlert({
     <AnimatePresence>
       {show && (
         <motion.div
-          className={`position-fixed ${positionClasses[position]} p-3`}
-          style={{ zIndex: 2000 }}
+          className={`position-fixed ${positionClasses[position]} p-3 w-100`}
+          style={{ zIndex: 3000, maxWidth: "500px" }}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}

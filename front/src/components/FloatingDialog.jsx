@@ -17,7 +17,7 @@ function FloatingDialog({
         <>
           <motion.div
             className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center"
-            style={{ zIndex: 1050 }}
+            style={{ zIndex: 3100 }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -25,7 +25,7 @@ function FloatingDialog({
 
             <motion.div
               className="bg-white rounded-4 shadow-lg p-4"
-              style={{ width: "40%", maxWidth: "90%" }}
+              style={{ width: "95%", maxWidth: "500px" }}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
