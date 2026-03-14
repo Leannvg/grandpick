@@ -95,9 +95,16 @@ function App() {
       return;
     }
 
-    connectSocket(userId);
+    const socket = connectSocket(userId);
+    
+    // Escuchar cierre de sesión forzado desde el servidor
+    socket.on("auth:force-logout", () => {
+        console.log("⚠️ Sesión invalidada por el administrador.");
+        onLogout();
+    });
 
     return () => {
+      socket.off("auth:force-logout");
       disconnectSocket();
     };
   }, [userId]);

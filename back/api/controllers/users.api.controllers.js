@@ -360,6 +360,12 @@ async function forceLogoutAll(req, res) {
     // Only keep current admin token or delete all. To simplify, we'll delete all.
     // The admin will also be logged out, which is safe.
     await database.collection("Tokens").deleteMany({});
+
+    // Emitir evento por socket para cerrar sesiones en tiempo real
+    const io = req.app.get("io");
+    if (io) {
+      io.emit("auth:force-logout");
+    }
     
     res.status(200).json({ message: "Se han cerrado todas las sesiones de todos los usuarios." });
   } catch(err) {
