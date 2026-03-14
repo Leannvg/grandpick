@@ -194,12 +194,42 @@ export async function findCurrentOrNextRace() {
 
         const races = await db.collection("Races").aggregate([
             {
+                $lookup: {
+                    from: "Points_System",
+                    localField: "points_system",
+                    foreignField: "_id",
+                    as: "points_system"
+                }
+            },
+            { $unwind: { path: "$points_system", preserveNullAndEmptyArrays: true } },
+            {
                 $addFields: {
                     start: "$date_race",
                     end: {
-                        $add: ["$date_race", duration]
+                        $add: [
+                            "$date_race",
+                            {
+                                $switch: {
+                                    branches: [
+                                        { case: { $eq: ["$points_system.type", "Sprint"] }, then: 0.5 * 60 * 60 * 1000 },
+                                        { case: { $eq: ["$points_system.type", "Qualy"] }, then: 60 * 60 * 1000 },
+                                        { case: { $eq: ["$points_system.type", "Race"] }, then: 1.5 * 60 * 60 * 1000 }
+                                    ],
+                                    default: 1.5 * 60 * 60 * 1000
+                                }
+                            }
+                        ]
                     },
-                    totalDuration: duration
+                    totalDuration: {
+                        $switch: {
+                            branches: [
+                                { case: { $eq: ["$points_system.type", "Sprint"] }, then: 0.5 * 60 * 60 * 1000 },
+                                { case: { $eq: ["$points_system.type", "Qualy"] }, then: 60 * 60 * 1000 },
+                                { case: { $eq: ["$points_system.type", "Race"] }, then: 1.5 * 60 * 60 * 1000 }
+                            ],
+                            default: 1.5 * 60 * 60 * 1000
+                        }
+                    }
                 }
             },
             {
@@ -214,7 +244,6 @@ export async function findCurrentOrNextRace() {
                 }
             },
             { $sort: { start: 1 } },
-            { $limit: 1 },
             {
                 $lookup: {
                     from: "Circuits",
@@ -223,16 +252,8 @@ export async function findCurrentOrNextRace() {
                     as: "circuit"
                 }
             },
-            {
-                $lookup: {
-                    from: "Points_System",
-                    localField: "points_system",
-                    foreignField: "_id",
-                    as: "points_system"
-                }
-            },
-            { $unwind: "$circuit" },
-            { $unwind: "$points_system" }
+            { $unwind: { path: "$circuit", preserveNullAndEmptyArrays: true } },
+            { $limit: 1 }
         ]).toArray();
 
         return races[0] || null;

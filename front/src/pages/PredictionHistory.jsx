@@ -104,7 +104,13 @@ function PredictionHistory() {
     const getSessionButtonStatus = (session) => {
         if (!session) return "none";
         if (session.state === "Finalizado" || (session.results && session.results.length > 0)) return "finished";
+        
+        const now = new Date();
+        const raceStart = new Date(session.date_race);
+        
+        if (session.state === "Pendiente" && now >= raceStart) return "pending_results";
         if (session.state === "Pendiente") return "upcoming";
+        
         return "none";
     };
 
@@ -223,7 +229,7 @@ function PredictionHistory() {
                                                 );
                                                 const isSelected = selectedSessionType === type;
                                                 const status = getSessionButtonStatus(session);
-                                                const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' || status === 'pending' ? 'PRÓXIMAMENTE' : 'NO APLICA');
+                                                const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' ? 'PRÓXIMAMENTE' : (status === 'pending_results' ? 'CORRIENDO / A CONFIRMAR' : 'NO APLICA'));
                                                 const statusValue = status === 'finished' ? session.points : '';
 
                                                 return (
@@ -252,6 +258,11 @@ function PredictionHistory() {
                                                             ) : status === 'upcoming' ? (
                                                                 <>
                                                                     <img src={cronometroIcon} alt="Icon" className="status-icon" />
+                                                                    <span className="status-lbl">{statusLabel}</span>
+                                                                </>
+                                                            ) : status === 'pending_results' ? (
+                                                                <>
+                                                                    <img src={cronometroIcon} alt="Icon" className="status-icon pending-results" />
                                                                     <span className="status-lbl">{statusLabel}</span>
                                                                 </>
                                                             ) : (
@@ -332,7 +343,7 @@ function PredictionHistory() {
                                         );
                                         const isSelected = selectedSessionType === type;
                                         const status = getSessionButtonStatus(session);
-                                        const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' || status === 'pending' ? 'PRÓXIMAMENTE' : 'NO APLICA');
+                                        const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' ? 'PRÓXIMAMENTE' : (status === 'pending_results' ? 'CORRIENDO / A CONFIRMAR' : 'NO APLICA'));
                                         const statusValue = status === 'finished' ? session.points : '';
 
                                         return (
@@ -360,6 +371,11 @@ function PredictionHistory() {
                                                     ) : status === 'upcoming' ? (
                                                         <>
                                                             <img src={cronometroIcon} alt="Icon" className="status-icon" />
+                                                            <span className="status-lbl">{statusLabel}</span>
+                                                        </>
+                                                    ) : status === 'pending_results' ? (
+                                                        <>
+                                                            <img src={cronometroIcon} alt="Icon" className="status-icon pending-results" />
                                                             <span className="status-lbl">{statusLabel}</span>
                                                         </>
                                                     ) : (

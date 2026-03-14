@@ -27,7 +27,7 @@ function PredictionsForm({ points = {}, race_types = [], onDriverChange }) {
       raceType.results.forEach(r => {
         const idx = r.position - 1;
         if (idx >= 0 && idx < total) {
-          restored[idx] = r.driver;
+          restored[idx] = r.driver?._id || r.driver;
         }
       });
 

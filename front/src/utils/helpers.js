@@ -76,7 +76,15 @@ export function parseErrorMessage(error) {
 export function computeRaceState(race) {
   const now = Date.now();
   const start = new Date(race.date_race).getTime();
-  const duration = race.totalDuration || 5400000; // 1.5 horas por defecto (ms)
+  
+  let duration = race.totalDuration || 5400000; // 1.5 horas por defecto (ms)
+  if (!race.totalDuration && race.points_system?.type) {
+    const type = race.points_system.type.toLowerCase();
+    if (type === "sprint") duration = 0.5 * 60 * 60 * 1000; 
+    else if (type === "qualy" || type === "qualifying") duration = 1 * 60 * 60 * 1000;
+    else if (type === "race") duration = 1.5 * 60 * 60 * 1000;
+  }
+
   const end = start + duration;
 
   // Finalizado
