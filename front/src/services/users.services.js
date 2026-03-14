@@ -105,7 +105,12 @@ async function getUserProfile() {
             "Content-type": "application/json",
         }),
     })
-        .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Token inválido o sesión caducada');
+        }
+        return response.json();
+    });
 }
 
 async function getUserStats(id) {
