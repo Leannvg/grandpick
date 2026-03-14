@@ -325,6 +325,33 @@ async function sendTestPush(req, res) {
   }
 }
 
+async function sendBroadcastPush(req, res) {
+  try {
+    const { title, body } = req.body;
+    
+    const users = await UsersServices.getUsers();
+    const { sendPushNotification } = await import("../../services/fcm.services.js");
+    
+    let envios = 0;
+    
+    for (const u of users) {
+      if (u.fcmTokens && u.fcmTokens.length > 0) {
+        try {
+            const promesas = u.fcmTokens.map(token => sendPushNotification(token, { title, body }));
+            await Promise.allSettled(promesas);
+            envios++;
+        } catch (e) {
+            console.error("Fallo al enviar push a usuario " + u._id, e);
+        }
+      }
+    }
+    
+    res.status(200).json({ message: `Push masivo enviado, le llegó aprox a ${envios} usuarios activos` });
+  } catch(err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
 export {
   getAll,
   addNew,
@@ -342,5 +369,6 @@ export {
   forgotPassword,
   resetPassword,
   addFcmToken,
-  sendTestPush
+  sendTestPush,
+  sendBroadcastPush
 }

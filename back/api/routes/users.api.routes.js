@@ -66,6 +66,9 @@ route.route("/api/users/fcm-token")
 route.route("/api/users/test-push")
     .post(autenticado, admin, UsersApiController.sendTestPush)
 
+route.route("/api/users/broadcast-push")
+    .post(autenticado, admin, UsersApiController.sendBroadcastPush)
+
 
 
 
