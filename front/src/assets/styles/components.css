@@ -960,8 +960,6 @@ ul .dropdown {
     margin: 24px 0;
     display: flex;
     justify-content: center;
-    background: #ffffff0f;
-    border-radius: 10px;
 }
 
 .circuit-map img {
@@ -969,6 +967,7 @@ ul .dropdown {
     /*max-width: 500px;*/
     max-width: 800px;
     height: auto;
+    filter: drop-shadow(2px 2px 0px black);
 }
 
 .circuit-stats {
