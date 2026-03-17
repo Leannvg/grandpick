@@ -39,7 +39,7 @@ function NotificationsBell({ onToggle }) {
         <div className="notifications-body">
           <div className="list-group list-group-flush">
             {notifications.length === 0 ? (
-              <p className="text-center text-light py-4 m-0">No hay notificaciones</p>
+              <p className="text-center py-4 m-0">No hay notificaciones</p>
             ) : (
               notifications.map((n) => (
                 <div
