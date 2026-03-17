@@ -31,7 +31,8 @@ export function connectSocket(userId) {
 export function onSocketReady(cb) {
   if (socket?.connected) {
     cb(socket);
-    return;
+    // Explicitly return a no-op function instead of undefined
+    return () => {};
   }
 
   listeners.push(cb);

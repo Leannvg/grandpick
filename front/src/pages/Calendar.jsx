@@ -74,15 +74,17 @@ function Calendar() {
         loadRaces();
 
         let currentSocket = null;
+        const handleRacesUpdated = () => loadRaces(true);
+
         const cleanup = onSocketReady((socket) => {
             currentSocket = socket;
-            socket.on("races:updated", () => loadRaces(true));
+            socket.on("races:updated", handleRacesUpdated);
         });
 
         return () => {
             if (cleanup) cleanup();
             if (currentSocket) {
-                currentSocket.off("races:updated", loadRaces);
+                currentSocket.off("races:updated", handleRacesUpdated);
             }
         };
     }, [loadRaces]);

@@ -43,15 +43,17 @@ function NextRaceCTA() {
         fetchNextRace();
 
         let currentSocket = null;
+        const handleRacesUpdated = () => fetchNextRace();
+
         const cleanup = onSocketReady((socket) => {
             currentSocket = socket;
-            socket.on("races:updated", fetchNextRace);
+            socket.on("races:updated", handleRacesUpdated);
         });
 
         return () => {
             if (cleanup) cleanup();
             if (currentSocket) {
-                currentSocket.off("races:updated", fetchNextRace);
+                currentSocket.off("races:updated", handleRacesUpdated);
             }
         };
     }, []);

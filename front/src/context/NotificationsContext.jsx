@@ -28,13 +28,18 @@ export function NotificationsProvider({ children, userId }) {
 
     fetchNotifications();
 
+    let currentSocket = null;
     const unsubscribe = onSocketReady((socket) => {
       console.log("🟢 ESCUCHANDO notifications:new");
+      currentSocket = socket;
       socket.on("notifications:new", fetchNotifications);
     });
 
     return () => {
-      unsubscribe?.();
+      if (unsubscribe) unsubscribe();
+      if (currentSocket) {
+        currentSocket.off("notifications:new", fetchNotifications);
+      }
     };
   }, [userId]);
 
