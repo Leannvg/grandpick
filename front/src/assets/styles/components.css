@@ -18,7 +18,7 @@
 }
 
 .nav-link svg {
-    width: 30px;
+    width: 22px;
     color: white;
     text-align: center;
 }
@@ -1534,35 +1534,46 @@ ul .dropdown {
 
 .global-alert {
     position: fixed;
-    top: var(--space-nav-first); /* Mobile default */
+    top: 55px;
+    /* Mobile default */
     left: 0;
     width: 100%;
-    z-index: 2028; /* Below Nav (2030) but above CTA (2020) */
-    min-height: 58px; /* Approx mobile CTA height */
+    z-index: 2028;
+    /* Below Nav (2030) but above CTA (2020) */
+    min-height: 58px;
+    /* Approx mobile CTA height */
     display: flex;
     align-items: center;
     color: #fff;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    border-bottom: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 @media (min-width: 768px) {
     .global-alert {
-        top: 60px; /* Tablet nav height */
-        min-height: 80px; /* Desktop CTA height */
+        top: 55px;
+        /* Tablet nav height */
+        min-height: 92px;
+        /* Desktop CTA height */
     }
 }
 
-@media (min-width: 992px) {
-    .global-alert {
-        top: var(--space-nav-first); /* Desktop nav height (90px) */
-    }
+.global-alert.alert-success {
+    background-color: var(--color-add);
 }
 
-.global-alert.alert-success { background-color: var(--color-add); }
-.global-alert.alert-danger { background-color: var(--color-delete); }
-.global-alert.alert-warning { background-color: var(--color-edit); color: #000; }
-.global-alert.alert-info { background-color: var(--color-accent); }
+.global-alert.alert-danger {
+    background-color: #9d1422;
+    ;
+}
+
+.global-alert.alert-warning {
+    background-color: var(--color-edit);
+    color: #000;
+}
+
+.global-alert.alert-info {
+    background-color: var(--color-accent);
+}
 
 .global-alert__container {
     display: flex;
@@ -1587,7 +1598,7 @@ ul .dropdown {
 
 .global-alert__close {
     background: transparent;
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     color: inherit;
     font-size: 24px;
     width: 30px;
@@ -1598,15 +1609,14 @@ ul .dropdown {
     border-radius: 50%;
     cursor: pointer;
     line-height: 1;
-    padding-bottom: 4px;
     transition: all 0.2s;
 }
 
 .global-alert__close:hover {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     transform: scale(1.1);
 }
 
 .global-alert.alert-warning .global-alert__close {
-    border-color: rgba(0,0,0,0.3);
+    border-color: rgba(0, 0, 0, 0.3);
 }
