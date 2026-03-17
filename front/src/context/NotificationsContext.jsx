@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import * as NotificationsServices from "../services/notifications.services.js";
+import NotificationsServices from "../services/notifications.services.js";
 import { onSocketReady } from "../socket";
 
 const NotificationsContext = createContext();

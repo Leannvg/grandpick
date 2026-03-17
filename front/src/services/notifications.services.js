@@ -16,8 +16,20 @@ async function markAllAsRead(userId) {
     });
 }
 
+async function getMyNotifications() {
+    return apiFetch("/api/notifications/me");
+}
+
+async function deleteNotification(id) {
+    return apiFetch(`/api/notifications/${id}`, {
+        method: 'DELETE',
+    });
+}
+
 export default {
     findByUser,
     markAsRead,
-    markAllAsRead
+    markAllAsRead,
+    getMyNotifications,
+    deleteNotification
 }
