@@ -41,7 +41,16 @@ export async function apiFetch(endpoint, options = {}) {
         throw error;
     }
 
-    return response.json();
+    if (response.status === 204) {
+        return null;
+    }
+
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+        return response.json();
+    }
+
+    return response.text();
 }
 
 export default API_URL;
