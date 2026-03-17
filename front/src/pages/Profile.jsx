@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLoader } from "../context/LoaderContext";
+import { Link } from "react-router-dom";
 import UsersServices from "../services/users.services.js";
 import FloatingEditProfile from "../components/FloatingEditProfile.jsx";
 import FloatingChangePassword from "../components/FloatingChangePassword.jsx";
+import FloatingChangeEmail from "../components/FloatingChangeEmail.jsx";
 import { getFlagEmoji } from "../utils/helpers";
 import profileDefault from "../assets/images/profile_default.png";
 import "../assets/styles/profile.css";
@@ -17,6 +19,7 @@ function Profile() {
   const { showLoader, hideLoader } = useLoader();
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
 
   const API_URL = import.meta.env.VITE_API_URL;
@@ -100,12 +103,17 @@ function Profile() {
         {/* Actions */}
         <aside className="profile-actions">
           <div className="actions-grid">
-            <button className="btn-profile-action">Mis Predicciones</button>
+            <Link to="/prediction-history" className="btn-profile-action text-decoration-none d-flex align-items-center justify-content-center">
+              Mi historial
+            </Link>
             <button className="btn-profile-action" onClick={() => setShowPasswordModal(true)}>
               Cambiar Contraseña
             </button>
-            <button className="btn-profile-action" onClick={() => setShowProfileModal(true)}>
+            <button className="btn-profile-action" onClick={() => setShowEmailModal(true)}>
               Cambiar Email
+            </button>
+            <button className="btn-profile-action" onClick={() => setShowProfileModal(true)}>
+              Editar Perfil
             </button>
           </div>
         </aside>
@@ -178,6 +186,13 @@ function Profile() {
       <FloatingChangePassword
         show={showPasswordModal}
         onClose={() => setShowPasswordModal(false)}
+        usuario={usuario}
+        onUpdated={fetchUsuario}
+      />
+
+      <FloatingChangeEmail
+        show={showEmailModal}
+        onClose={() => setShowEmailModal(false)}
         usuario={usuario}
         onUpdated={fetchUsuario}
       />
