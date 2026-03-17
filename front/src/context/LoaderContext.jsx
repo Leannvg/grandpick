@@ -1,17 +1,17 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useCallback } from "react";
 
 const LoaderContext = createContext();
 
 export function LoaderProvider({ children }) {
   const [loading, setLoading] = useState(false);
 
-  function showLoader() {
+  const showLoader = useCallback(() => {
     setLoading(true);
-  }
+  }, []);
 
-  function hideLoader() {
+  const hideLoader = useCallback(() => {
     setLoading(false);
-  }
+  }, []);
 
   return (
     <LoaderContext.Provider value={{ loading, showLoader, hideLoader }}>

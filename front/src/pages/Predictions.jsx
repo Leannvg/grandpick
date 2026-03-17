@@ -36,6 +36,63 @@ function Predictions() {
     predictions.length === pointSystem.length &&
     predictions.every(p => p !== "");
 
+  async function getCountry(iso2) {
+    let country = await countriesServices.getOneCountry(iso2);
+    return country;
+  }
+
+  const fetchRace = useCallback(async () => {
+    try {
+      const newRace = await RacesServices.findCurrentOrNext();
+      if (!newRace) {
+        setRace(null);
+        return null;
+      }
+
+      const country = await getCountry(newRace.circuit.country);
+      newRace.raceCountry = country;
+
+      setRace(newRace);
+      setPointSystem(newRace.points_system.points);
+
+      const { isClosed, canPredict, isPreWindow, timeToOpen } = computeRaceState(newRace);
+
+      setIsClosed(isClosed);
+      setCanPredict(canPredict);
+      setIsPreWindow(isPreWindow);
+      setTimeToOpen(timeToOpen);
+
+      return newRace;
+
+    } catch (err) {
+      console.error("Error en fetchRace:", err);
+      setRace(null);
+      return null;
+    }
+  }, []);
+
+  const fetchRaceWithLoader = useCallback(async () => {
+    showLoader();
+    try {
+      const race = await fetchRace();
+      return race;
+    } finally {
+      hideLoader();
+    }
+  }, [fetchRace, showLoader, hideLoader]);
+
+  async function updateCurrentPrediction(user, race) {
+    PredictionServices.findPredictionByUserAndRace(user._id, race._id)
+      .then((response) => {
+        setCurrentPrediction(response);
+      })
+      .catch((error) => {
+        if (error.message?.includes("No existe predicción")) {
+          setCurrentPrediction(null);
+        }
+      });
+  }
+
   useEffect(() => {
     async function loadInitialData() {
       showLoader();
@@ -89,63 +146,6 @@ function Predictions() {
 
     updateCurrentPrediction(user, race);
   }, [race?._id, user?._id]);
-
-  const fetchRace = useCallback(async () => {
-    try {
-      const newRace = await RacesServices.findCurrentOrNext();
-      if (!newRace) {
-        setRace(null);
-        return null;
-      }
-
-      const country = await getCountry(newRace.circuit.country);
-      newRace.raceCountry = country;
-
-      setRace(newRace);
-      setPointSystem(newRace.points_system.points);
-
-      const { isClosed, canPredict, isPreWindow, timeToOpen } = computeRaceState(newRace);
-
-      setIsClosed(isClosed);
-      setCanPredict(canPredict);
-      setIsPreWindow(isPreWindow);
-      setTimeToOpen(timeToOpen);
-
-      return newRace;
-
-    } catch (err) {
-      console.error("Error en fetchRace:", err);
-      setRace(null);
-      return null;
-    }
-  }, []);
-
-  const fetchRaceWithLoader = useCallback(async () => {
-    showLoader();
-    try {
-      const race = await fetchRace();
-      return race;
-    } finally {
-      hideLoader();
-    }
-  }, [fetchRace, showLoader, hideLoader]);
-
-  async function getCountry(iso2) {
-    let country = await countriesServices.getOneCountry(iso2);
-    return country;
-  }
-
-  async function updateCurrentPrediction(user, race) {
-    PredictionServices.findPredictionByUserAndRace(user._id, race._id)
-      .then((response) => {
-        setCurrentPrediction(response);
-      })
-      .catch((error) => {
-        if (error.message?.includes("No existe predicción")) {
-          setCurrentPrediction(null);
-        }
-      });
-  }
 
   function handleChange(index, value) {
     const updated = [...predictions];

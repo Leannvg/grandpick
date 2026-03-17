@@ -94,7 +94,7 @@ export const sendPushToMultipleTokens = async (tokens, notification, data = {}) 
     };
 
     try {
-        const response = await admin.messaging().sendMulticast(message);
+        const response = await admin.messaging().sendEachForMulticast(message);
         console.log(`${response.successCount} notificaciones enviadas exitosamente.`);
         return response;
     } catch (error) {
