@@ -1534,13 +1534,13 @@ ul .dropdown {
 
 .global-alert {
     position: fixed;
-    top: 68px;
+    top: 55px;
     /* Mobile default */
     left: 0;
     width: 100%;
     z-index: 2028;
     /* Below Nav (2030) but above CTA (2020) */
-    min-height: 58px;
+    min-height: 68px;
     /* Approx mobile CTA height */
     display: flex;
     align-items: center;
