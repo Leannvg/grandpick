@@ -12,6 +12,7 @@ import { useDialog } from "./../context/DialogContext.jsx";
 import { useLoader } from './../context/LoaderContext.jsx';
 import { computeRaceState, formatRaceDate } from "../utils/helpers.js";
 import crystalBallIcon from "../assets/icons/crystal_ball.png";
+import { onSocketReady } from "../socket.js";
 import "../assets/styles/predictions.css";
 
 function Predictions() {
@@ -50,6 +51,21 @@ function Predictions() {
     }
     loadInitialData();
   }, []);
+
+  useEffect(() => {
+    let currentSocket = null;
+    const cleanup = onSocketReady((socket) => {
+      currentSocket = socket;
+      socket.on("races:updated", fetchRace);
+    });
+
+    return () => {
+      if (cleanup) cleanup();
+      if (currentSocket) {
+        currentSocket.off("races:updated", fetchRace);
+      }
+    };
+  }, [fetchRace]);
 
   useEffect(() => {
     if (currentPrediction && currentPrediction.prediction) {

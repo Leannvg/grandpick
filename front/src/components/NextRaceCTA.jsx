@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import racesServices from "../services/races.services";
 import * as countriesServices from "../services/countries.services";
 import { formatRaceDate, getFlagEmoji, computeRaceState } from "../utils/helpers";
+import { onSocketReady } from "../socket";
 
 function NextRaceCTA() {
     const [race, setRace] = useState(null);
@@ -15,29 +16,44 @@ function NextRaceCTA() {
     });
     const [status, setStatus] = useState({ isClosed: false, isInProgress: false, canPredict: false, isPreWindow: false });
 
-    useEffect(() => {
-        async function fetchNextRace() {
-            try {
-                const data = await racesServices.findCurrentOrNext();
-                if (data) {
-                    setRace(data);
+    async function fetchNextRace() {
+        try {
+            const data = await racesServices.findCurrentOrNext();
+            if (data) {
+                setRace(data);
 
-                    const countryIso = data.circuit?.country || data.id_circuit?.country;
-                    if (countryIso) {
-                        try {
-                            const country = await countriesServices.getOneCountry(countryIso);
-                            setCountryName(country?.name || countryIso);
-                        } catch (err) {
-                            console.error("Error fetching country name:", err);
-                        }
+                const countryIso = data.circuit?.country || data.id_circuit?.country;
+                if (countryIso) {
+                    try {
+                        const country = await countriesServices.getOneCountry(countryIso);
+                        setCountryName(country?.name || countryIso);
+                    } catch (err) {
+                        console.error("Error fetching country name:", err);
                     }
                 }
-            } catch (error) {
-                console.error("Error fetching next race for CTA:", error);
+            } else {
+                setRace(null);
             }
+        } catch (error) {
+            console.error("Error fetching next race for CTA:", error);
         }
+    }
 
+    useEffect(() => {
         fetchNextRace();
+
+        let currentSocket = null;
+        const cleanup = onSocketReady((socket) => {
+            currentSocket = socket;
+            socket.on("races:updated", fetchNextRace);
+        });
+
+        return () => {
+            if (cleanup) cleanup();
+            if (currentSocket) {
+                currentSocket.off("races:updated", fetchNextRace);
+            }
+        };
     }, []);
 
     useEffect(() => {

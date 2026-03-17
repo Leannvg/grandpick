@@ -92,6 +92,10 @@ export async function create(req, res) {
             link: `/predictions`,
             type: "success"
         });
+
+        const io = req.app.get("io");
+        if (io) io.emit("races:updated");
+
         res.status(200).json(createdRace);
     } catch (error) {
         console.error("Error al crear la carrera:", error);
@@ -150,6 +154,9 @@ export async function editById(req, res) {
             });
         }
 
+        const io = req.app.get("io");
+        if (io) io.emit("races:updated");
+
         res.status(200).json({ message: "Carrera actualizada correctamente." });
     } catch (error) {
         console.error("Error al editar la carrera:", error);
@@ -174,7 +181,9 @@ export async function deleteById(req, res) {
         const raceId = req.params.raceId;
         const deleteResult = await racesServices.deleteRaceById(raceId);
 
-        console.log(deleteResult)
+        const io = req.app.get("io");
+        if (io) io.emit("races:updated");
+
         res.status(200).json({ message: "Carrera eliminada correctamente." });
     } catch (error) {
         console.error("Error al eliminar la carrera:", error);

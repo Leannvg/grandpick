@@ -29,9 +29,9 @@ export function connectSocket(userId) {
 }
 
 export function onSocketReady(cb) {
-  if (socket) {
+  if (socket?.connected) {
     cb(socket);
-    return () => socket.off("notifications:new", cb);
+    return;
   }
 
   listeners.push(cb);

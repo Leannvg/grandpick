@@ -1,77 +1,91 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import racesServices from "../services/races.services";
 import { useLoader } from "../context/LoaderContext";
 import { getFlagEmoji } from "../utils/helpers";
 import { DateTime } from "luxon";
+import { onSocketReady } from "../socket";
 
 function Calendar() {
     const [races, setRaces] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(-1);
     const { showLoader, hideLoader } = useLoader();
 
-    useEffect(() => {
-        async function loadRaces() {
-            showLoader();
-            try {
-                const currentYear = new Date().getFullYear();
-                const data = await racesServices.findAllByYear(currentYear);
+    const loadRaces = useCallback(async (isSilent = false) => {
+        if (!isSilent) showLoader();
+        try {
+            const currentYear = new Date().getFullYear();
+            const data = await racesServices.findAllByYear(currentYear);
 
-                // Group races by circuit and weekend
-                const groupedMap = new Map();
-                data.forEach(race => {
-                    const circuitId = race.id_circuit?._id || race.id_circuit || (race.circuit?._id);
-                    const key = `${circuitId}_${race.date_gp_start}`;
+            // Group races by circuit and weekend
+            const groupedMap = new Map();
+            data.forEach(race => {
+                const circuitId = race.id_circuit?._id || race.id_circuit || (race.circuit?._id);
+                const key = `${circuitId}_${race.date_gp_start}`;
 
-                    if (!groupedMap.has(key)) {
-                        groupedMap.set(key, {
-                            ...race,
-                            sessionTypes: [race.points_system.type]
-                        });
-                    } else {
-                        const existing = groupedMap.get(key);
-                        if (!existing.sessionTypes.includes(race.points_system.type)) {
-                            existing.sessionTypes.push(race.points_system.type);
-                        }
-
-                        // Mantener la fecha de fin más tardía del grupo
-                        if (new Date(race.date_gp_end) > new Date(existing.date_gp_end)) {
-                            existing.date_gp_end = race.date_gp_end;
-                        }
-
-                        // Mantener la fecha de inicio más temprana (por si acaso)
-                        if (new Date(race.date_gp_start) < new Date(existing.date_gp_start)) {
-                            existing.date_gp_start = race.date_gp_start;
-                        }
-
-                        // Actualizar estado: si alguna sesión NO está finalizada, el GP sigue vigente
-                        if (existing.state === "Finalizado" && race.state !== "Finalizado") {
-                            existing.state = race.state;
-                        }
+                if (!groupedMap.has(key)) {
+                    groupedMap.set(key, {
+                        ...race,
+                        sessionTypes: [race.points_system.type]
+                    });
+                } else {
+                    const existing = groupedMap.get(key);
+                    if (!existing.sessionTypes.includes(race.points_system.type)) {
+                        existing.sessionTypes.push(race.points_system.type);
                     }
-                });
 
-                const sortedData = Array.from(groupedMap.values()).sort((a, b) => new Date(a.date_gp_start) - new Date(b.date_gp_start));
+                    // Mantener la fecha de fin más tardía del grupo
+                    if (new Date(race.date_gp_end) > new Date(existing.date_gp_end)) {
+                        existing.date_gp_end = race.date_gp_end;
+                    }
 
-                const now = DateTime.now().toMillis();
-                const index = sortedData.findIndex(race => {
-                    const isFinished = race.state === "Finalizado";
-                    // Consideramos que no ha terminado si el día de fin aún no termina (en la zona del circuito)
-                    const tz = race.circuit?.timezone || "local";
-                    const endTime = DateTime.fromISO(race.date_gp_end).setZone(tz).endOf('day').toMillis();
+                    // Mantener la fecha de inicio más temprana (por si acaso)
+                    if (new Date(race.date_gp_start) < new Date(existing.date_gp_start)) {
+                        existing.date_gp_start = race.date_gp_start;
+                    }
 
-                    return !isFinished && endTime >= now;
-                });
-                setCurrentIndex(index);
-                setRaces(sortedData);
-            } catch (error) {
-                console.error("Error al obtener las carreras:", error);
-            } finally {
-                hideLoader();
-            }
+                    // Actualizar estado: si alguna sesión NO está finalizada, el GP sigue vigente
+                    if (existing.state === "Finalizado" && race.state !== "Finalizado") {
+                        existing.state = race.state;
+                    }
+                }
+            });
+
+            const sortedData = Array.from(groupedMap.values()).sort((a, b) => new Date(a.date_gp_start) - new Date(b.date_gp_start));
+
+            const now = DateTime.now().toMillis();
+            const index = sortedData.findIndex(race => {
+                const isFinished = race.state === "Finalizado";
+                // Consideramos que no ha terminado si el día de fin aún no termina (en la zona del circuito)
+                const tz = race.circuit?.timezone || "local";
+                const endTime = DateTime.fromISO(race.date_gp_end).setZone(tz).endOf('day').toMillis();
+
+                return !isFinished && endTime >= now;
+            });
+            setCurrentIndex(index);
+            setRaces(sortedData);
+        } catch (error) {
+            console.error("Error al obtener las carreras:", error);
+        } finally {
+            if (!isSilent) hideLoader();
         }
+    }, [showLoader, hideLoader]);
 
+    useEffect(() => {
         loadRaces();
-    }, []);
+
+        let currentSocket = null;
+        const cleanup = onSocketReady((socket) => {
+            currentSocket = socket;
+            socket.on("races:updated", () => loadRaces(true));
+        });
+
+        return () => {
+            if (cleanup) cleanup();
+            if (currentSocket) {
+                currentSocket.off("races:updated", loadRaces);
+            }
+        };
+    }, [loadRaces]);
 
     function getStatusClass(index) {
         if (currentIndex === -1) return "race-finished"; // Todas terminaron o lista vacía
