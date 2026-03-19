@@ -54,37 +54,41 @@ function Login({ onLogin }) {
           </header>
 
           <form className="auth-form" onSubmit={onSubmit}>
-            <div className={`input-group ${errorsForm.email ? "is-invalid" : ""}`}>
-              <span className="input-label">Email</span>
-              <input
-                type="email"
-                placeholder="juan@perez"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-              />
-            </div>
-            {errorsForm.email && (
-              <div className="invalid-feedback d-block text-start mb-2">
-                {errorsForm.email}
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.email ? "is-invalid" : ""}`}>
+                <span className="gp-input-label">Email</span>
+                <input
+                  type="email"
+                  placeholder="juan@perez"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                />
               </div>
-            )}
+              {errorsForm.email && (
+                <div className="invalid-feedback d-block text-start mt-1">
+                  {errorsForm.email}
+                </div>
+              )}
+            </div>
 
-            <div className={`input-group ${errorsForm.password ? "is-invalid" : ""}`}>
-              <span className="input-label">Contraseña</span>
-              <input
-                type="password"
-                placeholder="123456"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="current-password"
-              />
-            </div>
-            {errorsForm.password && (
-              <div className="invalid-feedback d-block text-start mb-2">
-                {errorsForm.password}
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.password ? "is-invalid" : ""}`}>
+                <span className="gp-input-label">Contraseña</span>
+                <input
+                  type="password"
+                  placeholder="123456"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
+                />
               </div>
-            )}
+              {errorsForm.password && (
+                <div className="invalid-feedback d-block text-start mt-1">
+                  {errorsForm.password}
+                </div>
+              )}
+            </div>
 
             <div className="mt-2 text-end">
               <Link to="/forgot-password" style={{ color: "white", fontSize: "12px", textDecoration: "none" }}>

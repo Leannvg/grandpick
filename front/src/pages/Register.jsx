@@ -71,92 +71,95 @@ function Register() {
 
           <form className="auth-form" onSubmit={onSubmit}>
             {/* NOMBRE */}
-            <div className={`input-group ${errorsForm.name ? "is-invalid" : ""}`}>
-              <span className="input-label">Nombre</span>
-              <input
-                type="text"
-                placeholder="Juan"
-                value={name}
-                onChange={(e) => setNombre(e.target.value)}
-              />
-            </div>
-            {errorsForm.name && (
-              <div className="invalid-feedback d-block text-start mb-2">
-                {errorsForm.name}
-              </div>
-            )}
-
-            {/* APELLIDO */}
-            <div
-              className={`input-group ${errorsForm.last_name ? "is-invalid" : ""}`}
-            >
-              <span className="input-label">Apellido</span>
-              <input
-                type="text"
-                placeholder="Perez"
-                value={last_name}
-                onChange={(e) => setApellido(e.target.value)}
-              />
-            </div>
-            {errorsForm.last_name && (
-              <div className="invalid-feedback d-block text-start mb-2">
-                {errorsForm.last_name}
-              </div>
-            )}
-
-            {/* PAIS */}
-            <div
-              className={`input-group ${errorsForm.country ? "is-invalid" : ""}`}
-              style={{ overflow: "visible" }}
-            >
-              <span className="input-label">País</span>
-              <div className="flex-fill">
-                <CountrySelect
-                  countryFunction={setPais}
-                  isInvalid={!!errorsForm.country}
-                  hideLabel={true}
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.name ? "is-invalid" : ""}`}>
+                <span className="gp-input-label">Nombre</span>
+                <input
+                  type="text"
+                  placeholder="Juan"
+                  value={name}
+                  onChange={(e) => setNombre(e.target.value)}
                 />
               </div>
+              {errorsForm.name && (
+                <div className="invalid-feedback d-block text-start mt-1">
+                  {errorsForm.name}
+                </div>
+              )}
             </div>
-            {errorsForm.country && (
-              <div className="invalid-feedback d-block text-start mb-2">
-                {errorsForm.country}
+
+            {/* APELLIDO */}
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.last_name ? "is-invalid" : ""}`}>
+                <span className="gp-input-label">Apellido</span>
+                <input
+                  type="text"
+                  placeholder="Perez"
+                  value={last_name}
+                  onChange={(e) => setApellido(e.target.value)}
+                />
               </div>
-            )}
+              {errorsForm.last_name && (
+                <div className="invalid-feedback d-block text-start mt-1">
+                  {errorsForm.last_name}
+                </div>
+              )}
+            </div>
+
+            {/* PAIS */}
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.country ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
+                <span className="gp-input-label">País</span>
+                <div className="flex-fill">
+                  <CountrySelect
+                    countryFunction={setPais}
+                    isInvalid={!!errorsForm.country}
+                    hideLabel={true}
+                  />
+                </div>
+              </div>
+              {errorsForm.country && (
+                <div className="invalid-feedback d-block text-start mt-1">
+                  {errorsForm.country}
+                </div>
+              )}
+            </div>
 
             {/* EMAIL */}
-            <div className={`input-group ${errorsForm.email ? "is-invalid" : ""}`}>
-              <span className="input-label">Email</span>
-              <input
-                type="email"
-                placeholder="juan@perez.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            {errorsForm.email && (
-              <div className="invalid-feedback d-block text-start mb-2">
-                {errorsForm.email}
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.email ? "is-invalid" : ""}`}>
+                <span className="gp-input-label">Email</span>
+                <input
+                  type="email"
+                  placeholder="juan@perez.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
-            )}
+              {errorsForm.email && (
+                <div className="invalid-feedback d-block text-start mt-1">
+                  {errorsForm.email}
+                </div>
+              )}
+            </div>
 
             {/* PASSWORD */}
-            <div
-              className={`input-group ${errorsForm.password ? "is-invalid" : ""}`}
-            >
-              <span className="input-label">Contraseña</span>
-              <input
-                type="password"
-                placeholder="123456"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            {errorsForm.password && (
-              <div className="invalid-feedback d-block text-start mb-2">
-                {errorsForm.password}
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.password ? "is-invalid" : ""}`}>
+                <span className="gp-input-label">Contraseña</span>
+                <input
+                  type="password"
+                  placeholder="123456"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </div>
-            )}
+              {errorsForm.password && (
+                <div className="invalid-feedback d-block text-start mt-1">
+                  {errorsForm.password}
+                </div>
+              )}
+            </div>
 
             <button className="submit-btn" type="submit" aria-label="Crear cuenta">
               <svg

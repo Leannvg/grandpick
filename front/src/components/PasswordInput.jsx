@@ -11,13 +11,13 @@ function PasswordInput({
   const [show, setShow] = useState(false);
 
   return (
-    <div className="mb-3">
-      {label && <label>{label}</label>}
+    <div className="gp-input-group-container">
+      <div className={`gp-input-group ${error ? "is-invalid" : ""}`}>
+        {label && <label className="gp-input-label">{label}</label>}
 
-      <div className="input-group">
         <input
           type={show ? "text" : "password"}
-          className={`form-control ${error ? "is-invalid" : ""}`}
+          className="form-control"
           value={value}
           onChange={onChange}
           placeholder={placeholder}
@@ -26,16 +26,22 @@ function PasswordInput({
 
         <button
           type="button"
-          className="btn btn-outline-secondary"
           onClick={() => setShow(!show)}
           disabled={disabled}
+          style={{
+            border: "none",
+            background: "transparent",
+            padding: "0 15px",
+            fontSize: "1.2rem",
+            cursor: "pointer"
+          }}
         >
           {show ? "🙈" : "👁️"}
         </button>
       </div>
 
       {error && (
-        <div className="invalid-feedback d-block">
+        <div className="invalid-feedback d-block mt-1">
           {error}
         </div>
       )}

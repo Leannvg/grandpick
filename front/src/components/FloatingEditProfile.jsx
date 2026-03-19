@@ -131,51 +131,66 @@ function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
 
 
             {/* Nombre */}
-            <div className="mb-3">
-              <label className="form-label">Nombre</label>
-              <input
-                className={`form-control ${errorsForm.name ? "is-invalid" : ""}`}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.name ? "is-invalid" : ""}`}>
+                <label className="gp-input-label">Nombre</label>
+                <input
+                  className="form-control"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
               {errorsForm.name && (
-                <div className="invalid-feedback">{errorsForm.name}</div>
+                <div className="invalid-feedback d-block mt-1">{errorsForm.name}</div>
               )}
             </div>
 
             {/* Apellido */}
-            <div className="mb-3">
-              <label className="form-label">Apellido</label>
-              <input
-                className={`form-control ${errorsForm.last_name ? "is-invalid" : ""}`}
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.last_name ? "is-invalid" : ""}`}>
+                <label className="gp-input-label">Apellido</label>
+                <input
+                  className="form-control"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
               {errorsForm.last_name && (
-                <div className="invalid-feedback">{errorsForm.last_name}</div>
+                <div className="invalid-feedback d-block mt-1">{errorsForm.last_name}</div>
               )}
             </div>
 
             {/* País */}
-            <div className="mb-3">
-              <CountrySelect 
-                countryFunction={setCountry} 
-                isInvalid={!!errorsForm.country}
-                error={errorsForm.country}
-                defaultValue={country}
-              />
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.country ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
+                <label className="gp-input-label">País</label>
+                <div className="flex-fill">
+                  <CountrySelect 
+                    countryFunction={setCountry} 
+                    isInvalid={!!errorsForm.country}
+                    error={errorsForm.country}
+                    defaultValue={country}
+                    hideLabel={true}
+                  />
+                </div>
+              </div>
+              {errorsForm.country && (
+                <div className="invalid-feedback d-block mt-1">{errorsForm.country}</div>
+              )}
             </div>
 
             {/* Email */}
-            <div className="mb-3">
-              <label className="form-label">Email</label>
-              <input
-                className={`form-control ${errorsForm.email ? "is-invalid" : ""}`}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.email ? "is-invalid" : ""}`}>
+                <label className="gp-input-label">Email</label>
+                <input
+                  className="form-control"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
               {errorsForm.email && (
-                <div className="invalid-feedback">{errorsForm.email}</div>
+                <div className="invalid-feedback d-block mt-1">{errorsForm.email}</div>
               )}
             </div>
 

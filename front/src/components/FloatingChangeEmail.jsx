@@ -65,17 +65,19 @@ function FloatingChangeEmail({ show, onClose, usuario, onUpdated }) {
           >
             <h3 className="mb-3">Cambiar Email</h3>
 
-            <div className="mb-3">
-              <label className="form-label">Nuevo Email</label>
-              <input
-                type="email"
-                className={`form-control ${errorsForm.email ? "is-invalid" : ""}`}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="ejemplo@correo.com"
-              />
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.email ? "is-invalid" : ""}`}>
+                <label className="gp-input-label">Nuevo Email</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="ejemplo@correo.com"
+                />
+              </div>
               {errorsForm.email && (
-                <div className="invalid-feedback">{errorsForm.email}</div>
+                <div className="invalid-feedback d-block mt-1">{errorsForm.email}</div>
               )}
               {errorsForm.general && (
                 <div className="text-danger small mt-1">{errorsForm.general}</div>
