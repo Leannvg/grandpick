@@ -2,6 +2,18 @@ import Select, { components } from "react-select";
 
 const CustomOption = (props) => {
   const { data } = props;
+  const isDriverOrTeam = !!data.teamName || (!!data.color && data.color !== "#ccc");
+
+  if (!isDriverOrTeam) {
+    return (
+      <components.Option {...props}>
+        <div className="select-default-option">
+          <span>{data.label}</span>
+        </div>
+      </components.Option>
+    );
+  }
+
   const fullName = data.label || "";
   const nameParts = fullName.split(" ");
   const lastName = nameParts.pop();
@@ -10,14 +22,16 @@ const CustomOption = (props) => {
   return (
     <components.Option {...props}>
       <div className="select-driver-option">
-        <div
-          className="select-driver-color"
-          style={{ backgroundColor: data.color || "#ccc" }}
-        />
+        {data.color && data.color !== "#ccc" && (
+          <div
+            className="select-driver-color"
+            style={{ backgroundColor: data.color }}
+          />
+        )}
         <div className="select-driver-info">
           <span className="select-driver-first">{firstName}</span>
           <span className="select-driver-last">{lastName}</span>
-          <span className="select-driver-team">{data.teamName}</span>
+          {data.teamName && <span className="select-driver-team">{data.teamName}</span>}
         </div>
       </div>
     </components.Option>
@@ -26,6 +40,18 @@ const CustomOption = (props) => {
 
 const CustomSingleValue = (props) => {
   const { data } = props;
+  const isDriverOrTeam = !!data.teamName || (!!data.color && data.color !== "#ccc");
+
+  if (!isDriverOrTeam) {
+    return (
+      <components.SingleValue {...props}>
+        <div className="select-default-option">
+          <span>{data.label}</span>
+        </div>
+      </components.SingleValue>
+    );
+  }
+
   const fullName = data.label || "";
   const nameParts = fullName.split(" ");
   const lastName = nameParts.pop();
@@ -34,14 +60,16 @@ const CustomSingleValue = (props) => {
   return (
     <components.SingleValue {...props}>
       <div className="select-driver-option">
-        <div
-          className="select-driver-color"
-          style={{ backgroundColor: data.color || "#ccc" }}
-        />
+        {data.color && data.color !== "#ccc" && (
+          <div
+            className="select-driver-color"
+            style={{ backgroundColor: data.color }}
+          />
+        )}
         <div className="select-driver-info">
           <span className="select-driver-first">{firstName}</span>
           <span className="select-driver-last">{lastName}</span>
-          <span className="select-driver-team">{data.teamName}</span>
+          {data.teamName && <span className="select-driver-team">{data.teamName}</span>}
         </div>
       </div>
     </components.SingleValue>

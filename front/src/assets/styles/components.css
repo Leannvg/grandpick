@@ -375,7 +375,7 @@ ul .dropdown {
 .gp-input-label {
     background: #5b84b1;
     color: #fff !important;
-    font-size: 12px;
+    font-size: 1rem;
     padding: 10px 15px;
     min-width: 140px;
     display: flex;
@@ -391,7 +391,7 @@ ul .dropdown {
     flex: 1;
     border: none !important;
     padding: 10px 15px !important;
-    font-size: 14px;
+    font-size: 1rem;
     outline: none !important;
     background: #fff !important;
     color: #000 !important;
@@ -430,7 +430,7 @@ ul .dropdown {
 }
 
 .gp-password-toggle:hover svg {
-    transform: scale(1.15);
+    transform: scale(1.1);
 }
 
 /* -------------------------------------- */
@@ -1575,9 +1575,23 @@ ul .dropdown {
     margin-left: 4px;
 }
 
+.select-default-option {
+    display: flex;
+    align-items: center;
+    padding: 2px 0;
+    font-size: 1rem;
+    color: #333;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
 /* React Select Overrides */
+.react-select-container {
+    width: 100%;
+}
+
 .react-select__control {
-    min-height: 32px !important;
+    min-height: 48px !important; /* Match gp-input-group height */
     border: none !important;
     box-shadow: none !important;
     background-color: transparent !important;
@@ -1585,7 +1599,7 @@ ul .dropdown {
 }
 
 .react-select__value-container {
-    padding: 0 8px !important;
+    padding: 0 15px !important;
 }
 
 .react-select__indicator-separator {
@@ -1594,21 +1608,29 @@ ul .dropdown {
 
 .react-select__dropdown-indicator {
     color: #333 !important;
-    padding: 4px !important;
+    padding: 8px !important;
 }
 
 .react-select__placeholder {
-    color: #999 !important;
-    font-weight: 300 !important;
-    font-size: 14px !important;
+    color: #aaa !important;
+    font-weight: 400 !important;
+    font-size: 1rem !important;
 }
 
 .react-select__single-value {
     margin: 0 !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #000 !important;
 }
 
 .react-select__menu {
     color: #333 !important;
+    z-index: 9999 !important;
+}
+
+.react-select__option {
+    cursor: pointer !important;
 }
 
 /* -------------------------------------- */
