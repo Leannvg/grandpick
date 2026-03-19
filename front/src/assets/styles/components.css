@@ -1598,6 +1598,11 @@ ul .dropdown {
     cursor: pointer !important;
 }
 
+/* Hide single value when searching to avoid overlap */
+.react-select__control--menu-is-open .react-select__single-value {
+    opacity: 0 !important;
+}
+
 .react-select__value-container {
     padding: 0 15px !important;
 }
@@ -1629,8 +1634,31 @@ ul .dropdown {
     z-index: 9999 !important;
 }
 
+.react-select__input-container {
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #000 !important;
+}
+
+.react-select__input {
+    color: #000 !important;
+    font-family: inherit !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+}
+
 .react-select__option {
     cursor: pointer !important;
+}
+
+.react-select__option--is-focused {
+    background-color: #f1f1f1 !important;
+}
+
+.react-select__option--is-selected {
+    background-color: #5b84b1 !important;
+    color: #fff !important;
 }
 
 /* -------------------------------------- */
