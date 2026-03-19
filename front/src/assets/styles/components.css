@@ -426,7 +426,6 @@ ul .dropdown {
 .auth-form {
     display: flex;
     flex-direction: column;
-    gap: 14px;
 }
 
 .input-group {
@@ -1077,7 +1076,7 @@ ul .dropdown {
 
     /* Register / Auth */
     .auth-container {
-        max-width: 420px;
+        max-width: 50%;
     }
 
     .input-label {
