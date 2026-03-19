@@ -407,6 +407,32 @@ ul .dropdown {
     color: #aaa;
 }
 
+.gp-password-toggle {
+    border: none;
+    background: #f1f1f1;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #5b84b1;
+    transition: all 0.2s ease-in-out;
+}
+
+.gp-password-toggle:hover {
+    background: #e5e5e5;
+    color: #4a6a8e;
+}
+
+.gp-password-toggle svg {
+    width: 20px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.gp-password-toggle:hover svg {
+    transform: scale(1.15);
+}
+
 /* -------------------------------------- */
 /* REGISTER / AUTH PAGE                   */
 /* -------------------------------------- */
