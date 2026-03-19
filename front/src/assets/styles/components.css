@@ -355,7 +355,7 @@ ul .dropdown {
 /* -------------------------------------- */
 
 .gp-input-group-container {
-    margin-bottom: .2rem;
+    margin-bottom: .8rem;
 }
 
 .gp-input-group {
@@ -377,7 +377,7 @@ ul .dropdown {
     color: #fff !important;
     font-size: 12px;
     padding: 10px 15px;
-    min-width: 120px;
+    min-width: 175px;
     display: flex;
     align-items: center;
     justify-content: center;
