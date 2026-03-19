@@ -386,8 +386,8 @@ ul .dropdown {
     flex-shrink: 0;
 }
 
-.gp-input-group input,
-.gp-input-group select {
+.gp-input-group input.form-control,
+.gp-input-group select.form-control {
     flex: 1;
     border: none !important;
     padding: 10px 15px !important;
@@ -403,7 +403,7 @@ ul .dropdown {
     border-color: #dc3545 !important;
 }
 
-.gp-input-group input::placeholder {
+.gp-input-group input.form-control::placeholder {
     color: #aaa;
 }
 
