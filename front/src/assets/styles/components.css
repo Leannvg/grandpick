@@ -365,7 +365,6 @@ ul .dropdown {
     border-radius: 8px;
     overflow: hidden;
     color: #333;
-    border: 2px solid transparent;
     transition: all 0.2s;
 }
 
