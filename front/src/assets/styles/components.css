@@ -1582,7 +1582,6 @@ ul .dropdown {
     font-size: 1rem;
     color: #333;
     font-weight: 400;
-    text-transform: uppercase;
 }
 
 /* React Select Overrides */
@@ -1634,7 +1633,6 @@ ul .dropdown {
     font-family: inherit !important;
     font-size: 1rem !important;
     font-weight: 400 !important;
-    text-transform: uppercase !important;
 }
 
 .react-select__option {
