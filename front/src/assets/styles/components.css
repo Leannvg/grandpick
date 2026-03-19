@@ -1598,13 +1598,34 @@ ul .dropdown {
     cursor: pointer !important;
 }
 
+.react-select__value-container {
+    padding: 0 15px !important;
+    display: grid !important;
+}
+
+.react-select__single-value,
+.react-select__input-container {
+    grid-area: 1 / 1 / 2 / 3 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.react-select__single-value {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #000 !important;
+}
+
 /* Hide single value when searching to avoid overlap */
 .react-select__control--menu-is-open .react-select__single-value {
     opacity: 0 !important;
+    visibility: hidden;
 }
 
-.react-select__value-container {
-    padding: 0 15px !important;
+/* Hide input when not focused to avoid it taking space or overlapping */
+.react-select__control:not(.react-select__control--is-focused) .react-select__input-container {
+    opacity: 0 !important;
+    visibility: hidden;
 }
 
 .react-select__indicator-separator {
@@ -1622,22 +1643,9 @@ ul .dropdown {
     font-size: 1rem !important;
 }
 
-.react-select__single-value {
-    margin: 0 !important;
-    font-size: 1rem !important;
-    font-weight: 600 !important;
-    color: #000 !important;
-}
-
 .react-select__menu {
     color: #333 !important;
     z-index: 9999 !important;
-}
-
-.react-select__input-container {
-    margin: 0 !important;
-    padding: 0 !important;
-    color: #000 !important;
 }
 
 .react-select__input {
