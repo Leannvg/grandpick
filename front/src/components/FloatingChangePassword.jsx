@@ -84,13 +84,13 @@ function ChangePasswordModal({ show, onClose, usuario }) {
   return (
     <AnimatePresence>
       {show && (
-        <motion.div 
+        <motion.div
           className="edit-profile-overlay"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <motion.div 
+          <motion.div
             className="edit-profile-card"
             initial={{ scale: 0.8, opacity: 0, y: -30 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -117,7 +117,7 @@ function ChangePasswordModal({ show, onClose, usuario }) {
 
 
             <PasswordInput
-              label="Confirmar nueva contraseña"
+              label="Confirmar"
               value={confirmPass}
               onChange={(e) => setConfirmPass(e.target.value)}
               error={errors.confirmPass}
