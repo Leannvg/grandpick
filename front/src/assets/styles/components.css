@@ -1581,7 +1581,7 @@ ul .dropdown {
     padding: 2px 0;
     font-size: 1rem;
     color: #333;
-    font-weight: 600;
+    font-weight: 400;
     text-transform: uppercase;
 }
 
@@ -1604,7 +1604,7 @@ ul .dropdown {
 
 .react-select__single-value {
     font-size: 1rem !important;
-    font-weight: 600 !important;
+    font-weight: 400 !important;
     color: #000 !important;
     margin: 0 !important;
 }
@@ -1633,7 +1633,7 @@ ul .dropdown {
     color: #000 !important;
     font-family: inherit !important;
     font-size: 1rem !important;
-    font-weight: 600 !important;
+    font-weight: 400 !important;
     text-transform: uppercase !important;
 }
 
