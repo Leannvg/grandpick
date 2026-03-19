@@ -396,7 +396,6 @@ ul .dropdown {
     background: #fff !important;
     color: #000 !important;
     height: auto !important;
-    min-height: 48px;
     box-shadow: none !important;
 }
 
