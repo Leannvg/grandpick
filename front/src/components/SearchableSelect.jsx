@@ -42,12 +42,11 @@ const CustomSingleValue = (props) => {
   const { data } = props;
   const isDriverOrTeam = !!data.teamName || (!!data.color && data.color !== "#ccc");
 
+  // Si NO es piloto ni equipo, dejamos que react-select use su comportamiento estándar para el valor seleccionado
   if (!isDriverOrTeam) {
     return (
       <components.SingleValue {...props}>
-        <div className="select-default-option">
-          <span>{data.label}</span>
-        </div>
+          {data.label}
       </components.SingleValue>
     );
   }
