@@ -32,15 +32,14 @@ function CountrySelect({
 
       <SearchableSelect
         options={countries.map((c) => ({
-          _id: c.iso2, // CLAVE: coincide con selectedCountry
-          name: `${c.emoji} ${c.name}`, // Mostrar bandera + nombre
+          _id: c.iso2,
+          name: c.name,
           original: c,
         }))}
         value={selectedCountry}
         onChange={handleChange}
         placeholder="Selecciona un país"
         isInvalid={isInvalid}
-        className="emoji-flag"
       />
 
       {error && <div className="invalid-feedback d-block">{error}</div>}
