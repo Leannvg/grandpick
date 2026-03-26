@@ -454,7 +454,6 @@ ul .dropdown {
     border-radius: 8px;
     overflow: hidden;
     transition: all 0.2s;
-    border: 2px solid transparent;
 }
 
 .gp-input-group:focus-within {
@@ -474,6 +473,7 @@ ul .dropdown {
     margin-bottom: 0 !important;
     flex-shrink: 0;
     font-weight: 500;
+    border-radius: 8px 0px 0px 8px;
 }
 
 .gp-input-group input.form-control,
@@ -1691,7 +1691,8 @@ ul .dropdown {
 }
 
 .react-select__control {
-    min-height: 48px !important; /* Match gp-input-group height */
+    min-height: 48px !important;
+    /* Match gp-input-group height */
     border: none !important;
     box-shadow: none !important;
     background-color: transparent !important;
