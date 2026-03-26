@@ -75,6 +75,7 @@ function Register() {
               <div className={`gp-input-group ${errorsForm.name ? "is-invalid" : ""}`}>
                 <span className="gp-input-label">Nombre</span>
                 <input
+                  className="form-control"
                   type="text"
                   placeholder="Juan"
                   value={name}
@@ -93,6 +94,7 @@ function Register() {
               <div className={`gp-input-group ${errorsForm.last_name ? "is-invalid" : ""}`}>
                 <span className="gp-input-label">Apellido</span>
                 <input
+                  className="form-control"
                   type="text"
                   placeholder="Perez"
                   value={last_name}
@@ -130,6 +132,7 @@ function Register() {
               <div className={`gp-input-group ${errorsForm.email ? "is-invalid" : ""}`}>
                 <span className="gp-input-label">Email</span>
                 <input
+                  className="form-control"
                   type="email"
                   placeholder="juan@perez.com"
                   value={email}
@@ -148,6 +151,7 @@ function Register() {
               <div className={`gp-input-group ${errorsForm.password ? "is-invalid" : ""}`}>
                 <span className="gp-input-label">Contraseña</span>
                 <input
+                  className="form-control"
                   type="password"
                   placeholder="123456"
                   value={password}

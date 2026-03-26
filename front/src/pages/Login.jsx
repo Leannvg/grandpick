@@ -58,6 +58,7 @@ function Login({ onLogin }) {
               <div className={`gp-input-group ${errorsForm.email ? "is-invalid" : ""}`}>
                 <span className="gp-input-label">Email</span>
                 <input
+                  className="form-control"
                   type="email"
                   placeholder="juan@perez"
                   value={email}
@@ -76,6 +77,7 @@ function Login({ onLogin }) {
               <div className={`gp-input-group ${errorsForm.password ? "is-invalid" : ""}`}>
                 <span className="gp-input-label">Contraseña</span>
                 <input
+                  className="form-control"
                   type="password"
                   placeholder="123456"
                   value={password}
