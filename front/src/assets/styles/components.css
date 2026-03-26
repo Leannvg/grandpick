@@ -376,7 +376,6 @@ ul .dropdown {
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.05);
     position: relative;
     color: #fff;
     max-height: 90vh;
@@ -1691,11 +1690,10 @@ ul .dropdown {
 }
 
 .react-select__control {
-    min-height: 48px !important;
+    /* min-height: 48px !important; */
     /* Match gp-input-group height */
     border: none !important;
     box-shadow: none !important;
-    background-color: transparent !important;
     cursor: pointer !important;
 }
 
