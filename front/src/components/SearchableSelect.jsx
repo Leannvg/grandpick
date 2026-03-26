@@ -3,12 +3,20 @@ import Select, { components } from "react-select";
 const CustomOption = (props) => {
   const { data } = props;
   const isDriverOrTeam = !!data.teamName || (!!data.color && data.color !== "#ccc");
+  const hasEmoji = !!(data.original && data.original.emoji);
 
   if (!isDriverOrTeam) {
     return (
       <components.Option {...props}>
         <div className="select-default-option">
-          <span>{data.label}</span>
+          {hasEmoji ? (
+            <>
+              <span className="emoji-flag">{data.original.emoji}</span>
+              <span>{data.original.name}</span>
+            </>
+          ) : (
+            <span>{data.label}</span>
+          )}
         </div>
       </components.Option>
     );
@@ -41,12 +49,22 @@ const CustomOption = (props) => {
 const CustomSingleValue = (props) => {
   const { data } = props;
   const isDriverOrTeam = !!data.teamName || (!!data.color && data.color !== "#ccc");
+  const hasEmoji = !!(data.original && data.original.emoji);
 
-  // Si NO es piloto ni equipo, dejamos que react-select use su comportamiento estándar para el valor seleccionado
+  // Si NO es piloto ni equipo, manejamos el renderizado estándar o con emoji
   if (!isDriverOrTeam) {
     return (
       <components.SingleValue {...props}>
-          {data.label}
+        <div className="select-default-option">
+          {hasEmoji ? (
+            <>
+              <span className="emoji-flag">{data.original.emoji}</span>
+              <span>{data.original.name}</span>
+            </>
+          ) : (
+            data.label
+          )}
+        </div>
       </components.SingleValue>
     );
   }
