@@ -51,45 +51,48 @@ function FloatingChangeEmail({ show, onClose, usuario, onUpdated }) {
     <AnimatePresence>
       {show && (
         <motion.div
-          className="edit-profile-overlay"
+          className="gp-modal-overlay"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="edit-profile-card"
+            className="gp-modal-card"
             initial={{ scale: 0.8, opacity: 0, y: -30 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: -30 }}
             transition={{ type: "spring", duration: 0.35 }}
           >
-            <h3 className="mb-3">Cambiar Email</h3>
+            <h3 className="gp-modal-title">Cambiar Email</h3>
+            <p className="gp-modal-subtitle">Introduce tu nueva dirección de correo</p>
 
-            <div className="gp-input-group-container">
-              <div className={`gp-input-group ${errorsForm.email ? "is-invalid" : ""}`}>
-                <label className="gp-input-label">Nuevo Email</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="ejemplo@correo.com"
-                />
+            <div className="gp-form-grid">
+              <div className="gp-input-group-container">
+                <div className={`gp-input-group ${errorsForm.email ? "is-invalid" : ""}`}>
+                  <label className="gp-input-label">Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="ejemplo@correo.com"
+                  />
+                </div>
+                {errorsForm.email && (
+                  <div className="invalid-feedback d-block mt-1">{errorsForm.email}</div>
+                )}
+                {errorsForm.general && (
+                  <div className="text-danger small mt-1">{errorsForm.general}</div>
+                )}
               </div>
-              {errorsForm.email && (
-                <div className="invalid-feedback d-block mt-1">{errorsForm.email}</div>
-              )}
-              {errorsForm.general && (
-                <div className="text-danger small mt-1">{errorsForm.general}</div>
-              )}
             </div>
 
-            <div className="d-flex justify-content-end gap-2 mt-4">
-              <button className="btn btn-secondary" onClick={onClose}>
+            <div className="gp-modal-actions">
+              <button className="gp-btn-cancel" onClick={onClose}>
                 Cancelar
               </button>
               <button
-                className="btn btn-success"
+                className="gp-btn-confirm"
                 disabled={loading}
                 onClick={handleSave}
               >

@@ -85,48 +85,48 @@ function ChangePasswordModal({ show, onClose, usuario }) {
     <AnimatePresence>
       {show && (
         <motion.div
-          className="edit-profile-overlay"
+          className="gp-modal-overlay"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="edit-profile-card"
+            className="gp-modal-card"
             initial={{ scale: 0.8, opacity: 0, y: -30 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: -30 }}
             transition={{ type: "spring", duration: 0.35 }}
           >
 
-            <h3>Cambiar contraseña</h3>
+            <h3 className="gp-modal-title">Cambiar contraseña</h3>
+            <p className="gp-modal-subtitle">Actualiza tus credenciales de acceso</p>
 
-            <PasswordInput
-              label="Contraseña actual"
-              value={oldPass}
-              onChange={(e) => setOldPass(e.target.value)}
-              error={errors.oldPassword}
-            />
+            <div className="gp-form-grid">
+              <PasswordInput
+                label="Actual"
+                value={oldPass}
+                onChange={(e) => setOldPass(e.target.value)}
+                error={errors.oldPassword}
+              />
 
+              <PasswordInput
+                label="Nueva"
+                value={newPass}
+                onChange={(e) => setNewPass(e.target.value)}
+                error={errors.newPassword}
+              />
 
-            <PasswordInput
-              label="Nueva contraseña"
-              value={newPass}
-              onChange={(e) => setNewPass(e.target.value)}
-              error={errors.newPassword}
-            />
+              <PasswordInput
+                label="Confirmar"
+                value={confirmPass}
+                onChange={(e) => setConfirmPass(e.target.value)}
+                error={errors.confirmPass}
+              />
+            </div>
 
-
-            <PasswordInput
-              label="Confirmar"
-              value={confirmPass}
-              onChange={(e) => setConfirmPass(e.target.value)}
-              error={errors.confirmPass}
-            />
-
-
-            <div className="d-flex justify-content-end gap-2">
-              <button className="btn btn-secondary" onClick={onClose}>Cancelar</button>
-              <button className="btn btn-success" onClick={handleSave} disabled={loading}>
+            <div className="gp-modal-actions">
+              <button className="gp-btn-cancel" onClick={onClose}>Cancelar</button>
+              <button className="gp-btn-confirm" onClick={handleSave} disabled={loading}>
                 {loading ? "Guardando..." : "Guardar"}
               </button>
             </div>

@@ -16,32 +16,30 @@ function FloatingDialog({
       {show && (
         <>
           <motion.div
-            className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center"
-            style={{ zIndex: 3100 }}
+            className="gp-modal-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
 
             <motion.div
-              className="bg-white rounded-4 shadow-lg p-4"
-              style={{ width: "95%", maxWidth: "500px" }}
+              className="gp-modal-card"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
             >
-              <h5 className="text-dark mb-3">{title}</h5>
-              {message && <p className="text-muted mb-4">{message}</p>}
+              <h5 className="gp-modal-title">{title}</h5>
+              {message && <p className="gp-modal-subtitle">{message}</p>}
 
-              <div className="d-flex justify-content-end gap-2">
+              <div className="gp-modal-actions">
                 <button
-                  className={`btn btn-${cancelVariant}`}
+                  className="gp-btn-cancel"
                   onClick={onCancel}
                 >
                   {cancelText}
                 </button>
                 <button
-                  className={`btn btn-${confirmVariant}`}
+                  className="gp-btn-confirm"
                   onClick={onConfirm}
                 >
                   {confirmText}

@@ -94,115 +94,115 @@ function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
     <AnimatePresence>
       {show && (
         <motion.div
-          className="edit-profile-overlay"
+          className="gp-modal-overlay"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="edit-profile-card"
+            className="gp-modal-card"
             initial={{ scale: 0.8, opacity: 0, y: -30 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: -30 }}
             transition={{ type: "spring", duration: 0.35 }}
           >
 
-            <h3 className="mb-3">Editar Perfil</h3>
+            <h3 className="gp-modal-title">Editar Perfil</h3>
+            <p className="gp-modal-subtitle">Mantén tus datos actualizados</p>
 
             {/* Imagen */}
-            <div className="mb-3">
+            <div className="mb-4">
             
-              <div className="mt-3 text-center">
-                <p>Imagen actual:</p>
+              <div className="mb-3 text-center">
                 <img
                   src={imageUrl}
                   alt="Usuario"
-                  style={{ width: "120px", borderRadius: "10px" }}
+                  className="gp-profile-preview"
                 />
               </div>
 
               <UploadImage
-                label="Actualizar imagen de perfil"
                 onImageSelect={handleImageSelect}
                 isInvalid={!!errorsForm.img_user}
                 error={errorsForm.img_user}
               />
             </div>
 
-
-            {/* Nombre */}
-            <div className="gp-input-group-container">
-              <div className={`gp-input-group ${errorsForm.name ? "is-invalid" : ""}`}>
-                <label className="gp-input-label">Nombre</label>
-                <input
-                  className="form-control"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              {errorsForm.name && (
-                <div className="invalid-feedback d-block mt-1">{errorsForm.name}</div>
-              )}
-            </div>
-
-            {/* Apellido */}
-            <div className="gp-input-group-container">
-              <div className={`gp-input-group ${errorsForm.last_name ? "is-invalid" : ""}`}>
-                <label className="gp-input-label">Apellido</label>
-                <input
-                  className="form-control"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </div>
-              {errorsForm.last_name && (
-                <div className="invalid-feedback d-block mt-1">{errorsForm.last_name}</div>
-              )}
-            </div>
-
-            {/* País */}
-            <div className="gp-input-group-container">
-              <div className={`gp-input-group ${errorsForm.country ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
-                <label className="gp-input-label">País</label>
-                <div className="flex-fill">
-                  <CountrySelect 
-                    countryFunction={setCountry} 
-                    isInvalid={!!errorsForm.country}
-                    error={errorsForm.country}
-                    defaultValue={country}
-                    hideLabel={true}
+            <div className="gp-form-grid">
+              {/* Nombre */}
+              <div className="gp-input-group-container">
+                <div className={`gp-input-group ${errorsForm.name ? "is-invalid" : ""}`}>
+                  <label className="gp-input-label">Nombre</label>
+                  <input
+                    className="form-control"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
+                {errorsForm.name && (
+                  <div className="invalid-feedback d-block mt-1">{errorsForm.name}</div>
+                )}
               </div>
-              {errorsForm.country && (
-                <div className="invalid-feedback d-block mt-1">{errorsForm.country}</div>
-              )}
+
+              {/* Apellido */}
+              <div className="gp-input-group-container">
+                <div className={`gp-input-group ${errorsForm.last_name ? "is-invalid" : ""}`}>
+                  <label className="gp-input-label">Apellido</label>
+                  <input
+                    className="form-control"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </div>
+                {errorsForm.last_name && (
+                  <div className="invalid-feedback d-block mt-1">{errorsForm.last_name}</div>
+                )}
+              </div>
+
+              {/* País */}
+              <div className="gp-input-group-container">
+                <div className={`gp-input-group ${errorsForm.country ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
+                  <label className="gp-input-label">País</label>
+                  <div className="flex-fill">
+                    <CountrySelect 
+                      countryFunction={setCountry} 
+                      isInvalid={!!errorsForm.country}
+                      error={errorsForm.country}
+                      defaultValue={country}
+                      hideLabel={true}
+                    />
+                  </div>
+                </div>
+                {errorsForm.country && (
+                  <div className="invalid-feedback d-block mt-1">{errorsForm.country}</div>
+                )}
+              </div>
+
+              {/* Email */}
+              <div className="gp-input-group-container">
+                <div className={`gp-input-group ${errorsForm.email ? "is-invalid" : ""}`}>
+                  <label className="gp-input-label">Email</label>
+                  <input
+                    className="form-control"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                {errorsForm.email && (
+                  <div className="invalid-feedback d-block mt-1">{errorsForm.email}</div>
+                )}
+              </div>
             </div>
 
-            {/* Email */}
-            <div className="gp-input-group-container">
-              <div className={`gp-input-group ${errorsForm.email ? "is-invalid" : ""}`}>
-                <label className="gp-input-label">Email</label>
-                <input
-                  className="form-control"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              {errorsForm.email && (
-                <div className="invalid-feedback d-block mt-1">{errorsForm.email}</div>
-              )}
-            </div>
+            {message && <p className="alert alert-info mt-3">{message}</p>}
 
-            {message && <p className="alert alert-info">{message}</p>}
-
-            <div className="d-flex justify-content-end gap-2 mt-4">
-              <button className="btn btn-secondary" onClick={onClose}>
+            <div className="gp-modal-actions">
+              <button className="gp-btn-cancel" onClick={onClose}>
                 Cancelar
               </button>
 
               <button
-                className="btn btn-success"
+                className="gp-btn-confirm"
                 disabled={loading}
                 onClick={handleSave}
               >
