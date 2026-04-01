@@ -22,7 +22,9 @@ initFirebase();
 ========================= */
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://grandpick.vercel.app"
+  "https://grandpick.vercel.app",
+  "https://grandpick.app",
+  "https://www.grandpick.app"
 ];
 
 app.use(cors({
