@@ -1521,54 +1521,58 @@ ul .dropdown {
     }
 
     .mega-menu {
-        display: none;
+        display: block; /* Always block, controlled by height/opacity */
         background-color: #7fb3d5;
         box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-        padding: 1.5rem 0;
-    }
-
-    @keyframes megaSlideIn {
-        from { opacity: 0; transform: translateY(-10px) translateX(-50%); }
-        to { opacity: 1; transform: translateY(0) translateX(-50%); }
-    }
-
-    @keyframes megaSlideInPush {
-        from { opacity: 0; max-height: 0; }
-        to { opacity: 1; max-height: 200px; }
+        padding: 0; /* Padding inside container to avoid jump */
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease, opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        visibility: hidden;
+        border: none;
     }
 
     .mega-menu.show-hover {
-        display: block;
+        opacity: 1;
+        max-height: 300px;
+        visibility: visible;
+        padding: 1.5rem 0;
     }
 
-    /* Floating behavior: When scrolling, it overlays content */
+    /* Floating behavior */
     .mega-menu.is-floating {
         position: absolute;
         width: 100vw;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateY(-10px) translateX(-50%);
         z-index: 2040;
         top: 100%;
         border-top: 2px solid var(--color-accent);
-        animation: megaSlideIn 0.3s ease forwards;
+    }
+    
+    .mega-menu.is-floating.show-hover {
+        transform: translateY(0) translateX(-50%);
     }
 
-    /* Push behavior: When at the top, it pushes content */
+    /* Push behavior */
     .mega-menu.is-push {
         position: relative;
         width: 100%;
         top: 0;
-        border-top: none;
         box-shadow: none;
-        animation: megaSlideInPush 0.3s ease forwards;
-        overflow: hidden;
     }
 
     .mega-menu-push-container {
         width: 100%;
         background-color: #7fb3d5;
+        /* No border here to keep it invisible when closed */
+    }
+
+    .site-header.has-hovered-menu .mega-menu-push-container {
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
+
 
 
 

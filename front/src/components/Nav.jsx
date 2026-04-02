@@ -90,7 +90,8 @@ function Nav({ onLogout, autenticado, esAdmin }) {
     closeMenu();
   };
 
-  const renderMegaMenu = (menu) => {
+  const renderMegaMenu = (menu, type) => {
+    const isActive = hoveredMenu === menu;
     const items = menu === 'info' ? [
       { to: "/teams", label: "ESCUDERÍAS" },
       { to: "/drivers", label: "PILOTOS" },
@@ -103,7 +104,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
 
     return (
       <div 
-        className={`dropdown-menu mega-menu show-hover ${!isAtTop ? 'is-floating' : 'is-push'}`}
+        className={`dropdown-menu mega-menu ${isActive ? 'show-hover' : ''} ${type === 'floating' ? 'is-floating' : 'is-push'}`}
         onMouseEnter={() => handleMouseEnter(menu)}
         onMouseLeave={handleMouseLeave}
       >
@@ -200,7 +201,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                     INFO
                   </button>
                   {/* Floating menu when NOT at top or on mobile */}
-                  {(!isAtTop || window.innerWidth < 992) && hoveredMenu === 'info' && renderMegaMenu('info')}
+                  {(!isAtTop || window.innerWidth < 992) && renderMegaMenu('info', 'floating')}
                 </li>
 
                 {/* TUTORIALES */}
@@ -217,7 +218,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                     TUTORIALES
                   </button>
                    {/* Floating menu when NOT at top or on mobile */}
-                   {(!isAtTop || window.innerWidth < 992) && hoveredMenu === 'tutorials' && renderMegaMenu('tutorials')}
+                   {(!isAtTop || window.innerWidth < 992) && renderMegaMenu('tutorials', 'floating')}
                 </li>
 
                 {/* 🔔 NOTIFICACIONES DESKTOP */}
@@ -271,12 +272,14 @@ function Nav({ onLogout, autenticado, esAdmin }) {
         </nav>
         
         {/* Push menu when at top */}
-        {isAtTop && hoveredMenu && (
+        {isAtTop && (
           <div className="mega-menu-push-container d-none d-lg-block">
-            {renderMegaMenu(hoveredMenu)}
+            {renderMegaMenu('info', 'push')}
+            {renderMegaMenu('tutorials', 'push')}
           </div>
         )}
       </header>
+
 
       {/* Overlay para cerrar el menú al hacer clic fuera */}
       {isMenuOpen && (
