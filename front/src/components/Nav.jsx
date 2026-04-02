@@ -192,13 +192,13 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   onMouseEnter={() => handleMouseEnter('info')}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <a
+                  <button
                     className="nav-link dropdown-toggle"
-                    href="#"
-                    data-bs-toggle="dropdown"
+                    type="button"
+                    onClick={() => window.innerWidth < 992 && setHoveredMenu(hoveredMenu === 'info' ? null : 'info')}
                   >
                     INFO
-                  </a>
+                  </button>
                   {/* Floating menu when NOT at top or on mobile */}
                   {(!isAtTop || window.innerWidth < 992) && hoveredMenu === 'info' && renderMegaMenu('info')}
                 </li>
@@ -209,13 +209,13 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   onMouseEnter={() => handleMouseEnter('tutorials')}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <a
+                  <button
                     className="nav-link dropdown-toggle"
-                    href="#"
-                    data-bs-toggle="dropdown"
+                    type="button"
+                    onClick={() => window.innerWidth < 992 && setHoveredMenu(hoveredMenu === 'tutorials' ? null : 'tutorials')}
                   >
                     TUTORIALES
-                  </a>
+                  </button>
                    {/* Floating menu when NOT at top or on mobile */}
                    {(!isAtTop || window.innerWidth < 992) && hoveredMenu === 'tutorials' && renderMegaMenu('tutorials')}
                 </li>

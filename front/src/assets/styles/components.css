@@ -1524,6 +1524,17 @@ ul .dropdown {
         display: none;
         background-color: #7fb3d5;
         box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        padding: 1.5rem 0;
+    }
+
+    @keyframes megaSlideIn {
+        from { opacity: 0; transform: translateY(-10px) translateX(-50%); }
+        to { opacity: 1; transform: translateY(0) translateX(-50%); }
+    }
+
+    @keyframes megaSlideInPush {
+        from { opacity: 0; max-height: 0; }
+        to { opacity: 1; max-height: 200px; }
     }
 
     .mega-menu.show-hover {
@@ -1539,6 +1550,7 @@ ul .dropdown {
         z-index: 2040;
         top: 100%;
         border-top: 2px solid var(--color-accent);
+        animation: megaSlideIn 0.3s ease forwards;
     }
 
     /* Push behavior: When at the top, it pushes content */
@@ -1548,7 +1560,8 @@ ul .dropdown {
         top: 0;
         border-top: none;
         box-shadow: none;
-        padding: 1.5rem 0;
+        animation: megaSlideInPush 0.3s ease forwards;
+        overflow: hidden;
     }
 
     .mega-menu-push-container {
@@ -1556,6 +1569,7 @@ ul .dropdown {
         background-color: #7fb3d5;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
+
 
 
 
