@@ -42,12 +42,9 @@ export async function sendResetPassword({ email, token }) {
                   <!-- Header / Logo Area -->
                   <tr>
                     <td align="center" style="padding: 40px 0 20px 0; background-image: linear-gradient(to bottom, #3975A2, #0A2434);">
-                      <h1 style="margin: 0; font-size: 32px; font-weight: 800; letter-spacing: 2px; color: #ffffff; text-transform: uppercase;">
-                        GRAND<span style="color: #D40000;">PICK</span>
+                      <h1 style="margin: 0; font-size: 32px; font-weight: 500; letter-spacing: 2px; color: #ffffff; text-transform: uppercase;">
+                        GRANDPICK
                       </h1>
-                      <p style="margin: 5px 0 0 0; font-size: 12px; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 3px;">
-                        F1 Prediction League
-                      </p>
                     </td>
                   </tr>
 
@@ -85,11 +82,11 @@ export async function sendResetPassword({ email, token }) {
                   <!-- Footer -->
                   <tr>
                     <td align="center" style="padding: 20px 30px 40px 30px; background-color: #08121a;">
-                      <p style="margin: 0; font-size: 12px; color: #666;">
+                      <p style="margin: 0; font-size: 12px; color: #d0d0d0;">
                         Si no solicitaste este cambio, podés ignorar este correo con seguridad. No se realizarán cambios en tu cuenta.
                       </p>
-                      <p style="margin: 20px 0 0 0; font-size: 12px; color: #444; text-transform: uppercase; letter-spacing: 1px;">
-                        © 2024 GrandPick.app - Todos los derechos reservados.
+                      <p style="margin: 20px 0 0 0; font-size: 12px; color: #d0d0d0; text-transform: uppercase; letter-spacing: 1px;">
+                        © 2026 GrandPick - Todos los derechos reservados.
                       </p>
                     </td>
                   </tr>
