@@ -338,6 +338,7 @@ ul .dropdown {
     text-decoration: none;
     padding: 0.5rem;
     text-align: center;
+    font-size: 13px;
 }
 
 .mega-link:hover {
@@ -1560,6 +1561,7 @@ ul .dropdown {
 
     /* Push behavior */
     .mega-menu.is-push {
+        grid-area: menu-stack;
         position: relative;
         width: 100%;
         top: 0;
@@ -1569,6 +1571,8 @@ ul .dropdown {
     .mega-menu-push-container {
         width: 100%;
         background-color: #7fb3d5;
+        display: grid;
+        grid-template-areas: "menu-stack";
         /* No border here to keep it invisible when closed */
     }
 
