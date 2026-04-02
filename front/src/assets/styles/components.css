@@ -336,7 +336,7 @@ ul .dropdown {
     font-weight: 600;
     color: var(--color-footer) !important;
     text-decoration: none;
-    padding: 1rem;
+    padding: 0.5rem;
     text-align: center;
 }
 
@@ -1497,7 +1497,8 @@ ul .dropdown {
     }
 
     .dropdown-mega {
-        position: static; /* Let it grow naturally in desktop if we want push */
+        position: static;
+        /* Let it grow naturally in desktop if we want push */
     }
 
     /* Fixed position bridge to prevent menu from closing when moving cursor */
@@ -1521,10 +1522,12 @@ ul .dropdown {
     }
 
     .mega-menu {
-        display: block; /* Always block, controlled by height/opacity */
+        display: block;
+        /* Always block, controlled by height/opacity */
         background-color: #7fb3d5;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-        padding: 0; /* Padding inside container to avoid jump */
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        padding: 0;
+        /* Padding inside container to avoid jump */
         max-height: 0;
         opacity: 0;
         overflow: hidden;
@@ -1535,9 +1538,9 @@ ul .dropdown {
 
     .mega-menu.show-hover {
         opacity: 1;
-        max-height: 300px;
+        max-height: 200px;
         visibility: visible;
-        padding: 1.5rem 0;
+        padding: 0.8rem 0;
     }
 
     /* Floating behavior */
@@ -1550,7 +1553,7 @@ ul .dropdown {
         top: 100%;
         border-top: 2px solid var(--color-accent);
     }
-    
+
     .mega-menu.is-floating.show-hover {
         transform: translateY(0) translateX(-50%);
     }
