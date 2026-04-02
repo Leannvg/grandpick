@@ -327,7 +327,9 @@ ul .dropdown {
     border: none;
     padding: 1rem 0;
     background-color: #7fb3d5;
+    transition: all 0.3s ease;
 }
+
 
 .mega-link {
     display: block;
@@ -1495,21 +1497,67 @@ ul .dropdown {
     }
 
     .dropdown-mega {
-        position: static;
+        position: static; /* Let it grow naturally in desktop if we want push */
+    }
+
+    /* Fixed position bridge to prevent menu from closing when moving cursor */
+    .nav-item.dropdown-mega .nav-link {
+        position: relative;
+    }
+
+    .nav-item.dropdown-mega .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -20px;
+        left: 0;
+        right: 0;
+        height: 20px;
+        display: none;
+        z-index: 1;
+    }
+
+    .nav-item.dropdown-mega:hover .nav-link::after {
+        display: block;
     }
 
     .mega-menu {
         position: absolute;
         left: 0;
         right: 0;
-        width: 100vw;
+        width: 100%;
         margin-top: 0;
         top: 100%;
+        display: none;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        border-top: 2px solid var(--color-accent);
+        background-color: #7fb3d5;
+        z-index: 1000;
     }
 
-    .dropdown-mega:hover .mega-menu {
+    .mega-menu.show-hover {
         display: block;
     }
+
+    /* Push behavior: When at the top, the header grows to show the menu */
+    .site-header.at-top .dropdown-mega:hover .mega-menu {
+        position: relative;
+        top: 0;
+        width: 100vw;
+        left: 50%;
+        transform: translateX(-50%);
+        border-top: none;
+        box-shadow: none;
+    }
+
+    /* Floating behavior: When scrolling, it overlays content */
+    .site-header:not(.at-top) .dropdown-mega:hover .mega-menu {
+        position: absolute;
+        width: 100vw;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2040;
+    }
+
 
     .dropdown-menu[data-bs-popper] {
         margin-top: 0 !important;
