@@ -90,6 +90,38 @@ function Nav({ onLogout, autenticado, esAdmin }) {
     closeMenu();
   };
 
+  const renderMegaMenu = (menu) => {
+    const items = menu === 'info' ? [
+      { to: "/teams", label: "ESCUDERÍAS" },
+      { to: "/drivers", label: "PILOTOS" },
+      { to: "/circuits", label: "CIRCUITOS" }
+    ] : [
+      { to: "#", label: "CÓMO JUGAR" },
+      { to: "#", label: "GUÍA DE F1" },
+      { to: "#", label: "F1 TV" }
+    ];
+
+    return (
+      <div 
+        className={`dropdown-menu mega-menu show-hover ${!isAtTop ? 'is-floating' : 'is-push'}`}
+        onMouseEnter={() => handleMouseEnter(menu)}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="container">
+          <ul className="row justify-content-center text-center list-unstyled m-0">
+            {items.map((item, idx) => (
+              <li key={idx} className="col-12 col-md-4">
+                <Link to={item.to} className="mega-link" onClick={closeMenu}>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <header className={`site-header ${isAtTop ? 'at-top' : ''} ${hoveredMenu ? 'has-hovered-menu' : ''}`}>
@@ -167,27 +199,8 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   >
                     INFO
                   </a>
-                  <div className={`dropdown-menu mega-menu ${hoveredMenu === 'info' ? 'show-hover' : ''}`}>
-                    <div className="container">
-                      <ul className="row justify-content-center text-center list-unstyled m-0">
-                        <li className="col-12 col-md-4">
-                          <Link to="/teams" className="mega-link" onClick={closeMenu}>
-                            ESCUDERÍAS
-                          </Link>
-                        </li>
-                        <li className="col-12 col-md-4">
-                          <Link to="/drivers" className="mega-link" onClick={closeMenu}>
-                            PILOTOS
-                          </Link>
-                        </li>
-                        <li className="col-12 col-md-4">
-                          <Link to="/circuits" className="mega-link" onClick={closeMenu}>
-                            CIRCUITOS
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                  {/* Floating menu when NOT at top or on mobile */}
+                  {(!isAtTop || window.innerWidth < 992) && hoveredMenu === 'info' && renderMegaMenu('info')}
                 </li>
 
                 {/* TUTORIALES */}
@@ -203,27 +216,8 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   >
                     TUTORIALES
                   </a>
-                  <div className={`dropdown-menu mega-menu ${hoveredMenu === 'tutorials' ? 'show-hover' : ''}`}>
-                    <div className="container">
-                      <ul className="row justify-content-center text-center list-unstyled m-0">
-                        <li className="col-12 col-md-4">
-                          <Link to="#" className="mega-link" onClick={closeMenu}>
-                            CÓMO JUGAR
-                          </Link>
-                        </li>
-                        <li className="col-12 col-md-4">
-                          <Link to="#" className="mega-link" onClick={closeMenu}>
-                            GUÍA DE F1
-                          </Link>
-                        </li>
-                        <li className="col-12 col-md-4">
-                          <Link to="#" className="mega-link" onClick={closeMenu}>
-                            F1 TV
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                   {/* Floating menu when NOT at top or on mobile */}
+                   {(!isAtTop || window.innerWidth < 992) && hoveredMenu === 'tutorials' && renderMegaMenu('tutorials')}
                 </li>
 
                 {/* 🔔 NOTIFICACIONES DESKTOP */}
@@ -275,6 +269,13 @@ function Nav({ onLogout, autenticado, esAdmin }) {
             </div>
           </div>
         </nav>
+        
+        {/* Push menu when at top */}
+        {isAtTop && hoveredMenu && (
+          <div className="mega-menu-push-container d-none d-lg-block">
+            {renderMegaMenu(hoveredMenu)}
+          </div>
+        )}
       </header>
 
       {/* Overlay para cerrar el menú al hacer clic fuera */}

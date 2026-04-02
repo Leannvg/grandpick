@@ -1521,42 +1521,42 @@ ul .dropdown {
     }
 
     .mega-menu {
-        position: absolute;
-        left: 0;
-        right: 0;
-        width: 100%;
-        margin-top: 0;
-        top: 100%;
         display: none;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-        border-top: 2px solid var(--color-accent);
         background-color: #7fb3d5;
-        z-index: 1000;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
     }
 
     .mega-menu.show-hover {
         display: block;
     }
 
-    /* Push behavior: When at the top, the header grows to show the menu */
-    .site-header.at-top .dropdown-mega:hover .mega-menu {
-        position: relative;
-        top: 0;
-        width: 100vw;
-        left: 50%;
-        transform: translateX(-50%);
-        border-top: none;
-        box-shadow: none;
-    }
-
     /* Floating behavior: When scrolling, it overlays content */
-    .site-header:not(.at-top) .dropdown-mega:hover .mega-menu {
+    .mega-menu.is-floating {
         position: absolute;
         width: 100vw;
         left: 50%;
         transform: translateX(-50%);
         z-index: 2040;
+        top: 100%;
+        border-top: 2px solid var(--color-accent);
     }
+
+    /* Push behavior: When at the top, it pushes content */
+    .mega-menu.is-push {
+        position: relative;
+        width: 100%;
+        top: 0;
+        border-top: none;
+        box-shadow: none;
+        padding: 1.5rem 0;
+    }
+
+    .mega-menu-push-container {
+        width: 100%;
+        background-color: #7fb3d5;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
 
 
     .dropdown-menu[data-bs-popper] {
