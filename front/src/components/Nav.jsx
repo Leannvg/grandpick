@@ -35,7 +35,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
       setActiveMenu(null);
       const timer = setTimeout(() => {
         setActiveMenu(hoveredMenu);
-      }, 350); // Match CSS transition time
+      }, 400); // Match new CSS transition time (0.4s)
       return () => clearTimeout(timer);
     } else {
       // Direct opening or closing

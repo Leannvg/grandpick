@@ -1530,7 +1530,12 @@ ul .dropdown {
         max-height: 0;
         opacity: 0;
         overflow: hidden;
-        transition: max-height 0.35s ease, opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        /* Exit transition: opacity goes first to avoid clipping text */
+        transition: 
+            max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+            opacity 0.25s ease-out, 
+            padding 0.4s ease,
+            visibility 0.4s;
         visibility: hidden;
         border: none;
     }
@@ -1540,6 +1545,11 @@ ul .dropdown {
         max-height: 200px;
         visibility: visible;
         padding: 0.8rem 0;
+        /* Enter transition: height and opacity grow together */
+        transition: 
+            max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+            opacity 0.4s ease-in, 
+            padding 0.4s ease;
     }
 
     /* Mobile specific push height */
@@ -1581,7 +1591,7 @@ ul .dropdown {
         grid-template-areas: "menu-stack";
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.35s ease;
+        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .mega-menu-push-container.is-active {
