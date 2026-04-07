@@ -1563,8 +1563,9 @@ ul .dropdown {
         }
         
         .gp-mega-menu.show-active {
-            max-height: 1000px !important;
+            max-height: 300px !important;
             padding: 0.5rem 0;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
         }
 
         .gp-mega-menu .mega-link {

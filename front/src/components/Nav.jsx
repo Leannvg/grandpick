@@ -1,21 +1,33 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import NotificationsBell from "./NotificationsBell.jsx";
 import logo from "../assets/icons/logo_grandpick.svg";
 
 function Nav({ onLogout, autenticado, esAdmin }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
-  const [hoveredMenu, setHoveredMenu] = useState(null); // Target menu from hover/click
-  const [activeMenu, setActiveMenu] = useState(null); // Menu currently being rendered as "active"
+  const [hoveredMenu, setHoveredMenu] = useState(null); 
+  const [activeMenu, setActiveMenu] = useState(null); 
   const [isAnimatingOut, setIsAnimatingOut] = useState(false); 
+  
+  // Ref to track if we are on mobile to skip some delays
+  const isMobile = useRef(window.innerWidth < 992);
 
   useEffect(() => {
+    const handleResize = () => {
+      isMobile.current = window.innerWidth < 992;
+    };
+    window.addEventListener("resize", handleResize);
+    
     const handleScroll = () => {
       setIsAtTop(window.scrollY === 0);
     };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -27,9 +39,16 @@ function Nav({ onLogout, autenticado, esAdmin }) {
     return () => document.body.classList.remove("body-scroll-lock");
   }, [isMenuOpen]);
 
-  // Sequential animation logic: hide current before showing next
+  // Sequential animation logic
   useEffect(() => {
     if (hoveredMenu === activeMenu) {
+        setIsAnimatingOut(false);
+        return;
+    }
+
+    // On mobile, we want instant response for opening
+    if (isMobile.current && hoveredMenu && !activeMenu) {
+        setActiveMenu(hoveredMenu);
         setIsAnimatingOut(false);
         return;
     }
@@ -40,7 +59,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
       const timer = setTimeout(() => {
         setActiveMenu(hoveredMenu);
         setIsAnimatingOut(false);
-      }, 400); 
+      }, 350); // Faster switch time
       return () => clearTimeout(timer);
     } else if (activeMenu && !hoveredMenu) {
       // Closing all
@@ -48,23 +67,23 @@ function Nav({ onLogout, autenticado, esAdmin }) {
       const timer = setTimeout(() => {
         setActiveMenu(null);
         setIsAnimatingOut(false);
-      }, 400);
+      }, 350);
       return () => clearTimeout(timer);
     } else {
-      // Opening from nothing
+      // Direct opening
       setActiveMenu(hoveredMenu);
       setIsAnimatingOut(false);
     }
   }, [hoveredMenu]);
 
   const handleMouseEnter = (menu) => {
-    if (window.innerWidth >= 992) {
+    if (!isMobile.current) {
       setHoveredMenu(menu);
     }
   };
 
   const handleMouseLeave = () => {
-    if (window.innerWidth >= 992) {
+    if (!isMobile.current) {
       setHoveredMenu(null);
     }
   };
@@ -123,11 +142,10 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   };
 
   const renderMegaMenu = (menu, type) => {
-    // Current isActive check
     const isActive = activeMenu === menu && !isAnimatingOut;
     
-    // Safety check for mobile rendering to avoid empty space
-    if (window.innerWidth < 992 && activeMenu !== menu && hoveredMenu !== menu) return null;
+    // Safety check for mobile rendering
+    if (isMobile.current && activeMenu !== menu && hoveredMenu !== menu) return null;
 
     const items = menu === 'info' ? [
       { to: "/teams", label: "ESCUDERÍAS" },
@@ -225,46 +243,37 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                 </li>
 
                 {/* INFO */}
-                <li 
-                  className="nav-item gp-nav-dropdown"
-                  onMouseEnter={() => handleMouseEnter('info')}
-                  onMouseLeave={handleMouseLeave}
-                >
+                <li className="nav-item gp-nav-dropdown">
                   <button
                     className="nav-link gp-dropdown-toggle"
                     type="button"
                     onClick={() => {
-                      if (window.innerWidth < 992) {
+                      if (isMobile.current) {
                         setHoveredMenu(hoveredMenu === 'info' ? null : 'info');
                       }
                     }}
                   >
                     INFO
                   </button>
-                  {/* Internal push for mobile, floating for desktop scroll */}
-                  {(window.innerWidth < 992) && renderMegaMenu('info', 'push')}
-                  {(window.innerWidth >= 992 && !isAtTop) && renderMegaMenu('info', 'floating')}
+                  {isMobile.current && renderMegaMenu('info', 'push')}
+                  {(!isMobile.current && !isAtTop) && renderMegaMenu('info', 'floating')}
                 </li>
 
                 {/* TUTORIALES */}
-                <li 
-                  className="nav-item gp-nav-dropdown"
-                  onMouseEnter={() => handleMouseEnter('tutorials')}
-                  onMouseLeave={handleMouseLeave}
-                >
+                <li className="nav-item gp-nav-dropdown">
                   <button
                     className="nav-link gp-dropdown-toggle"
                     type="button"
                     onClick={() => {
-                      if (window.innerWidth < 992) {
+                      if (isMobile.current) {
                         setHoveredMenu(hoveredMenu === 'tutorials' ? null : 'tutorials');
                       }
                     }}
                   >
                     TUTORIALES
                   </button>
-                   {(window.innerWidth < 992) && renderMegaMenu('tutorials', 'push')}
-                   {(window.innerWidth >= 992 && !isAtTop) && renderMegaMenu('tutorials', 'floating')}
+                   {isMobile.current && renderMegaMenu('tutorials', 'push')}
+                   {(!isMobile.current && !isAtTop) && renderMegaMenu('tutorials', 'floating')}
                 </li>
 
                 {/* 🔔 NOTIFICACIONES DESKTOP */}
@@ -318,7 +327,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
         </nav>
         
         {/* Absolute Push container for desktop Top-0 */}
-        {isAtTop && window.innerWidth >= 992 && (
+        {isAtTop && !isMobile.current && (
           <div className={`mega-menu-push-container d-none d-lg-block ${activeMenu ? 'is-active' : ''}`}>
             {renderMegaMenu('info', 'push')}
             {renderMegaMenu('tutorials', 'push')}
