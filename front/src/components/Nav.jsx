@@ -6,7 +6,8 @@ import logo from "../assets/icons/logo_grandpick.svg";
 function Nav({ onLogout, autenticado, esAdmin }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
-  const [hoveredMenu, setHoveredMenu] = useState(null);
+  const [hoveredMenu, setHoveredMenu] = useState(null); // Target menu from hover/click
+  const [activeMenu, setActiveMenu] = useState(null); // Menu currently being rendered as "active"
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +25,23 @@ function Nav({ onLogout, autenticado, esAdmin }) {
     }
     return () => document.body.classList.remove("body-scroll-lock");
   }, [isMenuOpen]);
+
+  // Sequential animation logic: hide current before showing next
+  useEffect(() => {
+    if (hoveredMenu === activeMenu) return;
+
+    if (activeMenu && hoveredMenu) {
+      // Switching menus: Hide current first
+      setActiveMenu(null);
+      const timer = setTimeout(() => {
+        setActiveMenu(hoveredMenu);
+      }, 350); // Match CSS transition time
+      return () => clearTimeout(timer);
+    } else {
+      // Direct opening or closing
+      setActiveMenu(hoveredMenu);
+    }
+  }, [hoveredMenu]);
 
   const handleMouseEnter = (menu) => {
     if (window.innerWidth >= 992) {
@@ -91,7 +109,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   };
 
   const renderMegaMenu = (menu, type) => {
-    const isActive = hoveredMenu === menu;
+    const isActive = activeMenu === menu;
     const items = menu === 'info' ? [
       { to: "/teams", label: "ESCUDERÍAS" },
       { to: "/drivers", label: "PILOTOS" },
@@ -199,14 +217,15 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                     onClick={(e) => {
                       if (window.innerWidth < 992) {
                         e.preventDefault();
+                        e.stopPropagation();
                         setHoveredMenu(hoveredMenu === 'info' ? null : 'info');
                       }
                     }}
                   >
                     INFO
                   </button>
-                  {/* Floating menu when NOT at top or on mobile */}
-                  {(!isAtTop || window.innerWidth < 992) && renderMegaMenu('info', 'floating')}
+                  {/* Pushing menu for mobile, floating for desktop scroll */}
+                  {window.innerWidth < 992 ? renderMegaMenu('info', 'push') : (!isAtTop && renderMegaMenu('info', 'floating'))}
                 </li>
 
                 {/* TUTORIALES */}
@@ -221,14 +240,15 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                     onClick={(e) => {
                       if (window.innerWidth < 992) {
                         e.preventDefault();
+                        e.stopPropagation();
                         setHoveredMenu(hoveredMenu === 'tutorials' ? null : 'tutorials');
                       }
                     }}
                   >
                     TUTORIALES
                   </button>
-                   {/* Floating menu when NOT at top or on mobile */}
-                   {(!isAtTop || window.innerWidth < 992) && renderMegaMenu('tutorials', 'floating')}
+                   {/* Pushing menu for mobile, floating for desktop scroll */}
+                   {window.innerWidth < 992 ? renderMegaMenu('tutorials', 'push') : (!isAtTop && renderMegaMenu('tutorials', 'floating'))}
                 </li>
 
                 {/* 🔔 NOTIFICACIONES DESKTOP */}
@@ -281,9 +301,9 @@ function Nav({ onLogout, autenticado, esAdmin }) {
           </div>
         </nav>
         
-        {/* Push menu when at top */}
-        {isAtTop && (
-          <div className={`mega-menu-push-container d-none d-lg-block ${hoveredMenu ? 'is-active' : ''}`}>
+        {/* Absolute Push container for desktop Top-0 */}
+        {isAtTop && window.innerWidth >= 992 && (
+          <div className={`mega-menu-push-container d-none d-lg-block ${activeMenu ? 'is-active' : ''}`}>
             {renderMegaMenu('info', 'push')}
             {renderMegaMenu('tutorials', 'push')}
           </div>

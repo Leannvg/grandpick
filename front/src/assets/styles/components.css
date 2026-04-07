@@ -1523,7 +1523,7 @@ ul .dropdown {
     }
 
     .mega-menu {
-        display: block !important; /* Force display since we control with others */
+        display: block !important;
         background-color: #7fb3d5;
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         padding: 0;
@@ -1537,14 +1537,16 @@ ul .dropdown {
 
     .mega-menu.show-hover {
         opacity: 1;
-        max-height: 160px; /* Fixed height for desktop push */
+        max-height: 200px;
         visibility: visible;
         padding: 0.8rem 0;
     }
-    
+
+    /* Mobile specific push height */
     @media (max-width: 991px) {
         .mega-menu.show-hover {
-            max-height: 1000px; /* Large enough for stacked mobile content */
+            max-height: 1000px !important;
+            padding: 1rem 0;
         }
     }
 
@@ -1563,8 +1565,8 @@ ul .dropdown {
         transform: translateY(0) translateX(-50%);
     }
 
-    /* Push behavior */
-    .mega-menu.is-push {
+    /* Push behavior (only for desktop container) */
+    .mega-menu-push-container .mega-menu.is-push {
         grid-area: menu-stack;
         position: relative;
         width: 100%;
@@ -1583,7 +1585,7 @@ ul .dropdown {
     }
 
     .mega-menu-push-container.is-active {
-        max-height: 160px;
+        max-height: 200px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
