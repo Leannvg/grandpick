@@ -1552,11 +1552,20 @@ ul .dropdown {
             padding 0.4s ease;
     }
 
-    /* Mobile specific push height */
+    /* Mobile specific push height and behavior */
     @media (max-width: 991px) {
+        .mega-menu.is-push {
+            position: static !important;
+            width: 100% !important;
+            box-shadow: none !important;
+            transform: none !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        
         .mega-menu.show-hover {
             max-height: 1000px !important;
-            padding: 1rem 0;
+            padding: 0.5rem 0; /* Tighter padding for mobile push */
         }
     }
 
