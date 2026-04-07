@@ -147,8 +147,8 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   const renderMegaMenu = (menu, type) => {
     const isActive = activeMenu === menu && !isAnimatingOut;
     
-    // Safety check: only keep in DOM if active, hovered or animating
-    if (activeMenu !== menu && hoveredMenu !== menu && !isAnimatingOut) return null;
+    // Safety check: only keep in DOM if this specific menu is active or hovered
+    if (activeMenu !== menu && hoveredMenu !== menu) return null;
 
     const items = menu === 'info' ? [
       { to: "/teams", label: "ESCUDERÍAS" },
