@@ -122,7 +122,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
 
     return (
       <div 
-        className={`dropdown-menu mega-menu ${isActive ? 'show-hover' : ''} ${type === 'floating' ? 'is-floating' : 'is-push'}`}
+        className={`gp-mega-menu ${isActive ? 'show-active' : ''} ${type === 'floating' ? 'is-floating' : 'is-push'}`}
         onMouseEnter={() => handleMouseEnter(menu)}
         onMouseLeave={handleMouseLeave}
       >
@@ -207,12 +207,12 @@ function Nav({ onLogout, autenticado, esAdmin }) {
 
                 {/* INFO */}
                 <li 
-                  className="nav-item dropdown dropdown-mega"
+                  className="nav-item gp-nav-dropdown"
                   onMouseEnter={() => handleMouseEnter('info')}
                   onMouseLeave={handleMouseLeave}
                 >
                   <button
-                    className="nav-link dropdown-toggle"
+                    className="nav-link gp-dropdown-toggle"
                     type="button"
                     onClick={(e) => {
                       if (window.innerWidth < 992) {
@@ -224,18 +224,19 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   >
                     INFO
                   </button>
-                  {/* Pushing menu for mobile, floating for desktop scroll */}
-                  {window.innerWidth < 992 ? renderMegaMenu('info', 'push') : (!isAtTop && renderMegaMenu('info', 'floating'))}
+                  {/* Internal push for mobile, floating for desktop scroll */}
+                  {(window.innerWidth < 992) && renderMegaMenu('info', 'push')}
+                  {(window.innerWidth >= 992 && !isAtTop) && renderMegaMenu('info', 'floating')}
                 </li>
 
                 {/* TUTORIALES */}
                 <li 
-                  className="nav-item dropdown dropdown-mega"
+                  className="nav-item gp-nav-dropdown"
                   onMouseEnter={() => handleMouseEnter('tutorials')}
                   onMouseLeave={handleMouseLeave}
                 >
                   <button
-                    className="nav-link dropdown-toggle"
+                    className="nav-link gp-dropdown-toggle"
                     type="button"
                     onClick={(e) => {
                       if (window.innerWidth < 992) {
@@ -247,8 +248,8 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   >
                     TUTORIALES
                   </button>
-                   {/* Pushing menu for mobile, floating for desktop scroll */}
-                   {window.innerWidth < 992 ? renderMegaMenu('tutorials', 'push') : (!isAtTop && renderMegaMenu('tutorials', 'floating'))}
+                   {(window.innerWidth < 992) && renderMegaMenu('tutorials', 'push')}
+                   {(window.innerWidth >= 992 && !isAtTop) && renderMegaMenu('tutorials', 'floating')}
                 </li>
 
                 {/* 🔔 NOTIFICACIONES DESKTOP */}

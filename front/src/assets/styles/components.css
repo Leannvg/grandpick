@@ -1522,15 +1522,15 @@ ul .dropdown {
         display: block;
     }
 
-    .mega-menu {
-        display: block !important;
+    .gp-mega-menu {
+        display: block;
         background-color: #7fb3d5;
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         padding: 0;
         max-height: 0;
         opacity: 0;
         overflow: hidden;
-        /* Exit transition: opacity goes first to avoid clipping text */
+        /* Exit transition */
         transition: 
             max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
             opacity 0.25s ease-out, 
@@ -1540,12 +1540,12 @@ ul .dropdown {
         border: none;
     }
 
-    .mega-menu.show-hover {
+    .gp-mega-menu.show-active {
         opacity: 1;
         max-height: 200px;
         visibility: visible;
         padding: 0.8rem 0;
-        /* Enter transition: height and opacity grow together */
+        /* Enter transition */
         transition: 
             max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
             opacity 0.4s ease-in, 
@@ -1554,23 +1554,24 @@ ul .dropdown {
 
     /* Mobile specific push height and behavior */
     @media (max-width: 991px) {
-        .mega-menu.is-push {
+        .gp-mega-menu.is-push {
             position: static !important;
             width: 100% !important;
+            max-width: 100% !important;
             box-shadow: none !important;
             transform: none !important;
             border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
             background-color: rgba(255, 255, 255, 0.05) !important;
         }
         
-        .mega-menu.show-hover {
+        .gp-mega-menu.show-active {
             max-height: 1000px !important;
-            padding: 0.5rem 0; /* Tighter padding for mobile push */
+            padding: 0.5rem 0;
         }
     }
 
     /* Floating behavior */
-    .mega-menu.is-floating {
+    .gp-mega-menu.is-floating {
         position: absolute;
         width: 100vw;
         left: 50%;
@@ -1580,12 +1581,12 @@ ul .dropdown {
         border-top: 2px solid var(--color-accent);
     }
 
-    .mega-menu.is-floating.show-hover {
+    .gp-mega-menu.is-floating.show-active {
         transform: translateY(0) translateX(-50%);
     }
 
     /* Push behavior (only for desktop container) */
-    .mega-menu-push-container .mega-menu.is-push {
+    .mega-menu-push-container .gp-mega-menu.is-push {
         grid-area: menu-stack;
         position: relative;
         width: 100%;
