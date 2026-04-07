@@ -46,11 +46,14 @@ function Nav({ onLogout, autenticado, esAdmin }) {
         return;
     }
 
-    // On mobile, we want instant response for opening
+    // On mobile, we want a tiny delay so the browser paints the component in the DOM
+    // before applying the 'show-active' class, ensuring the animation triggers.
     if (isMobile.current && hoveredMenu && !activeMenu) {
-        setActiveMenu(hoveredMenu);
-        setIsAnimatingOut(false);
-        return;
+        const timer = setTimeout(() => {
+          setActiveMenu(hoveredMenu);
+          setIsAnimatingOut(false);
+        }, 30); 
+        return () => clearTimeout(timer);
     }
 
     if (activeMenu && hoveredMenu) {
@@ -59,7 +62,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
       const timer = setTimeout(() => {
         setActiveMenu(hoveredMenu);
         setIsAnimatingOut(false);
-      }, 300); // Snappier switch time
+      }, 400); // Safer unmount buffer
       return () => clearTimeout(timer);
     } else if (activeMenu && !hoveredMenu) {
       // Closing all
@@ -67,7 +70,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
       const timer = setTimeout(() => {
         setActiveMenu(null);
         setIsAnimatingOut(false);
-      }, 300);
+      }, 400); 
       return () => clearTimeout(timer);
     } else {
       // Direct opening
@@ -144,8 +147,8 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   const renderMegaMenu = (menu, type) => {
     const isActive = activeMenu === menu && !isAnimatingOut;
     
-    // Safety check for mobile rendering
-    if (isMobile.current && activeMenu !== menu && hoveredMenu !== menu) return null;
+    // Safety check: only keep in DOM if active, hovered or animating
+    if (activeMenu !== menu && hoveredMenu !== menu && !isAnimatingOut) return null;
 
     const items = menu === 'info' ? [
       { to: "/teams", label: "ESCUDERÍAS" },
@@ -243,7 +246,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                 </li>
 
                 {/* INFO */}
-                <li className={`nav-item gp-nav-dropdown ${activeMenu === 'info' ? 'is-active' : ''}`}
+                <li className={`nav-item gp-nav-dropdown ${hoveredMenu === 'info' ? 'is-active' : ''}`}
                     onMouseEnter={() => handleMouseEnter('info')}
                     onMouseLeave={handleMouseLeave}
                 >
@@ -263,7 +266,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                 </li>
 
                 {/* TUTORIALES */}
-                <li className={`nav-item gp-nav-dropdown ${activeMenu === 'tutorials' ? 'is-active' : ''}`}
+                <li className={`nav-item gp-nav-dropdown ${hoveredMenu === 'tutorials' ? 'is-active' : ''}`}
                     onMouseEnter={() => handleMouseEnter('tutorials')}
                     onMouseLeave={handleMouseLeave}
                 >
@@ -278,8 +281,8 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   >
                     TUTORIALES
                   </button>
-                   {isMobile.current && renderMegaMenu('tutorials', 'push')}
-                   {(!isMobile.current && !isAtTop) && renderMegaMenu('tutorials', 'floating')}
+                  {isMobile.current && renderMegaMenu('tutorials', 'push')}
+                  {(!isMobile.current && !isAtTop) && renderMegaMenu('tutorials', 'floating')}
                 </li>
 
                 {/* 🔔 NOTIFICACIONES DESKTOP */}
