@@ -59,7 +59,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
       const timer = setTimeout(() => {
         setActiveMenu(hoveredMenu);
         setIsAnimatingOut(false);
-      }, 350); // Faster switch time
+      }, 300); // Snappier switch time
       return () => clearTimeout(timer);
     } else if (activeMenu && !hoveredMenu) {
       // Closing all
@@ -67,7 +67,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
       const timer = setTimeout(() => {
         setActiveMenu(null);
         setIsAnimatingOut(false);
-      }, 350);
+      }, 300);
       return () => clearTimeout(timer);
     } else {
       // Direct opening
@@ -243,7 +243,10 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                 </li>
 
                 {/* INFO */}
-                <li className="nav-item gp-nav-dropdown">
+                <li className={`nav-item gp-nav-dropdown ${activeMenu === 'info' ? 'is-active' : ''}`}
+                    onMouseEnter={() => handleMouseEnter('info')}
+                    onMouseLeave={handleMouseLeave}
+                >
                   <button
                     className="nav-link gp-dropdown-toggle"
                     type="button"
@@ -260,7 +263,10 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                 </li>
 
                 {/* TUTORIALES */}
-                <li className="nav-item gp-nav-dropdown">
+                <li className={`nav-item gp-nav-dropdown ${activeMenu === 'tutorials' ? 'is-active' : ''}`}
+                    onMouseEnter={() => handleMouseEnter('tutorials')}
+                    onMouseLeave={handleMouseLeave}
+                >
                   <button
                     className="nav-link gp-dropdown-toggle"
                     type="button"
