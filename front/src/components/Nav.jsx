@@ -8,7 +8,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   const [isAtTop, setIsAtTop] = useState(true);
   const [hoveredMenu, setHoveredMenu] = useState(null); // Target menu from hover/click
   const [activeMenu, setActiveMenu] = useState(null); // Menu currently being rendered as "active"
-  const [isAnimatingOut, setIsAnimatingOut] = useState(false); // Flag for closing animation
+  const [isAnimatingOut, setIsAnimatingOut] = useState(false); 
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,24 +34,24 @@ function Nav({ onLogout, autenticado, esAdmin }) {
         return;
     }
 
-    if (activeMenu && !hoveredMenu) {
-      // Closing all: Set flag and wait for animation
-      setIsAnimatingOut(true);
-      const timer = setTimeout(() => {
-        setActiveMenu(null);
-        setIsAnimatingOut(false);
-      }, 450); // Slightly more than CSS 0.4s
-      return () => clearTimeout(timer);
-    } else if (activeMenu && hoveredMenu) {
+    if (activeMenu && hoveredMenu) {
       // Switching menus: Hide current first
       setIsAnimatingOut(true);
       const timer = setTimeout(() => {
         setActiveMenu(hoveredMenu);
         setIsAnimatingOut(false);
-      }, 450);
+      }, 400); 
+      return () => clearTimeout(timer);
+    } else if (activeMenu && !hoveredMenu) {
+      // Closing all
+      setIsAnimatingOut(true);
+      const timer = setTimeout(() => {
+        setActiveMenu(null);
+        setIsAnimatingOut(false);
+      }, 400);
       return () => clearTimeout(timer);
     } else {
-      // Direct opening
+      // Opening from nothing
       setActiveMenu(hoveredMenu);
       setIsAnimatingOut(false);
     }
@@ -123,33 +123,31 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   };
 
   const renderMegaMenu = (menu, type) => {
-    // Only render if it's the active one and we ARE NOT in the middle of hiding it,
-    // OR if it's the one we are currently showing.
-    const isVisible = activeMenu === menu && !isAnimatingOut;
-    // We must render it even if not visible to ALLOW CSS animation (max-height 0 to N)
-    // But on mobile, if it's not the active one, we should ideally not even have it in the DOM 
-    // to avoid layout shifts if CSS fails.
+    // Current isActive check
+    const isActive = activeMenu === menu && !isAnimatingOut;
     
-    // For mobile specifically: if it's not the target, don't render it at all
+    // Safety check for mobile rendering to avoid empty space
     if (window.innerWidth < 992 && activeMenu !== menu && hoveredMenu !== menu) return null;
+
+    const items = menu === 'info' ? [
+      { to: "/teams", label: "ESCUDERÍAS" },
+      { to: "/drivers", label: "PILOTOS" },
+      { to: "/circuits", label: "CIRCUITOS" }
+    ] : [
+      { to: "#", label: "CÓMO JUGAR" },
+      { to: "#", label: "GUÍA DE F1" },
+      { to: "#", label: "F1 TV" }
+    ];
 
     return (
       <div 
-        className={`gp-mega-menu ${isVisible ? 'show-active' : ''} ${type === 'floating' ? 'is-floating' : 'is-push'}`}
+        className={`gp-mega-menu ${isActive ? 'show-active' : ''} ${type === 'floating' ? 'is-floating' : 'is-push'}`}
         onMouseEnter={() => handleMouseEnter(menu)}
         onMouseLeave={handleMouseLeave}
       >
         <div className="container">
           <ul className="row justify-content-center text-center list-unstyled m-0">
-            {(menu === 'info' ? [
-              { to: "/teams", label: "ESCUDERÍAS" },
-              { to: "/drivers", label: "PILOTOS" },
-              { to: "/circuits", label: "CIRCUITOS" }
-            ] : [
-              { to: "#", label: "CÓMO JUGAR" },
-              { to: "#", label: "GUÍA DE F1" },
-              { to: "#", label: "F1 TV" }
-            ]).map((item, idx) => (
+            {items.map((item, idx) => (
               <li key={idx} className="col-12 col-md-4">
                 <Link to={item.to} className="mega-link" onClick={closeMenu}>
                   {item.label}
@@ -227,7 +225,11 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                 </li>
 
                 {/* INFO */}
-                <li className="nav-item gp-nav-dropdown">
+                <li 
+                  className="nav-item gp-nav-dropdown"
+                  onMouseEnter={() => handleMouseEnter('info')}
+                  onMouseLeave={handleMouseLeave}
+                >
                   <button
                     className="nav-link gp-dropdown-toggle"
                     type="button"
@@ -239,12 +241,17 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   >
                     INFO
                   </button>
-                  {window.innerWidth < 992 && renderMegaMenu('info', 'push')}
+                  {/* Internal push for mobile, floating for desktop scroll */}
+                  {(window.innerWidth < 992) && renderMegaMenu('info', 'push')}
                   {(window.innerWidth >= 992 && !isAtTop) && renderMegaMenu('info', 'floating')}
                 </li>
 
                 {/* TUTORIALES */}
-                <li className="nav-item gp-nav-dropdown">
+                <li 
+                  className="nav-item gp-nav-dropdown"
+                  onMouseEnter={() => handleMouseEnter('tutorials')}
+                  onMouseLeave={handleMouseLeave}
+                >
                   <button
                     className="nav-link gp-dropdown-toggle"
                     type="button"
@@ -256,7 +263,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   >
                     TUTORIALES
                   </button>
-                   {window.innerWidth < 992 && renderMegaMenu('tutorials', 'push')}
+                   {(window.innerWidth < 992) && renderMegaMenu('tutorials', 'push')}
                    {(window.innerWidth >= 992 && !isAtTop) && renderMegaMenu('tutorials', 'floating')}
                 </li>
 
