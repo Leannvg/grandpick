@@ -337,7 +337,13 @@ function Nav({ onLogout, autenticado, esAdmin }) {
         
         {/* Absolute Push container for desktop Top-0 */}
         {isAtTop && !isMobile.current && (
-          <div className={`mega-menu-push-container d-none d-lg-block ${activeMenu ? 'is-active' : ''}`}>
+          <div 
+            className={`mega-menu-push-container d-none d-lg-block ${activeMenu ? 'is-active' : ''}`}
+            onMouseEnter={() => {
+                if (activeMenu) setHoveredMenu(activeMenu);
+            }}
+            onMouseLeave={handleMouseLeave}
+          >
             {renderMegaMenu('info', 'push')}
             {renderMegaMenu('tutorials', 'push')}
           </div>
