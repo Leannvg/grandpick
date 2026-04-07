@@ -196,7 +196,12 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   <button
                     className="nav-link dropdown-toggle"
                     type="button"
-                    onClick={() => window.innerWidth < 992 && setHoveredMenu(hoveredMenu === 'info' ? null : 'info')}
+                    onClick={(e) => {
+                      if (window.innerWidth < 992) {
+                        e.preventDefault();
+                        setHoveredMenu(hoveredMenu === 'info' ? null : 'info');
+                      }
+                    }}
                   >
                     INFO
                   </button>
@@ -213,7 +218,12 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   <button
                     className="nav-link dropdown-toggle"
                     type="button"
-                    onClick={() => window.innerWidth < 992 && setHoveredMenu(hoveredMenu === 'tutorials' ? null : 'tutorials')}
+                    onClick={(e) => {
+                      if (window.innerWidth < 992) {
+                        e.preventDefault();
+                        setHoveredMenu(hoveredMenu === 'tutorials' ? null : 'tutorials');
+                      }
+                    }}
                   >
                     TUTORIALES
                   </button>
@@ -273,7 +283,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
         
         {/* Push menu when at top */}
         {isAtTop && (
-          <div className="mega-menu-push-container d-none d-lg-block">
+          <div className={`mega-menu-push-container d-none d-lg-block ${hoveredMenu ? 'is-active' : ''}`}>
             {renderMegaMenu('info', 'push')}
             {renderMegaMenu('tutorials', 'push')}
           </div>

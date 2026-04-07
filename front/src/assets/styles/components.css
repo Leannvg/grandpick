@@ -1523,12 +1523,10 @@ ul .dropdown {
     }
 
     .mega-menu {
-        display: block;
-        /* Always block, controlled by height/opacity */
+        display: block !important; /* Force display since we control with others */
         background-color: #7fb3d5;
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         padding: 0;
-        /* Padding inside container to avoid jump */
         max-height: 0;
         opacity: 0;
         overflow: hidden;
@@ -1539,9 +1537,15 @@ ul .dropdown {
 
     .mega-menu.show-hover {
         opacity: 1;
-        max-height: 200px;
+        max-height: 160px; /* Fixed height for desktop push */
         visibility: visible;
         padding: 0.8rem 0;
+    }
+    
+    @media (max-width: 991px) {
+        .mega-menu.show-hover {
+            max-height: 1000px; /* Large enough for stacked mobile content */
+        }
     }
 
     /* Floating behavior */
@@ -1573,10 +1577,13 @@ ul .dropdown {
         background-color: #7fb3d5;
         display: grid;
         grid-template-areas: "menu-stack";
-        /* No border here to keep it invisible when closed */
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
     }
 
-    .site-header.has-hovered-menu .mega-menu-push-container {
+    .mega-menu-push-container.is-active {
+        max-height: 160px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
