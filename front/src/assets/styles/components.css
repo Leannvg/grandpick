@@ -1528,12 +1528,10 @@ ul .dropdown {
         max-height: 0;
         opacity: 0;
         overflow: hidden;
-        /* Exit transition */
         transition: 
             max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
             opacity 0.25s ease-out, 
-            padding 0.4s ease,
-            visibility 0.4s;
+            padding 0.4s ease;
         visibility: hidden;
         pointer-events: none;
         border: none;
@@ -1542,26 +1540,26 @@ ul .dropdown {
     .gp-mega-menu.show-active {
         opacity: 1;
         max-height: 200px;
-        visibility: visible !important;
+        visibility: visible;
         pointer-events: auto;
         padding: 0.8rem 0;
-        /* Enter transition */
-        transition: 
-            max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-            opacity 0.4s ease-in, 
-            padding 0.4s ease;
     }
 
     /* Mobile specific push height and behavior */
     @media (max-width: 991px) {
         .gp-mega-menu.is-push {
             position: static !important;
+            display: block; 
             width: 100% !important;
             max-width: 100% !important;
             box-shadow: none !important;
             transform: none !important;
-            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border: none !important;
             background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .gp-mega-menu.is-push.show-active {
+            display: block !important;
         }
         
         .gp-mega-menu.show-active {
@@ -1570,7 +1568,7 @@ ul .dropdown {
         }
 
         .gp-mega-menu .mega-link {
-            color: #fff !important;
+            color: #7fb3d5 !important; /* Match the accent color in mobile */
             font-size: 14px;
             padding: 0.8rem;
         }

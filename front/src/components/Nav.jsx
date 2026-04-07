@@ -8,6 +8,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   const [isAtTop, setIsAtTop] = useState(true);
   const [hoveredMenu, setHoveredMenu] = useState(null); // Target menu from hover/click
   const [activeMenu, setActiveMenu] = useState(null); // Menu currently being rendered as "active"
+  const [isAnimatingOut, setIsAnimatingOut] = useState(false); // Flag for closing animation
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,18 +29,31 @@ function Nav({ onLogout, autenticado, esAdmin }) {
 
   // Sequential animation logic: hide current before showing next
   useEffect(() => {
-    if (hoveredMenu === activeMenu) return;
+    if (hoveredMenu === activeMenu) {
+        setIsAnimatingOut(false);
+        return;
+    }
 
-    if (activeMenu && hoveredMenu) {
+    if (activeMenu && !hoveredMenu) {
+      // Closing all: Set flag and wait for animation
+      setIsAnimatingOut(true);
+      const timer = setTimeout(() => {
+        setActiveMenu(null);
+        setIsAnimatingOut(false);
+      }, 450); // Slightly more than CSS 0.4s
+      return () => clearTimeout(timer);
+    } else if (activeMenu && hoveredMenu) {
       // Switching menus: Hide current first
-      setActiveMenu(null);
+      setIsAnimatingOut(true);
       const timer = setTimeout(() => {
         setActiveMenu(hoveredMenu);
-      }, 400); // Match new CSS transition time (0.4s)
+        setIsAnimatingOut(false);
+      }, 450);
       return () => clearTimeout(timer);
     } else {
-      // Direct opening or closing
+      // Direct opening
       setActiveMenu(hoveredMenu);
+      setIsAnimatingOut(false);
     }
   }, [hoveredMenu]);
 
@@ -109,26 +123,33 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   };
 
   const renderMegaMenu = (menu, type) => {
-    const isActive = activeMenu === menu;
-    const items = menu === 'info' ? [
-      { to: "/teams", label: "ESCUDERÍAS" },
-      { to: "/drivers", label: "PILOTOS" },
-      { to: "/circuits", label: "CIRCUITOS" }
-    ] : [
-      { to: "#", label: "CÓMO JUGAR" },
-      { to: "#", label: "GUÍA DE F1" },
-      { to: "#", label: "F1 TV" }
-    ];
+    // Only render if it's the active one and we ARE NOT in the middle of hiding it,
+    // OR if it's the one we are currently showing.
+    const isVisible = activeMenu === menu && !isAnimatingOut;
+    // We must render it even if not visible to ALLOW CSS animation (max-height 0 to N)
+    // But on mobile, if it's not the active one, we should ideally not even have it in the DOM 
+    // to avoid layout shifts if CSS fails.
+    
+    // For mobile specifically: if it's not the target, don't render it at all
+    if (window.innerWidth < 992 && activeMenu !== menu && hoveredMenu !== menu) return null;
 
     return (
       <div 
-        className={`gp-mega-menu ${isActive ? 'show-active' : ''} ${type === 'floating' ? 'is-floating' : 'is-push'}`}
+        className={`gp-mega-menu ${isVisible ? 'show-active' : ''} ${type === 'floating' ? 'is-floating' : 'is-push'}`}
         onMouseEnter={() => handleMouseEnter(menu)}
         onMouseLeave={handleMouseLeave}
       >
         <div className="container">
           <ul className="row justify-content-center text-center list-unstyled m-0">
-            {items.map((item, idx) => (
+            {(menu === 'info' ? [
+              { to: "/teams", label: "ESCUDERÍAS" },
+              { to: "/drivers", label: "PILOTOS" },
+              { to: "/circuits", label: "CIRCUITOS" }
+            ] : [
+              { to: "#", label: "CÓMO JUGAR" },
+              { to: "#", label: "GUÍA DE F1" },
+              { to: "#", label: "F1 TV" }
+            ]).map((item, idx) => (
               <li key={idx} className="col-12 col-md-4">
                 <Link to={item.to} className="mega-link" onClick={closeMenu}>
                   {item.label}
@@ -206,49 +227,36 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                 </li>
 
                 {/* INFO */}
-                <li 
-                  className="nav-item gp-nav-dropdown"
-                  onMouseEnter={() => handleMouseEnter('info')}
-                  onMouseLeave={handleMouseLeave}
-                >
+                <li className="nav-item gp-nav-dropdown">
                   <button
                     className="nav-link gp-dropdown-toggle"
                     type="button"
-                    onClick={(e) => {
+                    onClick={() => {
                       if (window.innerWidth < 992) {
-                        e.preventDefault();
-                        e.stopPropagation();
                         setHoveredMenu(hoveredMenu === 'info' ? null : 'info');
                       }
                     }}
                   >
                     INFO
                   </button>
-                  {/* Internal push for mobile, floating for desktop scroll */}
-                  {(window.innerWidth < 992) && renderMegaMenu('info', 'push')}
+                  {window.innerWidth < 992 && renderMegaMenu('info', 'push')}
                   {(window.innerWidth >= 992 && !isAtTop) && renderMegaMenu('info', 'floating')}
                 </li>
 
                 {/* TUTORIALES */}
-                <li 
-                  className="nav-item gp-nav-dropdown"
-                  onMouseEnter={() => handleMouseEnter('tutorials')}
-                  onMouseLeave={handleMouseLeave}
-                >
+                <li className="nav-item gp-nav-dropdown">
                   <button
                     className="nav-link gp-dropdown-toggle"
                     type="button"
-                    onClick={(e) => {
+                    onClick={() => {
                       if (window.innerWidth < 992) {
-                        e.preventDefault();
-                        e.stopPropagation();
                         setHoveredMenu(hoveredMenu === 'tutorials' ? null : 'tutorials');
                       }
                     }}
                   >
                     TUTORIALES
                   </button>
-                   {(window.innerWidth < 992) && renderMegaMenu('tutorials', 'push')}
+                   {window.innerWidth < 992 && renderMegaMenu('tutorials', 'push')}
                    {(window.innerWidth >= 992 && !isAtTop) && renderMegaMenu('tutorials', 'floating')}
                 </li>
 
