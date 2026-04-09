@@ -1532,94 +1532,101 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
         display: none !important;
         /* Managed by our toggle button */
     }
+}
 
-    .gp-mega-menu {
-        display: block;
-        background: linear-gradient(135deg, #7fb3d5 0%, #6fa3c5 100%);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-        padding: 0;
-        max-height: 0;
-        opacity: 0;
-        overflow: hidden;
+/* Base Mega Menu Styles (Global) */
+.gp-mega-menu {
+    display: block;
+    background: linear-gradient(135deg, #7fb3d5 0%, #6fa3c5 100%);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    padding: 0;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition:
+        max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s ease-in-out,
+        padding 0.4s ease,
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0.4s;
+    visibility: hidden;
+    pointer-events: none;
+    border: none;
+    z-index: 2040;
+}
+
+.gp-mega-menu.show-active {
+    opacity: 1;
+    max-height: 400px;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Mobile specific push behavior */
+@media (max-width: 991px) {
+    .gp-mega-menu.is-push {
+        position: static !important;
+        display: grid !important;
+        grid-template-rows: 0fr; /* Smooth height transition helper */
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        transform: none !important;
+        border: none !important;
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        backdrop-filter: none;
+        max-height: none !important;
         transition:
-            max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-            opacity 0.3s ease-in-out,
-            padding 0.4s ease,
-            transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-            visibility 0.4s;
-        visibility: hidden;
-        pointer-events: none;
-        border: none;
-        z-index: 2040;
+            grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 0.25s ease-in-out,
+            padding 0.3s ease,
+            visibility 0.3s;
     }
 
-    .gp-mega-menu.show-active {
-        opacity: 1;
-        max-height: 400px;
-        /* Increased for safety */
+    .gp-mega-menu.is-push.show-active {
+        display: grid !important;
+        grid-template-rows: 1fr;
+        padding: 0.8rem 0;
         visibility: visible;
-        pointer-events: auto;
-        padding: 1.2rem 0;
+        opacity: 1;
     }
 
-    /* Mobile specific push height and behavior */
-    @media (max-width: 991px) {
-        .gp-mega-menu.is-push {
-            position: static !important;
-            display: block;
-            width: 100% !important;
-            max-width: 100% !important;
-            box-shadow: none !important;
-            transform: none !important;
-            border: none !important;
-            background-color: rgba(255, 255, 255, 0.05) !important;
-            backdrop-filter: none;
-            transition:
-                max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.3s ease-in-out,
-                padding 0.35s ease,
-                visibility 0.35s;
-        }
-
-        .gp-mega-menu.is-push.show-active {
-            display: block !important;
-            max-height: 500px !important;
-            /* Allow more space for mobile overflow */
-            padding: 0.8rem 0;
-        }
-
-        .gp-mega-menu .mega-link {
-            color: #7fb3d5 !important;
-            font-size: 15px;
-            padding: 0.8rem 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
-        }
-
-        .gp-mega-menu .mega-link:last-child {
-            border-bottom: none;
-        }
+    /* Target the inner container for the grid trick */
+    .gp-mega-menu.is-push > div {
+        overflow: hidden;
+        min-height: 0;
     }
 
+    .gp-mega-menu .mega-link {
+        color: #7fb3d5 !important;
+        font-size: 15px;
+        padding: 0.8rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        text-align: center;
+    }
+
+    .gp-mega-menu .mega-link:last-child {
+        border-bottom: none;
+    }
+}
+
+@media (min-width: 992px) {
     /* Floating behavior */
     .gp-mega-menu.is-floating {
         position: absolute;
         width: 100vw;
         left: 50%;
         transform: translateY(10px) translateX(-50%);
-        /* Start slightly lower */
         z-index: 2040;
         top: 100%;
         border-top: 2px solid var(--color-accent);
     }
 
-    /* Bridge to prevent closing during mouse move to floating menu */
     .gp-mega-menu.is-floating::before {
         content: "";
         position: absolute;
         top: -40px;
-        /* Bridge the gap */
         left: 0;
         right: 0;
         height: 40px;
@@ -1630,7 +1637,7 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
         transform: translateY(0) translateX(-50%);
     }
 
-    /* Push behavior (only for desktop container) */
+    /* Push behavior (desktop) */
     .mega-menu-push-container .gp-mega-menu.is-push {
         grid-area: menu-stack;
         position: relative;
@@ -1638,7 +1645,6 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
         top: 0;
         box-shadow: none;
         background: transparent !important;
-        /* Managed by container */
         backdrop-filter: none;
     }
 
@@ -1659,15 +1665,11 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-
-
-
-
     .dropdown-menu[data-bs-popper] {
         margin-top: 0 !important;
     }
 
-    /* Drivers */
+    /* Drivers / Teams / Circuits layouts */
     .drivers-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -1695,7 +1697,6 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
         text-transform: uppercase;
     }
 
-    /* Teams */
     .teams-section .container {
         max-width: 1200px;
     }
@@ -1722,7 +1723,6 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
         font-size: 22px;
     }
 
-    /* Team list */
     .teams-list {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -1731,13 +1731,11 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
         margin-top: 40px;
     }
 
-    /* Calendar */
     .calendar-list {
         max-width: 900px;
         margin: auto;
     }
 
-    /* Circuits */
     .circuits-section .container {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -1781,7 +1779,6 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
     .circuit-description p {
         font-size: 16px;
     }
-
 }
 
 /* -------------------------------------- */
