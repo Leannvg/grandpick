@@ -323,6 +323,7 @@ ul .dropdown {
 }
 
 @media (hover: hover) {
+
     .nav-item a.nav-link:hover,
     .nav-item button.nav-link:hover,
     .gp-dropdown-toggle:hover {
@@ -331,9 +332,9 @@ ul .dropdown {
 }
 
 /* Keep blue/accent color when the menu is active/open */
-li.gp-nav-dropdown.is-active .gp-dropdown-toggle {
+/* li.gp-nav-dropdown.is-active .gp-dropdown-toggle {
     color: var(--color-accent) !important;
-}
+} */
 
 
 .gp-dropdown-toggle::after {
