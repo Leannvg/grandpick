@@ -322,11 +322,19 @@ ul .dropdown {
     font-weight: 500;
 }
 
-.nav-item a.nav-link:hover,
-.nav-item button.nav-link:hover,
-.gp-dropdown-toggle:hover {
+@media (hover: hover) {
+    .nav-item a.nav-link:hover,
+    .nav-item button.nav-link:hover,
+    .gp-dropdown-toggle:hover {
+        color: var(--color-accent) !important;
+    }
+}
+
+/* Keep blue/accent color when the menu is active/open */
+li.gp-nav-dropdown.is-active .gp-dropdown-toggle {
     color: var(--color-accent) !important;
 }
+
 
 .gp-dropdown-toggle::after {
     content: "";
@@ -340,11 +348,18 @@ ul .dropdown {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Force rotation when active or hovered */
-li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after,
-li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
-    transform: rotate(180deg) !important;
+/* Force rotation when active (state-controlled) */
+li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
+    transform: rotate(180deg);
 }
+
+/* Desktop hover effect */
+@media (hover: hover) {
+    li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
+        transform: rotate(180deg);
+    }
+}
+
 
 /* Submenu links style */
 .mega-link {
