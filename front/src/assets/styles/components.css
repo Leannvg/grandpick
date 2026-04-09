@@ -350,7 +350,8 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
 .mega-link {
     display: block;
     font-weight: 600;
-    color: #fff !important; /* White text on blue background */
+    color: #fff !important;
+    /* White text on blue background */
     text-decoration: none;
     padding: 1rem;
     text-align: center;
@@ -1528,7 +1529,8 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
     }
 
     .nav-item.gp-nav-dropdown .nav-link::after {
-        display: none !important; /* Managed by our toggle button */
+        display: none !important;
+        /* Managed by our toggle button */
     }
 
     .gp-mega-menu {
@@ -1540,9 +1542,9 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
         max-height: 0;
         opacity: 0;
         overflow: hidden;
-        transition: 
-            max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-            opacity 0.3s ease-in-out, 
+        transition:
+            max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 0.3s ease-in-out,
             padding 0.4s ease,
             transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
             visibility 0.4s;
@@ -1554,7 +1556,8 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
 
     .gp-mega-menu.show-active {
         opacity: 1;
-        max-height: 400px; /* Increased for safety */
+        max-height: 400px;
+        /* Increased for safety */
         visibility: visible;
         pointer-events: auto;
         padding: 1.2rem 0;
@@ -1564,7 +1567,7 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
     @media (max-width: 991px) {
         .gp-mega-menu.is-push {
             position: static !important;
-            display: block; 
+            display: block;
             width: 100% !important;
             max-width: 100% !important;
             box-shadow: none !important;
@@ -1572,8 +1575,8 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
             border: none !important;
             background-color: rgba(255, 255, 255, 0.05) !important;
             backdrop-filter: none;
-            transition: 
-                max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+            transition:
+                max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
                 opacity 0.3s ease-in-out,
                 padding 0.35s ease,
                 visibility 0.35s;
@@ -1581,12 +1584,13 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
 
         .gp-mega-menu.is-push.show-active {
             display: block !important;
-            max-height: 500px !important; /* Allow more space for mobile overflow */
+            max-height: 500px !important;
+            /* Allow more space for mobile overflow */
             padding: 0.8rem 0;
         }
-        
+
         .gp-mega-menu .mega-link {
-            color: #7fb3d5 !important; 
+            color: #7fb3d5 !important;
             font-size: 15px;
             padding: 0.8rem 1rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -1603,7 +1607,8 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
         position: absolute;
         width: 100vw;
         left: 50%;
-        transform: translateY(10px) translateX(-50%); /* Start slightly lower */
+        transform: translateY(10px) translateX(-50%);
+        /* Start slightly lower */
         z-index: 2040;
         top: 100%;
         border-top: 2px solid var(--color-accent);
@@ -1613,7 +1618,8 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
     .gp-mega-menu.is-floating::before {
         content: "";
         position: absolute;
-        top: -40px; /* Bridge the gap */
+        top: -40px;
+        /* Bridge the gap */
         left: 0;
         right: 0;
         height: 40px;
@@ -1631,7 +1637,8 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
         width: 100%;
         top: 0;
         box-shadow: none;
-        background: transparent !important; /* Managed by container */
+        background: transparent !important;
+        /* Managed by container */
         backdrop-filter: none;
     }
 
@@ -1647,7 +1654,7 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
     }
 
     .mega-menu-push-container.is-active {
-        max-height: 400px;
+        max-height: 200px;
         opacity: 1;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
