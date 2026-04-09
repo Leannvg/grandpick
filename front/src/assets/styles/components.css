@@ -1568,7 +1568,8 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
     .gp-mega-menu.is-push {
         position: static !important;
         display: grid !important;
-        grid-template-rows: 0fr; /* Smooth height transition helper */
+        grid-template-rows: 0fr;
+        /* Smooth height transition helper */
         width: 100% !important;
         max-width: 100% !important;
         box-shadow: none !important;
@@ -1593,13 +1594,13 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
     }
 
     /* Target the inner container for the grid trick */
-    .gp-mega-menu.is-push > div {
+    .gp-mega-menu.is-push>div {
         overflow: hidden;
         min-height: 0;
     }
 
     .gp-mega-menu .mega-link {
-        color: #7fb3d5 !important;
+        color: #ffffff !important;
         font-size: 15px;
         padding: 0.8rem 1rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -1612,6 +1613,7 @@ li.gp-nav-dropdown:hover .gp-dropdown-toggle::after {
 }
 
 @media (min-width: 992px) {
+
     /* Floating behavior */
     .gp-mega-menu.is-floating {
         position: absolute;
