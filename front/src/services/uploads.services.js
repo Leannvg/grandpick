@@ -1,21 +1,9 @@
 import { authHeaders } from "../utils/helpers.js";
 import API_URL from "./api.js";
 
-// 🔹 IMÁGENES ESTÁTICAS
-function obtenerImagenEstatica(ruta) {
-    return `${API_URL}/api/static/${ruta}`;
-}
-
-// 🔹 TRAER IMAGEN DINÁMICA (users, drivers, etc.)
-async function traerImagen(nombreImagen) {
-    return `${API_URL}/api/upload/${nombreImagen}`;
-}
-
-
 // 🔹 SUBIR IMAGEN
 async function cargarImagen(formData, folder) {
-    formData.append("folder", folder);
-
+    // Ya no hace falta append a formData si pasamos por param, pero Cloudinary lo toma de multer en el back
     const res = await fetch(`${API_URL}/api/upload/${folder}`, {
         method: "POST",
         headers: authHeaders(),
@@ -32,10 +20,9 @@ async function cargarImagen(formData, folder) {
 }
 
 
-// 🔹 REEMPLAZAR IMAGEN (corregido)
-async function reemplazarImagen(folder, filename, formData) {
-    
-    const res = await fetch(`${API_URL}/api/upload/${folder}/${filename}`, {
+// 🔹 REEMPLAZAR IMAGEN
+async function reemplazarImagen(filePath, formData) {
+    const res = await fetch(`${API_URL}/api/upload/manage?filePath=${encodeURIComponent(filePath)}`, {
         method: "PUT",
         headers: authHeaders(),
         body: formData
@@ -47,14 +34,13 @@ async function reemplazarImagen(folder, filename, formData) {
     }
 
     const data = await res.json();
-    return data.file;  // <-- devolver ruta final correcta
+    return data.file;  // <-- devolver public_id final
 }
-
 
 
 // 🔹 ELIMINAR IMAGEN
 async function eliminarImagen(filePath) {
-    const res = await fetch(`${API_URL}/api/upload/${filePath}`, {
+    const res = await fetch(`${API_URL}/api/upload/manage?filePath=${encodeURIComponent(filePath)}`, {
         method: "DELETE",
         headers: authHeaders()
     });
@@ -69,10 +55,7 @@ async function eliminarImagen(filePath) {
 }
 
 
-
 export default {
-    obtenerImagenEstatica,
-    traerImagen,
     cargarImagen,
     reemplazarImagen,
     eliminarImagen

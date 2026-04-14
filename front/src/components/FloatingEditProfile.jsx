@@ -5,6 +5,7 @@ import CountrySelect from "./CountrySelect.jsx";
 import UsersServices from "../services/users.services";
 import UploadImage from "./UploadImage.jsx";
 import UploadsServices from "../services/uploads.services.js";
+import { getImageUrl } from "../utils/cloudinary.js";
 
 
 function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
@@ -26,8 +27,8 @@ function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const imageUrl = currentImage && currentImage !== "profile_default.png"
-  ? `${API_URL}/api/static/${currentImage}`
-  : `${API_URL}/api/static/general/profile_default.png`;
+  ? getImageUrl(`users/${currentImage}`, 100)
+  : getImageUrl("general/profile_default.png", 100);
 
 
 

@@ -5,6 +5,7 @@ import DriverCardMobile from "../components/drivers/DriverCardMobile";
 import { useLoader } from "../context/LoaderContext";
 import API_URL from "../services/api";
 import { getFlagEmoji } from "../utils/helpers";
+import { getImageUrl } from "../utils/cloudinary";
 
 function TeamDetail() {
     const { id } = useParams();
@@ -43,7 +44,7 @@ function TeamDetail() {
                 <section className="team-info-card">
                     <div className="team-logo-box" style={{ border: `4px solid ${team.color || '#fff'}` }}>
                         <img
-                            src={`${API_URL}/api/static/teams/${team.logo}`}
+                            src={getImageUrl(`teams/${team.logo}`, 300)}
                             alt={team.name}
                             onError={(e) => { e.target.src = "https://via.placeholder.com/200?text=Logo"; }}
                         />

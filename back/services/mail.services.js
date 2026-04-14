@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 export async function sendResetPassword({ email, token }) {
   const FRONT_URL = process.env.FRONT_URL;
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  const CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
 
   if (!RESEND_API_KEY) {
     console.error("❌ RESEND_API_KEY no detectada en las variables de entorno.");
@@ -42,9 +43,7 @@ export async function sendResetPassword({ email, token }) {
                   <!-- Header / Logo Area -->
                   <tr>
                     <td align="center" style="padding: 40px 0 20px 0; background-image: linear-gradient(to bottom, #3975A2, #0A2434);">
-                      <h1 style="margin: 0; font-size: 32px; font-weight: 500; letter-spacing: 2px; color: #ffffff; text-transform: uppercase;">
-                        GRANDPICK
-                      </h1>
+                      <img src="https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_200/grandpick/logo.png" alt="GrandPick Logo" style="display: block; width: 200px; max-width: 100%; border: 0;" />
                     </td>
                   </tr>
 

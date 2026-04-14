@@ -5,7 +5,7 @@ import UploadImage from "./../UploadImage.jsx";
 import SearchableSelect from "../SearchableSelect.jsx";
 import CountrySelect from "./../../components/CountrySelect.jsx";
 import CitySelect from "./../../components/CitySelect.jsx";
-
+import { getImageUrl } from "../../utils/cloudinary.js";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function CircuitForm({
@@ -170,7 +170,7 @@ function CircuitForm({
           <div className="mt-2">
             <p>Imagen actual:</p>
             <img
-              src={`${API_URL}/api/static/${currentImage}`}
+              src={getImageUrl(currentImage, 300)}
               alt="Circuito"
               style={{ width: "200px", borderRadius: "8px" }}
             />

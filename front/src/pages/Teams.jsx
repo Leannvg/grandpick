@@ -4,6 +4,7 @@ import teamsServices from "../services/teams.services";
 import { useLoader } from "../context/LoaderContext";
 import API_URL from "../services/api";
 import helmet from "../assets/icons/helmet_white.png";
+import { getImageUrl } from "../utils/cloudinary";
 
 function Teams() {
     const [teams, setTeams] = useState([]);
@@ -41,7 +42,7 @@ function Teams() {
                         <article className="team-list-card" key={team._id}>
                             <div className="team-logo">
                                 <img
-                                    src={`${API_URL}/api/static/teams/${team.isologo}`}
+                                    src={getImageUrl(`teams/${team.isologo}`, 100)}
                                     alt={team.name}
                                     onError={(e) => { e.target.src = "https://via.placeholder.com/150?text=Team"; }}
                                 />

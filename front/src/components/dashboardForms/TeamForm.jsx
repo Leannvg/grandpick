@@ -3,6 +3,7 @@ import UploadImage from "./../UploadImage.jsx";
 import CountrySelect from "./../../components/CountrySelect.jsx";
 import CitySelect from "./../../components/CitySelect.jsx";
 import UploadsServices from "./../../services/uploads.services.js";
+import { getImageUrl } from "../../utils/cloudinary.js";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function TeamForm({
@@ -179,7 +180,7 @@ function TeamForm({
         <div className="mt-2">
           <p>Isologo actual:</p>
           <img
-            src={`${API_URL}/api/static/${currentIsologo}`}
+            src={getImageUrl(currentIsologo, 100)}
             alt="Isologo"
             style={{ width: "120px" }}
           />
@@ -196,7 +197,7 @@ function TeamForm({
         <div className="mt-2">
           <p>Logo actual:</p>
           <img
-            src={`${API_URL}/api/static/${currentLogo}`}
+            src={getImageUrl(currentLogo, 100)}
             alt="Logo"
             style={{ width: "120px" }}
           />
