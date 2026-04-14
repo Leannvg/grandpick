@@ -114,4 +114,8 @@ function getGeneralImages(req, res){
     res.status(404).send('Imágenes migradas a Cloudinary');
 };
 
-export { upload, replaceUpload, getUpload, deleteUpload, getGeneralImages };
+const deleteFromCloudinary = async (filePath) => {
+    return cloudinary.uploader.destroy(filePath);
+}
+
+export { upload, replaceUpload, getUpload, deleteUpload, getGeneralImages, uploadToCloudinary, deleteFromCloudinary };

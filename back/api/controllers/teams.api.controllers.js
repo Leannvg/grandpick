@@ -27,13 +27,13 @@ export async function create(req, res, next) {
     const logoFile = req.files?.logo?.[0];
     const isologoFile = req.files?.isologo?.[0];
 
-    const logo = resolveImage({
+    const logo = await resolveImage({
       file: logoFile,
       folder: "teams",
       defaultImage: "general/team_logo_default.png",
     });
 
-    const isologo = resolveImage({
+    const isologo = await resolveImage({
       file: isologoFile,
       folder: "teams",
       defaultImage: "general/team_isologo_default.png",
@@ -62,14 +62,14 @@ export async function editById(req, res, next) {
     const logoFile = req.files?.logo?.[0];
     const isologoFile = req.files?.isologo?.[0];
 
-    const logo = resolveImage({
+    const logo = await resolveImage({
       file: logoFile,
       currentImage: existingTeam.logo,
       folder: "teams",
       defaultImage: "general/team_logo_default.png",
     });
 
-    const isologo = resolveImage({
+    const isologo = await resolveImage({
       file: isologoFile,
       currentImage: existingTeam.isologo,
       folder: "teams",

@@ -18,7 +18,7 @@ export async function editById(req, res, next) {
     const driverId = req.params.driverId;
     const existingDriver = await driversServices.findDriverById(driverId);
 
-    const finalImage = resolveImage({
+    const finalImage = await resolveImage({
       file: req.file,
       currentImage: existingDriver.img,
       folder: "drivers",
@@ -41,7 +41,7 @@ export async function editById(req, res, next) {
 
 export async function create(req, res, next) {
   try {
-    const imgPath = resolveImage({
+    const imgPath = await resolveImage({
       file: req.file,
       folder: "drivers",
       defaultImage: "general/profile_default.png",

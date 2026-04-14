@@ -87,7 +87,7 @@ async function editOne(req, res, next) {
     const userId = req.params.id;
     const existingUser = await UsersServices.getUserById(userId);
 
-    const finalImage = resolveImage({
+    const finalImage = await resolveImage({
       file: req.file,
       currentImage: existingUser.img_user,
       folder: "users",

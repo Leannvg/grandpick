@@ -1,7 +1,6 @@
-import fs from "fs";
-import path from "path";
+import { uploadToCloudinary, deleteFromCloudinary } from "../api/controllers/upload.api.controllers.js";
 
-export function resolveImage({
+export async function resolveImage({
   file,
   currentImage = null,
   folder,
@@ -17,20 +16,30 @@ export function resolveImage({
     return currentImage;
   }
 
-  // Caso CREATE con imagen
-  if (file && !currentImage) {
-    return `${folder}/${file.filename}`;
+  let uniqueId = null;
+  if(file) {
+      uniqueId = `${Date.now()}-${file.originalname.split('.')[0].replace(/\s+/g, '-')}`;
   }
 
-  // Caso EDIT con imagen nueva → borrar anterior
-  if (file && currentImage) {
-    const oldFilename = currentImage.split("/").pop();
-    const oldPath = path.join(process.cwd(), "uploads", folder, oldFilename);
+  const cloudFolder = `grandpick/${folder}`;
 
-    if (fs.existsSync(oldPath)) {
-      fs.unlinkSync(oldPath);
+  // Caso CREATE con imagen
+  if (file && !currentImage) {
+    const result = await uploadToCloudinary(file.buffer, uniqueId, cloudFolder);
+    return result.public_id;
+  }
+
+  // Caso EDIT con imagen nueva → borrar anterior y subir
+  if (file && currentImage) {
+    if (currentImage !== defaultImage && currentImage !== "general/profile_default.png") {
+      try {
+        await deleteFromCloudinary(currentImage);
+      } catch(e) {
+        console.error("No se pudo borrar imagen antigua de Cloudinary:", e);
+      }
     }
 
-    return `${folder}/${file.filename}`;
+    const result = await uploadToCloudinary(file.buffer, uniqueId, cloudFolder);
+    return result.public_id;
   }
 }
