@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import UploadImage from "./../UploadImage.jsx";
 import CountrySelect from "./../CountrySelect.jsx";
 import TeamsServices from "./../../services/teams.services.js";
-import TeamsServices from "./../../services/teams.services.js";
 import { getImageUrl } from "../../utils/cloudinary.js";
 const API_URL = import.meta.env.VITE_API_URL;
 function DriverForm({
