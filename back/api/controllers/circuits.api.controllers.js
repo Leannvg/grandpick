@@ -18,7 +18,7 @@ export async function editById(req, res, next) {
     const circuitId = req.params.circuitId;
     const existingCircuit = await circuitsServices.findCircuitById(circuitId);
 
-    const finalImage = resolveImage({
+    const finalImage = await resolveImage({
       file: req.file,
       currentImage: existingCircuit.img,
       folder: "circuits",
@@ -43,7 +43,7 @@ export async function editById(req, res, next) {
 
 export async function create(req, res, next) {
   try {
-    const imgPath = resolveImage({
+    const imgPath = await resolveImage({
       file: req.file,
       folder: "circuits",
       defaultImage: "general/circuit_default.png",
