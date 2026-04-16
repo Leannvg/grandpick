@@ -1,4 +1,7 @@
 import "dotenv/config";
+if (process.env.CLOUDINARY_URL) {
+  process.env.CLOUDINARY_URL = process.env.CLOUDINARY_URL.trim();
+}
 import express from "express";
 import cors from "cors";
 

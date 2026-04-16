@@ -6,6 +6,7 @@ import FloatingEditProfile from "../components/FloatingEditProfile.jsx";
 import FloatingChangePassword from "../components/FloatingChangePassword.jsx";
 import { getFlagEmoji } from "../utils/helpers";
 import profileDefault from "../assets/images/profile_default.png";
+import { getImageUrl } from "../utils/cloudinary.js";
 import "../assets/styles/profile.css";
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
@@ -27,6 +28,10 @@ function Profile() {
       setCurrentImage(usuario.img_user);
     }
   }, [usuario]);
+
+  const imageUrl = currentImage && currentImage !== "profile_default.png" && currentImage !== "general/profile_default.png"
+    ? getImageUrl(currentImage, 150)
+    : profileDefault;
 
   const fetchUsuario = async () => {
     showLoader();
@@ -83,7 +88,7 @@ function Profile() {
         {/* User Card */}
         <article className="user-card">
           <div className="user-avatar-box">
-            <img src={profileDefault} alt="Helmet" />
+            <img src={imageUrl} alt="Helmet" />
           </div>
           <div className="user-details">
             <div className="user-main-info">
