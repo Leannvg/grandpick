@@ -195,6 +195,7 @@ function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
               </div>
             </div>
 
+            {errorsForm.message && <div className="alert alert-danger mt-3">{errorsForm.message}</div>}
             {message && <p className="alert alert-info mt-3">{message}</p>}
 
             <div className="gp-modal-actions">

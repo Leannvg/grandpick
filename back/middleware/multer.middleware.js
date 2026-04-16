@@ -6,7 +6,9 @@ const fileFilter = (req, file, cb) => {
   if (allowed.test(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("Archivo no permitido"));
+    const error = new Error("Archivo no permitido. Solo se aceptan imágenes (jpeg, jpg, png, gif, webp).");
+    error.status = 400;
+    cb(error);
   }
 };
 

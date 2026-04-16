@@ -11,6 +11,6 @@ export function errorHandler(err, req, res, next) {
 
   // 🧾 Respuesta consistente
   res.status(err.status || 500).json({
-    errors: err.formattedErrors || { message: err.message || "Error interno" },
+    errors: err.formattedErrors || { message: `${err.message || "Error interno"}\nStack: ${err.stack || "N/A"}` },
   });
 }
