@@ -31,7 +31,7 @@ export async function resolveImage({
 
   // Caso EDIT con imagen nueva → borrar anterior y subir
   if (file && currentImage) {
-    if (currentImage !== defaultImage && currentImage !== "general/profile_default.png") {
+    if (currentImage !== defaultImage && currentImage !== "general/profile_default.png" && !currentImage.includes("undefined")) {
       try {
         await deleteFromCloudinary(currentImage);
       } catch(e) {
