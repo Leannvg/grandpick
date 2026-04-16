@@ -42,7 +42,7 @@ function Teams() {
                         <article className="team-list-card" key={team._id}>
                             <div className="team-logo">
                                 <img
-                                    src={getImageUrl(`teams/${team.isologo}`, 100)}
+                                    src={getImageUrl(team.isologo, 100)}
                                     alt={team.name}
                                     onError={(e) => { e.target.src = "https://via.placeholder.com/150?text=Team"; }}
                                 />

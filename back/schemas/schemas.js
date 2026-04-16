@@ -62,12 +62,10 @@ export const teamSchema = yup.object({
     .required("El color es requerido"),
   logo: yup
     .string()
-    .required("La imagen de logo es requerida")
-    .matches(/\.(jpg|jpeg|png|gif|webp)$/i, "Debe ser una imagen válida"),
+    .required("La imagen de logo es requerida"),
   isologo: yup
     .string()
-    .required("La imagen de isologo requerida")
-    .matches(/\.(jpg|jpeg|png|gif|webp)$/i, "Debe ser una imagen válida"),
+    .required("La imagen de isologo requerida"),
 }).noUnknown();
 
 
@@ -90,8 +88,7 @@ export const driverSchema = yup.object({
     .max(99, "El número no puede ser mayor a 99")
     .required("El número es requerido"),
   img: yup.string()
-    .required("La imagen es requerida")
-    .matches(/\.(jpg|jpeg|png|gif|webp)$/i, "Debe ser una imagen válida"),
+    .required("La imagen es requerida"),
 }).noUnknown();
 
 
@@ -125,8 +122,7 @@ export const circuitSchema = yup.object({
     .required("El timezone es requerido"),
   img: yup
     .string()
-    .required("La imagen es requerida")
-    .matches(/\.(jpg|jpeg|png|gif|webp)$/i, "Debe ser una imagen válida"),
+    .required("La imagen es requerida"),
 }).noUnknown();
 
 

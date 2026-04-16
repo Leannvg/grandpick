@@ -14,7 +14,7 @@ const DriverCardMobile = ({ driver, teamLogo }) => {
         <article className="driver-card-vertical">
             <div className="driver-photo-wrapper-vertical">
                 <img
-                    src={getImageUrl(`drivers/${img}`, 300)}
+                    src={getImageUrl(img, 300)}
                     alt={full_name}
                     className="driver-photo-vertical"
                     onError={(e) => { e.target.src = "https://via.placeholder.com/300x400?text=Driver"; }}
@@ -29,7 +29,7 @@ const DriverCardMobile = ({ driver, teamLogo }) => {
 
                             {(driver.team_info?.isologo || teamLogo) && (
                                 <img
-                                    src={getImageUrl(`teams/${driver.team_info?.isologo || teamLogo}`, 100)}
+                                    src={getImageUrl(driver.team_info?.isologo || teamLogo, 100)}
                                     className="team-logo-vertical"
                                     alt="team"
                                     onError={(e) => { e.target.style.display = 'none'; }}

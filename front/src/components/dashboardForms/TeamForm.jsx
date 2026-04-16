@@ -180,7 +180,7 @@ function TeamForm({
         <div className="mt-2">
           <p>Isologo actual:</p>
           <img
-            src={getImageUrl(currentIsologo, 100)}
+            src={getImageUrl(currentIsologo, 300)}
             alt="Isologo"
             style={{ width: "120px" }}
           />
@@ -197,7 +197,7 @@ function TeamForm({
         <div className="mt-2">
           <p>Logo actual:</p>
           <img
-            src={getImageUrl(currentLogo, 100)}
+            src={getImageUrl(currentLogo, 300)}
             alt="Logo"
             style={{ width: "120px" }}
           />

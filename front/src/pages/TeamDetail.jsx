@@ -44,7 +44,7 @@ function TeamDetail() {
                 <section className="team-info-card">
                     <div className="team-logo-box" style={{ border: `4px solid ${team.color || '#fff'}` }}>
                         <img
-                            src={getImageUrl(`teams/${team.logo}`, 300)}
+                            src={getImageUrl(team.logo, 300)}
                             alt={team.name}
                             onError={(e) => { e.target.src = "https://via.placeholder.com/200?text=Logo"; }}
                         />

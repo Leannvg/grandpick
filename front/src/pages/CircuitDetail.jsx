@@ -76,7 +76,7 @@ function CircuitDetail() {
                     {/* TRACK MAP */}
                     <div className="circuit-map">
                         <img
-                            src={getImageUrl(`circuits/${circuit.img}`, 800)}
+                            src={getImageUrl(circuit.img, 1000)}
                             alt={circuit.circuit_name}
                             onError={(e) => { e.target.src = "https://via.placeholder.com/600x400?text=Circuito"; }}
                         />

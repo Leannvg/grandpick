@@ -23,7 +23,7 @@ const DriverCardDesktop = ({ driver }) => {
                         {/* Assuming team logo is available via team_id or similar. Using a generic path for now. */}
                         {driver.team_info?.isologo && (
                             <img
-                                src={getImageUrl(`teams/${driver.team_info.isologo}`, 100)}
+                                src={getImageUrl(driver.team_info.isologo, 100)}
                                 className="team-logo-horizontal"
                                 alt="team"
                                 onError={(e) => { e.target.style.display = 'none'; }}
@@ -35,7 +35,7 @@ const DriverCardDesktop = ({ driver }) => {
             </div>
             <div className="driver-photo-wrapper-horizontal">
                 <img
-                    src={getImageUrl(`drivers/${img}`, 300)}
+                    src={getImageUrl(img, 300)}
                     alt={full_name}
                     className="driver-photo-horizontal"
                 />
