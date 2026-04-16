@@ -4,6 +4,7 @@ import UsersServices from "../services/users.services";
 import { getFlagEmoji } from "../utils/helpers";
 import API_URL from "../services/api";
 import profileDefault from "../assets/images/profile_default.png";
+import { getImageUrl } from "../utils/cloudinary.js";
 
 import logoImg from '../assets/icons/logo_grandpick.svg';
 import tutorialesImg from '../assets/images/home/tutoriales.png';
@@ -281,7 +282,7 @@ const Home = () => {
 
                                     <div className="podium__avatar">
                                         <img
-                                            src={user.img ? `${API_URL}/uploads/users/${user.img}` : profileDefault}
+                                            src={user.img_user && user.img_user !== "profile_default.png" && user.img_user !== "general/profile_default.png" ? getImageUrl(user.img_user, 200) : profileDefault}
                                             alt={`${user.name} ${user.last_name}`}
                                         />
                                     </div>
