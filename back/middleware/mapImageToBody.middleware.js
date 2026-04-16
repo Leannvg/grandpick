@@ -2,7 +2,10 @@ export function mapImageToBody(req, res, next) {
 
   // CASO SINGLE IMAGE (img)
   if (req.file) {
-    req.body.img = `${req.uploadFolder}/${req.file.filename}`;
+    // Si es diskStorage tiene filename, si es memoryStorage usamos originalname 
+    // para que pase las validaciones de extensión en los schemas.
+    const name = req.file.filename || req.file.originalname;
+    req.body.img = req.uploadFolder ? `${req.uploadFolder}/${name}` : name;
   } else if (req.body.img === "") {
     delete req.body.img;
   }

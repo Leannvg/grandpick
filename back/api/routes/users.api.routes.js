@@ -32,7 +32,6 @@ route.route("/api/users/:id")
         autenticado,
         uploadContext("users"),
         multerControl.single("image"),
-        mapImageToBody,
         validateProfileData,
         UsersApiController.editOne
     )
