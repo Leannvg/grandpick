@@ -30,7 +30,7 @@ function Profile() {
   }, [usuario]);
 
   const imageUrl = currentImage && currentImage !== "profile_default.png" && currentImage !== "general/profile_default.png"
-    ? getImageUrl(currentImage, 150)
+    ? getImageUrl(currentImage, 500)
     : profileDefault;
 
   const fetchUsuario = async () => {
