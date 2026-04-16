@@ -170,7 +170,7 @@ function CircuitForm({
           <div className="mt-2">
             <p>Imagen actual:</p>
             <img
-              src={getImageUrl(currentImage, 300)}
+              src={getImageUrl(currentImage, 500)}
               alt="Circuito"
               style={{ width: "200px", borderRadius: "8px" }}
             />

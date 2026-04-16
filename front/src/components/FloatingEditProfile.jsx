@@ -27,8 +27,8 @@ function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const imageUrl = currentImage && currentImage !== "profile_default.png" && currentImage !== "general/profile_default.png"
-  ? getImageUrl(currentImage, 300)
-  : getImageUrl("general/profile_default.png", 300);
+  ? getImageUrl(currentImage, 500)
+  : getImageUrl("general/profile_default.png", 500);
 
 
 

@@ -108,7 +108,7 @@ function DriverForm({
           <div className="mt-3">
             <p>Imagen actual:</p>
             <img
-              src={getImageUrl(currentImage, 300)}
+              src={getImageUrl(currentImage, 500)}
               alt="Piloto"
               style={{ width: "120px", borderRadius: "8px" }}
             />
