@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import NotificationsBell from "./NotificationsBell.jsx";
-import logo from "../assets/icons/logo_grandpick.svg";
+import { getImageUrl, CLOUDINARY_DEFAULTS } from "../utils/cloudinary.js";
 
 function Nav({ onLogout, autenticado, esAdmin }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -188,7 +188,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
           <div className="container">
             {/* LOGO */}
             <Link className="navbar-brand me-auto nav-logo" to="/" onClick={closeMenu}>
-              <img src={logo} alt="GrandPick" height="32" />
+              <img src={getImageUrl(CLOUDINARY_DEFAULTS.LOGO)} alt="GrandPick" height="32" />
             </Link>
 
             <div className="d-flex align-items-center ms-auto d-lg-none nav-mobile">

@@ -1,6 +1,7 @@
 export const CLOUDINARY_DEFAULTS = {
     PROFILE: "profile_default.png",
-    EMPTY: "imagen_vacia.png"
+    EMPTY: "imagen_vacia.png",
+    LOGO: "logo_grandpick.svg"
 };
 
 export function getImageUrl(path, width) {

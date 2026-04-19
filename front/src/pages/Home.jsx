@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import UsersServices from "../services/users.services";
 import { getFlagEmoji } from "../utils/helpers";
 import API_URL from "../services/api";
-import logoImg from '../assets/icons/logo_grandpick.svg';
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../utils/cloudinary.js";
 import '../assets/styles/home.css';
 import '../assets/styles/home.css';
@@ -274,7 +273,7 @@ const Home = () => {
 
                                     <div className="podium__avatar">
                                         <img
-                                            src={getImageUrl(user.img_user, 300)}
+                                            src={getImageUrl(user.img_user || CLOUDINARY_DEFAULTS.PROFILE, 300)}
                                             alt={`${user.name} ${user.last_name}`}
                                         />
                                     </div>
@@ -381,7 +380,7 @@ const Home = () => {
                     </div>
 
                     <div className="split-section__image">
-                        <img src={getImageUrl("tutoriales.webp", 600)} alt="Tutoriales Grand Pick" />
+                        <img src={getImageUrl("tutoriales.webp", 1200)} alt="Tutoriales Grand Pick" />
                     </div>
                 </section>
             </main>
