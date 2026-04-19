@@ -5,7 +5,6 @@ import UsersServices from "../services/users.services.js";
 import FloatingEditProfile from "../components/FloatingEditProfile.jsx";
 import FloatingChangePassword from "../components/FloatingChangePassword.jsx";
 import { getFlagEmoji } from "../utils/helpers";
-import profileDefault from "../assets/images/profile_default.png";
 import { getImageUrl } from "../utils/cloudinary.js";
 import "../assets/styles/profile.css";
 
@@ -29,9 +28,7 @@ function Profile() {
     }
   }, [usuario]);
 
-  const imageUrl = currentImage && currentImage !== "profile_default.png" && currentImage !== "general/profile_default.png"
-    ? getImageUrl(currentImage, 500)
-    : profileDefault;
+  const imageUrl = getImageUrl(currentImage, 500);
 
   const fetchUsuario = async () => {
     showLoader();

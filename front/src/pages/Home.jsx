@@ -3,17 +3,9 @@ import { Link } from 'react-router-dom';
 import UsersServices from "../services/users.services";
 import { getFlagEmoji } from "../utils/helpers";
 import API_URL from "../services/api";
-import profileDefault from "../assets/images/profile_default.png";
-import { getImageUrl } from "../utils/cloudinary.js";
-
 import logoImg from '../assets/icons/logo_grandpick.svg';
-import tutorialesImg from '../assets/images/home/tutoriales.png';
-import heroDesktop from '../assets/images/home/hero-desktop.png';
-import heroTablet from '../assets/images/home/hero-tablet.png';
-import heroMobile from '../assets/images/home/hero-mobile.png';
-import pilotosImg from '../assets/images/home/pilotos.png';
-import circuitosImg from '../assets/images/home/circuitos.png';
-import escuderiasImg from '../assets/images/home/escuderias.png';
+import { getImageUrl, CLOUDINARY_DEFAULTS } from "../utils/cloudinary.js";
+import '../assets/styles/home.css';
 import '../assets/styles/home.css';
 
 const Home = () => {
@@ -66,10 +58,10 @@ const Home = () => {
                 <section className="home-hero">
                     {/* Imagen de fondo */}
                     <picture className="hero-bg">
-                        <source srcSet={heroDesktop} media="(min-width: 992px)" />
-                        <source srcSet={heroTablet} media="(min-width: 576px)" />
+                        <source srcSet={getImageUrl("general/home/hero-desktop.png")} media="(min-width: 992px)" />
+                        <source srcSet={getImageUrl("general/home/hero-tablet.png")} media="(min-width: 576px)" />
                         <img
-                            src={heroMobile}
+                            src={getImageUrl("general/home/hero-mobile.png")}
                             alt="Circuito de Fórmula 1"
                             loading="eager"
                         />
@@ -181,7 +173,7 @@ const Home = () => {
 
                 <section className="info-cards">
                     <Link to="/drivers" className="info-card">
-                        <img src={pilotosImg} alt="Pilotos de F1" />
+                        <img src={getImageUrl("general/home/pilotos.png", 800)} alt="Pilotos de F1" />
 
                         <div className="info-card__overlay"></div>
 
@@ -210,7 +202,7 @@ const Home = () => {
                     </Link>
 
                     <Link to="/circuits" className="info-card">
-                        <img src={circuitosImg} alt="Circuitos de F1" />
+                        <img src={getImageUrl("general/home/circuitos.png", 800)} alt="Circuitos de F1" />
                         <div className="info-card__overlay"></div>
 
                         <div className="info-card__content">
@@ -238,7 +230,7 @@ const Home = () => {
                     </Link>
 
                     <Link to="/teams" className="info-card">
-                        <img src={escuderiasImg} alt="Escuderías de F1" />
+                        <img src={getImageUrl("general/home/escuderias.png", 800)} alt="Escuderías de F1" />
                         <div className="info-card__overlay"></div>
 
                         <div className="info-card__content">
@@ -282,7 +274,7 @@ const Home = () => {
 
                                     <div className="podium__avatar">
                                         <img
-                                            src={user.img_user && user.img_user !== "profile_default.png" && user.img_user !== "general/profile_default.png" ? getImageUrl(user.img_user, 200) : profileDefault}
+                                            src={getImageUrl(user.img_user, 200)}
                                             alt={`${user.name} ${user.last_name}`}
                                         />
                                     </div>
@@ -389,7 +381,7 @@ const Home = () => {
                     </div>
 
                     <div className="split-section__image">
-                        <img src={tutorialesImg} alt="Tutoriales Grand Pick" />
+                        <img src={getImageUrl("general/home/tutoriales.png", 600)} alt="Tutoriales Grand Pick" />
                     </div>
                 </section>
             </main>
