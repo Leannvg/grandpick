@@ -173,7 +173,7 @@ const Home = () => {
 
                 <section className="info-cards">
                     <Link to="/drivers" className="info-card">
-                        <img src={getImageUrl("pilotos.png", 800)} alt="Pilotos de F1" />
+                        <img src={getImageUrl("pilotos.webp", 800)} alt="Pilotos de F1" />
 
                         <div className="info-card__overlay"></div>
 
