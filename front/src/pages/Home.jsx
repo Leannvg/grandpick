@@ -230,7 +230,7 @@ const Home = () => {
                     </Link>
 
                     <Link to="/teams" className="info-card">
-                        <img src={getImageUrl("escuderias.png", 800)} alt="Escuderías de F1" />
+                        <img src={getImageUrl("escuderias.webp", 800)} alt="Escuderías de F1" />
                         <div className="info-card__overlay"></div>
 
                         <div className="info-card__content">
@@ -381,7 +381,7 @@ const Home = () => {
                     </div>
 
                     <div className="split-section__image">
-                        <img src={getImageUrl("tutoriales.png", 600)} alt="Tutoriales Grand Pick" />
+                        <img src={getImageUrl("tutoriales.webp", 600)} alt="Tutoriales Grand Pick" />
                     </div>
                 </section>
             </main>
