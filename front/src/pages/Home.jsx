@@ -202,7 +202,7 @@ const Home = () => {
                     </Link>
 
                     <Link to="/circuits" className="info-card">
-                        <img src={getImageUrl("circuitos.png", 800)} alt="Circuitos de F1" />
+                        <img src={getImageUrl("circuitos.png", 700)} alt="Circuitos de F1" />
                         <div className="info-card__overlay"></div>
 
                         <div className="info-card__content">
@@ -274,7 +274,7 @@ const Home = () => {
 
                                     <div className="podium__avatar">
                                         <img
-                                            src={getImageUrl(user.img_user, 200)}
+                                            src={getImageUrl(user.img_user, 300)}
                                             alt={`${user.name} ${user.last_name}`}
                                         />
                                     </div>
