@@ -1,7 +1,8 @@
 export const CLOUDINARY_DEFAULTS = {
     PROFILE: "profile_default.png",
     EMPTY: "imagen_vacia.png",
-    LOGO: "logo_grandpick.svg"
+    LOGO: "logo_grandpick.svg",
+    VERSION: "v2" // Incrementa esto (v3, v4...) para limpiar el caché si cambias una imagen conservando el mismo nombre
 };
 
 export function getImageUrl(path, width, type = "empty") {
@@ -32,5 +33,5 @@ export function getImageUrl(path, width, type = "empty") {
 
     const widthTransform = width ? `,w_${width}` : "";
     
-    return `https://res.cloudinary.com/${cloudName}/image/upload/${defaultTransform},f_auto,q_auto${widthTransform}/${cleanPath}`;
+    return `https://res.cloudinary.com/${cloudName}/image/upload/${defaultTransform},f_auto,q_auto${widthTransform}/${CLOUDINARY_DEFAULTS.VERSION}/${cleanPath}`;
 }
