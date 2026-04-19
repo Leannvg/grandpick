@@ -1,6 +1,6 @@
 export const CLOUDINARY_DEFAULTS = {
-    PROFILE: "defaults/profile_default",
-    EMPTY: "defaults/imagen_vacia"
+    PROFILE: "profile_default.png",
+    EMPTY: "imagen_vacia.png"
 };
 
 export function getImageUrl(path, width) {
