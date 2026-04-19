@@ -11,18 +11,13 @@ export function getImageUrl(path, width) {
 
     if (path.startsWith("http")) return path;
 
-    // Normalizar si no viene con el prefijo cloud o si viene redundante
+    // Ya no forzamos el prefijo "grandpick/", usamos la ruta tal cual viene
+    // Si la imagen está en una carpeta, se debe pasar como "carpeta/imagen"
     let cleanPath = path;
 
     // Si viene el nombre viejo de la imagen de perfil, mapear al nuevo path de Cloudinary
     if (cleanPath === "profile_default.png" || cleanPath === "general/profile_default.png") {
         cleanPath = CLOUDINARY_DEFAULTS.PROFILE;
-    }
-
-    // fix para casos donde la DB tenía grabado "drivers/xxx.jpg" o solo "xxx.jpg" pero en component se ponía la carpeta. 
-    // Para simplificar, asumiremos que se le pasa el relative_path ej: drivers/leclerc.png o grandpick/drivers/...
-    if (!cleanPath.startsWith("grandpick/")) {
-        cleanPath = `grandpick/${cleanPath}`;
     }
 
     const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;

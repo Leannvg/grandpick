@@ -58,10 +58,10 @@ const Home = () => {
                 <section className="home-hero">
                     {/* Imagen de fondo */}
                     <picture className="hero-bg">
-                        <source srcSet={getImageUrl("general/home/hero-desktop.png")} media="(min-width: 992px)" />
-                        <source srcSet={getImageUrl("general/home/hero-tablet.png")} media="(min-width: 576px)" />
+                        <source srcSet={getImageUrl("general/home/hero-desktop")} media="(min-width: 992px)" />
+                        <source srcSet={getImageUrl("general/home/hero-tablet")} media="(min-width: 576px)" />
                         <img
-                            src={getImageUrl("general/home/hero-mobile.png")}
+                            src={getImageUrl("general/home/hero-mobile")}
                             alt="Circuito de Fórmula 1"
                             loading="eager"
                         />
@@ -173,7 +173,7 @@ const Home = () => {
 
                 <section className="info-cards">
                     <Link to="/drivers" className="info-card">
-                        <img src={getImageUrl("general/home/pilotos.png", 800)} alt="Pilotos de F1" />
+                        <img src={getImageUrl("general/home/pilotos", 800)} alt="Pilotos de F1" />
 
                         <div className="info-card__overlay"></div>
 
@@ -202,7 +202,7 @@ const Home = () => {
                     </Link>
 
                     <Link to="/circuits" className="info-card">
-                        <img src={getImageUrl("general/home/circuitos.png", 800)} alt="Circuitos de F1" />
+                        <img src={getImageUrl("general/home/circuitos", 800)} alt="Circuitos de F1" />
                         <div className="info-card__overlay"></div>
 
                         <div className="info-card__content">
@@ -230,7 +230,7 @@ const Home = () => {
                     </Link>
 
                     <Link to="/teams" className="info-card">
-                        <img src={getImageUrl("general/home/escuderias.png", 800)} alt="Escuderías de F1" />
+                        <img src={getImageUrl("general/home/escuderias", 800)} alt="Escuderías de F1" />
                         <div className="info-card__overlay"></div>
 
                         <div className="info-card__content">
@@ -381,7 +381,7 @@ const Home = () => {
                     </div>
 
                     <div className="split-section__image">
-                        <img src={getImageUrl("general/home/tutoriales.png", 600)} alt="Tutoriales Grand Pick" />
+                        <img src={getImageUrl("general/home/tutoriales", 600)} alt="Tutoriales Grand Pick" />
                     </div>
                 </section>
             </main>
