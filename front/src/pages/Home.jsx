@@ -269,7 +269,7 @@ const Home = () => {
                 </section>
 
                 <section className="ranking">
-                    <div className="ranking__container">
+                    <div className="container">
                         <h2 className="ranking__title">TOP 10 - PUNTUACIÓN GLOBAL</h2>
 
                         <div className="ranking__podium">

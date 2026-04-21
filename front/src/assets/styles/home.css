@@ -77,13 +77,13 @@
 .cta-predictions .container {
   flex-shrink: 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   z-index: 2;
 }
 
 .cta-content-wrapper {
   background-color: rgba(0, 0, 0, 0.4);
-  padding: 10px 40px;
+  padding: 10px 30px 10px 15px;
   backdrop-filter: blur(8px);
 }
 
