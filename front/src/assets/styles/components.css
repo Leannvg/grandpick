@@ -1630,32 +1630,8 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 
 @media (min-width: 992px) {
 
-    /* Floating behavior */
-    .gp-mega-menu.is-floating {
-        position: absolute;
-        width: 100vw;
-        left: 50%;
-        transform: translateY(10px) translateX(-50%);
-        z-index: 2040;
-        top: 100%;
-        border-top: 2px solid var(--color-accent);
-    }
 
-    .gp-mega-menu.is-floating::before {
-        content: "";
-        position: absolute;
-        top: -40px;
-        left: 0;
-        right: 0;
-        height: 40px;
-        background: transparent;
-    }
 
-    .gp-mega-menu.is-floating.show-active {
-        transform: translateY(0) translateX(-50%);
-    }
-
-    /* Push behavior (desktop) */
     .mega-menu-push-container .gp-mega-menu.is-push {
         grid-area: menu-stack;
         position: relative;
@@ -1665,7 +1641,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
         background: transparent !important;
         backdrop-filter: none;
     }
-
+    
     .mega-menu-push-container {
         width: 100%;
         background: linear-gradient(135deg, #7fb3d5 0%, #6fa3c5 100%);
@@ -1673,14 +1649,34 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
         grid-template-areas: "menu-stack";
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        transition: 
+            max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+            opacity 0.3s ease,
+            transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         opacity: 0;
+        position: relative;
+        z-index: 2040;
     }
 
     .mega-menu-push-container.is-active {
         max-height: 200px;
         opacity: 1;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Floating bar behavior when scrolled */
+    .mega-menu-push-container.is-floating-bar {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        /* Ensure it doesn't push content */
+    }
+
+    .mega-menu-push-container.is-floating-bar.is-active {
+        /* Optional: add a slight slide-down effect for the floating bar */
+        transform: translateY(0);
     }
 
     .dropdown-menu[data-bs-popper] {

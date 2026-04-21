@@ -262,7 +262,6 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                     INFO
                   </button>
                   {isMobile.current && renderMegaMenu('info', 'push')}
-                  {(!isMobile.current && !isAtTop) && renderMegaMenu('info', 'floating')}
                 </li>
 
                 {/* TUTORIALES */}
@@ -282,7 +281,6 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                     TUTORIALES
                   </button>
                   {isMobile.current && renderMegaMenu('tutorials', 'push')}
-                  {(!isMobile.current && !isAtTop) && renderMegaMenu('tutorials', 'floating')}
                 </li>
 
                 {/* 🔔 NOTIFICACIONES DESKTOP */}
@@ -335,10 +333,10 @@ function Nav({ onLogout, autenticado, esAdmin }) {
           </div>
         </nav>
         
-        {/* Absolute Push container for desktop Top-0 */}
-        {isAtTop && !isMobile.current && (
+        {/* Absolute/Push container for desktop */}
+        {!isMobile.current && (
           <div 
-            className={`mega-menu-push-container d-none d-lg-block ${activeMenu ? 'is-active' : ''}`}
+            className={`mega-menu-push-container d-none d-lg-block ${activeMenu ? 'is-active' : ''} ${!isAtTop ? 'is-floating-bar' : ''}`}
             onMouseEnter={() => {
                 if (activeMenu) setHoveredMenu(activeMenu);
             }}
