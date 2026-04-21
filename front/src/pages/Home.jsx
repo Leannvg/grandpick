@@ -71,7 +71,7 @@ const Home = () => {
 
                     {/* Contenido */}
                     <div className="home-hero__content">
-                        <div className="gp-container">
+                        <div className="container">
                             <h2 className="home-hero__eyebrow">UN JUEGO DE PREDICCIÓN PARA LA F1</h2>
                             <h3 className="home-hero__title">CONVERTÍ TU PASIÓN EN PUNTOS.</h3>
                         </div>
@@ -83,7 +83,7 @@ const Home = () => {
                         <span className="cta-arrows cta-arrows--start"></span>
 
                         {/* Texto centrado al contenedor */}
-                        <div className="gp-container">
+                        <div className="container">
                             <div className="cta-content-wrapper">
                                 <span className="cta-content">
                                     <span className="cta-timer">Predecí tus próximos resultados: <strong>7D:6HS:10MIN:32S</strong></span>
@@ -100,7 +100,7 @@ const Home = () => {
                 <section className="how-it-works">
                     {/* BLOQUE AZUL */}
                     <div className="how-it-works__text-wrapper">
-                        <div className="gp-container">
+                        <div className="container">
                             <div className="how-it-works__text">
                                 <h2>¿CÓMO FUNCIONA?</h2>
                                 <p>
@@ -128,7 +128,7 @@ const Home = () => {
 
                     {/* BLOQUE BLANCO */}
                     <div className="how-it-works__steps-wrapper">
-                        <div className="gp-container">
+                        <div className="container">
                             <div className="how-it-works__steps">
 
                                 <div className="step">
@@ -368,7 +368,7 @@ const Home = () => {
 
                 <section className="split-section split-section--light">
                     <div className="split-section__content">
-                        <div className="gp-container">
+                        <div className="container">
                             <div className="split-section__text-wrapper">
                                 <h2 className="split-section__title">¿SOS NUEVO?</h2>
                                 <p className="split-section__text">

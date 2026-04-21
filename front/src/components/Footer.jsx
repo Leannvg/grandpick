@@ -7,7 +7,7 @@ import "../assets/styles/footer.css";
 function Footer() {
     return (
         <footer className="site-footer">
-            <div className="footer-container">
+            <div className="container">
                 <div className="footer-grid">
                     <div className="footer-column">
                         <h5>INFO</h5>
