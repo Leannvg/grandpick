@@ -43,7 +43,7 @@ export async function sendResetPassword({ email, token }) {
                   <!-- Header / Logo Area -->
                   <tr>
                     <td align="center" style="padding: 40px 0 20px 0; background-image: linear-gradient(to bottom, #3975A2, #0A2434);">
-                      <img src="https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_200/grandpick/logo.png" alt="GrandPick Logo" style="display: block; width: 200px; max-width: 100%; border: 0;" />
+                      <img src="https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_200/logo_grandpick.png" alt="GrandPick Logo" style="display: block; width: 200px; max-width: 100%; border: 0;" />
                     </td>
                   </tr>
 
