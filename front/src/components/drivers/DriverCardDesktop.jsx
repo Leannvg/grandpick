@@ -35,7 +35,7 @@ const DriverCardDesktop = ({ driver }) => {
             </div>
             <div className="driver-photo-wrapper-horizontal">
                 <img
-                    src={getImageUrl(img, 500)}
+                    src={getImageUrl(img)}
                     alt={full_name}
                     className="driver-photo-horizontal"
                 />

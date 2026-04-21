@@ -14,7 +14,7 @@ const DriverCardMobile = ({ driver, teamLogo }) => {
         <article className="driver-card-vertical">
             <div className="driver-photo-wrapper-vertical">
                 <img
-                    src={getImageUrl(img, 500)}
+                    src={getImageUrl(img)}
                     alt={full_name}
                     className="driver-photo-vertical"
                     onError={(e) => { e.target.src = "https://via.placeholder.com/300x400?text=Driver"; }}
