@@ -82,9 +82,7 @@
 }
 
 .cta-content-wrapper {
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 10px 30px 10px 15px;
-  backdrop-filter: blur(8px);
+  padding: 10px 10px 10px 10px;
 }
 
 .cta-content {
