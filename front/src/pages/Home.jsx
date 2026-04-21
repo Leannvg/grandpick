@@ -79,19 +79,24 @@ const Home = () => {
 
                     <Link to="/predictions" className="cta-predictions">
 
-                        {/* Flechas iniciales (auto fill) */}
+                        {/* Flechas iniciales: del borde de pantalla al borde del contenedor */}
                         <span className="cta-arrows cta-arrows--start"></span>
 
-                        {/* Texto centrado al contenedor */}
                         <div className="container">
-                            <div className="cta-content-wrapper">
-                                <span className="cta-content">
-                                    <span className="cta-timer">Predecí tus próximos resultados: <strong>7D:6HS:10MIN:32S</strong></span>
-                                </span>
+                            <div className="d-flex align-items-center">
+                                {/* Texto alineado al borde del contenedor */}
+                                <div className="cta-content-wrapper">
+                                    <span className="cta-content">
+                                        <span className="cta-timer">Predecí tus próximos resultados: <strong>7D:6HS:10MIN:32S</strong></span>
+                                    </span>
+                                </div>
+
+                                {/* Flechas interiores: del fin del texto al borde del contenedor */}
+                                <span className="cta-arrows cta-arrows--end"></span>
                             </div>
                         </div>
 
-                        {/* Flechas finales (auto fill) */}
+                        {/* Flechas finales: del borde del contenedor al borde de la pantalla */}
                         <span className="cta-arrows cta-arrows--end"></span>
 
                     </Link>
