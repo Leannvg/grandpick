@@ -19,21 +19,25 @@
 
 /* Sidebar & Tabs */
 .info-page__sidebar {
-    flex: 0 0 280px;
+    width: 100%;
+}
+
+@media (min-width: 992px) {
+    .info-page__sidebar {
+        flex: 0 0 280px;
+        width: auto;
+    }
 }
 
 .info-page__tabs {
     display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    gap: 0.5rem;
+    flex-direction: column; /* Changed from row to column for mobile vertical stack */
+    gap: 0.75rem;
     padding-bottom: 1rem;
-    -webkit-overflow-scrolling: touch;
 }
 
 @media (min-width: 992px) {
     .info-page__tabs {
-        flex-direction: column;
         overflow-x: visible;
         padding-bottom: 0;
     }
@@ -44,19 +48,27 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #cbd5e1;
     padding: 1rem 1.5rem;
-    border-radius: 4px;
+    border-radius: 8px;
     font-weight: 600;
     text-transform: uppercase;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     text-align: left;
     cursor: pointer;
     transition: all 0.3s ease;
-    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-page__tab::after {
+    content: "→";
+    opacity: 0.5;
+    font-size: 1.2rem;
 }
 
 @media (min-width: 992px) {
-    .info-page__tab {
-        white-space: normal;
+    .info-page__tab::after {
+        display: none;
     }
 }
 
@@ -75,7 +87,13 @@
 /* Content Area */
 .info-page__content {
     flex: 1;
-    min-width: 0; /* Prevents flex items from overflowing */
+    min-width: 0;
+}
+
+@media (max-width: 991px) {
+    .info-page__content {
+        display: none; /* Hidden on mobile because it's in the drawer */
+    }
 }
 
 .info-page__content-card {
@@ -84,7 +102,12 @@
     padding: 2.5rem;
     border-radius: 8px;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 0.4s ease-out;
+}
+
+@media (min-width: 992px) {
+    .info-page__content-card {
+        animation: fadeIn 0.4s ease-out;
+    }
 }
 
 @keyframes fadeIn {
@@ -100,6 +123,61 @@
     text-transform: uppercase;
     border-bottom: 2px solid #f1f5f9;
     padding-bottom: 1rem;
+}
+
+/* Mobile Drawer Styles */
+.info-drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2040;
+}
+
+.info-drawer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    z-index: 2050;
+    border-radius: 24px 24px 0 0;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    color: #1e293b;
+}
+
+.info-drawer__header {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.info-drawer__handle {
+    width: 40px;
+    height: 4px;
+    background: #cbd5e1;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+}
+
+.info-drawer__title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 0;
+    color: #0f172a;
+}
+
+.info-drawer__content {
+    padding: 1.5rem;
+    overflow-y: auto;
+    flex: 1;
 }
 
 /* Rich Text Styles */
@@ -142,21 +220,7 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* Mobile adjustments */
-@media (max-width: 991px) {
-    .info-page__content-card {
-        padding: 1.5rem;
-    }
-    
-    .info-page__section-title {
-        font-size: 1.5rem;
-    }
-
-    .info-page__tabs {
-        /* Hide scrollbar but allow scrolling */
-        scrollbar-width: none; 
-    }
-    .info-page__tabs::-webkit-scrollbar {
-        display: none;
-    }
+/* Scroll Lock (ensure it exists in global or add here) */
+.body-scroll-lock {
+    overflow: hidden !important;
 }
