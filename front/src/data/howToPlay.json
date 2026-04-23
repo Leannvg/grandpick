@@ -1,0 +1,54 @@
+[
+  {
+    "title": "¿De qué trata?",
+    "body": "<p>Grand Pick te permite poner a prueba tus conocimientos de Fórmula 1 prediciendo los resultados de cada sesión oficial del fin de semana: Qualy, Sprint y Carrera. Antes de que empiece cada una de estas sesiones, vas a poder <strong>elegir</strong> qué pilotos ocuparán las primeras posiciones. Una vez que se conocen los resultados reales, se comparan con tus predicciones y se te asignan puntos según qué tan precisas fueron.<br/>Competí con otros usuarios, subí en el ranking y convertite en el mejor predictor de la temporada.</p>",
+    "images": []
+  },
+  {
+    "title": "Cómo jugar",
+    "body": "<p>Una vez habilitada la predicción, elegí los pilotos que creés que van a ocupar las posiciones principales según la sesión:</p><ul><li><strong>En Qualy</strong>: seleccioná el Top 3.</li><li><strong>En Sprint</strong>: seleccioná el Top 8.</li><li><strong>En Carrera</strong>: seleccioná el Top 10.</li></ul><p>Podés guardar tus predicciones y editarlas cuantas veces quieras mientras esté abierta la ventana de predicción. Una vez que la sesión comienza, se bloquean y ya no podés hacer cambios.<br/>Cuando la sesión termina y se publican los resultados oficiales, comparamos tus predicciones con la realidad y te asignamos puntos según el sistema que vas a ver más abajo.</p>",
+    "images": []
+  },
+  {
+    "title": "¿Cuándo se puede predecir?",
+    "body": "<p>La predicción está habilitada solo para el próximo Gran Premio más cercano a la fecha actual, una vez que se confirma su cronograma oficial. No es posible predecir carreras futuras con mucha antelación: el sistema habilita las predicciones evento por evento.<br/>Esto significa que:</p><ul><li>Podés predecir las sesiones (Qualy, Sprint o Carrera) del siguiente Gran Premio apenas se activa su cronograma.</li><li>Tenés tiempo para seguir noticias, analizar las prácticas libres o simplemente confiar en tu intuición.</li></ul><p>En la siguiente línea de tiempo vas a ver cómo se distribuyen las sesiones de un fin de semana típico y en qué momento exacto se habilita y se cierra la ventana de predicción para cada una.</p>",
+    "images": [
+        "timeline.png"
+    ]
+  },
+  {
+    "title": "Sistema de puntos",
+    "body": "<p>El sistema de puntuación varía según la sesión y la posición que acertás.<br/>Para que un acierto cuente, tenés que predecir exactamente qué piloto va a quedar en cada posición. Por ejemplo, si ponés a Verstappen primero y termina segundo, no sumás puntos por cercanía. <strong>Solo se contabilizan aciertos exactos</strong>.<br/>A continuación te mostramos una tabla donde vas a ver cuántos puntos se asignan por cada posición acertada.</p>",
+    "images": [
+        "sistem-points.png"
+    ]
+  },
+  {
+    "title": "Desempates",
+    "body": "<p>En caso de que dos o más usuarios terminen con la misma cantidad de puntos en el ranking, aplicamos criterios de desempate en el siguiente orden: <br/> 1- <strong>Aciertos totales</strong>: se suma la cantidad de predicciones exactas realizadas (independientemente de los puntos ganados).</p><ul>Ejemplo:<li>Usuario A y Usuario B tienen 320 puntos.</li><li>Jugaron la misma cantidad de sesiones.</li><li>Usuario A tiene 8 aciertos totales. Usuario B tiene 4. → Gana Usuario A.</li></ul><p>2- <strong>Promedio de puntos</strong> por predicción: se calcula el total de puntos dividido por la cantidad de sesiones en las que participaste. Este valor define al ganador si los aciertos también están empatados. </p><ul>Ejemplo:<li>Usuario A y Usuario B tienen 320 puntos.</li><li>Usuario A participó en 20 predicciones. Usuario B en 16.</li><li>Usuario B tiene un promedio de puntos más alto. → Gana Usuario B, aunque tenga menos aciertos.</li></ul>",
+    "images": [
+        "replay1.png",
+        "replay2.png"
+    ]
+  },
+  {
+    "title": "Preguntas frecuentes",
+    "body": "<p><strong>¿Qué pasa si no hago una predicción?</strong> No se te asignan puntos por esa sesión, pero podés seguir jugando en las siguientes.</p><p><strong>¿Puedo editar una predicción?</strong> Sí, siempre y cuando la sesión no haya comenzado todavía.</p><p><strong>¿Cuándo se actualizan los resultados?</strong> Una vez finalizada cada sesión y confirmados los resultados oficiales, el sistema procesa los puntos y actualiza el ranking.</p><p><strong>¿Puedo ver lo que predijeron otros usuarios?</strong> No. Las predicciones son privadas hasta que la sesión comienza, para evitar copiar estrategias.</p><p><strong>¿Se puede jugar a lo largo de toda la temporada?</strong> Sí. El ranking general acumula los puntos de todas las fechas del campeonato.</p>",
+    "images": []
+  },
+  {
+    "title": "Ranking",
+    "body": "<p>Todos los puntos que ganás por tus predicciones se suman a tu ranking personal. En la sección de Ranking global, vas a poder ver tu posición respecto a otros usuarios, junto con estadísticas como:</p><ul><li>Total de puntos</li><li>Número de sesiones jugadas</li><li>Promedio por predicción</li><li>Aciertos exactos</li></ul><p><em>El sistema puede resetearse al terminar la temporada.</em></p>",
+    "images": []
+  },
+  {
+    "title": "Consejos para predecir mejor",
+    "body": "<ul><li><strong>Revisá</strong> los tiempos de práctica libre para ver cómo se comportan los autos.</li><li><strong>Tené en cuenta</strong> penalizaciones o reemplazos de último momento.</li><li><strong>Analizá</strong> circuitos donde ciertos pilotos rinden mejor históricamente.</li><li>A veces conviene arriesgar… ¡pero no siempre!.</li></ul>",
+    "images": []
+  },
+  {
+    "title": "Situaciones especiales",
+    "body": "<p><strong>¿Qué pasa si una sesión se cancela?</strong> Si la sesión no se corre, se anulan las predicciones para esa fecha y no se asignan puntos.</p><p><strong>¿Qué pasa si hay penalizaciones post-carrera?</strong> Se tomarán en cuenta los resultados oficiales publicados por la FIA, incluso si hay cambios posteriores.</p><p><strong>¿Y si un piloto es reemplazado a último momento?</strong> Si el cambio ocurre antes del cierre de predicción, podés actualizar tu pronóstico. Si ya se cerró, se toma tal como está.</p>",
+    "images": []
+  }
+]

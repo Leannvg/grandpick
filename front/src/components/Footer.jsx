@@ -21,7 +21,7 @@ function Footer() {
                     <div className="footer-column">
                         <h5>TUTORIALES</h5>
                         <ul className="footer-nav">
-                            <li><Link to="#">Cómo jugar</Link></li>
+                            <li><Link to="/how-to-play">Cómo jugar</Link></li>
                             <li><Link to="#">Guía para principiantes</Link></li>
                         </ul>
                     </div>

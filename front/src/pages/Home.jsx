@@ -373,7 +373,7 @@ const Home = () => {
                                     Todo lo que necesitás saber para empezar a predecir como un experto.
                                 </p>
 
-                                <Link to="/como-funciona" className="cta cta--dark">
+                                <Link to="/how-to-play" className="cta cta--dark">
                                     Conocé más
                                     <span className="cta__icon">
                                         <svg xmlns="http://www.w3.org/2000/svg"

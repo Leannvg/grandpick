@@ -1,0 +1,143 @@
+.info-page {
+    background-color: #0f172a;
+    color: #f8fafc;
+    min-height: 100vh;
+    padding-bottom: 4rem;
+}
+
+.info-page__header {
+    text-align: center;
+    padding: 4rem 1rem 2rem;
+}
+
+.info-page__eyebrow {
+    color: #94a3b8;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+.info-page__title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+}
+
+.info-page__subtitle {
+    color: #cbd5e1;
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+/* Info Section Layout */
+.info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1.5rem;
+}
+
+@media (min-width: 992px) {
+    .info-section {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+.info-section__label-wrapper {
+    flex: 0 0 240px;
+}
+
+.info-section__label {
+    background-color: #4f7cac; /* Adjusted to match the image blue */
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+}
+
+.info-section__content {
+    flex: 1;
+    background-color: white;
+    color: #1e293b;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* Rich Text Styles */
+.info-section__body {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.info-section__body p {
+    margin-bottom: 1rem;
+}
+
+.info-section__body p:last-child {
+    margin-bottom: 0;
+}
+
+.info-section__body strong {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.info-section__body ul {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    list-style-type: disc;
+}
+
+.info-section__body li {
+    margin-bottom: 0.5rem;
+}
+
+.info-section__images {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.info-section__img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+/* Timeline specific styles (based on image) */
+.info-section__img[src*="timeline"] {
+    margin: 1rem 0;
+}
+
+/* Mobile adjustments */
+@media (max-width: 991px) {
+    .info-section__label-wrapper {
+        flex: none;
+        width: fit-content;
+    }
+    
+    .info-section__content {
+        padding: 1.5rem;
+    }
+    
+    .info-page__title {
+        font-size: 2.5rem;
+    }
+}

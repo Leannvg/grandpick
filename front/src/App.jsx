@@ -31,6 +31,10 @@ import RaceCreate from "./pages/admin/race/RaceCreate";
 import RaceEdit from "./pages/admin/race/RaceEdit";
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
+import InformationPage from "./pages/InformationPage";
+
+// Data
+import howToPlayData from "./data/howToPlay.json";
 
 import { connectSocket, disconnectSocket } from "./socket";
 import { useLoader } from "./context/LoaderContext";
@@ -96,11 +100,11 @@ function App() {
     }
 
     const socket = connectSocket(userId);
-    
+
     // Escuchar cierre de sesión forzado desde el servidor
     socket.on("auth:force-logout", () => {
-        console.log("⚠️ Sesión invalidada por el administrador.");
-        onLogout();
+      console.log("⚠️ Sesión invalidada por el administrador.");
+      onLogout();
     });
 
     return () => {
@@ -178,6 +182,14 @@ function App() {
 
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/how-to-play" element={
+                <InformationPage
+                  data={howToPlayData}
+                  eyebrow="Antes de largar, leé el reglamento"
+                  title="CÓMO JUGAR"
+                  subtitle="Prepárate para ser el campeón de las predicciones"
+                />
+              } />
               {/* <Route path="*" element={<NotFound />} /> */}
             </Routes>
           )}
