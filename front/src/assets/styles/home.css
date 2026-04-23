@@ -60,7 +60,7 @@
 /* CTA */
 .cta-predictions {
   position: absolute;
-  bottom: 24px;
+  bottom: 60px;
   left: 0;
   right: 0;
   display: flex;
@@ -76,9 +76,9 @@
   z-index: 2;
 }
 
-.cta-content-wrapper {
+/* .cta-content-wrapper {
   padding: 10px 10px 10px 10px;
-}
+} */
 
 .cta-content {
   display: flex;
@@ -769,7 +769,7 @@
   }
 
   .home-hero__eyebrow {
-    font-size: 30px;
+    font-size: 20px;
   }
 
   .how-it-works__step-icon {
