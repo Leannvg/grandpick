@@ -4,15 +4,22 @@ import InfoSection from '../components/InfoSection';
 import '../assets/styles/information.css';
 
 const InformationPage = ({ data, eyebrow, title, subtitle }) => {
-    const [activeTabIndex, setActiveTabIndex] = useState(0);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+    const [activeTabIndex, setActiveTabIndex] = useState(isMobile ? null : 0);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 992);
+        const handleResize = () => {
+            const mobile = window.innerWidth < 992;
+            setIsMobile(mobile);
+            // Si pasamos de mobile a desktop y no hay nada seleccionado, seleccionar el primero
+            if (!mobile && activeTabIndex === null) {
+                setActiveTabIndex(0);
+            }
+        };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [activeTabIndex]);
 
     useEffect(() => {
         // Scroll to top when page changes
@@ -30,7 +37,7 @@ const InformationPage = ({ data, eyebrow, title, subtitle }) => {
 
     if (!data || data.length === 0) return null;
 
-    const activeSection = data[activeTabIndex];
+    const activeSection = activeTabIndex !== null ? data[activeTabIndex] : null;
 
     const handleTabClick = (index) => {
         setActiveTabIndex(index);
@@ -63,18 +70,20 @@ const InformationPage = ({ data, eyebrow, title, subtitle }) => {
                 </aside>
 
                 <div className="info-page__content">
-                    <div className="info-page__content-card">
-                        <h2 className="info-page__section-title">{activeSection.title}</h2>
-                        <InfoSection 
-                            body={activeSection.body}
-                            images={activeSection.images}
-                        />
-                    </div>
+                    {activeSection && (
+                        <div className="info-page__content-card">
+                            <h2 className="info-page__section-title">{activeSection.title}</h2>
+                            <InfoSection 
+                                body={activeSection.body}
+                                images={activeSection.images}
+                            />
+                        </div>
+                    )}
                 </div>
             </main>
 
             <AnimatePresence>
-                {isDrawerOpen && isMobile && (
+                {isDrawerOpen && isMobile && activeSection && (
                     <>
                         <motion.div 
                             className="info-drawer-overlay"
