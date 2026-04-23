@@ -63,16 +63,12 @@
   bottom: 24px;
   left: 0;
   right: 0;
-
   display: flex;
   align-items: center;
-
   width: 100%;
   padding: 0;
-
   color: #fff;
   text-decoration: none;
-  background: rgba(0, 0, 0, 0.4);
 }
 
 .cta-predictions .container {
@@ -100,7 +96,7 @@
 .cta-arrows {
   height: 42px;
   background-repeat: repeat-x;
-  background-size: 25px 25px;
+  background-size: 20px 25px;
   background-position: center;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 25 50'%3E%3Cpath d='M0.68 4.09L19.39 24.66L19.7 25L19.39 25.34L0.68 45.91L3.72 49.26L23.61 27.39C23.9 27.08 24.12 26.71 24.28 26.3C24.43 25.89 24.51 25.45 24.51 25.01C24.51 24.56 24.43 24.12 24.28 23.71C24.12 23.3 23.9 22.93 23.61 22.62L3.72 0.74L0.68 4.09Z' fill='none' stroke='white'/%3E%3C/svg%3E");
   animation: arrows-move 1.5s linear infinite;
@@ -127,7 +123,7 @@
   }
 
   to {
-    background-position-x: 25px;
+    background-position-x: 20px;
   }
 }
 

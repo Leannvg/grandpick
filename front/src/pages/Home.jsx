@@ -116,10 +116,6 @@ const Home = () => {
                     </div>
 
                     <Link to="/predictions" className="cta-predictions">
-
-                        {/* Flechas iniciales: del borde de pantalla al borde del contenedor */}
-                        <span className="cta-arrows cta-arrows--start"></span>
-
                         <div className="container">
                             <div className="d-flex align-items-center">
                                 {/* Texto alineado al borde del contenedor */}
@@ -135,10 +131,6 @@ const Home = () => {
                                 <span className="cta-arrows cta-arrows--end"></span>
                             </div>
                         </div>
-
-                        {/* Flechas finales: del borde del contenedor al borde de la pantalla */}
-                        <span className="cta-arrows cta-arrows--end"></span>
-
                     </Link>
                 </section>
 
