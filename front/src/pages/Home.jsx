@@ -4,12 +4,14 @@ import UsersServices from "../services/users.services";
 import { getFlagEmoji } from "../utils/helpers";
 import API_URL from "../services/api";
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../utils/cloudinary.js";
-import '../assets/styles/home.css';
+import racesServices from "../services/races.services";
 import '../assets/styles/home.css';
 
 const Home = () => {
     const [stats, setStats] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [nextRace, setNextRace] = useState(null);
+    const [timeLeft, setTimeLeft] = useState("");
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -40,7 +42,43 @@ const Home = () => {
             }
         };
         fetchStats();
+
+        const fetchNextRace = async () => {
+            try {
+                const race = await racesServices.findCurrentOrNext();
+                setNextRace(race);
+            } catch (error) {
+                console.error("Error fetching next race for hero:", error);
+            }
+        };
+        fetchNextRace();
     }, []);
+
+    useEffect(() => {
+        if (!nextRace) return;
+
+        const tick = () => {
+            const now = Date.now();
+            const startMs = new Date(nextRace.date_race).getTime();
+            const diff = startMs - now;
+
+            if (diff <= 0) {
+                setTimeLeft("");
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            setTimeLeft(`${days}D:${hours}HS:${minutes}MIN:${seconds}S`);
+        };
+
+        tick();
+        const interval = setInterval(tick, 1000);
+        return () => clearInterval(interval);
+    }, [nextRace]);
 
     const top3 = stats.slice(0, 3);
     // Orden para el podio: [2do, 1er, 3er]
@@ -87,7 +125,9 @@ const Home = () => {
                                 {/* Texto alineado al borde del contenedor */}
                                 <div className="cta-content-wrapper">
                                     <span className="cta-content">
-                                        <span className="cta-timer">Predecí tus próximos resultados: <strong>7D:6HS:10MIN:32S</strong></span>
+                                        <span className="cta-timer">
+                                            Predecí tus próximos resultados{timeLeft ? `: ${timeLeft}` : ""}
+                                        </span>
                                     </span>
                                 </div>
 
