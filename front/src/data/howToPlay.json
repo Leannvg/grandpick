@@ -13,22 +13,22 @@
     "title": "¿Cuándo se puede predecir?",
     "body": "<p>La predicción está habilitada solo para el próximo Gran Premio más cercano a la fecha actual, una vez que se confirma su cronograma oficial. No es posible predecir carreras futuras con mucha antelación: el sistema habilita las predicciones evento por evento.<br/>Esto significa que:</p><ul><li>Podés predecir las sesiones (Qualy, Sprint o Carrera) del siguiente Gran Premio apenas se activa su cronograma.</li><li>Tenés tiempo para seguir noticias, analizar las prácticas libres o simplemente confiar en tu intuición.</li></ul><p>En la siguiente línea de tiempo vas a ver cómo se distribuyen las sesiones de un fin de semana típico y en qué momento exacto se habilita y se cierra la ventana de predicción para cada una.</p>",
     "images": [
-        "timeline.png"
+      "line_of_prediction.png"
     ]
   },
   {
     "title": "Sistema de puntos",
     "body": "<p>El sistema de puntuación varía según la sesión y la posición que acertás.<br/>Para que un acierto cuente, tenés que predecir exactamente qué piloto va a quedar en cada posición. Por ejemplo, si ponés a Verstappen primero y termina segundo, no sumás puntos por cercanía. <strong>Solo se contabilizan aciertos exactos</strong>.<br/>A continuación te mostramos una tabla donde vas a ver cuántos puntos se asignan por cada posición acertada.</p>",
     "images": [
-        "sistem-points.png"
+      "points_system.png"
     ]
   },
   {
     "title": "Desempates",
     "body": "<p>En caso de que dos o más usuarios terminen con la misma cantidad de puntos en el ranking, aplicamos criterios de desempate en el siguiente orden: <br/> 1- <strong>Aciertos totales</strong>: se suma la cantidad de predicciones exactas realizadas (independientemente de los puntos ganados).</p><ul>Ejemplo:<li>Usuario A y Usuario B tienen 320 puntos.</li><li>Jugaron la misma cantidad de sesiones.</li><li>Usuario A tiene 8 aciertos totales. Usuario B tiene 4. → Gana Usuario A.</li></ul><p>2- <strong>Promedio de puntos</strong> por predicción: se calcula el total de puntos dividido por la cantidad de sesiones en las que participaste. Este valor define al ganador si los aciertos también están empatados. </p><ul>Ejemplo:<li>Usuario A y Usuario B tienen 320 puntos.</li><li>Usuario A participó en 20 predicciones. Usuario B en 16.</li><li>Usuario B tiene un promedio de puntos más alto. → Gana Usuario B, aunque tenga menos aciertos.</li></ul>",
     "images": [
-        "replay1.png",
-        "replay2.png"
+      "decision_example_1.png",
+      "decision_example_2.png"
     ]
   },
   {
