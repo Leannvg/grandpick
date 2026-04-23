@@ -155,7 +155,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
       { to: "/drivers", label: "PILOTOS" },
       { to: "/circuits", label: "CIRCUITOS" }
     ] : [
-      { to: "#", label: "CÓMO JUGAR" },
+      { to: "/how-to-play", label: "CÓMO JUGAR" },
       { to: "#", label: "GUÍA DE F1" },
       { to: "#", label: "F1 TV" }
     ];
