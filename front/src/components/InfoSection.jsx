@@ -33,13 +33,13 @@ const InfoSection = ({ body, images, tabs }) => {
                                 onClick={() => setActiveInnerTab(index)}
                             >
                                 <span className="inner-tab-id">{tab.id}</span>
-                                <span className="inner-tab-title">{tab.title}</span>
                             </button>
                         ))}
                     </div>
                     
                     {tabs[activeInnerTab] && (
                         <div className="info-section__inner-content">
+                            <h3 className="info-section__inner-title">{tabs[activeInnerTab].title}</h3>
                             <div 
                                 className="info-section__body"
                                 dangerouslySetInnerHTML={{ __html: tabs[activeInnerTab].body }}

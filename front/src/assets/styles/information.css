@@ -301,3 +301,12 @@
     border: 1px solid #e2e8f0;
     animation: fadeIn 0.3s ease-out;
 }
+
+.info-section__inner-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+}
