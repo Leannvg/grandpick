@@ -35,6 +35,7 @@ import InformationPage from "./pages/InformationPage";
 
 // Data
 import howToPlayData from "./data/howToPlay.json";
+import f1TVData from "./data/f1TV.json";
 
 import { connectSocket, disconnectSocket } from "./socket";
 import { useLoader } from "./context/LoaderContext";
@@ -185,9 +186,17 @@ function App() {
               <Route path="/how-to-play" element={
                 <InformationPage
                   data={howToPlayData}
-                  eyebrow="Antes de largar, leé el reglamento"
+                  eyebrow="Tutoriales"
                   title="CÓMO JUGAR"
-                  subtitle="Prepárate para ser el campeón de las predicciones"
+                  subtitle="Aprende las reglas y estrategias para dominar GrandPick"
+                />
+              } />
+              <Route path="/f1-tv" element={
+                <InformationPage
+                  data={f1TVData}
+                  eyebrow="Tutoriales"
+                  title="F1 TV"
+                  subtitle="Entiende todos los gráficos y datos de la transmisión oficial"
                 />
               } />
               {/* <Route path="*" element={<NotFound />} /> */}

@@ -157,7 +157,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
     ] : [
       { to: "/how-to-play", label: "CÓMO JUGAR" },
       { to: "#", label: "GUÍA DE F1" },
-      { to: "#", label: "F1 TV" }
+      { to: "/f1-tv", label: "F1 TV" }
     ];
 
     return (

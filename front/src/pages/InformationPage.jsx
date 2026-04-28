@@ -76,6 +76,7 @@ const InformationPage = ({ data, eyebrow, title, subtitle }) => {
                             <InfoSection 
                                 body={activeSection.body}
                                 images={activeSection.images}
+                                tabs={activeSection.tabs}
                             />
                         </div>
                     )}
@@ -113,6 +114,7 @@ const InformationPage = ({ data, eyebrow, title, subtitle }) => {
                                 <InfoSection 
                                     body={activeSection.body}
                                     images={activeSection.images}
+                                    tabs={activeSection.tabs}
                                 />
                             </div>
                         </motion.div>

@@ -1,0 +1,128 @@
+[
+  {
+    "title": "Gráfico principal de transmisión",
+    "body": "<p>Durante cualquier transmisión en vivo de Fórmula 1, aparece una tabla principal que muestra la información clave de la carrera en tiempo real: posiciones, tiempos, neumáticos, banderas e indicadores especiales. Esta guía te ayuda a entender cada elemento que aparece en esa tabla para que puedas seguir mejor lo que está pasando en pista.</p>",
+    "images": [
+        "grafico-principal.png"
+    ],
+    "tabs": [
+      {
+        "id": "A",
+        "title": "Fase actual de la sesión",
+        "body": "<p>Muestra en qué parte del fin de semana o carrera estamos. Abreviaciones comunes:</p><ul><li><strong>Q1, Q2, Q3:</strong> Etapas de la clasificación</li><li><strong>P1, P2, P3:</strong> Prácticas 1, 2 y 3</li><li><strong>Lap:</strong> Se está corriendo la carrera, acompañado por el número de vuelta (ver B)</li></ul>",
+        "images": []
+      },
+      {
+        "id": "B",
+        "title": "Vuelta actual",
+        "body": "<p>Indica la cantidad de vueltas completadas y el total del Gran Premio.</p><ul><li><strong>Ejemplo:</strong> Lap 7/58 → Se está corriendo la vuelta 7 de 58.</li></ul>",
+        "images": []
+      },
+      {
+        "id": "C",
+        "title": "Estado de la pista / banderas",
+        "body": "<p>Colores e íconos que indican condición de pista o intervención en carrera:</p><ul><li><strong>Safety car:</strong> Neutralización por accidente o situación de riesgo. Todos deben ir detrás del coche de seguridad.</li><li><strong>Green flag - Track clear:</strong> Pista libre, se puede competir normalmente.</li><li><strong>Red flag - Session stopped:</strong> Carrera o sesión detenida, todos deben ir a boxes.</li><li><strong>Yellow flag - Track hazard:</strong> Peligro en pista, prohibido adelantar.</li></ul>",
+        "images": [
+            "safety_car.png",
+            "green_flag.png",
+            "red_flag.png",
+            "yellow_flag.png"
+        ]
+      },
+      {
+        "id": "D",
+        "title": "Posición en carrera",
+        "body": " <p>Número que indica la posición actual del piloto en la tabla de carrera.</p>",
+        "images": []
+      },
+      {
+        "id": "E",
+        "title": "Cambio de posiciones",
+        "body": "<p>Indicador visual a la izquierda de cada piloto:</p><ul><li><strong>Flecha verde:</strong> Ganó posiciones.</li><li><strong>Flecha roja:</strong> Perdió posiciones.</li></ul>",
+        "images": [
+            "green_arrow.png",
+            "red_arrow.png"
+        ]
+      },
+      {
+        "id": "F",
+        "title": "Abreviatura del piloto + escudería",
+        "body": "<p>Cada piloto tiene una abreviatura fija durante toda la temporada de 3 letras, al lado aparece el logo de la escuderia a la que pertenece. Ejemplos:</p><ul><li><strong>NOR:</strong> Norris</li><li><strong>VER:</strong> Verstappen</li><li><strong>RUS:</strong> Russell</li></ul>",
+        "images": []
+      },
+      {
+        "id": "G",
+        "title": "Diferencia de tiempo / estados",
+        "body": "<p>Campo que indica cuánto tiempo está el piloto respecto al líder o a otros. También puede mostrar estados especiales. Significados posibles: </p><ul><li><strong>1.595:</strong> El piloto está 1.595 segundos detrás del líder o del auto de adelante.</li><li><strong>Interval:</strong> diferencia con el coche que está justo delante.</li><li><strong>Leader:</strong> Se utiliza para el auto que está liderando la carrera.</li><li><strong>Out:</strong> El piloto abandonó la sesión o carrera.</li><li><strong>No time:</strong> El piloto no ha registrado un tiempo válido aún.</li><li><strong>Out lap:</strong> Está completando su vuelta de salida desde boxes, previa a una vuelta rápida.</li><li><strong>In pit</strong> El piloto está dentro de boxes.</li><li><strong>+1 Lap:</strong> El piloto está una vuelta atrás del líder.</li></ul>",
+        "images": []
+      },
+      {
+        "id": "H",
+        "title": "Letra del neumático actual",
+        "body": "<ul><li><strong>S:</strong> Soft/blandos -> color rojo</li><li><strong>M:</strong> Medium/medios -> color amarillo</li><li><strong>H:</strong> Hard/duros -> color blanco</li><li><strong>I:</strong> Intermediate/intermedios, lluvia moderada -> color verde</li><li><strong>W:</strong> Wet/ lluvia extrema -> color azul</li></ul>",
+        "images": [
+            "soft.png",
+            "medium.png",
+            "hard.png",
+            "intermediate.png",
+            "wet.png"
+        ]
+      },
+      {
+        "id": "I",
+        "title": "Íconos especiales",
+        "body": "<p>Gráficos que indican información adicional importante:</p><ul><li><strong>Vuelta rápida:</strong> El piloto tiene la vuelta más rápida de la carrera.</li><li><strong>En boxes:</strong> El piloto está realizando o realizó una parada en boxes.</li><li><strong>Penalización:</strong> El piloto tiene una sanción pendiente o cumplida (5s, 10s, drive through, etc.).</li><li><strong>Sesión terminada:</strong> El piloto ya finalizó la carrera o clasificación.</li></ul>",
+        "images": [
+            "penalty.png",
+            "session_ended.png",
+            "boxes.png",
+            "quick_lap.png"
+        ]
+      }
+    ]
+  },
+
+  {
+    "title": "Gráficos de Boxes",
+    "body": "<p><strong>Gráfico 'IN PIT':</strong> Este reloj comienza a contar desde que el auto entra en la calle de boxes hasta que vuelve a pista. Incluye:</p><ul><li>Número de piloto</li><li>Logo del equipo</li><li>Nombre del piloto</li><li>Texto 'IN PIT': indica que el piloto está actualmente en boxes.</li><li>Tiempo total desde que el auto entró hasta que salió. Este tiempo total es clave para analizar estrategias de carrera</li></ul><p><strong>Gráfico 'STOP TIME':</strong> Indica solamente el tiempo que el auto estuvo detenido en el box, mientras los mecánicos cambiaban neumáticos (y/o reparaban algo). Incluye:</p><ul><li>Número de piloto</li><li>Logo del equipo</li><li>Nombre del piloto</li><li>Texto 'STOP TIME': indica cuánto tiempo estuvo el auto totalmente detenido en el box (sin contar entrada o salida).</li><li>Valor exacto del tiempo de detención.</li></ul><p>Se usa para evaluar la eficiencia del equipo en el cambio de neumáticos. Una parada ideal es de 2 a 3 segundos.</p><p>Paradas más largas (5s, 10s o más) suelen indicar una penalización, problemas o reparaciones.</p>",
+    "images": [
+        "inPit.png",
+        "stop_time.png"
+    ]
+  },
+
+  {
+    "title": "Gráfico de tiempos por sectores",
+    "body": "<p>Este gráfico muestra cómo se está desarrollando una vuelta rápida de un piloto, dividida en los 3 sectores del circuitos. Los colores que se utilizan permiten identificar qué tan bien se desempeña el piloto en cada sector.</p><p>Además, en la esquina superior derecha se muestra:</p><ul><li>Número y nombre del piloto.</li><li>Compuesto de neumático actual.</li><li><strong>Delta (+0.190):</strong> cuánto más lento (o más rápido si es negativo) está siendo el piloto en comparación con la mejor vuelta del momento.</li><li><strong>Tiempo de referencia:</strong> 1:25.886 -> es la mejor vuelta hasta ahora.</li><li>Nombre del piloto que tiene la vuelta rápida (en este caso Norris).</li><li><strong>Barra de sectores:</strong></li><ul><li>S1 (verde): primer sector completado y fue personal o absolutamente rápido. </li><li>S2 (amarillo): sector actual, posiblemente más lento.</li><li>S3 (gris): aún no completado.</li></ul></ul><p>Este gráfico se usa durante vueltas rápidas o en clasificación para seguir los tiempos por sector.</p>",
+    "images": [
+        "sector.png",
+        "s1.png",
+        "s2.png",
+        "s3.png",
+        "fastest_lap2.png"
+    ]
+  },
+
+  {
+    "title": "Investigaciones o Sanciones",
+    "body": "<p>Durante la carrera, los comisarios (stewards) muestran mensajes cuando se investiga una posible infracción. Puede incluir:</p><ul><li>Investigaciones (under investigation)</li><li>Sanciones confirmadas (time penalty, drive-through, etc.)</li><li>Mensajes aclaratorios (no further action)</li></ul><p>¿Qué se muestra?</p><ul><li>Ícono de la FIA</li><li>Motivo y situación investigada</li><li>Número de auto o piloto involucrado</li><li> A veces: vueltas específicas, zonas, tipo de incidente</li></ul>",
+    "images": [
+        "investigation.png"
+    ]
+  },
+  {
+    "title": "Distancias actuales entre pilotos",
+    "body": "<p>Cuando dos autos están cerca en pista, la F1 muestra el tiempo exacto de diferencia entre ellos, este recuadro aparece brevemente en pantalla. Sirve para seguir peleas por posición, rebases o vueltas rápidas.</p><p>¿Qué se muestra?</p><ul><li>Nombre, escudería y número de cada piloto</li><li>El gap actual (tiempo entre ellos en segundos)</li></ul><p>En este ejemplo:</p><ul><li>Gasly (P10) y Ocon (P11) están separados por 0.313 segundos.</li></ul>",
+    "images": [
+        "distance.png"
+    ]
+  },
+  {
+    "title": "Vuelta rápida",
+    "body": "<p>Durante la carrera, se destaca al piloto que tiene la vuelta más rápida registrada hasta el momento. Este dato es importante porque puede cambiar constantemente según el ritmo y estrategia.</p><p>¿Qué se muestra?</p><ul><li>Texto 'FASTEST LAP'</li><li>Nombre del piloto que la marcó</li><li>Tiempo exacto de la vuelta rápida (minutos.segundos.milisegundos)</li></ul>",
+    "images": [
+        "fastest_lap2.png"
+    ]
+  }
+
+]
