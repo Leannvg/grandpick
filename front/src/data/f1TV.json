@@ -23,8 +23,8 @@
         "title": "Estado de la pista / banderas",
         "body": "<p>Colores e íconos que indican condición de pista o intervención en carrera:</p><ul><li><strong>Safety car:</strong> Neutralización por accidente o situación de riesgo. Todos deben ir detrás del coche de seguridad.</li><li><strong>Green flag - Track clear:</strong> Pista libre, se puede competir normalmente.</li><li><strong>Red flag - Session stopped:</strong> Carrera o sesión detenida, todos deben ir a boxes.</li><li><strong>Yellow flag - Track hazard:</strong> Peligro en pista, prohibido adelantar.</li></ul>",
         "images": [
-          "safety_car.png",
-          "green_flag.png",
+          "safety_car_isbegf.png",
+          "green_flag_imjzl8.png",
           "red_flag.png",
           "yellow_flag.png"
         ]
