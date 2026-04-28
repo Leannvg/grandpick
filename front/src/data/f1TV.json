@@ -68,7 +68,10 @@
         "title": "Íconos especiales",
         "body": "<p>Gráficos que indican información adicional importante:</p><ul><li><strong>Vuelta rápida:</strong> El piloto tiene la vuelta más rápida de la carrera.</li><li><strong>En boxes:</strong> El piloto está realizando o realizó una parada en boxes.</li><li><strong>Penalización:</strong> El piloto tiene una sanción pendiente o cumplida (5s, 10s, drive through, etc.).</li><li><strong>Sesión terminada:</strong> El piloto ya finalizó la carrera o clasificación.</li></ul>",
         "images": [
-          "special_icons_cep19l.png"
+          "penalty_wmb5gn.png",
+          "session_ended_obsawv.png",
+          "boxes_a4fcq5.png",
+          "quick_lap_o3fyrw.png"
         ]
       }
     ]
