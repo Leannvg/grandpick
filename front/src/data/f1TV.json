@@ -88,11 +88,9 @@
     "title": "Gráfico de tiempos por sectores",
     "body": "<p>Este gráfico muestra cómo se está desarrollando una vuelta rápida de un piloto, dividida en los 3 sectores del circuitos. Los colores que se utilizan permiten identificar qué tan bien se desempeña el piloto en cada sector.</p><p>Además, en la esquina superior derecha se muestra:</p><ul><li>Número y nombre del piloto.</li><li>Compuesto de neumático actual.</li><li><strong>Delta (+0.190):</strong> cuánto más lento (o más rápido si es negativo) está siendo el piloto en comparación con la mejor vuelta del momento.</li><li><strong>Tiempo de referencia:</strong> 1:25.886 -> es la mejor vuelta hasta ahora.</li><li>Nombre del piloto que tiene la vuelta rápida (en este caso Norris).</li><li><strong>Barra de sectores:</strong></li><ul><li>S1 (verde): primer sector completado y fue personal o absolutamente rápido. </li><li>S2 (amarillo): sector actual, posiblemente más lento.</li><li>S3 (gris): aún no completado.</li></ul></ul><p>Este gráfico se usa durante vueltas rápidas o en clasificación para seguir los tiempos por sector.</p>",
     "images": [
-      "sector.png",
-      "s1.png",
-      "s2.png",
-      "s3.png",
-      "fastest_lap2.png"
+      "sectors_1_ugaigk.png",
+      "sectors_2_sygy5e.png",
+      "sectors_3_gabrlb.png"
     ]
   },
   {
