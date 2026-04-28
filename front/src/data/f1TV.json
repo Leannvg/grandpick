@@ -40,8 +40,7 @@
         "title": "Cambio de posiciones",
         "body": "<p>Indicador visual a la izquierda de cada piloto:</p><ul><li><strong>Flecha verde:</strong> Ganó posiciones.</li><li><strong>Flecha roja:</strong> Perdió posiciones.</li></ul>",
         "images": [
-          "green_arrow.png",
-          "red_arrow.png"
+          "arrow_positions_ez6qeo.png"
         ]
       },
       {
@@ -61,11 +60,7 @@
         "title": "Letra del neumático actual",
         "body": "<ul><li><strong>S:</strong> Soft/blandos -> color rojo</li><li><strong>M:</strong> Medium/medios -> color amarillo</li><li><strong>H:</strong> Hard/duros -> color blanco</li><li><strong>I:</strong> Intermediate/intermedios, lluvia moderada -> color verde</li><li><strong>W:</strong> Wet/ lluvia extrema -> color azul</li></ul>",
         "images": [
-          "soft.png",
-          "medium.png",
-          "hard.png",
-          "intermediate.png",
-          "wet.png"
+          "tyres_n23hkc.png"
         ]
       },
       {
@@ -73,10 +68,7 @@
         "title": "Íconos especiales",
         "body": "<p>Gráficos que indican información adicional importante:</p><ul><li><strong>Vuelta rápida:</strong> El piloto tiene la vuelta más rápida de la carrera.</li><li><strong>En boxes:</strong> El piloto está realizando o realizó una parada en boxes.</li><li><strong>Penalización:</strong> El piloto tiene una sanción pendiente o cumplida (5s, 10s, drive through, etc.).</li><li><strong>Sesión terminada:</strong> El piloto ya finalizó la carrera o clasificación.</li></ul>",
         "images": [
-          "penalty.png",
-          "session_ended.png",
-          "boxes.png",
-          "quick_lap.png"
+          "special_icons_cep19l.png"
         ]
       }
     ]
