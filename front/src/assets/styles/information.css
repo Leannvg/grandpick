@@ -225,10 +225,10 @@
 .info-section__img {
     max-width: 100%;
     height: auto;
-    border-radius: 8px;
+    /*  border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     background-color: #284866;
-    padding: 14px;
+    padding: 14px; */
 }
 
 /* Scroll Lock (ensure it exists in global or add here) */
