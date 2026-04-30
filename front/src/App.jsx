@@ -32,6 +32,7 @@ import RaceEdit from "./pages/admin/race/RaceEdit";
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
 import InformationPage from "./pages/InformationPage";
+import Glossary from "./components/Glossary";
 
 // Data
 import howToPlayData from "./data/howToPlay.json";
@@ -151,6 +152,7 @@ function App() {
         <AuthListener />
         <Nav onLogout={onLogout} autenticado={estaAutenticado} esAdmin={esAdmin}></Nav>
         <NextRaceCTA />
+        {estaAutenticado && <Glossary />}
         <div className={`main-content ${isHome ? 'home-content' : ''} ${(loading || cargando) ? 'is-loading' : ''}`}>
           {(loading || cargando) && <LoaderCar message={cargando ? "Iniciando..." : "Cargando..."} />}
           {!cargando && (
