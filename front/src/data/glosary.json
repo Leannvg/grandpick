@@ -12,7 +12,11 @@
         "Alerón": "Elemento que genera carga aerodinámica, ubicado en la parte delantera y trasera.",
         "Setup": "Configuración del auto para cada circuito.",
         "Difusor": "Parte del fondo del auto que mejora el flujo de aire.",
-        "Halo": "Dispositivo de seguridad que protege la cabeza del piloto."
+        "Halo": "Dispositivo de seguridad que protege la cabeza del piloto.",
+        "Sidepods (Pontones)": "Estructuras a los lados del chasis que dirigen el aire y alojan los radiadores para enfriar el motor.",
+        "Fondo plano (Floor)": "Parte inferior del auto diseñada para generar la mayor parte de la carga aerodinámica (efecto suelo).",
+        "Brake-by-wire": "Sistema electrónico que controla los frenos traseros en conjunto con la recuperación de energía (MGU-K).",
+        "Cockpit": "Habitáculo donde va sentado el piloto."
     },
     "Neumáticos": {
         "Slicks": "Neumáticos lisos para pista seca (Soft, Medium, Hard).",
@@ -21,20 +25,29 @@
         "Compuesto": "Tipo de goma utilizada en el neumático (C1 a C5).",
         "Blistering": "Ampollas en la goma causadas por exceso de temperatura.",
         "Graining": "Acumulación de goma que reduce el agarre.",
-        "Stint": "Periodo de vueltas con un mismo juego de neumáticos."
+        "Stint": "Periodo de vueltas con un mismo juego de neumáticos.",
+        "Degradación": "Pérdida progresiva del rendimiento del neumático debido al desgaste.",
+        "Flat spot (Plano)": "Daño en el neumático causado por bloquear las ruedas en una frenada fuerte, creando una superficie plana que genera vibraciones.",
+        "Marbles (Virutas)": "Trozos pequeños de goma que se desprenden de los neumáticos y se acumulan fuera de la línea de carrera.",
+        "Out-lap": "Vuelta de salida de boxes.",
+        "In-lap": "Vuelta de entrada a boxes."
     },
     "Pilotos y Equipos": {
         "Piloto titular": "Conductor principal de un equipo.",
         "Piloto de reserva": "Piloto suplente disponible en caso de reemplazo.",
         "Rookie": "Piloto novato o debutante.",
-        "Constructor / Escudería": "Equipo que diseña el auto y compite en el campeonato."
+        "Constructor / Escudería": "Equipo que diseña el auto y compite en el campeonato.",
+        "Team Principal": "Jefe de equipo, máximo responsable de la escudería en la pista.",
+        "Ingeniero de Carrera": "Persona que se comunica constantemente por radio con el piloto durante la carrera para informarle sobre estrategias y datos."
     },
     "Campeonatos": {
         "Campeonato de pilotos": "Competencia anual que define al mejor piloto.",
         "Campeonato de constructores": "Competencia que premia al mejor equipo.",
         "Líder del campeonato": "Piloto con más puntos acumulados.",
         "Backmarker": "Piloto que suele competir en las últimas posiciones.",
-        "Campeón defensor": "Piloto que ganó el título la temporada anterior."
+        "Campeón defensor": "Piloto que ganó el título la temporada anterior.",
+        "Grand Slam (o Chelem)": "Logro máximo en un fin de semana: conseguir la Pole Position, ganar la carrera, hacer la vuelta rápida y liderar todas las vueltas.",
+        "Hat-trick": "Conseguir la Pole Position, ganar la carrera y hacer la vuelta rápida."
     },
     "Sesiones y Fines de Semana": {
         "FP1 / FP2 / FP3": "Sesiones de práctica libre 1, 2 y 3.",
@@ -60,7 +73,11 @@
         "Undercut": "Parar antes que el rival para ganar posición.",
         "Overcut": "Ganar tiempo antes de parar en boxes.",
         "Parada obligatoria": "Obligación de usar al menos dos compuestos distintos en carrera.",
-        "Window de parada": "Momento ideal para realizar la parada."
+        "Window de parada": "Momento ideal para realizar la parada.",
+        "Box Box": "Instrucción por radio que se le da al piloto para confirmarle que debe entrar a los pits en esa vuelta.",
+        "Lift and coast": "Técnica de soltar el acelerador antes de la zona de frenado para ahorrar combustible o enfriar los frenos.",
+        "Aire limpio (Free air)": "Correr sin ningún auto adelante, lo que permite aprovechar al máximo la aerodinámica y cuidar los neumáticos.",
+        "Delta time": "La diferencia de tiempo entre dos pilotos, o el tiempo objetivo que debe mantener un piloto bajo Safety Car."
     },
     "Carreras y Reglas": {
         "Safety Car": "Auto que neutraliza la carrera por incidentes.",
@@ -73,7 +90,10 @@
         "Track Limits": "Límites de pista. Excederlos puede generar sanciones.",
         "Drive Through": "Penalización que obliga a pasar por boxes sin detenerse.",
         "Stop and Go": "Penalización que requiere detenerse en boxes.",
-        "Penalty points": "Puntos negativos en la Super Licencia."
+        "Penalty points": "Puntos negativos en la Super Licencia.",
+        "Jump Start": "Adelantarse a la largada antes de que se apaguen las luces rojas (conlleva penalización).",
+        "Bandera negra con círculo naranja": "Conocida como 'Meatball flag', obliga al piloto a entrar a boxes inmediatamente porque su auto tiene daños peligrosos.",
+        "Grid penalty": "Sanción que retrasa posiciones en la parrilla de salida, normalmente por cambiar componentes del motor."
     },
     "Regulación y Organización": {
         "FIA": "Organismo que regula y fiscaliza la Fórmula 1.",
@@ -89,7 +109,12 @@
         "Dirty Air": "Aire sucio o turbulento que afecta al auto que va detrás.",
         "Slipstream": "Rebufo, ventaja de ir detrás de otro auto.",
         "Porpoising": "Rebote aerodinámico en rectas por efecto suelo.",
-        "Balance de frenos": "Distribución del frenado entre ejes delantero y trasero."
+        "Balance de frenos": "Distribución del frenado entre ejes delantero y trasero.",
+        "Apex (Vértice)": "El punto más interno de una curva por donde el piloto debe pasar para tomar la trazada ideal.",
+        "Sobreviraje (Oversteer)": "Cuando la parte trasera del auto pierde agarre y la cola tiende a 'derrapar' hacia afuera en una curva.",
+        "Subviraje (Understeer)": "Cuando la parte delantera pierde agarre y el auto no gira lo suficiente, tendiendo a irse recto.",
+        "Lock-up (Bloqueo)": "Cuando una o más ruedas dejan de girar durante una frenada fuerte, provocando humo y a menudo un 'flat spot'.",
+        "Bottoming out": "Cuando la parte inferior del chasis roza fuertemente contra el asfalto y saca chispas."
     },
     "Otros conceptos": {
         "Temporada": "Conjunto de carreras que forman el campeonato anual.",
