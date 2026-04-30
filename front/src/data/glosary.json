@@ -96,14 +96,5 @@
         "Pretemporada": "Pruebas realizadas antes del inicio oficial del campeonato.",
         "Triple Header": "Tres carreras en tres fines de semana consecutivos.",
         "Back-to-back": "Dos carreras en fines de semana consecutivos."
-    },
-    "Datos y Términos Avanzados": {
-        "Telemetría": "Sistema que recoge datos del auto en tiempo real.",
-        "Aerodinámica": "Estudio del flujo de aire sobre el auto.",
-        "Carga aerodinámica (Downforce)": "Fuerza que presiona el auto contra el suelo.",
-        "Dirty Air": "Aire sucio o turbulento que afecta al auto que va detrás.",
-        "Slipstream": "Rebufo, ventaja de ir detrás de otro auto.",
-        "Porpoising": "Rebote aerodinámico en rectas por efecto suelo.",
-        "Balance de frenos": "Distribución del frenado entre ejes delantero y trasero."
     }
 }
