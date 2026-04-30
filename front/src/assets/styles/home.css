@@ -944,12 +944,11 @@
    INSTALL BANNER
 ========================= */
 .install-banner {
-  background: linear-gradient(135deg, #0b2a3d 0%, #154360 100%);
+  background: linear-gradient(135deg, #e10600, #154360);
   padding: 30px 0;
   color: #fff;
   position: relative;
   overflow: hidden;
-  border-bottom: 2px solid #e10600; /* Subtle red bottom border */
 }
 
 .install-banner__content {
@@ -1007,18 +1006,18 @@
   .install-banner {
     padding: 40px 0;
   }
-  
+
   .install-banner__content {
     flex-direction: row;
     justify-content: space-between;
     text-align: left;
   }
-  
+
   .install-banner__title {
     font-size: 26px;
   }
-  
+
   .install-banner__desc {
     font-size: 16px;
   }
-}
+}
