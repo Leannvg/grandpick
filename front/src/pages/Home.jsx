@@ -106,7 +106,7 @@ const Home = () => {
                                     predicciones y subí en el ranking.
                                 </p>
 
-                                <Link to="/calendar" className="cta how-it-works__link">
+                                <Link to="/how-to-play" className="cta how-it-works__link">
                                     Conocé más
                                     <span className="cta__icon">
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -373,7 +373,7 @@ const Home = () => {
                                     Todo lo que necesitás saber para empezar a predecir como un experto.
                                 </p>
 
-                                <Link to="/how-to-play" className="cta cta--dark">
+                                <Link to="/f1-guide" className="cta cta--dark">
                                     Conocé más
                                     <span className="cta__icon">
                                         <svg xmlns="http://www.w3.org/2000/svg"

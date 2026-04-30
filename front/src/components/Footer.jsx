@@ -22,16 +22,24 @@ function Footer() {
                         <h5>TUTORIALES</h5>
                         <ul className="footer-nav">
                             <li><Link to="/how-to-play">Cómo jugar</Link></li>
-                            <li><Link to="#">Guía para principiantes</Link></li>
+                            <li><Link to="/f1-guide">Guía de F1</Link></li>
+                            <li><Link to="/f1-tv">F1 TV</Link></li>
                         </ul>
                     </div>
 
                     <div className="footer-column">
                         <h5>PREDICCIONES</h5>
+                        <ul className="footer-nav">
+                            <li><Link to="/predictions">Jugar</Link></li>
+                            <li><Link to="/ranking">Ranking Global</Link></li>
+                        </ul>
                     </div>
 
                     <div className="footer-column">
                         <h5>CALENDARIO</h5>
+                        <ul className="footer-nav">
+                            <li><Link to="/calendar">Ver fechas</Link></li>
+                        </ul>
                     </div>
 
                     <div className="footer-column footer-logo-col">
