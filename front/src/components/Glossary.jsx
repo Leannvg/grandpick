@@ -8,6 +8,7 @@ const Glossary = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [terms, setTerms] = useState([]);
   const popupRef = useRef(null);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
 
   useEffect(() => {
     const flattened = [];
@@ -27,10 +28,15 @@ const Glossary = () => {
     };
     if (isOpen) {
         document.addEventListener('mousedown', handleClickOutside);
+        document.body.style.overflow = 'hidden';
     } else {
+        document.body.style.overflow = '';
         document.removeEventListener('mousedown', handleClickOutside);
     }
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        document.body.style.overflow = '';
+    };
   }, [isOpen]);
 
   const filteredTerms = terms.filter(item => 
@@ -60,11 +66,12 @@ const Glossary = () => {
               placeholder="Buscar en el glosario..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              autoFocus
+              autoFocus={!isMobile}
             />
           </div>
         </div>
       )}
+      {isOpen && <div className="glossary-overlay"></div>}
       <button className={`glossary-toggle-btn ${isOpen ? 'active' : ''}`} onClick={() => setIsOpen(!isOpen)}>
         <img src={glosaryIcon} alt="Glosario" />
       </button>
