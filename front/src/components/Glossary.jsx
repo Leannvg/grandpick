@@ -8,7 +8,14 @@ const Glossary = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [terms, setTerms] = useState([]);
   const popupRef = useRef(null);
+  const inputRef = useRef(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+
+  useEffect(() => {
+    if (isOpen && !isMobile && inputRef.current) {
+        inputRef.current.focus();
+    }
+  }, [isOpen, isMobile]);
 
   useEffect(() => {
     const flattened = [];
@@ -46,32 +53,30 @@ const Glossary = () => {
 
   return (
     <div className="glossary-container">
-      {isOpen && (
-        <div className="glossary-popup" ref={popupRef}>
-          <div className="glossary-list">
-            {filteredTerms.length > 0 ? (
-                filteredTerms.map((item, index) => (
-                <div className="glossary-item" key={index}>
-                    <div className="glossary-term">{item.term}</div>
-                    <div className="glossary-def">{item.definition}</div>
-                </div>
-                ))
-            ) : (
-                <div className="glossary-no-results">No se encontraron resultados</div>
-            )}
-          </div>
-          <div className="glossary-search">
-            <input 
-              type="text" 
-              placeholder="Buscar en el glosario..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              autoFocus={!isMobile}
-            />
-          </div>
+      <div className={`glossary-popup ${isOpen ? 'show' : ''}`} ref={popupRef}>
+        <div className="glossary-list">
+          {filteredTerms.length > 0 ? (
+              filteredTerms.map((item, index) => (
+              <div className="glossary-item" key={index}>
+                  <div className="glossary-term">{item.term}</div>
+                  <div className="glossary-def">{item.definition}</div>
+              </div>
+              ))
+          ) : (
+              <div className="glossary-no-results">No se encontraron resultados</div>
+          )}
         </div>
-      )}
-      {isOpen && <div className="glossary-overlay"></div>}
+        <div className="glossary-search">
+          <input 
+            type="text" 
+            placeholder="Buscar en el glosario..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            ref={inputRef}
+          />
+        </div>
+      </div>
+      <div className={`glossary-overlay ${isOpen ? 'show' : ''}`}></div>
       <button className={`glossary-toggle-btn ${isOpen ? 'active' : ''}`} onClick={() => setIsOpen(!isOpen)}>
         <img src={glosaryIcon} alt="Glosario" />
       </button>

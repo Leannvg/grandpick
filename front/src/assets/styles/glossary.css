@@ -46,12 +46,14 @@
     height: 100vh;
     background: rgba(0, 0, 0, 0.6);
     z-index: -1;
-    animation: fadeInOverlay 0.2s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-@keyframes fadeInOverlay {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.glossary-overlay.show {
+    opacity: 1;
+    visibility: visible;
 }
 
 .glossary-popup {
@@ -66,19 +68,16 @@
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
     display: flex;
     flex-direction: column;
-    animation: fadeInGlossary 0.2s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
 }
 
-@keyframes fadeInGlossary {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.glossary-popup.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .glossary-list {
@@ -165,9 +164,13 @@
         position: fixed;
         bottom: 90px;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, 10px);
         width: 90vw;
         max-width: 380px;
         padding: 15px;
+    }
+
+    .glossary-popup.show {
+        transform: translate(-50%, 0);
     }
 }
