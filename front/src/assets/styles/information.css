@@ -247,6 +247,23 @@
     margin-bottom: 0.75rem;
 }
 
+.info-section__body table {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-collapse: collapse;
+}
+
+.info-section__body table th,
+.info-section__body table td {
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+}
+
+.info-section__body table th:last-child,
+.info-section__body table td:last-child {
+    text-align: center;
+}
+
 .info-section__images {
     margin-top: 2.5rem;
     display: flex;

@@ -1,0 +1,108 @@
+{
+    "Elementos del Auto": {
+        "Monoplaza": "Auto de F1 diseñado para un solo piloto.",
+        "Chasis": "Estructura principal del auto.",
+        "Power Unit (PU)": "Unidad de potencia híbrida compuesta por motor térmico y sistemas eléctricos.",
+        "MGU-K": "Sistema que recupera energía cinética del frenado.",
+        "MGU-H": "Sistema que recupera energía del calor del turbo.",
+        "ERS": "Sistema de recuperación y despliegue de energía eléctrica.",
+        "ERS Deployment": "Uso de la energía eléctrica almacenada por el ERS.",
+        "DRS": "Sistema que reduce la resistencia aerodinámica para facilitar adelantamientos.",
+        "Alerón": "Elemento que genera carga aerodinámica, ubicado en la parte delantera y trasera.",
+        "Setup": "Configuración del auto para cada circuito.",
+        "Difusor": "Parte del fondo del auto que mejora el flujo de aire.",
+        "Halo": "Dispositivo de seguridad que protege la cabeza del piloto."
+    },
+    "Neumáticos": {
+        "Slicks": "Neumáticos lisos para pista seca (Soft, Medium, Hard).",
+        "Intermedios": "Neumáticos para lluvia ligera o pista húmeda.",
+        "Lluvia (Wet)": "Neumáticos diseñados para lluvia intensa.",
+        "Compuesto": "Tipo de goma utilizada en el neumático (C1 a C5).",
+        "Blistering": "Ampollas en la goma causadas por exceso de temperatura.",
+        "Graining": "Acumulación de goma que reduce el agarre.",
+        "Stint": "Periodo de vueltas con un mismo juego de neumáticos."
+    },
+    "Pilotos y Equipos": {
+        "Piloto titular": "Conductor principal de un equipo.",
+        "Piloto de reserva": "Piloto suplente disponible en caso de reemplazo.",
+        "Rookie": "Piloto novato o debutante.",
+        "Constructor / Escudería": "Equipo que diseña el auto y compite en el campeonato."
+    },
+    "Campeonatos": {
+        "Campeonato de pilotos": "Competencia anual que define al mejor piloto.",
+        "Campeonato de constructores": "Competencia que premia al mejor equipo.",
+        "Líder del campeonato": "Piloto con más puntos acumulados.",
+        "Backmarker": "Piloto que suele competir en las últimas posiciones.",
+        "Campeón defensor": "Piloto que ganó el título la temporada anterior."
+    },
+    "Sesiones y Fines de Semana": {
+        "FP1 / FP2 / FP3": "Sesiones de práctica libre 1, 2 y 3.",
+        "Clasificación (Qualy)": "Sesión que define la parrilla de salida.",
+        "Sprint Shootout": "Clasificación especial para la carrera Sprint.",
+        "Sprint": "Carrera corta previa al GP con puntos adicionales.",
+        "Gran Premio (GP)": "Carrera principal del fin de semana.",
+        "Warm-up Lap / Formation Lap": "Vuelta previa antes de la largada.",
+        "Parrilla de salida (Grid)": "Formación de autos antes de la largada."
+    },
+    "Sistema de Puntuación": {
+        "Top 10": "Los 10 primeros en carrera que suman puntos.",
+        "Vuelta rápida": "Mejor tiempo de vuelta en carrera (otorga 1 punto si se está en el Top 10).",
+        "Puntos Sprint": "Puntos otorgados en carreras Sprint (de 8 a 1).",
+        "DNF": "Did Not Finish: piloto que no termina la carrera.",
+        "DNS": "Did Not Start: piloto que no larga.",
+        "DSQ": "Disqualified: descalificación por infringir el reglamento."
+    },
+    "Estrategia y Boxes": {
+        "Pit Stop": "Parada en boxes para cambiar neumáticos o reparar el auto.",
+        "Pit Lane": "Calle de boxes donde los autos hacen su parada.",
+        "Pit Wall": "Zona desde donde el equipo dirige la estrategia.",
+        "Undercut": "Parar antes que el rival para ganar posición.",
+        "Overcut": "Ganar tiempo antes de parar en boxes.",
+        "Parada obligatoria": "Obligación de usar al menos dos compuestos distintos en carrera.",
+        "Window de parada": "Momento ideal para realizar la parada."
+    },
+    "Carreras y Reglas": {
+        "Safety Car": "Auto que neutraliza la carrera por incidentes.",
+        "Virtual Safety Car": "Neutralización virtual donde se reduce la velocidad.",
+        "Bandera amarilla": "Precaución, está prohibido adelantar.",
+        "Bandera roja": "Carrera detenida por condiciones extremas.",
+        "Bandera verderde": "Pista libre.",
+        "Bana azul": "Indica a los rezagados que deben dejar pasar a los líderes.",
+        "Bandera blanca y negra": "Advertencia por conducta antideportiva.",
+        "Track Limits": "Límites de pista. Excederlos puede generar sanciones.",
+        "Drive Through": "Penalización que obliga a pasar por boxes sin detenerse.",
+        "Stop and Go": "Penalización que requiere detenerse en boxes.",
+        "Penalty points": "Puntos negativos en la Super Licencia."
+    },
+    "Regulación y Organización": {
+        "FIA": "Organismo que regula y fiscaliza la Fórmula 1.",
+        "Stewards": "Comisarios encargados de aplicar sanciones.",
+        "Super Licencia": "Licencia especial necesaria para correr en F1.",
+        "Parc Fermé": "Regulación que impide modificar el auto tras la clasificación.",
+        "Budget Cap": "Límite de presupuesto anual para los equipos."
+    },
+    "Datos y Términos Avanzados": {
+        "Telemetría": "Sistema que recoge datos del auto en tiempo real.",
+        "Aerodinámica": "Estudio del flujo de aire sobre el auto.",
+        "Carga aerodinámica (Downforce)": "Fuerza que presiona el auto contra el suelo.",
+        "Dirty Air": "Aire sucio o turbulento que afecta al auto que va detrás.",
+        "Slipstream": "Rebufo, ventaja de ir detrás de otro auto.",
+        "Porpoising": "Rebote aerodinámico en rectas por efecto suelo.",
+        "Balance de frenos": "Distribución del frenado entre ejes delantero y trasero."
+    },
+    "Otros conceptos": {
+        "Temporada": "Conjunto de carreras que forman el campeonato anual.",
+        "Pretemporada": "Pruebas realizadas antes del inicio oficial del campeonato.",
+        "Triple Header": "Tres carreras en tres fines de semana consecutivos.",
+        "Back-to-back": "Dos carreras en fines de semana consecutivos."
+    },
+    "Datos y Términos Avanzados": {
+        "Telemetría": "Sistema que recoge datos del auto en tiempo real.",
+        "Aerodinámica": "Estudio del flujo de aire sobre el auto.",
+        "Carga aerodinámica (Downforce)": "Fuerza que presiona el auto contra el suelo.",
+        "Dirty Air": "Aire sucio o turbulento que afecta al auto que va detrás.",
+        "Slipstream": "Rebufo, ventaja de ir detrás de otro auto.",
+        "Porpoising": "Rebote aerodinámico en rectas por efecto suelo.",
+        "Balance de frenos": "Distribución del frenado entre ejes delantero y trasero."
+    }
+}
