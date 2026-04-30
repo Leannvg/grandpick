@@ -59,6 +59,22 @@ const InformationPage = ({ data, eyebrow, title, subtitle, modes }) => {
 
             <main className="info-page__container">
                 <aside className="info-page__sidebar">
+                    {modes && isMobile && (
+                        <div className="info-page__modes-toggle info-page__modes-toggle--mobile">
+                            {modes.map((mode, idx) => (
+                                <button 
+                                    key={mode.id}
+                                    className={`info-page__mode-btn ${activeModeIndex === idx ? 'is-active' : ''}`}
+                                    onClick={() => {
+                                        setActiveModeIndex(idx);
+                                        setActiveTabIndex(null);
+                                    }}
+                                >
+                                    {mode.label}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                     <div className="info-page__tabs">
                         {currentData.map((section, index) => (
                             <button
@@ -73,8 +89,8 @@ const InformationPage = ({ data, eyebrow, title, subtitle, modes }) => {
                 </aside>
 
                 <div className="info-page__content">
-                    {modes && (
-                        <div className="info-page__modes-toggle">
+                    {modes && !isMobile && (
+                        <div className="info-page__modes-toggle info-page__modes-toggle--desktop">
                             {modes.map((mode, idx) => (
                                 <button 
                                     key={mode.id}

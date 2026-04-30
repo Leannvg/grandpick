@@ -105,6 +105,11 @@
     margin-bottom: 1.5rem;
 }
 
+.info-page__modes-toggle--mobile {
+    justify-content: center;
+    width: 100%;
+}
+
 .info-page__mode-btn {
     background-color: #0d1b2a;
     color: white;
