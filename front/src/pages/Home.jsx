@@ -4,6 +4,7 @@ import UsersServices from "../services/users.services";
 import { getFlagEmoji } from "../utils/helpers";
 import API_URL from "../services/api";
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../utils/cloudinary.js";
+import InstallAppBanner from '../components/InstallAppBanner';
 import '../assets/styles/home.css';
 
 const Home = () => {
@@ -94,6 +95,8 @@ const Home = () => {
                         </div>
                     </Link>
                 </section>
+
+                <InstallAppBanner />
 
                 <section className="how-it-works">
                     {/* BLOQUE AZUL */}
