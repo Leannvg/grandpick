@@ -36,6 +36,8 @@ import InformationPage from "./pages/InformationPage";
 // Data
 import howToPlayData from "./data/howToPlay.json";
 import f1TVData from "./data/f1TV.json";
+import beginnersData from "./data/beginners.json";
+import advancedData from "./data/advanced.json";
 
 import { connectSocket, disconnectSocket } from "./socket";
 import { useLoader } from "./context/LoaderContext";
@@ -197,6 +199,17 @@ function App() {
                   eyebrow="Tutoriales"
                   title="F1 TV"
                   subtitle="Entiende todos los gráficos y datos de la transmisión oficial"
+                />
+              } />
+              <Route path="/f1-guide" element={
+                <InformationPage
+                  modes={[
+                    { id: 'beginner', label: 'Principiante', data: beginnersData },
+                    { id: 'advanced', label: 'Avanzado', data: advancedData }
+                  ]}
+                  eyebrow="Siempre hay algo nuevo por aprender"
+                  title="GUÍA DE F1"
+                  subtitle="¿Arrancás desde boxes o ya venís con experiencia en pista? Acá encontrás todo lo que necesitás"
                 />
               } />
               {/* <Route path="*" element={<NotFound />} /> */}

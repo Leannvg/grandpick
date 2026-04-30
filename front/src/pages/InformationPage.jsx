@@ -3,8 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import InfoSection from '../components/InfoSection';
 import '../assets/styles/information.css';
 
-const InformationPage = ({ data, eyebrow, title, subtitle }) => {
+const InformationPage = ({ data, eyebrow, title, subtitle, modes }) => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+    const [activeModeIndex, setActiveModeIndex] = useState(0);
     const [activeTabIndex, setActiveTabIndex] = useState(isMobile ? null : 0);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -35,9 +36,11 @@ const InformationPage = ({ data, eyebrow, title, subtitle }) => {
         return () => document.body.classList.remove("body-scroll-lock");
     }, [isDrawerOpen, isMobile]);
 
-    if (!data || data.length === 0) return null;
+    const currentData = modes ? modes[activeModeIndex].data : data;
 
-    const activeSection = activeTabIndex !== null ? data[activeTabIndex] : null;
+    if (!currentData || currentData.length === 0) return null;
+
+    const activeSection = activeTabIndex !== null ? currentData[activeTabIndex] : null;
 
     const handleTabClick = (index) => {
         setActiveTabIndex(index);
@@ -57,7 +60,7 @@ const InformationPage = ({ data, eyebrow, title, subtitle }) => {
             <main className="info-page__container">
                 <aside className="info-page__sidebar">
                     <div className="info-page__tabs">
-                        {data.map((section, index) => (
+                        {currentData.map((section, index) => (
                             <button
                                 key={index}
                                 className={`info-page__tab ${activeTabIndex === index ? 'is-active' : ''}`}
@@ -70,6 +73,22 @@ const InformationPage = ({ data, eyebrow, title, subtitle }) => {
                 </aside>
 
                 <div className="info-page__content">
+                    {modes && (
+                        <div className="info-page__modes-toggle">
+                            {modes.map((mode, idx) => (
+                                <button 
+                                    key={mode.id}
+                                    className={`info-page__mode-btn ${activeModeIndex === idx ? 'is-active' : ''}`}
+                                    onClick={() => {
+                                        setActiveModeIndex(idx);
+                                        setActiveTabIndex(isMobile ? null : 0);
+                                    }}
+                                >
+                                    {mode.label}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                     {activeSection && (
                         <div className="info-page__content-card">
                             <h2 className="info-page__section-title">{activeSection.title}</h2>
