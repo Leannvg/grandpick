@@ -23,10 +23,10 @@
         "title": "Estado de la pista / banderas",
         "body": "<p>Colores e íconos que indican condición de pista o intervención en carrera:</p><ul><li><strong>Safety car:</strong> Neutralización por accidente o situación de riesgo. Todos deben ir detrás del coche de seguridad.</li><li><strong>Green flag - Track clear:</strong> Pista libre, se puede competir normalmente.</li><li><strong>Red flag - Session stopped:</strong> Carrera o sesión detenida, todos deben ir a boxes.</li><li><strong>Yellow flag - Track hazard:</strong> Peligro en pista, prohibido adelantar.</li></ul>",
         "images": [
-          "safety_car_isbegf.png",
+          "yellow_flag_holuct.png",
           "green_flag_imjzl8.png",
           "red_flag_czqfhn.png",
-          "yellow_flag_holuct.png"
+          "safety_car_isbegf.png"
         ]
       },
       {
@@ -68,10 +68,10 @@
         "title": "Íconos especiales",
         "body": "<p>Gráficos que indican información adicional importante:</p><ul><li><strong>Vuelta rápida:</strong> El piloto tiene la vuelta más rápida de la carrera.</li><li><strong>En boxes:</strong> El piloto está realizando o realizó una parada en boxes.</li><li><strong>Penalización:</strong> El piloto tiene una sanción pendiente o cumplida (5s, 10s, drive through, etc.).</li><li><strong>Sesión terminada:</strong> El piloto ya finalizó la carrera o clasificación.</li></ul>",
         "images": [
-          "penalty_wmb5gn.png",
-          "session_ended_obsawv.png",
-          "boxes_a4fcq5.png",
-          "quick_lap_o3fyrw.png"
+          "penalty_dvhpxu.png",
+          "session_ended_jlirzf.png",
+          "boxes_xvvirg.png",
+          "quick_lap_crazhj.png"
         ]
       }
     ]
@@ -88,9 +88,9 @@
     "title": "Gráfico de tiempos por sectores",
     "body": "<p>Este gráfico muestra cómo se está desarrollando una vuelta rápida de un piloto, dividida en los 3 sectores del circuitos. Los colores que se utilizan permiten identificar qué tan bien se desempeña el piloto en cada sector.</p><p>Además, en la esquina superior derecha se muestra:</p><ul><li>Número y nombre del piloto.</li><li>Compuesto de neumático actual.</li><li><strong>Delta (+0.190):</strong> cuánto más lento (o más rápido si es negativo) está siendo el piloto en comparación con la mejor vuelta del momento.</li><li><strong>Tiempo de referencia:</strong> 1:25.886 -> es la mejor vuelta hasta ahora.</li><li>Nombre del piloto que tiene la vuelta rápida (en este caso Norris).</li><li><strong>Barra de sectores:</strong></li><ul><li>S1 (verde): primer sector completado y fue personal o absolutamente rápido. </li><li>S2 (amarillo): sector actual, posiblemente más lento.</li><li>S3 (gris): aún no completado.</li></ul></ul><p>Este gráfico se usa durante vueltas rápidas o en clasificación para seguir los tiempos por sector.</p>",
     "images": [
-      "sectors_1_ugaigk.png",
-      "sectors_2_sygy5e.png",
-      "sectors_3_gabrlb.png"
+      "sectors_2_tfuscg.png",
+      "sectors_3_efmedh.png",
+      "sectors_1_ugaigk.png"
     ]
   },
   {
