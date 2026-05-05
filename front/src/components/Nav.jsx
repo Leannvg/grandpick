@@ -228,12 +228,12 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   <>
                     <li className="nav-item">
                       <Link className="nav-link" to="/predictions" onClick={closeMenu}>
-                        MIS PREDICCIONES
+                        PREDECIR
                       </Link>
                     </li>
                     <li className="nav-item">
                       <Link className="nav-link" to="/prediction-history" onClick={closeMenu}>
-                        HISTORIAL
+                        MI HISTORIAL
                       </Link>
                     </li>
                   </>
@@ -259,7 +259,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                       }
                     }}
                   >
-                    INFO
+                    F1 ACTUAL
                   </button>
                   {isMobile.current && renderMegaMenu('info', 'push')}
                 </li>

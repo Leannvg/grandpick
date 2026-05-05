@@ -104,7 +104,7 @@ function Profile() {
         <aside className="profile-actions">
           <div className="actions-grid">
             <Link to="/prediction-history" className="btn-profile-action text-decoration-none d-flex align-items-center justify-content-center">
-              Mi historial
+              Mi Historial
             </Link>
             <button className="btn-profile-action" onClick={() => setShowPasswordModal(true)}>
               Cambiar Contraseña

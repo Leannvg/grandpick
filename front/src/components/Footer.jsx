@@ -10,7 +10,7 @@ function Footer() {
             <div className="container">
                 <div className="footer-grid">
                     <div className="footer-column">
-                        <h5>INFO</h5>
+                        <h5>F1 ACTUAL</h5>
                         <ul className="footer-nav">
                             <li><Link to="/drivers">Pilotos</Link></li>
                             <li><Link to="/circuits">Circuitos</Link></li>
@@ -28,7 +28,7 @@ function Footer() {
                     </div>
 
                     <div className="footer-column">
-                        <h5>PREDICCIONES</h5>
+                        <h5>PREDECIR</h5>
                         <ul className="footer-nav">
                             <li><Link to="/predictions">Jugar</Link></li>
                             <li><Link to="/ranking">Ranking Global</Link></li>

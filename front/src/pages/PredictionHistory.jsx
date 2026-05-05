@@ -124,7 +124,7 @@ function PredictionHistory() {
     return (
         <section className="prediction-history-page page-section container">
             <header className="history-header text-center">
-                <span className="section-label">Historial</span>
+                <span className="section-label">Mi Historial</span>
                 <h1 className="section-title">PREDICCIONES</h1>
                 <p className="section-subtitle">Esto fue lo que pensaste en los anteriores GP</p>
             </header>
@@ -435,7 +435,7 @@ function PredictionHistory() {
                             </>
                         ) : (
                             <div className="no-selection-message">
-                                Selecciona un circuito para ver el historial
+                                Selecciona un circuito para ver tu historial
                             </div>
                         )}
                     </main>
