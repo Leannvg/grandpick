@@ -10,52 +10,64 @@ const requestOptions = {
 };
 
 // --- In-Memory Cache ---
-let cachedCountries = null;
-const cachedOneCountry = {};
-const cachedStatesByCountry = {};
-const cachedStateDetails = {};
+let cachedCountriesPromise = null;
+const cachedOneCountryPromises = {};
+const cachedStatesPromises = {};
+const cachedStateDetailsPromises = {};
 
 async function getCountries() {
-    if (cachedCountries) return cachedCountries;
+    if (cachedCountriesPromise) return cachedCountriesPromise;
 
-    const res = await fetch(`${API_BASE}/countries`, requestOptions);
-    const data = await res.json();
-    cachedCountries = data;
-    return data;
+    cachedCountriesPromise = fetch(`${API_BASE}/countries`, requestOptions)
+        .then(res => res.json())
+        .catch(err => {
+            cachedCountriesPromise = null;
+            throw err;
+        });
+    return cachedCountriesPromise;
 }
 
 async function getOneCountry(countryIso2) {
     if (!countryIso2) return null;
-    if (cachedOneCountry[countryIso2]) return cachedOneCountry[countryIso2];
+    if (cachedOneCountryPromises[countryIso2]) return cachedOneCountryPromises[countryIso2];
 
-    const res = await fetch(`${API_BASE}/countries/${countryIso2}`, requestOptions);
-    const data = await res.json();
-    cachedOneCountry[countryIso2] = data;
-    return data;
+    cachedOneCountryPromises[countryIso2] = fetch(`${API_BASE}/countries/${countryIso2}`, requestOptions)
+        .then(res => res.json())
+        .catch(err => {
+            delete cachedOneCountryPromises[countryIso2];
+            throw err;
+        });
+    return cachedOneCountryPromises[countryIso2];
 }
 
 async function getStatesByCountry(countryIso2) {
     if (!countryIso2) return [];
-    if (cachedStatesByCountry[countryIso2]) return cachedStatesByCountry[countryIso2];
+    if (cachedStatesPromises[countryIso2]) return cachedStatesPromises[countryIso2];
 
-    const res = await fetch(`${API_BASE}/countries/${countryIso2}/states`, requestOptions);
-    const data = await res.json();
-    cachedStatesByCountry[countryIso2] = data;
-    return data;
+    cachedStatesPromises[countryIso2] = fetch(`${API_BASE}/countries/${countryIso2}/states`, requestOptions)
+        .then(res => res.json())
+        .catch(err => {
+            delete cachedStatesPromises[countryIso2];
+            throw err;
+        });
+    return cachedStatesPromises[countryIso2];
 }
 
 async function getStateDetails(countryIso2, stateIso2) {
     if (!countryIso2 || !stateIso2) return null;
     const key = `${countryIso2}-${stateIso2}`;
-    if (cachedStateDetails[key]) return cachedStateDetails[key];
+    if (cachedStateDetailsPromises[key]) return cachedStateDetailsPromises[key];
 
-    const res = await fetch(
+    cachedStateDetailsPromises[key] = fetch(
         `${API_BASE}/countries/${countryIso2}/states/${stateIso2}`,
         requestOptions
-    );
-    const data = await res.json();
-    cachedStateDetails[key] = data;
-    return data;
+    )
+        .then(res => res.json())
+        .catch(err => {
+            delete cachedStateDetailsPromises[key];
+            throw err;
+        });
+    return cachedStateDetailsPromises[key];
 }
 
 export {

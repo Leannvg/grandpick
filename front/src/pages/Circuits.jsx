@@ -15,18 +15,18 @@ function Circuits() {
             try {
                 const data = await circuitsServices.findAll();
 
-                // Fetch country names for each circuit (if needed) but use getFlagEmoji for flags
-                const circuitsWithNames = await Promise.all(
-                    data.map(async (circuit) => {
-                        try {
-                            const country = await countriesServices.getOneCountry(circuit.country);
-                            return { ...circuit, country_name: country?.name || circuit.country };
-                        } catch (err) {
-                            console.error(`Error fetching country for ${circuit.country}:`, err);
-                            return { ...circuit, country_name: circuit.country };
-                        }
-                    })
-                );
+                // Fetch country names using global map
+                let countriesMap = {};
+                try {
+                    const countriesList = await countriesServices.getCountries();
+                    countriesList.forEach(c => countriesMap[c.iso2] = c.name);
+                } catch (err) {
+                    console.error("Error fetching global countries list:", err);
+                }
+
+                const circuitsWithNames = data.map(circuit => {
+                    return { ...circuit, country_name: countriesMap[circuit.country] || circuit.country };
+                });
 
                 setCircuits(circuitsWithNames);
             } catch (error) {
