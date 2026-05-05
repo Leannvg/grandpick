@@ -4,6 +4,7 @@ import { useLoader } from "../context/LoaderContext";
 import { getFlagEmoji } from "../utils/helpers";
 import { DateTime } from "luxon";
 import { onSocketReady } from "../socket";
+import { getCountries } from "../services/countries.services";
 
 function Calendar() {
     const [races, setRaces] = useState([]);
@@ -51,6 +52,23 @@ function Calendar() {
             });
 
             const sortedData = Array.from(groupedMap.values()).sort((a, b) => new Date(a.date_gp_start) - new Date(b.date_gp_start));
+
+            try {
+                const countriesData = await getCountries();
+                if (countriesData && Array.isArray(countriesData)) {
+                    const countryMap = {};
+                    countriesData.forEach(c => {
+                        countryMap[c.iso2] = c.name;
+                    });
+                    sortedData.forEach(race => {
+                        if (race.circuit && race.circuit.country) {
+                            race.circuit.country_name = countryMap[race.circuit.country] || race.circuit.country;
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error("Error fetching countries:", err);
+            }
 
             const now = DateTime.now().toMillis();
             const index = sortedData.findIndex(race => {
