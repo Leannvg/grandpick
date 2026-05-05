@@ -124,6 +124,10 @@
     vertical-align: middle;
 }
 
+.ranking-table td strong {
+    color: #333;
+}
+
 .ranking-table tr:last-child td {
     border-bottom: none;
 }
@@ -159,11 +163,13 @@
 
 .user-name {
     font-weight: 400;
+    color: #333;
 }
 
 .user-lastname {
     font-weight: 700;
     text-transform: uppercase;
+    color: #333;
 }
 
 .ranking-table__user-row td {

@@ -829,12 +829,14 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     font-weight: 300;
     text-transform: uppercase;
     letter-spacing: 0.7px;
+    color: #fff;
 }
 
 .team-info-value {
     font-size: 14px;
     font-weight: 400;
     margin-top: 2px;
+    color: #fff;
 }
 
 .team-drivers {
@@ -850,6 +852,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     text-align: left;
     padding-bottom: 10px;
     padding-top: 10px;
+    color: #fff;
 }
 
 /* -------------------------------------- */
