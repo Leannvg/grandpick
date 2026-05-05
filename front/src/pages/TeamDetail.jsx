@@ -6,10 +6,12 @@ import { useLoader } from "../context/LoaderContext";
 import API_URL from "../services/api";
 import { getFlagEmoji } from "../utils/helpers";
 import { getImageUrl } from "../utils/cloudinary";
+import { getOneCountry } from "../services/countries.services";
 
 function TeamDetail() {
     const { id } = useParams();
     const [team, setTeam] = useState(null);
+    const [countryName, setCountryName] = useState("");
     const { showLoader, hideLoader } = useLoader();
 
     useEffect(() => {
@@ -18,6 +20,17 @@ function TeamDetail() {
             try {
                 const data = await teamsServices.findTeamById(id);
                 setTeam(data);
+
+                if (data.country) {
+                    try {
+                        const countryData = await getOneCountry(data.country);
+                        if (countryData && countryData.name) {
+                            setCountryName(countryData.name);
+                        }
+                    } catch (err) {
+                        console.error("Error al obtener nombre de país", err);
+                    }
+                }
             } catch (error) {
                 console.error("Error al obtener el detalle del equipo:", error);
             } finally {
@@ -55,7 +68,7 @@ function TeamDetail() {
                             <span className="team-info-label">Base</span>
                             <span className="team-info-value">
                                 <span className="emoji-flag me-1">{getFlagEmoji(team.country)}</span>
-                                {team.country || "N/A"}
+                                {countryName || team.country || "N/A"}
                             </span>
                         </div>
                         <div className="team-info-item">
