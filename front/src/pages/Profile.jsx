@@ -6,6 +6,7 @@ import FloatingEditProfile from "../components/FloatingEditProfile.jsx";
 import FloatingChangePassword from "../components/FloatingChangePassword.jsx";
 import { getFlagEmoji } from "../utils/helpers";
 import { getImageUrl } from "../utils/cloudinary.js";
+import { getOneCountry } from "../services/countries.services";
 import "../assets/styles/profile.css";
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
@@ -35,6 +36,18 @@ function Profile() {
     try {
       const perfil = await UsersServices.getUserProfile();
       const stats = await UsersServices.getUserStats(perfil._id);
+      
+      if (stats.country) {
+        try {
+          const countryData = await getOneCountry(stats.country);
+          if (countryData && countryData.name) {
+            stats.countryName = countryData.name;
+          }
+        } catch (err) {
+          console.error("Error fetching country name:", err);
+        }
+      }
+
       setUsuario(stats);
     } catch (error) {
       console.error("Error al obtener usuario:", error);
@@ -90,7 +103,7 @@ function Profile() {
           <div className="user-details">
             <div className="user-main-info">
               <div className="user-name-wrapper">
-                <span className="emoji-flag" title={usuario.country}>
+                <span className="emoji-flag" title={usuario.countryName || usuario.country}>
                   {getFlagEmoji(usuario.country)}
                 </span>
                 <h2>{(usuario.name || "PILOTO").toUpperCase()} <strong>{(usuario.last_name || "").toUpperCase()}</strong></h2>

@@ -3,6 +3,7 @@ import { useLoader } from "../context/LoaderContext";
 import UsersServices from "../services/users.services";
 import { getFlagEmoji } from "../utils/helpers";
 import { usePagination } from "../hooks/usePagination";
+import { getCountries } from "../services/countries.services";
 import "../assets/styles/ranking.css";
 
 function Ranking() {
@@ -10,6 +11,7 @@ function Ranking() {
     const [currentUserStat, setCurrentUserStat] = useState(null);
     const { showLoader, hideLoader } = useLoader();
     const [searchTerm, setSearchTerm] = useState("");
+    const [countriesMap, setCountriesMap] = useState({});
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -44,6 +46,16 @@ function Ranking() {
                         setCurrentUserStat(userFound);
                     }
                 }
+                // Cargar mapa de países
+                try {
+                    const countriesList = await getCountries();
+                    const map = {};
+                    countriesList.forEach(c => map[c.iso2] = c.name);
+                    setCountriesMap(map);
+                } catch(err) {
+                    console.error("Error al cargar mapa de países:", err);
+                }
+
             } catch (error) {
                 console.error("Error al cargar el ranking:", error);
             } finally {
@@ -216,7 +228,7 @@ function Ranking() {
                                             </div>
                                         </td>
                                         <td>
-                                            <span className="emoji-flag" title={item.country}>
+                                            <span className="emoji-flag" title={countriesMap[item.country] || item.country}>
                                                 {getFlagEmoji(item.country)}
                                             </span>
                                         </td>
