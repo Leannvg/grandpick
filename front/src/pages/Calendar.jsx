@@ -136,22 +136,7 @@ function Calendar() {
         return `${startMonth}-${endMonth}`;
     }
 
-    function formatSessionTypes(types) {
-        const priority = {
-            'sprint': 1,
-            'qualifying': 2,
-            'race': 3
-        };
-        const typeLabels = {
-            'race': 'Race',
-            'qualifying': 'Qualy',
-            'sprint': 'Sprint'
-        };
-        return types
-            .sort((a, b) => (priority[a] || 99) - (priority[b] || 99))
-            .map(t => typeLabels[t] || t.charAt(0).toUpperCase() + t.slice(1))
-            .join(' + ');
-    }
+    // Removed formatSessionTypes as per user request to only show sprint tag
 
     // Split races into two columns for the grid
     const midPoint = Math.ceil(races.length / 2);
@@ -181,9 +166,9 @@ function Calendar() {
                                             <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
                                             <span className="race-round">/ RONDA {index + 1}</span>
                                         </div>
-                                        <p className="race-sessions">
-                                            {formatSessionTypes(race.sessionTypes)}
-                                        </p>
+                                        {race.sessionTypes.includes('sprint') && (
+                                            <span className="race-sessions sprint-tag">SPRINT</span>
+                                        )}
                                     </div>
                                     <p className="race-circuit">{race.circuit.circuit_name}</p>
 
@@ -207,9 +192,9 @@ function Calendar() {
                                             <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
                                             <span className="race-round">/ RONDA {midPoint + index + 1}</span>
                                         </div>
-                                        <p className="race-sessions">
-                                            {formatSessionTypes(race.sessionTypes)}
-                                        </p>
+                                        {race.sessionTypes.includes('sprint') && (
+                                            <span className="race-sessions sprint-tag">SPRINT</span>
+                                        )}
                                     </div>
                                     <p className="race-circuit">{race.circuit.circuit_name}</p>
                                 </div>

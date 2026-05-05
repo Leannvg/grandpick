@@ -1026,6 +1026,14 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     letter-spacing: 0.5px;
 }
 
+.sprint-tag {
+    background-color: #4c86b7;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
 /* ----- RIGHT COLUM ----- */
 .race-date {
     width: 30%;
