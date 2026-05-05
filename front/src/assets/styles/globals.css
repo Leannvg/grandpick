@@ -5,12 +5,27 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea,
+select {
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 /* Scroll Lock */
 .body-scroll-lock {
   overflow: hidden !important;
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
   position: fixed;
 }
@@ -39,6 +54,19 @@ body {
   flex-direction: column;
   min-height: 100vh;
   min-height: 100dvh;
+}
+
+/* Safari iOS fix for 100vh */
+@supports (-webkit-touch-callout: none) {
+  .body-scroll-lock {
+    height: -webkit-fill-available;
+  }
+  .app-wrapper {
+    min-height: -webkit-fill-available;
+  }
+  html, body {
+    min-height: -webkit-fill-available;
+  }
 }
 
 .main-content {
