@@ -16,11 +16,16 @@ const cachedStatesPromises = {};
 const cachedStateDetailsPromises = {};
 
 async function getCountries() {
-    if (cachedCountriesPromise) return cachedCountriesPromise;
+    if (cachedCountriesPromise) {
+        console.log("💎 [Cache] Cargando lista de países desde la memoria");
+        return cachedCountriesPromise;
+    }
 
+    console.log("🌐 [API] Pidiendo lista de países a la API externa por primera vez...");
     cachedCountriesPromise = fetch(`${API_BASE}/countries`, requestOptions)
         .then(res => res.json())
         .catch(err => {
+            console.error("❌ [API] Error al pedir países:", err);
             cachedCountriesPromise = null;
             throw err;
         });
