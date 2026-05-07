@@ -1,5 +1,5 @@
 import { usePagination } from "./../../hooks/usePagination.js";
-import { getFlagEmoji } from "./../../utils/helpers.js";
+import CountryDisplay from "../CountryDisplay.jsx";
 
 export default function TeamsTable({ teams, onEdit, onDelete }) {
   const {
@@ -69,8 +69,7 @@ export default function TeamsTable({ teams, onEdit, onDelete }) {
                 </td>
 
                 <td>
-                  <span className="emoji-flag me-1">{getFlagEmoji(t.country)}</span>
-                  {t.country}
+                  <CountryDisplay iso2={t.country} />
                 </td>
 
                 <td className="d-flex gap-2">

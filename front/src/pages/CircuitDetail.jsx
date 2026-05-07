@@ -3,9 +3,9 @@ import API_URL from "../services/api";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import circuitsServices from "../services/circuits.services";
-import * as countriesServices from "../services/countries.services";
 import racesServices from "../services/races.services";
 import { useLoader } from "../context/LoaderContext";
+import CountryDisplay from "../components/CountryDisplay.jsx";
 import "../assets/styles/globals.css";
 import { getImageUrl } from "../utils/cloudinary";
 
@@ -13,7 +13,6 @@ function CircuitDetail() {
     const { id } = useParams();
     const [circuit, setCircuit] = useState(null);
     const [race, setRace] = useState(null);
-    const [countryName, setCountryName] = useState("");
     const { showLoader, hideLoader } = useLoader();
 
     useEffect(() => {
@@ -22,15 +21,6 @@ function CircuitDetail() {
             try {
                 const circuitData = await circuitsServices.findOne(id);
                 setCircuit(circuitData);
-
-                // Fetch country name
-                try {
-                    const country = await countriesServices.getOneCountry(circuitData.country);
-                    setCountryName(country?.name || circuitData.country);
-                } catch (err) {
-                    console.error("Error fetching country name:", err);
-                    setCountryName(circuitData.country);
-                }
 
                 // Try to find a race for this circuit to get the date
                 try {
@@ -62,8 +52,7 @@ function CircuitDetail() {
                     {/* HEADER */}
                     <header className="page-header">
                         <span className="circuit-country-detail section-label">
-                            <span className="emoji-flag me-2">{getFlagEmoji(circuit.country)}</span>
-                            {countryName.toUpperCase()}
+                            <CountryDisplay iso2={circuit.country} className="text-uppercase" />
                         </span>
                         <h1 className="section-title">{circuit.circuit_name}</h1>
                         {race && (

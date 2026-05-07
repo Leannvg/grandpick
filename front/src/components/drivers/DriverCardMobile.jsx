@@ -1,6 +1,6 @@
 import API_URL from "../../services/api";
-import { getFlagEmoji } from "../../utils/helpers";
 import { getImageUrl } from "../../utils/cloudinary";
+import CountryDisplay from "../CountryDisplay.jsx";
 
 const DriverCardMobile = ({ driver, teamLogo }) => {
     const { full_name, number, trigram, img, country } = driver;
@@ -24,7 +24,7 @@ const DriverCardMobile = ({ driver, teamLogo }) => {
                 <div className="driver-top-overlay-vertical">
                     <span className="driver-number-vertical">{number}</span>
                     <div className="driver-tags-vertical">
-                        <span className="tag-vertical emoji-flag" title={country}>{getFlagEmoji(country)}</span>
+                        <CountryDisplay iso2={country} showName={false} className="tag-vertical" />
                         <span className="tag-vertical team-tag-vertical">
 
                             {(driver.team_info?.isologo || teamLogo) && (

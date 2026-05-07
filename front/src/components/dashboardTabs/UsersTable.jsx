@@ -1,5 +1,6 @@
 import { usePagination } from "./../../hooks/usePagination.js";
 import { formatDate } from "../../utils/helpers.js";
+import CountryDisplay from "../CountryDisplay.jsx";
 
 export default function UsersTable({ users, onToggleBlock }) {
   const {
@@ -49,7 +50,7 @@ export default function UsersTable({ users, onToggleBlock }) {
                 <td>{`${u.name} ${u.last_name}`}</td>
                 <td>{u.email}</td>
                 <td>{u.points}</td>
-                <td>{u.country}</td>
+                <td><CountryDisplay iso2={u.country} /></td>
                 <td>{formatDate(u.date_register)}</td>
                 <td>
                   <button

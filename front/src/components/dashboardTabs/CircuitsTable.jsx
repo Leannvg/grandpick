@@ -1,5 +1,5 @@
 import { usePagination } from "./../../hooks/usePagination.js";
-import { getFlagEmoji } from "./../../utils/helpers.js";
+import CountryDisplay from "../CountryDisplay.jsx";
 
 export default function CircuitsTable({ circuits, onEdit, onDelete }) {
   const {
@@ -45,8 +45,7 @@ export default function CircuitsTable({ circuits, onEdit, onDelete }) {
               <tr key={c._id}>
                 <td>{c.circuit_name}</td>
                 <td>
-                  <span className="emoji-flag me-1">{getFlagEmoji(c.country)}</span>
-                  {c.country}
+                  <CountryDisplay iso2={c.country} />
                 </td>
                 <td>{c.length}</td>
                 <td>{c.laps}</td>

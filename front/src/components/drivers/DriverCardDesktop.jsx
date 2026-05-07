@@ -1,5 +1,5 @@
-import { getFlagEmoji } from "../../utils/helpers";
 import { getImageUrl } from "../../utils/cloudinary";
+import CountryDisplay from "../CountryDisplay.jsx";
 
 const DriverCardDesktop = ({ driver }) => {
     const { full_name, number, trigram, img, country } = driver;
@@ -18,7 +18,7 @@ const DriverCardDesktop = ({ driver }) => {
                     <span className="driver-lastname-horizontal"> {lastName}</span>
                 </h3>
                 <div className="driver-tags-horizontal">
-                    <span className="tag-horizontal emoji-flag" title={country}>{getFlagEmoji(country)}</span>
+                    <CountryDisplay iso2={country} showName={false} className="tag-horizontal" />
                     <span className="tag-horizontal team-tag-horizontal">
                         {/* Assuming team logo is available via team_id or similar. Using a generic path for now. */}
                         {driver.team_info?.isologo && (
