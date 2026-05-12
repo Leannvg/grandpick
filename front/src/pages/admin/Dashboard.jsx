@@ -15,6 +15,7 @@ import TeamsDriversAdmin from "./../../components/dashboardTabs/Assignments.jsx"
 
 import { useAlert } from "../../context/AlertContext.jsx";
 import { useDialog } from "../../context/DialogContext.jsx";
+import "../../assets/styles/admin.css";
 
 const TABS = {
   RACES: "Carreras",
@@ -417,60 +418,18 @@ function Dashboard() {
 
 
   return (
-    <div className="dashboard-container container mt-4">
-      <h2>Panel de control</h2>
+    <div className="admin-dashboard container-fluid">
+      <header className="admin-header">
+        <p className="welcome-text">¡Bienvenido/a administrador/a!</p>
+        <h1>TABLERO</h1>
+        <p className="subtitle">Acá podes ver todas las opciones que tenes para hacer</p>
+      </header>
 
-      <div className="tabs-header d-flex align-items-center flex-wrap gap-2 justify-content-between">
-        <div className="d-flex align-items-center gap-2">
-          {![TABS.ASSIGNMENTS, TABS.USERS].includes(activeTab) && (
-            <button
-              className="btn btn-success me-2"
-              onClick={() => {
-                if (activeTab === TABS.RACES) navigate("/race/create");
-                else if (activeTab === TABS.CIRCUITS) navigate("/circuit/create");
-                else if (activeTab === TABS.DRIVERS) navigate("/driver/create");
-                else if (activeTab === TABS.TEAMS) navigate("/team/create");
-              }}
-            >
-              {activeTab === TABS.RACES && "Agregar Carrera"}
-              {activeTab === TABS.CIRCUITS && "Agregar Circuito"}
-              {activeTab === TABS.DRIVERS && "Agregar Piloto"}
-              {activeTab === TABS.TEAMS && "Agregar Escudería"}
-            </button>
-          )}
-
-          {Object.values(TABS).map((tabName) => (
-            <button
-              key={tabName}
-              className={activeTab === tabName ? "tab-button active" : "tab-button"}
-              onClick={() => {
-                setActiveTab(tabName);
-                setSearchTerm("");
-                navigate({ search: `?tab=${tabName}` });
-              }}
-            >
-              {tabName}
-            </button>
-          ))}
-
-        </div>
-
-        <div className="d-flex align-items-center gap-2" style={{ maxWidth: "400px" }}>
-          <div className="input-group">
-            <span className="input-group-text">🔍</span>
-            <input
-              type="text"
-              className="form-control"
-              placeholder={`Buscar en ${activeTab.toLowerCase()}...`}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-
+      <div className="admin-controls-bar">
+        <div className="admin-controls-left">
           {activeTab === TABS.RACES && (
             <select
-              className="form-select"
-              style={{ width: "120px" }}
+              className="admin-year-select"
               value={filterYear}
               onChange={(e) => setFilterYear(e.target.value)}
             >
@@ -482,15 +441,59 @@ function Dashboard() {
               ))}
             </select>
           )}
+
+          {![TABS.ASSIGNMENTS, TABS.USERS].includes(activeTab) && (
+            <button
+              className="btn-admin-add"
+              onClick={() => {
+                if (activeTab === TABS.RACES) navigate("/race/create");
+                else if (activeTab === TABS.CIRCUITS) navigate("/circuit/create");
+                else if (activeTab === TABS.DRIVERS) navigate("/driver/create");
+                else if (activeTab === TABS.TEAMS) navigate("/team/create");
+              }}
+            >
+              <span>+</span>
+              {activeTab === TABS.RACES && "Agregar"}
+              {activeTab === TABS.CIRCUITS && "Agregar"}
+              {activeTab === TABS.DRIVERS && "Agregar"}
+              {activeTab === TABS.TEAMS && "Agregar"}
+            </button>
+          )}
+
+          <div className="admin-tabs">
+            {Object.values(TABS).map((tabName) => (
+              <button
+                key={tabName}
+                className={activeTab === tabName ? "admin-tab-btn active" : "admin-tab-btn"}
+                onClick={() => {
+                  setActiveTab(tabName);
+                  setSearchTerm("");
+                  navigate({ search: `?tab=${tabName}` });
+                }}
+              >
+                {tabName}
+              </button>
+            ))}
+          </div>
         </div>
 
-
+        <div className="admin-controls-right">
+          <div className="admin-search-container">
+            <span className="admin-search-label">Buscador</span>
+            <input
+              type="text"
+              className="admin-search-input"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button className="btn-admin-search">Buscar</button>
+          </div>
+        </div>
       </div>
 
-
-
-
-      <div className="tab-content">{renderTabContent()}</div>
+      <div className="admin-table-container">
+        {renderTabContent()}
+      </div>
     </div>
   );
 }

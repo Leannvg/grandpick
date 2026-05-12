@@ -13,26 +13,8 @@ export default function TeamsTable({ teams, onEdit, onDelete }) {
 
   return (
     <>
-      {/* SELECT PAGE SIZE */}
-      <div className="d-flex justify-content-start mb-2">
-        <label className="me-2">Mostrar:</label>
-        <select
-          value={pageSize}
-          onChange={(e) => setPageSize(Number(e.target.value))}
-          className="form-select"
-          style={{ width: "100px" }}
-        >
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={20}>20</option>
-          <option value={50}>50</option>
-          <option value={teams.length}>Todos</option>
-        </select>
-      </div>
-
-      {/* TABLA RESPONSIVA */}
       <div className="table-responsive">
-        <table className="table">
+        <table className="admin-table">
           <thead>
             <tr>
               <th>Nombre</th>
@@ -40,7 +22,7 @@ export default function TeamsTable({ teams, onEdit, onDelete }) {
               <th>Motor</th>
               <th>Pilotos</th>
               <th>País</th>
-              <th>Acciones</th>
+              <th>Acciones administrador</th>
             </tr>
           </thead>
 
@@ -72,9 +54,13 @@ export default function TeamsTable({ teams, onEdit, onDelete }) {
                   <CountryDisplay iso2={t.country} />
                 </td>
 
-                <td className="d-flex gap-2">
-                  <button onClick={() => onEdit(t._id)}>✏️</button>
-                  <button onClick={() => onDelete(t._id, t.name)}>🗑️</button>
+                <td className="admin-actions">
+                  <button className="btn-admin-action btn-admin-edit" onClick={() => onEdit(t._id)}>
+                    <i className="bi bi-pencil-square"></i>
+                  </button>
+                  <button className="btn-admin-action btn-admin-delete" onClick={() => onDelete(t._id, t.name)}>
+                    <i className="bi bi-trash-fill"></i>
+                  </button>
                 </td>
               </tr>
             ))}
@@ -83,10 +69,10 @@ export default function TeamsTable({ teams, onEdit, onDelete }) {
       </div>
 
       {/* PAGINACIÓN */}
-      <div className="mt-2 d-flex justify-content-end gap-2 align-items-center">
-        <button disabled={page === 1} onClick={() => setPage(page - 1)}>◀</button>
-        <span>{page} / {totalPages}</span>
-        <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>▶</button>
+      <div className="mt-3 d-flex justify-content-end gap-2 align-items-center p-2">
+        <button className="admin-tab-btn" style={{padding: '4px 12px'}} disabled={page === 1} onClick={() => setPage(page - 1)}>◀</button>
+        <span style={{color: '#333'}}>{page} / {totalPages}</span>
+        <button className="admin-tab-btn" style={{padding: '4px 12px'}} disabled={page === totalPages} onClick={() => setPage(page + 1)}>▶</button>
       </div>
     </>
   );

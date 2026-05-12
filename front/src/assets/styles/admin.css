@@ -1,0 +1,251 @@
+.admin-dashboard {
+  min-height: 100vh;
+  padding: 40px 20px;
+  color: #fff;
+}
+
+.admin-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.admin-header .welcome-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.admin-header h1 {
+  font-size: 5rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.admin-header .subtitle {
+  font-size: 1.1rem;
+  font-weight: 300;
+  margin-top: 10px;
+  opacity: 0.8;
+}
+
+/* Controls Bar */
+.admin-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.admin-controls-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Year Select */
+.admin-year-select {
+  background-color: #fff;
+  color: #333;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 80px;
+}
+
+/* Agregar Button */
+.btn-admin-add {
+  background-color: #2e7d32;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s;
+}
+
+.btn-admin-add:hover {
+  background-color: #1b5e20;
+}
+
+/* Tab Buttons */
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-tab-btn {
+  background-color: #1a2a3a;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.admin-tab-btn.active {
+  background-color: #e1310c;
+}
+
+.admin-tab-btn:hover:not(.active) {
+  background-color: #2c3e50;
+}
+
+/* Search Bar */
+.admin-search-container {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 38px;
+}
+
+.admin-search-label {
+  background-color: #fff;
+  color: #888;
+  padding: 0 10px;
+  font-size: 0.9rem;
+}
+
+.admin-search-input {
+  border: none;
+  padding: 8px;
+  outline: none;
+  width: 200px;
+  color: #333;
+}
+
+.btn-admin-search {
+  background-color: #517bb2;
+  color: #fff;
+  border: none;
+  padding: 0 20px;
+  height: 100%;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-admin-search:hover {
+  background-color: #3a5b8a;
+}
+
+/* Table Styles */
+.admin-table-container {
+  background-color: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #333;
+}
+
+.admin-table th {
+  background-color: #5c85b5;
+  color: #fff;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.admin-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Action Buttons */
+.admin-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-admin-action {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-admin-action:hover {
+  transform: scale(1.1);
+}
+
+.btn-admin-edit {
+  background-color: #fbc02d;
+  color: #fff;
+}
+
+.btn-admin-delete {
+  background-color: #e57373;
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .admin-header h1 {
+    font-size: 3.5rem;
+  }
+  
+  .admin-controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .admin-controls-left, .admin-controls-right {
+    justify-content: center;
+  }
+  
+  .admin-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  .admin-search-input {
+    width: 100%;
+  }
+}
