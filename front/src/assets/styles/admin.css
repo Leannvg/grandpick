@@ -6,14 +6,6 @@
   text-align: center;
 }
 
-.admin-header .section-title {
-  font-size: clamp(3rem, 10vw, 5rem);
-  font-weight: 800;
-  margin: 0;
-  line-height: 1;
-  letter-spacing: 2px;
-}
-
 /* Controls Bar */
 .admin-controls-bar {
   display: flex;
@@ -206,11 +198,12 @@
     flex-direction: column;
     align-items: stretch;
   }
-  
-  .admin-controls-left, .admin-controls-right {
+
+  .admin-controls-left,
+  .admin-controls-right {
     justify-content: center;
   }
-  
+
   .admin-tabs {
     flex-wrap: wrap;
     justify-content: center;
