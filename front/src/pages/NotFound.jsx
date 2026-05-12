@@ -1,7 +1,16 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../assets/styles/notfound.css";
 
 const NotFound = () => {
+    useEffect(() => {
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) mainContent.classList.add('is-not-found');
+        return () => {
+            if (mainContent) mainContent.classList.remove('is-not-found');
+        };
+    }, []);
+
     return (
         <main className="notfound-container">
             <div className="notfound-content">

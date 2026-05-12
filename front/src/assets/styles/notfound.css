@@ -1,3 +1,7 @@
+.main-content.is-not-found {
+    margin: 0 !important;
+}
+
 .notfound-container {
     min-height: 80vh;
     display: flex;
