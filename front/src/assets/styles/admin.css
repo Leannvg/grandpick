@@ -147,9 +147,8 @@
 }
 
 .admin-table td {
-  padding: 12px 15px;
+  padding: 9px 15px;
   border-bottom: 1px solid #eee;
-  font-size: 0.9rem;
 }
 
 .admin-table tr:last-child td {
