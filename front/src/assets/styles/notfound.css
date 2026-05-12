@@ -1,0 +1,100 @@
+.notfound-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+}
+
+.notfound-content {
+    max-width: 600px;
+    width: 100%;
+}
+
+.notfound-code {
+    font-size: 8rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--color-white) 0%, var(--color-circuit) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Akshar', sans-serif;
+    letter-spacing: -2px;
+}
+
+.notfound-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--color-white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.notfound-text {
+    font-size: 1.1rem;
+    color: var(--color-placeholder);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+.notfound-visual {
+    margin-bottom: 3rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.notfound-car-icon {
+    font-size: 4rem;
+    animation: car-drift 4s ease-in-out infinite;
+}
+
+@keyframes car-drift {
+    0%, 100% { transform: translateX(0) rotate(0deg); }
+    25% { transform: translateX(-20px) rotate(-5deg); }
+    75% { transform: translateX(20px) rotate(5deg); }
+}
+
+.notfound-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: var(--color-white);
+    color: var(--color-dark-blue);
+    padding: 1rem 2rem;
+    border-radius: 100px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    text-decoration: none;
+}
+
+.notfound-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    background: var(--color-circuit);
+    color: var(--color-white);
+}
+
+.notfound-btn .chevron {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.notfound-btn:hover .chevron {
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .notfound-code {
+        font-size: 5rem;
+    }
+    .notfound-title {
+        font-size: 1.8rem;
+    }
+}

@@ -91,7 +91,7 @@ function Profile() {
           <div className="user-details">
             <div className="user-main-info">
               <div className="user-name-wrapper">
-                <CountryDisplay iso2={usuario.country} className="me-2" />
+                <CountryDisplay iso2={usuario.country} showName={false} className="me-2" />
                 <h2>{(usuario.name || "PILOTO").toUpperCase()} <strong>{(usuario.last_name || "").toUpperCase()}</strong></h2>
               </div>
               <p className="user-email">{usuario.email}</p>

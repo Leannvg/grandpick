@@ -33,6 +33,7 @@ import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
 import InformationPage from "./pages/InformationPage";
 import Glossary from "./components/Glossary";
+import NotFound from "./pages/NotFound";
 
 // Data
 import howToPlayData from "./data/howToPlay.json";
@@ -214,7 +215,7 @@ function App() {
                   subtitle="¿Arrancás desde boxes o ya venís con experiencia en pista? Acá encontrás todo lo que necesitás"
                 />
               } />
-              {/* <Route path="*" element={<NotFound />} /> */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           )}
         </div>
