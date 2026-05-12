@@ -1,17 +1,13 @@
 .notfound-container {
-    min-height: 100vh;
-    min-height: 100dvh;
+    min-height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 4rem 2rem;
     text-align: center;
+    /* We keep the specific gradient from the image but let it flow in the layout */
     background: radial-gradient(circle at top, #1e3c5a 0%, #101e2e 100%);
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
-    z-index: 9999;
 }
 
 .notfound-content {
