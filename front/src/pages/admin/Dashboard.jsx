@@ -492,7 +492,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="admin-table-container">
+      <div className="admin-tab-content">
         {renderTabContent()}
       </div>
     </div>

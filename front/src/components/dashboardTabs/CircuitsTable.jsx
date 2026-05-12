@@ -13,45 +13,53 @@ export default function CircuitsTable({ circuits, onEdit, onDelete }) {
 
   return (
     <>
-      <div className="table-responsive">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>País</th>
-              <th>Longitud</th>
-              <th>Vueltas</th>
-              <th>Acciones administrador</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedData.map((c) => (
-              <tr key={c._id}>
-                <td>{c.circuit_name}</td>
-                <td>
-                  <CountryDisplay iso2={c.country} />
-                </td>
-                <td>{c.length}</td>
-                <td>{c.laps}</td>
-                <td className="admin-actions">
-                  <button className="btn-admin-action btn-admin-edit" onClick={() => onEdit(c._id)}>
-                    <i className="bi bi-pencil-square"></i>
-                  </button>
-                  <button className="btn-admin-action btn-admin-delete" onClick={() => onDelete(c._id, c.circuit_name)}>
-                    <i className="bi bi-trash-fill"></i>
-                  </button>
-                </td>
+      <div className="admin-table-container">
+        <div className="table-responsive">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>País</th>
+                <th>Longitud</th>
+                <th>Vueltas</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {paginatedData.map((c) => (
+                <tr key={c._id}>
+                  <td>{c.circuit_name}</td>
+                  <td>
+                    <CountryDisplay iso2={c.country} />
+                  </td>
+                  <td>{c.length}</td>
+                  <td>{c.laps}</td>
+                  <td className="admin-actions">
+                    <button className="btn-admin-action btn-admin-edit" onClick={() => onEdit(c._id)}>
+                      <i className="bi bi-pencil-square"></i>
+                    </button>
+                    <button className="btn-admin-action btn-admin-delete" onClick={() => onDelete(c._id, c.circuit_name)}>
+                      <i className="bi bi-trash-fill"></i>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* PAGINACIÓN */}
-      <div className="mt-3 d-flex justify-content-end gap-2 align-items-center p-2">
-        <button className="admin-tab-btn" style={{padding: '4px 12px'}} disabled={page === 1} onClick={() => setPage(page - 1)}>◀</button>
-        <span style={{color: '#333'}}>{page} / {totalPages}</span>
-        <button className="admin-tab-btn" style={{padding: '4px 12px'}} disabled={page === totalPages} onClick={() => setPage(page + 1)}>▶</button>
+      {/* PAGINACIÓN EXTERNA */}
+      <div className="admin-pagination">
+        <span className="page-info">{page} / {totalPages}</span>
+        <div className="d-flex gap-2">
+          <button className="btn-pagination" disabled={page === 1} onClick={() => setPage(page - 1)}>
+            <i className="bi bi-chevron-left"></i>
+          </button>
+          <button className="btn-pagination" disabled={page === totalPages} onClick={() => setPage(page + 1)}>
+            <i className="bi bi-chevron-right"></i>
+          </button>
+        </div>
       </div>
     </>
   );

@@ -1,5 +1,6 @@
 import { usePagination } from "./../../hooks/usePagination.js";
 import { formatDateInTimezone } from "../../utils/helpers.js";
+import CountryDisplay from "../CountryDisplay.jsx";
 
 export default function RacesTable({ races, onEdit, onDelete }) {
   const {
@@ -13,8 +14,9 @@ export default function RacesTable({ races, onEdit, onDelete }) {
 
   return (
     <>
-      <div className="table-responsive">
-        <table className="admin-table">
+      <div className="admin-table-container">
+        <div className="table-responsive">
+          <table className="admin-table">
           <thead>
             <tr>
               <th>Ronda</th>
@@ -23,7 +25,7 @@ export default function RacesTable({ races, onEdit, onDelete }) {
               <th>Fecha de inicio</th>
               <th>Fecha de finalización</th>
               <th>Tipos de carreras</th>
-              <th>Acciones administrador</th>
+              <th>Acciones</th>
             </tr>
           </thead>
 
@@ -31,7 +33,7 @@ export default function RacesTable({ races, onEdit, onDelete }) {
             {paginatedData.map((r) => (
               <tr key={r.gpRaceId}>
                 <td>{r.round}</td>
-                <td>{r.country}</td>
+                <td><CountryDisplay iso2={r.country} /></td>
                 <td>{r.gp_name}</td>
                 <td>{formatDateInTimezone(r.dateStart, r.timezone)}</td>
                 <td>{formatDateInTimezone(r.dateEnd, r.timezone)}</td>
@@ -49,12 +51,19 @@ export default function RacesTable({ races, onEdit, onDelete }) {
           </tbody>
         </table>
       </div>
+    </div>
 
-      {/* PAGINACIÓN */}
-      <div className="mt-3 d-flex justify-content-end gap-2 align-items-center p-2">
-        <button className="admin-tab-btn" style={{padding: '4px 12px'}} disabled={page === 1} onClick={() => setPage(page - 1)}>◀</button>
-        <span style={{color: '#333'}}>{page} / {totalPages}</span>
-        <button className="admin-tab-btn" style={{padding: '4px 12px'}} disabled={page === totalPages} onClick={() => setPage(page + 1)}>▶</button>
+      {/* PAGINACIÓN EXTERNA */}
+      <div className="admin-pagination">
+        <span className="page-info">{page} / {totalPages}</span>
+        <div className="d-flex gap-2">
+          <button className="btn-pagination" disabled={page === 1} onClick={() => setPage(page - 1)}>
+            <i className="bi bi-chevron-left"></i>
+          </button>
+          <button className="btn-pagination" disabled={page === totalPages} onClick={() => setPage(page + 1)}>
+            <i className="bi bi-chevron-right"></i>
+          </button>
+        </div>
       </div>
     </>
   );
