@@ -418,14 +418,15 @@ function Dashboard() {
 
 
   return (
-    <div className="admin-dashboard container-fluid">
-      <header className="admin-header">
-        <p className="welcome-text">¡Bienvenido/a administrador/a!</p>
-        <h1>TABLERO</h1>
-        <p className="subtitle">Acá podes ver todas las opciones que tenes para hacer</p>
-      </header>
+    <section className="page-section admin-dashboard">
+      <div className="container">
+        <header className="page-header admin-header">
+          <p className="section-label">¡Bienvenido/a administrador/a!</p>
+          <h1 className="section-title">TABLERO</h1>
+          <p className="section-subtitle">Acá podes ver todas las opciones que tenes para hacer</p>
+        </header>
 
-      <div className="admin-controls-bar">
+        <div className="admin-controls-bar">
         <div className="admin-controls-left">
           {activeTab === TABS.RACES && (
             <select
@@ -495,7 +496,8 @@ function Dashboard() {
         {renderTabContent()}
       </div>
     </div>
-  );
+  </section>
+);
 }
 
 export default Dashboard;

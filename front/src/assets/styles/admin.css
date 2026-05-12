@@ -1,36 +1,17 @@
 .admin-dashboard {
-  min-height: 100vh;
-  padding: 40px 20px;
   color: #fff;
 }
 
 .admin-header {
   text-align: center;
-  margin-bottom: 60px;
 }
 
-.admin-header .welcome-text {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #fff;
-}
-
-.admin-header h1 {
-  font-size: 5rem;
+.admin-header .section-title {
+  font-size: clamp(3rem, 10vw, 5rem);
   font-weight: 800;
   margin: 0;
   line-height: 1;
   letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #fff;
-}
-
-.admin-header .subtitle {
-  font-size: 1.1rem;
-  font-weight: 300;
-  margin-top: 10px;
-  opacity: 0.8;
 }
 
 /* Controls Bar */
@@ -221,10 +202,6 @@
 
 /* Responsive */
 @media (max-width: 992px) {
-  .admin-header h1 {
-    font-size: 3.5rem;
-  }
-  
   .admin-controls-bar {
     flex-direction: column;
     align-items: stretch;
@@ -241,10 +218,6 @@
 }
 
 @media (max-width: 600px) {
-  .admin-header h1 {
-    font-size: 2.5rem;
-  }
-  
   .admin-search-input {
     width: 100%;
   }
