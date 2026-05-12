@@ -12,6 +12,7 @@ import DriversTable from "./../../components/dashboardTabs/DriversTable.jsx";
 import TeamsTable from "./../../components/dashboardTabs/TeamsTable.jsx";
 import UsersTable from "./../../components/dashboardTabs/UsersTable.jsx";
 import TeamsDriversAdmin from "./../../components/dashboardTabs/Assignments.jsx";
+import LoaderCar from "../../components/LoaderCar.jsx";
 
 import { useAlert } from "../../context/AlertContext.jsx";
 import { useDialog } from "../../context/DialogContext.jsx";
@@ -90,6 +91,7 @@ function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterYear, setFilterYear] = useState("Todos");
   const [availableYears, setAvailableYears] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab") || TABS.RACES;
@@ -140,6 +142,7 @@ function Dashboard() {
 
 
   const fetchRaces = async () => {
+    setLoading(true);
     try {
       const data = await RacesServices.findAll();
       const grouped = groupRacesByCircuitAndYear(data);
@@ -156,38 +159,52 @@ function Dashboard() {
       }
     } catch (err) {
       console.error("Error al cargar carreras:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchCircuits = async () => {
+    setLoading(true);
     try {
       setCircuits(await CircuitsServices.findAll());
     } catch (err) {
       console.error("Error al cargar circuitos:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchDrivers = async () => {
+    setLoading(true);
     try {
       setDrivers(await DriversServices.findAll());
     } catch (err) {
       console.error("Error al cargar pilotos:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchTeams = async () => {
+    setLoading(true);
     try {
       setTeams(await TeamsServices.findAllTeams());
     } catch (err) {
       console.error("Error al cargar escuderías:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchUsers = async () => {
+    setLoading(true);
     try {
       setUsers(await UsersServices.findAll());
     } catch (err) {
       console.error("Error al cargar usuarios:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -493,7 +510,7 @@ function Dashboard() {
       </div>
 
       <div className="admin-tab-content">
-        {renderTabContent()}
+        {loading ? <LoaderCar message="Cargando datos..." /> : renderTabContent()}
       </div>
     </div>
   </section>

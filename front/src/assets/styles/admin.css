@@ -129,7 +129,6 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .admin-table {
@@ -152,9 +151,8 @@
 }
 
 .admin-table td {
-  padding: 14px 20px;
+  padding: 10px 20px;
   border-bottom: 1px solid #f0f0f0;
-  font-size: 0.95rem;
   vertical-align: middle;
 }
 
