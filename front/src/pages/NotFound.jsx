@@ -5,9 +5,7 @@ const NotFound = () => {
     return (
         <main className="notfound-container">
             <div className="notfound-content">
-                <div className="notfound-visual">
-                    <span className="notfound-car-icon" role="img" aria-label="F1 Car">🏎️</span>
-                </div>
+
                 
                 <h1 className="notfound-code">404</h1>
                 <h2 className="notfound-title">¡Fuera de pista!</h2>
