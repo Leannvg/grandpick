@@ -1,15 +1,15 @@
 import Select, { components } from "react-select";
 
 const CustomOption = (props) => {
-  const { data } = props;
-  const isDriverOrTeam = !!data.teamName || (!!data.color && data.color !== "#ccc");
+  const { data, selectProps } = props;
+  const { isDriver } = selectProps;
   
   // Extraer emoji y nombre buscando en el objeto original o el anidado
   const emoji = data.original?.emoji || data.original?.original?.emoji;
   const name = data.original?.original?.name || (data.original?.emoji ? data.original?.name : data.label);
   const hasEmoji = !!emoji;
 
-  if (!isDriverOrTeam) {
+  if (!isDriver) {
     return (
       <components.Option {...props}>
         <div className="select-default-option">
@@ -51,15 +51,15 @@ const CustomOption = (props) => {
 };
 
 const CustomSingleValue = (props) => {
-  const { data } = props;
-  const isDriverOrTeam = !!data.teamName || (!!data.color && data.color !== "#ccc");
+  const { data, selectProps } = props;
+  const { isDriver } = selectProps;
   
   const emoji = data.original?.emoji || data.original?.original?.emoji;
   const name = data.original?.original?.name || (data.original?.emoji ? data.original?.name : data.label);
   const hasEmoji = !!emoji;
 
   // Si NO es piloto ni equipo, manejamos el renderizado estándar o con emoji
-  if (!isDriverOrTeam) {
+  if (!isDriver) {
     return (
       <components.SingleValue {...props}>
         <div className="select-default-option">
@@ -106,12 +106,13 @@ function SearchableSelect({
   onChange,
   isInvalid = false,
   isDisabled = false,
+  isDriver = false,
   placeholder = "Seleccionar...",
   getOptionDisabled = () => false,
 }) {
   const formattedOptions = options.map(opt => ({
     value: opt._id,
-    label: opt.name || opt.gp_name,
+    label: opt.name || opt.gp_name || opt.full_name,
     isDisabled: getOptionDisabled(opt),
     original: opt,
     teamName: opt.teamName || "",
@@ -130,6 +131,7 @@ function SearchableSelect({
       options={formattedOptions}
       isSearchable={true}
       isDisabled={isDisabled}
+      isDriver={isDriver}
       isOptionDisabled={(opt) => opt.isDisabled}
       placeholder={placeholder}
       menuPortalTarget={document.body}

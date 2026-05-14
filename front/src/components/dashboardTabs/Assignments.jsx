@@ -137,7 +137,7 @@ function TeamsDriversAdmin() {
 
                 return (
                   <tr key={driver._id} className={isInvalid ? "table-danger" : ""}>
-                    <td className="fw-bold">{driver.full_name}</td>
+                    <td>{driver.full_name}</td>
 
                     <td>
                       {currentTeam ? (
@@ -183,12 +183,11 @@ function TeamsDriversAdmin() {
           disabled={saving}
           style={{ background: invalidTeams.length > 0 ? '#6c757d' : '#2e7d32' }}
         >
-          <i className={`bi ${saving ? 'bi-hourglass-split' : 'bi-save-fill'}`}></i>
           {saving
             ? "Guardando..."
             : invalidTeams.length > 0
-            ? "Corrige las asignaciones"
-            : "Guardar cambios"}
+              ? "Corrige las asignaciones"
+              : "Guardar cambios"}
         </button>
       </div>
     </>

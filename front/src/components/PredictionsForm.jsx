@@ -85,6 +85,7 @@ function PredictionsForm({ points = {}, race_types = [], onDriverChange }) {
 
           <div className={`react-select-container ${invalidIndexes.includes(index) ? "is-invalid" : ""}`}>
             <SearchableSelect
+              isDriver={true}
               value={selections[index] || ""}
               onChange={(selected) => handleChange(index, selected?.value || "")}
               options={drivers
