@@ -427,7 +427,7 @@ function Dashboard() {
       case TABS.USERS:
         return <UsersTable users={filterData(users, ["name", "last_name", "email", "country", "points", "date_register"])} onToggleBlock={handleToggleBlockUser} />;
       case TABS.ASSIGNMENTS:
-        return <TeamsDriversAdmin />;
+        return <TeamsDriversAdmin searchTerm={searchTerm} />;
       default:
         return <p>Selecciona una pestaña.</p>;
     }

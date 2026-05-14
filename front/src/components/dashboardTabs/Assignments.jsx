@@ -7,7 +7,7 @@ import { useDialog } from "../../context/DialogContext.jsx";
 import SearchableSelect from "../SearchableSelect.jsx";
 import LoaderCar from "../LoaderCar.jsx";
 
-function TeamsDriversAdmin() {
+function TeamsDriversAdmin({ searchTerm = "" }) {
   const [teams, setTeams] = useState([]);
   const [drivers, setDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -116,6 +116,17 @@ function TeamsDriversAdmin() {
     ...teams
   ];
 
+  const filteredDrivers = drivers.filter((d) => {
+    if (!searchTerm) return true;
+    const lowerSearch = searchTerm.toLowerCase();
+    const pilotMatch = d.full_name.toLowerCase().includes(lowerSearch);
+    const currentTeam = teams.find((t) => t._id === d.team);
+    const teamMatch = currentTeam
+      ? currentTeam.name.toLowerCase().includes(lowerSearch)
+      : "sin escuderia".includes(lowerSearch);
+    return pilotMatch || teamMatch;
+  });
+
   if (loading) return <LoaderCar message="Cargando asignaciones..." />;
 
   return (
@@ -131,7 +142,7 @@ function TeamsDriversAdmin() {
               </tr>
             </thead>
             <tbody>
-              {drivers.map((driver) => {
+              {filteredDrivers.map((driver) => {
                 const currentTeam = teams.find((t) => t._id === driver.team) || null;
                 const isInvalid = driver.team && invalidTeams.includes(driver.team);
 
