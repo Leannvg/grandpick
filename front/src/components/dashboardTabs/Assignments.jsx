@@ -5,6 +5,7 @@ import { useRedirectToTab } from "../../hooks/useRedirectToTab.js";
 import { useAlert } from "../../context/AlertContext.jsx";
 import { useDialog } from "../../context/DialogContext.jsx";
 import SearchableSelect from "../SearchableSelect.jsx";
+import LoaderCar from "../LoaderCar.jsx";
 
 function TeamsDriversAdmin() {
   const [teams, setTeams] = useState([]);
@@ -115,78 +116,74 @@ function TeamsDriversAdmin() {
     ...teams
   ];
 
-  if (loading) return <p>Cargando datos...</p>;
+  if (loading) return <LoaderCar message="Cargando asignaciones..." />;
 
   return (
-    <div className="container mt-4">
-      <p className="text-muted">
-        Acá podés asignar o cambiar los pilotos de cada escudería.
-      </p>
+    <>
+      <div className="admin-table-container">
+        <div className="table-responsive">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Piloto</th>
+                <th>Escudería actual</th>
+                <th>Cambiar a</th>
+              </tr>
+            </thead>
+            <tbody>
+              {drivers.map((driver) => {
+                const currentTeam = teams.find((t) => t._id === driver.team) || null;
+                const isInvalid = driver.team && invalidTeams.includes(driver.team);
 
-      <div>
-        <table className="table mt-3 align-middle">
-          <thead>
-            <tr>
-              <th>Piloto</th>
-              <th>Escudería actual</th>
-              <th>Cambiar a</th>
-            </tr>
-          </thead>
-          <tbody>
-            {drivers.map((driver) => {
-              const currentTeam = teams.find((t) => t._id === driver.team) || null;
-              const isInvalid =
-                driver.team && invalidTeams.includes(driver.team);
+                return (
+                  <tr key={driver._id} className={isInvalid ? "table-danger" : ""}>
+                    <td className="fw-bold">{driver.full_name}</td>
 
-              return (
-                <tr
-                  key={driver._id}
-                  className={isInvalid ? "table-danger" : ""}
-                >
-                  <td>{driver.full_name}</td>
+                    <td>
+                      {currentTeam ? (
+                        <div className="d-flex align-items-center">
+                          <span className="me-2">{currentTeam.name}</span>
+                          {isInvalid && (
+                            <span className="badge bg-danger">
+                              ⚠️ Excedido
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-muted italic">Sin escudería</span>
+                      )}
+                    </td>
 
-                  <td>
-                    {currentTeam ? (
-                      <>
-                        {currentTeam.name}
-                        {isInvalid && (
-                          <span className="badge bg-danger ms-2">
-                            ⚠️ Excedido
-                          </span>
-                        )}
-                      </>
-                    ) : (
-                      <span className="text-muted">Sin escudería</span>
-                    )}
-                  </td>
-
-                  <td>
-                     <SearchableSelect
+                    <td style={{ minWidth: '250px' }}>
+                      <SearchableSelect
                         options={teamsWithNone}
                         value={driver.team || ""}
-                         onChange={(selected) =>
-                            handleChangeTeam(driver._id, selected ? selected.value : "")
-                          }
+                        onChange={(selected) =>
+                          handleChangeTeam(driver._id, selected ? selected.value : "")
+                        }
                       />
-
-                    {isInvalid && (
-                      <div className="invalid-feedback">
-                        Este equipo supera el límite de 2 pilotos.
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                      {isInvalid && (
+                        <div className="text-danger small mt-1">
+                          Este equipo supera el límite de 2 pilotos.
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div className="d-flex justify-content-end mt-3">
+      <div className="d-flex justify-content-end mt-4">
         <button
           onClick={handleSave}
-          className="btn btn-primary"
+          className="btn-admin-add"
+          disabled={saving}
+          style={{ background: invalidTeams.length > 0 ? '#6c757d' : '#2e7d32' }}
         >
+          <i className={`bi ${saving ? 'bi-hourglass-split' : 'bi-save-fill'}`}></i>
           {saving
             ? "Guardando..."
             : invalidTeams.length > 0
@@ -194,7 +191,7 @@ function TeamsDriversAdmin() {
             : "Guardar cambios"}
         </button>
       </div>
-    </div>
+    </>
   );
 }
 
