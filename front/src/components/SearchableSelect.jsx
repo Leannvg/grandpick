@@ -9,22 +9,28 @@ const CustomOption = (props) => {
   const name = data.original?.original?.name || (data.original?.emoji ? data.original?.name : data.label);
   const hasEmoji = !!emoji;
 
-  if (!isDriver) {
-    return (
-      <components.Option {...props}>
-        <div className="select-default-option">
-          {hasEmoji ? (
-            <>
-              <span className="emoji-flag">{emoji}</span>
-              <span>{name}</span>
-            </>
-          ) : (
-            <span>{data.label}</span>
-          )}
-        </div>
-      </components.Option>
-    );
-  }
+    if (!isDriver) {
+      return (
+        <components.Option {...props}>
+          <div className="select-default-option">
+            {data.color && data.color !== "#ccc" && (
+              <div
+                className="select-driver-color"
+                style={{ backgroundColor: data.color }}
+              />
+            )}
+            {hasEmoji ? (
+              <>
+                <span className="emoji-flag">{emoji}</span>
+                <span>{name}</span>
+              </>
+            ) : (
+              <span>{data.label}</span>
+            )}
+          </div>
+        </components.Option>
+      );
+    }
 
   const fullName = data.label || "";
   const nameParts = fullName.split(" ");
@@ -63,6 +69,12 @@ const CustomSingleValue = (props) => {
     return (
       <components.SingleValue {...props}>
         <div className="select-default-option">
+          {data.color && data.color !== "#ccc" && (
+            <div
+              className="select-driver-color"
+              style={{ backgroundColor: data.color }}
+            />
+          )}
           {hasEmoji ? (
             <>
               <span className="emoji-flag">{emoji}</span>
