@@ -28,7 +28,7 @@ messaging.onBackgroundMessage((payload) => {
     // la notificación automáticamente. Solo dibujamos la manual si Firebase no lo hizo 
     // (por ejemplo si solo mandamos "data" desde el backend).
     if (!payload.notification) {
-        const notificationTitle = payload.data?.title || 'GrandPick';
+        const notificationTitle = payload.data?.title || 'GRANDPICK';
         const notificationOptions = {
             body: payload.data?.body || 'Nueva notificación',
             icon: '/icons/GP-192x192.png',

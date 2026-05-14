@@ -396,7 +396,7 @@ const Home = () => {
                     </div>
 
                     <div className="split-section__image">
-                        <img src={getImageUrl("tutoriales.webp", 1200)} alt="Tutoriales Grand Pick" />
+                        <img src={getImageUrl("tutoriales.webp", 1200)} alt="Tutoriales GRANDPICK" />
                     </div>
                 </section>
             </main>

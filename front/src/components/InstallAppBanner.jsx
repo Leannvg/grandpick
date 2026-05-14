@@ -65,7 +65,7 @@ const InstallAppBanner = () => {
                 {!showInstructions ? (
                     <div className="install-banner__content">
                         <div className="install-banner__text">
-                            <h3 className="install-banner__title">Llevá GrandPick con vos</h3>
+                            <h3 className="install-banner__title">Llevá GRANDPICK con vos</h3>
                             <p className="install-banner__desc">Instalá la aplicación para recibir notificaciones de las carreras y acceder más rápido.</p>
                         </div>
                         <button onClick={handleInstallClick} className="btn-install">

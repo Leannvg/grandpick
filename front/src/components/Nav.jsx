@@ -188,7 +188,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
           <div className="container">
             {/* LOGO */}
             <Link className="navbar-brand me-auto nav-logo" to="/" onClick={closeMenu}>
-              <img src={getImageUrl(CLOUDINARY_DEFAULTS.LOGO)} alt="GrandPick" height="32" />
+              <img src={getImageUrl(CLOUDINARY_DEFAULTS.LOGO)} alt="GRANDPICK" height="32" />
             </Link>
 
             <div className="d-flex align-items-center ms-auto d-lg-none nav-mobile">

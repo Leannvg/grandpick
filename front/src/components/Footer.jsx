@@ -44,7 +44,7 @@ function Footer() {
 
                     <div className="footer-column footer-logo-col">
                         <Link to="/">
-                            <img src={logo} alt="GrandPick" className="footer-logo" />
+                            <img src={logo} alt="GRANDPICK" className="footer-logo" />
                         </Link>
                         <div className="footer-socials">
                             <a href="#" target="_blank" rel="noopener noreferrer">
@@ -60,7 +60,7 @@ function Footer() {
                 <hr className="footer-divider" />
 
                 <p className="footer-copyright">
-                    © {new Date().getFullYear()} Grand Pick Todos los derechos reservados
+                    © {new Date().getFullYear()} GRANDPICK Todos los derechos reservados
                 </p>
             </div>
         </footer>

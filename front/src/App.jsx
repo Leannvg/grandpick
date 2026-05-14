@@ -193,7 +193,7 @@ function App() {
                   data={howToPlayData}
                   eyebrow="Tutoriales"
                   title="CÓMO JUGAR"
-                  subtitle="Aprende las reglas y estrategias para dominar GrandPick"
+                  subtitle="Aprende las reglas y estrategias para dominar GRANDPICK"
                 />
               } />
               <Route path="/f1-tv" element={
