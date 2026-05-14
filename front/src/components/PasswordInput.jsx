@@ -7,6 +7,7 @@ function PasswordInput({
   error,
   placeholder = "",
   disabled = false,
+  ...props
 }) {
   const [show, setShow] = useState(false);
 
@@ -22,6 +23,7 @@ function PasswordInput({
           onChange={onChange}
           placeholder={placeholder}
           disabled={disabled}
+          {...props}
         />
 
         <button

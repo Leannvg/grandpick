@@ -5,6 +5,7 @@ import CountrySelect from "../components/CountrySelect.jsx";
 import * as helpers from "../utils/helpers.js";
 import { useAlert } from "./../context/AlertContext.jsx";
 import { useDialog } from "./../context/DialogContext.jsx";
+import PasswordInput from "../components/PasswordInput.jsx";
 
 function Register() {
   const [name, setNombre] = useState("");
@@ -147,23 +148,14 @@ function Register() {
             </div>
 
             {/* PASSWORD */}
-            <div className="gp-input-group-container">
-              <div className={`gp-input-group ${errorsForm.password ? "is-invalid" : ""}`}>
-                <span className="gp-input-label">Contraseña</span>
-                <input
-                  className="form-control"
-                  type="password"
-                  placeholder="123456"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              {errorsForm.password && (
-                <div className="invalid-feedback d-block text-start mt-1">
-                  {errorsForm.password}
-                </div>
-              )}
-            </div>
+            <PasswordInput
+              label="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              error={errorsForm.password}
+              placeholder="123456"
+              autoComplete="new-password"
+            />
 
             <button className="submit-btn" type="submit" aria-label="Crear cuenta">
               <svg

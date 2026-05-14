@@ -4,6 +4,7 @@ import * as authServices from "../services/auth.services.js";
 import * as helpers from "../utils/helpers.js";
 import { useAlert } from "./../context/AlertContext.jsx";
 import { useDialog } from "./../context/DialogContext.jsx";
+import PasswordInput from "../components/PasswordInput.jsx";
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -73,24 +74,14 @@ function Login({ onLogin }) {
               )}
             </div>
 
-            <div className="gp-input-group-container">
-              <div className={`gp-input-group ${errorsForm.password ? "is-invalid" : ""}`}>
-                <span className="gp-input-label">Contraseña</span>
-                <input
-                  className="form-control"
-                  type="password"
-                  placeholder="123456"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="current-password"
-                />
-              </div>
-              {errorsForm.password && (
-                <div className="invalid-feedback d-block text-start mt-1">
-                  {errorsForm.password}
-                </div>
-              )}
-            </div>
+            <PasswordInput
+              label="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              error={errorsForm.password}
+              placeholder="123456"
+              autoComplete="current-password"
+            />
 
             <div className="mt-2 text-end">
               <Link to="/forgot-password" style={{ color: "white", fontSize: "12px", textDecoration: "none" }}>
