@@ -496,15 +496,15 @@ function Dashboard() {
         </div>
 
         <div className="admin-controls-right">
-          <div className="admin-search-container">
-            <span className="admin-search-label">Buscador</span>
+          <div className="ranking-search">
             <input
               type="text"
-              className="admin-search-input"
+              placeholder="Buscador"
+              className="ranking-search__input"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button className="btn-admin-search">Buscar</button>
+            <button className="ranking-search__button">Buscar</button>
           </div>
         </div>
       </div>
