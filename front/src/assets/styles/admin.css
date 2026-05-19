@@ -135,7 +135,8 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
-  flex: 1 1 auto; /* Grow to fill space */
+  flex: 1 1 auto;
+  /* Grow to fill space */
   text-align: center;
 }
 
@@ -189,6 +190,10 @@
   min-height: 400px;
 }
 
+.admin-scroll-warning {
+  display: none;
+}
+
 .admin-table-container {
   background-color: #fff;
   border-radius: 8px;
@@ -202,12 +207,30 @@
   width: 100%;
 }
 
+/* Custom Scrollbar for responsive tables */
+.table-responsive::-webkit-scrollbar {
+  height: 6px;
+}
+.table-responsive::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 3px;
+  transition: background-color 0.3s;
+}
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
 .admin-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   color: #333;
-  min-width: 900px; /* Evita el amontonamiento de columnas en dispositivos móviles */
+  min-width: 1060px;
+  /* Evita el amontonamiento de columnas en dispositivos móviles */
 }
 
 .admin-table th {
@@ -325,6 +348,21 @@
 
 /* Responsive */
 @media (max-width: 992px) {
+  .admin-scroll-warning {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-bottom: 15px;
+    font-weight: 500;
+  }
+
   .admin-filters-bar {
     flex-direction: column;
     align-items: stretch;

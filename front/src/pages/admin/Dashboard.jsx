@@ -529,6 +529,10 @@ function Dashboard() {
         </div>
 
       <div className="admin-tab-content">
+        <div className="admin-scroll-warning">
+          <i className="bi bi-arrow-left-right"></i>
+          <span>Desliza horizontalmente para ver la tabla completa</span>
+        </div>
         {loading ? <LoaderSpinner /> : renderTabContent()}
       </div>
     </div>
