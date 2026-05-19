@@ -1,15 +1,15 @@
 import { usePagination } from "./../../hooks/usePagination.js";
 import CountryDisplay from "../CountryDisplay.jsx";
 
-export default function TeamsTable({ teams, onEdit, onDelete }) {
+export default function TeamsTable({ teams, onEdit, onDelete, pageSize }) {
   const {
     page,
-    pageSize,
+    pageSize: currentPageSize,
     setPage,
     setPageSize,
     totalPages,
     paginatedData
-  } = usePagination(teams, 10);
+  } = usePagination(teams, pageSize || 10);
 
   return (
     <>

@@ -2,15 +2,15 @@ import { usePagination } from "./../../hooks/usePagination.js";
 import { formatDateInTimezone } from "../../utils/helpers.js";
 import CountryDisplay from "../CountryDisplay.jsx";
 
-export default function RacesTable({ races, onEdit, onDelete }) {
+export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
   const {
     page,
-    pageSize,
+    pageSize: currentPageSize,
     setPage,
     setPageSize,
     totalPages,
     paginatedData
-  } = usePagination(races, 10);
+  } = usePagination(races, pageSize || 10);
 
   return (
     <>

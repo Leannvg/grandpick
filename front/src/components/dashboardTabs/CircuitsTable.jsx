@@ -1,15 +1,15 @@
 import { usePagination } from "./../../hooks/usePagination.js";
 import CountryDisplay from "../CountryDisplay.jsx";
 
-export default function CircuitsTable({ circuits, onEdit, onDelete }) {
+export default function CircuitsTable({ circuits, onEdit, onDelete, pageSize }) {
   const {
     page,
-    pageSize,
+    pageSize: currentPageSize,
     setPage,
     setPageSize,
     totalPages,
     paginatedData
-  } = usePagination(circuits, 10);
+  } = usePagination(circuits, pageSize || 10);
 
   return (
     <>

@@ -37,8 +37,9 @@
   max-width: 300px;
 }
 
-/* Year Select */
-.admin-year-select {
+/* Filter Selects */
+.admin-year-select,
+.admin-page-select {
   background-color: #fff;
   color: #333;
   border: none;
@@ -47,9 +48,12 @@
   font-weight: 600;
   cursor: pointer;
   min-width: 80px;
+  text-align: center;
+  text-align-last: center; /* For centering the selected option across browsers */
 }
 
-.admin-year-select:disabled {
+.admin-year-select:disabled,
+.admin-page-select:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }

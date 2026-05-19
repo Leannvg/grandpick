@@ -4,6 +4,12 @@ export function usePagination(data, defaultPageSize = 10) {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(defaultPageSize);
 
+  // Sincronizar pageSize si cambia el valor por defecto (ej: desde Dashboard)
+  useEffect(() => {
+    setPageSize(defaultPageSize);
+    setPage(1);
+  }, [defaultPageSize]);
+
   // Resetear página cuando cambian los datos filtrados
   useEffect(() => {
     setPage(1);

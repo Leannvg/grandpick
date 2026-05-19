@@ -92,6 +92,7 @@ function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterYear, setFilterYear] = useState("Todos");
   const [availableYears, setAvailableYears] = useState([]);
+  const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
 
   const [searchParams] = useSearchParams();
@@ -410,9 +411,9 @@ function Dashboard() {
         return <RacesTable races={filterData(
           races.filter((r) => filterYear === "Todos" || r.year === Number(filterYear)),
           ["country", "gp_name", "raceTypes"]
-        )} onEdit={handleEdit} onDelete={handleDelete} />;
+        )} onEdit={handleEdit} onDelete={handleDelete} pageSize={pageSize} />;
       case TABS.CIRCUITS:
-        return <CircuitsTable circuits={filterData(circuits, ["circuit_name", "country", "city", "length", "laps"])} onEdit={handleEdit} onDelete={handleDelete} />;
+        return <CircuitsTable circuits={filterData(circuits, ["circuit_name", "country", "city", "length", "laps"])} onEdit={handleEdit} onDelete={handleDelete} pageSize={pageSize} />;
       case TABS.DRIVERS:
         return (
           <DriversTable
@@ -420,13 +421,14 @@ function Dashboard() {
             onEdit={handleEdit}
             onDelete={handleDelete}
             onToggle={handleToggleDriver}
+            pageSize={pageSize}
           />
         );
       case TABS.TEAMS:
         console.log(teams);
-        return <TeamsTable teams={filterData(teams, ["name", "chief", "power_unit", "country", "drivers.full_name"])} onEdit={handleEdit} onDelete={handleDelete} />;
+        return <TeamsTable teams={filterData(teams, ["name", "chief", "power_unit", "country", "drivers.full_name"])} onEdit={handleEdit} onDelete={handleDelete} pageSize={pageSize} />;
       case TABS.USERS:
-        return <UsersTable users={filterData(users, ["name", "last_name", "email", "country", "points", "date_register"])} onToggleBlock={handleToggleBlockUser} />;
+        return <UsersTable users={filterData(users, ["name", "last_name", "email", "country", "points", "date_register"])} onToggleBlock={handleToggleBlockUser} pageSize={pageSize} />;
       case TABS.ASSIGNMENTS:
         return <TeamsDriversAdmin searchTerm={searchTerm} />;
       default:
@@ -463,6 +465,19 @@ function Dashboard() {
 
           <div className="admin-filters-bar">
             <div className="admin-filters-left">
+              <select
+                className="admin-page-select"
+                value={pageSize}
+                onChange={(e) => setPageSize(Number(e.target.value))}
+                disabled={[TABS.ASSIGNMENTS].includes(activeTab)}
+                title="Registros por página"
+              >
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+              </select>
+
               <select
                 className="admin-year-select"
                 value={filterYear}

@@ -2,15 +2,15 @@ import { usePagination } from "./../../hooks/usePagination.js";
 import { formatDate } from "../../utils/helpers.js";
 import CountryDisplay from "../CountryDisplay.jsx";
 
-export default function UsersTable({ users, onToggleBlock }) {
+export default function UsersTable({ users, onToggleBlock, pageSize }) {
   const {
     page,
-    pageSize,
+    pageSize: currentPageSize,
     setPage,
     setPageSize,
     totalPages,
     paginatedData
-  } = usePagination(users, 10);
+  } = usePagination(users, pageSize || 10);
 
   return (
     <>
