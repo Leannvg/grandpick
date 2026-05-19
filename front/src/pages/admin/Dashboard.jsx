@@ -465,34 +465,38 @@ function Dashboard() {
 
           <div className="admin-filters-bar">
             <div className="admin-filters-left">
-              <span className="admin-filter-label">Mostrar</span>
-              <select
-                className="admin-page-select"
-                value={pageSize}
-                onChange={(e) => setPageSize(Number(e.target.value))}
-                disabled={[TABS.ASSIGNMENTS].includes(activeTab)}
-                title="Registros por página"
-              >
-                <option value={5}>5</option>
-                <option value={10}>10</option>
-                <option value={20}>20</option>
-                <option value={50}>50</option>
-              </select>
+              <div className={`admin-input-group ${[TABS.ASSIGNMENTS].includes(activeTab) ? 'disabled' : ''}`}>
+                <span className="admin-input-group-text">Mostrar</span>
+                <select
+                  className="admin-page-select"
+                  value={pageSize}
+                  onChange={(e) => setPageSize(Number(e.target.value))}
+                  disabled={[TABS.ASSIGNMENTS].includes(activeTab)}
+                  title="Registros por página"
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                  <option value={50}>50</option>
+                </select>
+              </div>
 
-              <span className="admin-filter-label">Año</span>
-              <select
-                className="admin-year-select"
-                value={filterYear}
-                onChange={(e) => setFilterYear(e.target.value)}
-                disabled={activeTab !== TABS.RACES}
-              >
-                <option value="Todos">Todos</option>
-                {availableYears.map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
+              <div className={`admin-input-group ${activeTab !== TABS.RACES ? 'disabled' : ''}`}>
+                <span className="admin-input-group-text">Año</span>
+                <select
+                  className="admin-year-select"
+                  value={filterYear}
+                  onChange={(e) => setFilterYear(e.target.value)}
+                  disabled={activeTab !== TABS.RACES}
+                >
+                  <option value="Todos">Todos</option>
+                  {availableYears.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
               <button
                 className="btn-admin-add"

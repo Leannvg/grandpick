@@ -36,30 +36,60 @@
   max-width: 300px;
 }
 
-.admin-filter-label {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-/* Filter Selects */
-.admin-year-select,
-.admin-page-select {
+/* Custom Input Groups for Admin Filters */
+.admin-input-group {
+  display: flex;
+  align-items: center;
   background-color: #fff;
-  color: #333;
-  border: none;
-  padding: 8px 12px;
   border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
-  min-width: 80px;
-  text-align: center;
-  text-align-last: center; /* For centering the selected option across browsers */
+  overflow: hidden;
+  height: 38px;
+  transition: all 0.3s ease;
 }
 
-.admin-year-select:disabled,
-.admin-page-select:disabled {
-  opacity: 0.5;
+.admin-input-group-text {
+  background-color: #f0f4f8;
+  color: #4a5568;
+  padding: 0 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid #e2e8f0;
+  user-select: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-input-group select {
+  background-color: transparent !important;
+  color: #2d3748 !important;
+  border: none !important;
+  height: 100%;
+  padding: 0 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-width: 70px;
+  text-align: center;
+  text-align-last: center;
+  outline: none;
+}
+
+/* Disabled State */
+.admin-input-group.disabled {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.admin-input-group.disabled .admin-input-group-text {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.3);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-input-group.disabled select {
+  color: rgba(255, 255, 255, 0.3) !important;
   cursor: not-allowed;
 }
 
