@@ -14,6 +14,14 @@
   margin-bottom: 20px;
 }
 
+.admin-tabs-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 /* Filters Bar */
 .admin-filters-bar {
   display: flex;
@@ -35,6 +43,12 @@
   gap: 10px;
   width: 100%;
   max-width: 300px;
+}
+
+.admin-filter-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* Filter Selects */
@@ -289,6 +303,17 @@
 
   .admin-filters-right {
     max-width: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-tabs-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .btn-admin-add {
+    justify-content: center;
   }
 }
 
