@@ -5,7 +5,7 @@ import { useRedirectToTab } from "../../hooks/useRedirectToTab.js";
 import { useAlert } from "../../context/AlertContext.jsx";
 import { useDialog } from "../../context/DialogContext.jsx";
 import SearchableSelect from "../SearchableSelect.jsx";
-import LoaderCar from "../LoaderCar.jsx";
+import LoaderSpinner from "../LoaderSpinner.jsx";
 
 function TeamsDriversAdmin({ searchTerm = "" }) {
   const [teams, setTeams] = useState([]);
@@ -127,7 +127,7 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
     return pilotMatch || teamMatch;
   });
 
-  if (loading) return <LoaderCar message="Cargando asignaciones..." fullScreen={false} />;
+  if (loading) return <LoaderSpinner />;
 
   return (
     <>

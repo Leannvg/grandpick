@@ -13,6 +13,7 @@ import TeamsTable from "./../../components/dashboardTabs/TeamsTable.jsx";
 import UsersTable from "./../../components/dashboardTabs/UsersTable.jsx";
 import TeamsDriversAdmin from "./../../components/dashboardTabs/Assignments.jsx";
 import LoaderCar from "../../components/LoaderCar.jsx";
+import LoaderSpinner from "../../components/LoaderSpinner.jsx";
 
 import { useAlert } from "../../context/AlertContext.jsx";
 import { useDialog } from "../../context/DialogContext.jsx";
@@ -505,7 +506,7 @@ function Dashboard() {
       </div>
 
       <div className="admin-tab-content">
-        {loading ? <LoaderCar message="Cargando datos..." fullScreen={false} /> : renderTabContent()}
+        {loading ? <LoaderSpinner /> : renderTabContent()}
       </div>
     </div>
   </section>
