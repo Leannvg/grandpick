@@ -11,17 +11,6 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-bottom: 20px;
-}
-
-.admin-tabs-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
 /* Filters Bar */
 .admin-filters-bar {
   display: flex;
@@ -303,17 +292,6 @@
 
   .admin-filters-right {
     max-width: none;
-  }
-}
-
-@media (max-width: 768px) {
-  .admin-tabs-section {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .btn-admin-add {
-    justify-content: center;
   }
 }
 

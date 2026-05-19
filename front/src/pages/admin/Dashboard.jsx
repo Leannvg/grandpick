@@ -447,35 +447,20 @@ function Dashboard() {
         </header>
 
         <div className="admin-controls-bar">
-          <div className="admin-tabs-section">
-            <div className="admin-tabs">
-              {Object.values(TABS).map((tabName) => (
-                <button
-                  key={tabName}
-                  className={activeTab === tabName ? "admin-tab-btn active" : "admin-tab-btn"}
-                  onClick={() => {
-                    setActiveTab(tabName);
-                    setSearchTerm("");
-                    navigate({ search: `?tab=${tabName}` });
-                  }}
-                >
-                  {tabName}
-                </button>
-              ))}
-            </div>
-            <button
-              className="btn-admin-add"
-              disabled={[TABS.ASSIGNMENTS, TABS.USERS].includes(activeTab)}
-              onClick={() => {
-                if (activeTab === TABS.RACES) navigate("/race/create");
-                else if (activeTab === TABS.CIRCUITS) navigate("/circuit/create");
-                else if (activeTab === TABS.DRIVERS) navigate("/driver/create");
-                else if (activeTab === TABS.TEAMS) navigate("/team/create");
-              }}
-            >
-              <span>+</span>
-              Agregar
-            </button>
+          <div className="admin-tabs">
+            {Object.values(TABS).map((tabName) => (
+              <button
+                key={tabName}
+                className={activeTab === tabName ? "admin-tab-btn active" : "admin-tab-btn"}
+                onClick={() => {
+                  setActiveTab(tabName);
+                  setSearchTerm("");
+                  navigate({ search: `?tab=${tabName}` });
+                }}
+              >
+                {tabName}
+              </button>
+            ))}
           </div>
 
           <div className="admin-filters-bar">
@@ -494,6 +479,7 @@ function Dashboard() {
                 <option value={50}>50</option>
               </select>
 
+              <span className="admin-filter-label">Año</span>
               <select
                 className="admin-year-select"
                 value={filterYear}
@@ -507,6 +493,20 @@ function Dashboard() {
                   </option>
                 ))}
               </select>
+
+              <button
+                className="btn-admin-add"
+                disabled={[TABS.ASSIGNMENTS, TABS.USERS].includes(activeTab)}
+                onClick={() => {
+                  if (activeTab === TABS.RACES) navigate("/race/create");
+                  else if (activeTab === TABS.CIRCUITS) navigate("/circuit/create");
+                  else if (activeTab === TABS.DRIVERS) navigate("/driver/create");
+                  else if (activeTab === TABS.TEAMS) navigate("/team/create");
+                }}
+              >
+                <span>+</span>
+                Agregar
+              </button>
             </div>
 
             <div className="admin-filters-right">
