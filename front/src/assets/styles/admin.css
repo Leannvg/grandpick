@@ -390,3 +390,48 @@
     flex: 1 1 calc(50% - 8px);
   }
 }
+
+/* Custom styling for react-select inside admin tables (Assignments) */
+.admin-table .react-select-container {
+  max-width: 220px;
+  width: 100%;
+}
+
+.admin-table .react-select__control {
+  background-color: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+  min-height: 36px !important;
+  height: 36px !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.admin-table .react-select__control:hover {
+  border-color: #94a3b8 !important;
+}
+
+.admin-table .react-select__value-container {
+  padding: 0 10px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.admin-table .react-select__dropdown-indicator {
+  color: #64748b !important;
+  padding: 6px !important;
+}
+
+.admin-table .react-select__indicator-separator {
+  background-color: #cbd5e1 !important;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+}
+
+.admin-table .react-select__single-value {
+  color: #333 !important;
+  font-weight: 500 !important;
+  font-size: 0.9rem !important;
+}
