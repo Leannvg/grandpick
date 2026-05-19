@@ -127,7 +127,7 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
     return pilotMatch || teamMatch;
   });
 
-  if (loading) return <LoaderCar message="Cargando asignaciones..." />;
+  if (loading) return <LoaderCar message="Cargando asignaciones..." fullScreen={false} />;
 
   return (
     <>

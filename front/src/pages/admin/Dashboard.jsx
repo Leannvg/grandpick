@@ -445,11 +445,11 @@ function Dashboard() {
 
         <div className="admin-controls-bar">
         <div className="admin-controls-left">
-          {activeTab === TABS.RACES && (
             <select
               className="admin-year-select"
               value={filterYear}
               onChange={(e) => setFilterYear(e.target.value)}
+              disabled={activeTab !== TABS.RACES}
             >
               <option value="Todos">Todos</option>
               {availableYears.map((year) => (
@@ -458,11 +458,10 @@ function Dashboard() {
                 </option>
               ))}
             </select>
-          )}
 
-          {![TABS.ASSIGNMENTS, TABS.USERS].includes(activeTab) && (
             <button
               className="btn-admin-add"
+              disabled={[TABS.ASSIGNMENTS, TABS.USERS].includes(activeTab)}
               onClick={() => {
                 if (activeTab === TABS.RACES) navigate("/race/create");
                 else if (activeTab === TABS.CIRCUITS) navigate("/circuit/create");
@@ -471,12 +470,8 @@ function Dashboard() {
               }}
             >
               <span>+</span>
-              {activeTab === TABS.RACES && "Agregar"}
-              {activeTab === TABS.CIRCUITS && "Agregar"}
-              {activeTab === TABS.DRIVERS && "Agregar"}
-              {activeTab === TABS.TEAMS && "Agregar"}
+              Agregar
             </button>
-          )}
 
           <div className="admin-tabs">
             {Object.values(TABS).map((tabName) => (
@@ -510,7 +505,7 @@ function Dashboard() {
       </div>
 
       <div className="admin-tab-content">
-        {loading ? <LoaderCar message="Cargando datos..." /> : renderTabContent()}
+        {loading ? <LoaderCar message="Cargando datos..." fullScreen={false} /> : renderTabContent()}
       </div>
     </div>
   </section>

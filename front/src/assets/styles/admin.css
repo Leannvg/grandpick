@@ -40,6 +40,11 @@
   min-width: 80px;
 }
 
+.admin-year-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Agregar Button */
 .btn-admin-add {
   background-color: #2e7d32;
@@ -54,8 +59,14 @@
   transition: background-color 0.3s;
 }
 
-.btn-admin-add:hover {
+.btn-admin-add:hover:not(:disabled) {
   background-color: #1b5e20;
+}
+
+.btn-admin-add:disabled {
+  background-color: #6c757d;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Tab Buttons */
@@ -121,6 +132,11 @@
 }
 
 /* Table Styles */
+.admin-tab-content {
+  position: relative;
+  min-height: 400px;
+}
+
 .admin-table-container {
   background-color: #fff;
   border-radius: 8px;

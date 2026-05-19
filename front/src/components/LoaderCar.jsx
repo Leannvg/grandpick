@@ -1,16 +1,18 @@
 import { useEffect } from 'react';
 import '../assets/styles/loaderCar.css';
 
-const LoaderCar = ({ message = "Cargando..." }) => {
+const LoaderCar = ({ message = "Cargando...", fullScreen = true }) => {
     useEffect(() => {
-        document.body.classList.add('body-scroll-lock');
-        return () => {
-            document.body.classList.remove('body-scroll-lock');
-        };
-    }, []);
+        if (fullScreen) {
+            document.body.classList.add('body-scroll-lock');
+            return () => {
+                document.body.classList.remove('body-scroll-lock');
+            };
+        }
+    }, [fullScreen]);
 
     return (
-        <div className="loader-car-overlay">
+        <div className={`loader-car-overlay ${!fullScreen ? 'local' : ''}`}>
             <div className="loader-car-container">
                 <svg viewBox="0 0 178 40" width="178" height="40">
                     <path
