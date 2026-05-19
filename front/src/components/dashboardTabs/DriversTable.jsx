@@ -55,7 +55,7 @@ export default function DriversTable({ drivers, onEdit, onDelete, onToggle }) {
                     </button>
                     <button
                       onClick={() => onToggle(d)}
-                      className={`btn-admin-action ${d.active ? "btn-admin-delete" : "btn-admin-add"}`}
+                      className={`btn-admin-action ${d.active ? "btn-admin-disable" : "btn-admin-enable"}`}
                       title={d.active ? "Deshabilitar" : "Habilitar"}
                     >
                       <i className={`bi ${d.active ? "bi-person-x-fill" : "bi-person-check-fill"}`}></i>

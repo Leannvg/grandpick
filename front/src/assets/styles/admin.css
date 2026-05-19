@@ -250,6 +250,16 @@
   color: #fff;
 }
 
+.btn-admin-disable {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.btn-admin-enable {
+  background-color: #2e7d32;
+  color: #fff;
+}
+
 /* Responsive */
 @media (max-width: 992px) {
   .admin-controls-bar {
