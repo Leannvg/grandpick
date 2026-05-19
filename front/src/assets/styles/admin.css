@@ -9,23 +9,32 @@
 /* Controls Bar */
 .admin-controls-bar {
   display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Filters Bar */
+.admin-filters-bar {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 20px;
   flex-wrap: wrap;
 }
 
-.admin-controls-left {
+.admin-filters-left {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.admin-controls-right {
+.admin-filters-right {
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
+  max-width: 300px;
 }
 
 /* Year Select */
@@ -73,6 +82,8 @@
 .admin-tabs {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .admin-tab-btn {
@@ -84,6 +95,8 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
+  flex: 1 1 auto; /* Grow to fill space */
+  text-align: center;
 }
 
 .admin-tab-btn.active {
@@ -101,7 +114,6 @@
   border-radius: 4px;
   overflow: hidden;
   width: 100%;
-  max-width: 300px;
   height: 38px;
 }
 
@@ -262,24 +274,30 @@
 
 /* Responsive */
 @media (max-width: 992px) {
-  .admin-controls-bar {
+  .admin-filters-bar {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .admin-controls-left,
-  .admin-controls-right {
-    justify-content: center;
+  .admin-filters-left {
+    justify-content: space-between;
   }
 
-  .admin-tabs {
-    flex-wrap: wrap;
-    justify-content: center;
+  .admin-filters-right {
+    max-width: none;
   }
 }
 
 @media (max-width: 600px) {
-  .admin-search-input {
-    width: 100%;
+  .admin-tab-btn {
+    flex: 1 1 calc(33.333% - 8px);
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 400px) {
+  .admin-tab-btn {
+    flex: 1 1 calc(50% - 8px);
   }
 }

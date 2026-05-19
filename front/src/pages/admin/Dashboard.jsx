@@ -445,35 +445,6 @@ function Dashboard() {
         </header>
 
         <div className="admin-controls-bar">
-        <div className="admin-controls-left">
-            <select
-              className="admin-year-select"
-              value={filterYear}
-              onChange={(e) => setFilterYear(e.target.value)}
-              disabled={activeTab !== TABS.RACES}
-            >
-              <option value="Todos">Todos</option>
-              {availableYears.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-
-            <button
-              className="btn-admin-add"
-              disabled={[TABS.ASSIGNMENTS, TABS.USERS].includes(activeTab)}
-              onClick={() => {
-                if (activeTab === TABS.RACES) navigate("/race/create");
-                else if (activeTab === TABS.CIRCUITS) navigate("/circuit/create");
-                else if (activeTab === TABS.DRIVERS) navigate("/driver/create");
-                else if (activeTab === TABS.TEAMS) navigate("/team/create");
-              }}
-            >
-              <span>+</span>
-              Agregar
-            </button>
-
           <div className="admin-tabs">
             {Object.values(TABS).map((tabName) => (
               <button
@@ -489,21 +460,52 @@ function Dashboard() {
               </button>
             ))}
           </div>
-        </div>
 
-        <div className="admin-controls-right">
-          <div className="ranking-search">
-            <input
-              type="text"
-              placeholder="Buscador"
-              className="ranking-search__input"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button className="ranking-search__button">Buscar</button>
+          <div className="admin-filters-bar">
+            <div className="admin-filters-left">
+              <select
+                className="admin-year-select"
+                value={filterYear}
+                onChange={(e) => setFilterYear(e.target.value)}
+                disabled={activeTab !== TABS.RACES}
+              >
+                <option value="Todos">Todos</option>
+                {availableYears.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                className="btn-admin-add"
+                disabled={[TABS.ASSIGNMENTS, TABS.USERS].includes(activeTab)}
+                onClick={() => {
+                  if (activeTab === TABS.RACES) navigate("/race/create");
+                  else if (activeTab === TABS.CIRCUITS) navigate("/circuit/create");
+                  else if (activeTab === TABS.DRIVERS) navigate("/driver/create");
+                  else if (activeTab === TABS.TEAMS) navigate("/team/create");
+                }}
+              >
+                <span>+</span>
+                Agregar
+              </button>
+            </div>
+
+            <div className="admin-filters-right">
+              <div className="ranking-search">
+                <input
+                  type="text"
+                  placeholder="Buscador"
+                  className="ranking-search__input"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button className="ranking-search__button">Buscar</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
       <div className="admin-tab-content">
         {loading ? <LoaderSpinner /> : renderTabContent()}
