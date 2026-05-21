@@ -292,10 +292,9 @@ function PredictionHistory() {
                                                     const isMatch = pred && real && pred.driver._id === real.driver._id;
                                                     let points = isMatch ? currentSession.points_system.points[idx] : 0;
 
-                                                    if (isMatch && currentSession?.type?.toLowerCase() === 'qualy') {
+                                                    if (isMatch && currentSession?.type?.toLowerCase().includes('qual')) {
                                                         const sessionDate = new Date(currentSession.date_race);
-                                                        const cutoffDate = new Date("2026-05-21T00:00:00-03:00");
-                                                        if (sessionDate < cutoffDate) {
+                                                        if (sessionDate < new Date()) {
                                                             points = points / 3;
                                                         }
                                                     }
@@ -413,10 +412,9 @@ function PredictionHistory() {
                                             const isMatch = pred && real && pred.driver._id === real.driver._id;
                                             let points = isMatch ? currentSession.points_system.points[idx] : 0;
 
-                                            if (isMatch && currentSession?.type?.toLowerCase() === 'qualy') {
+                                            if (isMatch && currentSession?.type?.toLowerCase().includes('qual')) {
                                                 const sessionDate = new Date(currentSession.date_race);
-                                                const cutoffDate = new Date("2026-05-21T00:00:00-03:00");
-                                                if (sessionDate < cutoffDate) {
+                                                if (sessionDate < new Date()) {
                                                     points = points / 3;
                                                 }
                                             }

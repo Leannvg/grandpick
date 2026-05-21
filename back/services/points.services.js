@@ -40,12 +40,16 @@ export async function updatePointsAfterRace(raceId) {
         for (const prediccion of predicciones) {
             let puntos = 0;
 
+            // Determine points array, scaling old Qualy sessions by 1/3
+            let pointsArray = sistemaPuntos;
+            if (race.type?.toLowerCase().includes('qual') && new Date(race.date_race) < new Date('2026-05-21T00:00:00-03:00')) {
+                pointsArray = sistemaPuntos.map(p => p / 3);
+            }
             for (let i = 0; i < race.results.length; i++) {
                 const resultDriverId = race.results[i].driver.toString();
                 const predictedDriverId = prediccion.prediction[i]?.driver?.toString();
-
                 if (resultDriverId === predictedDriverId) {
-                    puntos += sistemaPuntos[i] || 0;
+                    puntos += pointsArray[i] || 0;
                 }
             }
 
