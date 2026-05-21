@@ -12,6 +12,7 @@ import DriversTable from "./../../components/dashboardTabs/DriversTable.jsx";
 import TeamsTable from "./../../components/dashboardTabs/TeamsTable.jsx";
 import UsersTable from "./../../components/dashboardTabs/UsersTable.jsx";
 import TeamsDriversAdmin from "./../../components/dashboardTabs/Assignments.jsx";
+import NotificationsTab from "./../../components/dashboardTabs/NotificationsTab.jsx";
 import LoaderCar from "../../components/LoaderCar.jsx";
 import LoaderSpinner from "../../components/LoaderSpinner.jsx";
 
@@ -26,6 +27,7 @@ const TABS = {
   DRIVERS: "Pilotos",
   USERS: "Usuarios",
   ASSIGNMENTS: "Asignaciones",
+  NOTIFICATIONS: "Comunicados",
 };
 
 
@@ -216,7 +218,7 @@ function Dashboard() {
     else if (activeTab === TABS.CIRCUITS) fetchCircuits();
     else if (activeTab === TABS.DRIVERS) fetchDrivers();
     else if (activeTab === TABS.TEAMS) fetchTeams();
-    else if (activeTab === TABS.USERS) fetchUsers();
+    else if (activeTab === TABS.USERS || activeTab === TABS.NOTIFICATIONS) fetchUsers();
   }, [activeTab]);
 
   // --- Acciones ---
@@ -431,6 +433,8 @@ function Dashboard() {
         return <UsersTable users={filterData(users, ["name", "last_name", "email", "country", "points", "date_register"])} onToggleBlock={handleToggleBlockUser} pageSize={pageSize} />;
       case TABS.ASSIGNMENTS:
         return <TeamsDriversAdmin searchTerm={searchTerm} />;
+      case TABS.NOTIFICATIONS:
+        return <NotificationsTab users={users} />;
       default:
         return <p>Selecciona una pestaña.</p>;
     }
@@ -465,13 +469,13 @@ function Dashboard() {
 
           <div className="admin-filters-bar">
             <div className="admin-filters-left">
-              <div className={`admin-input-group ${[TABS.ASSIGNMENTS].includes(activeTab) ? 'disabled' : ''}`}>
+              <div className={`admin-input-group ${[TABS.ASSIGNMENTS, TABS.NOTIFICATIONS].includes(activeTab) ? 'disabled' : ''}`}>
                 <span className="admin-input-group-text">Mostrar</span>
                 <select
                   className="admin-page-select"
                   value={pageSize}
                   onChange={(e) => setPageSize(Number(e.target.value))}
-                  disabled={[TABS.ASSIGNMENTS].includes(activeTab)}
+                  disabled={[TABS.ASSIGNMENTS, TABS.NOTIFICATIONS].includes(activeTab)}
                   title="Registros por página"
                 >
                   <option value={5}>5</option>
@@ -500,7 +504,7 @@ function Dashboard() {
 
               <button
                 className="btn-admin-add"
-                disabled={[TABS.ASSIGNMENTS, TABS.USERS].includes(activeTab)}
+                disabled={[TABS.ASSIGNMENTS, TABS.USERS, TABS.NOTIFICATIONS].includes(activeTab)}
                 onClick={() => {
                   if (activeTab === TABS.RACES) navigate("/race/create");
                   else if (activeTab === TABS.CIRCUITS) navigate("/circuit/create");

@@ -80,3 +80,63 @@ export async function deleteNotification(req, res) {
   }
 }
 
+export async function sendAdminNotification(req, res) {
+  try {
+    const { title, message, link, type, userId } = req.body;
+    
+    // 1. Crear la notificacion global
+    const { createGlobalNotification, assignNotificationToUsers } = await import("../../services/notifications.services.js");
+    const notificationId = await createGlobalNotification({ 
+      title, 
+      message, 
+      link: link || "", 
+      type: type || "info" 
+    });
+
+    const db = await connectDB();
+    let users = [];
+
+    if (userId && userId !== "all") {
+      const user = await db.collection("Users").findOne({ _id: new ObjectId(userId) });
+      if (user) users.push(user);
+    } else {
+      users = await db.collection("Users").find({}).toArray();
+    }
+
+    if (users.length > 0) {
+      // 2. Asignar notificacion in-app
+      await assignNotificationToUsers(notificationId, users);
+
+      // 3. Enviar notificaciones push
+      const { sendPushNotification } = await import("../../services/fcm.services.js");
+      let pushEnviadas = 0;
+      
+      for (const u of users) {
+        if (u.fcmTokens && u.fcmTokens.length > 0) {
+          try {
+            const promesas = u.fcmTokens.map(token => 
+              sendPushNotification(token, { title, body: message }, { link: link || "/" })
+            );
+            await Promise.allSettled(promesas);
+            pushEnviadas++;
+          } catch (e) {
+            console.error("Error enviando push a " + u._id, e);
+          }
+        }
+      }
+
+      res.status(200).json({ 
+        message: "Notificación enviada correctamente", 
+        inAppCount: users.length, 
+        pushCount: pushEnviadas 
+      });
+    } else {
+      res.status(404).json({ message: "No se encontraron usuarios para enviar la notificación" });
+    }
+
+  } catch (error) {
+    console.error("Error en sendAdminNotification:", error);
+    res.status(500).json({ error: "Error al enviar la notificación" });
+  }
+}
+
