@@ -21,7 +21,7 @@ function NotificationsTab({ users = [] }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.title.trim() || !formData.message.trim()) {
       showAlert("El título y el mensaje son obligatorios.", "danger", true);
       return;
@@ -30,8 +30,8 @@ function NotificationsTab({ users = [] }) {
     setLoading(true);
     try {
       const response = await NotificationsServices.sendAdminNotification(formData);
-      showAlert(`✅ ${response.message} (In-App: ${response.inAppCount}, Push: ${response.pushCount})`, "success");
-      
+      showAlert(`${response.message} (Internas: ${response.inAppCount}, Externas push: ${response.pushCount})`, "success");
+
       setFormData({
         title: "",
         message: "",

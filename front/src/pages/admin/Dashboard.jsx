@@ -467,76 +467,80 @@ function Dashboard() {
             ))}
           </div>
 
-          <div className="admin-filters-bar">
-            <div className="admin-filters-left">
-              <div className={`admin-input-group ${[TABS.ASSIGNMENTS, TABS.NOTIFICATIONS].includes(activeTab) ? 'disabled' : ''}`}>
-                <span className="admin-input-group-text">Mostrar</span>
-                <select
-                  className="admin-page-select"
-                  value={pageSize}
-                  onChange={(e) => setPageSize(Number(e.target.value))}
-                  disabled={[TABS.ASSIGNMENTS, TABS.NOTIFICATIONS].includes(activeTab)}
-                  title="Registros por página"
+          {activeTab !== TABS.NOTIFICATIONS && (
+            <div className="admin-filters-bar">
+              <div className="admin-filters-left">
+                <div className={`admin-input-group ${[TABS.ASSIGNMENTS].includes(activeTab) ? 'disabled' : ''}`}>
+                  <span className="admin-input-group-text">Mostrar</span>
+                  <select
+                    className="admin-page-select"
+                    value={pageSize}
+                    onChange={(e) => setPageSize(Number(e.target.value))}
+                    disabled={[TABS.ASSIGNMENTS].includes(activeTab)}
+                    title="Registros por página"
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                  </select>
+                </div>
+
+                <div className={`admin-input-group ${activeTab !== TABS.RACES ? 'disabled' : ''}`}>
+                  <span className="admin-input-group-text">Año</span>
+                  <select
+                    className="admin-year-select"
+                    value={filterYear}
+                    onChange={(e) => setFilterYear(e.target.value)}
+                    disabled={activeTab !== TABS.RACES}
+                  >
+                    <option value="Todos">Todos</option>
+                    {availableYears.map((year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <button
+                  className="btn-admin-add"
+                  disabled={[TABS.ASSIGNMENTS, TABS.USERS].includes(activeTab)}
+                  onClick={() => {
+                    if (activeTab === TABS.RACES) navigate("/race/create");
+                    else if (activeTab === TABS.CIRCUITS) navigate("/circuit/create");
+                    else if (activeTab === TABS.DRIVERS) navigate("/driver/create");
+                    else if (activeTab === TABS.TEAMS) navigate("/team/create");
+                  }}
                 >
-                  <option value={5}>5</option>
-                  <option value={10}>10</option>
-                  <option value={20}>20</option>
-                  <option value={50}>50</option>
-                </select>
+                  <span>+</span>
+                  Agregar
+                </button>
               </div>
 
-              <div className={`admin-input-group ${activeTab !== TABS.RACES ? 'disabled' : ''}`}>
-                <span className="admin-input-group-text">Año</span>
-                <select
-                  className="admin-year-select"
-                  value={filterYear}
-                  onChange={(e) => setFilterYear(e.target.value)}
-                  disabled={activeTab !== TABS.RACES}
-                >
-                  <option value="Todos">Todos</option>
-                  {availableYears.map((year) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <button
-                className="btn-admin-add"
-                disabled={[TABS.ASSIGNMENTS, TABS.USERS, TABS.NOTIFICATIONS].includes(activeTab)}
-                onClick={() => {
-                  if (activeTab === TABS.RACES) navigate("/race/create");
-                  else if (activeTab === TABS.CIRCUITS) navigate("/circuit/create");
-                  else if (activeTab === TABS.DRIVERS) navigate("/driver/create");
-                  else if (activeTab === TABS.TEAMS) navigate("/team/create");
-                }}
-              >
-                <span>+</span>
-                Agregar
-              </button>
-            </div>
-
-            <div className="admin-filters-right">
-              <div className="ranking-search">
-                <input
-                  type="text"
-                  placeholder="Buscador"
-                  className="ranking-search__input"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <button className="ranking-search__button">Buscar</button>
+              <div className="admin-filters-right">
+                <div className="ranking-search">
+                  <input
+                    type="text"
+                    placeholder="Buscador"
+                    className="ranking-search__input"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <button className="ranking-search__button">Buscar</button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
 
       <div className="admin-tab-content">
-        <div className="admin-scroll-warning">
-          <i className="bi bi-arrow-left-right"></i>
-          <span>Desliza horizontalmente para ver la tabla completa</span>
-        </div>
+        {activeTab !== TABS.NOTIFICATIONS && (
+          <div className="admin-scroll-warning">
+            <i className="bi bi-arrow-left-right"></i>
+            <span>Desliza horizontalmente para ver la tabla completa</span>
+          </div>
+        )}
         {loading ? <LoaderSpinner /> : renderTabContent()}
       </div>
     </div>
