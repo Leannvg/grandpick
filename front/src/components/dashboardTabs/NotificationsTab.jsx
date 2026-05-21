@@ -47,24 +47,27 @@ function NotificationsTab({ users = [] }) {
   };
 
   return (
-    <div className="admin-form-container">
-      <h2 className="admin-form-title">Enviar Comunicado</h2>
-      <p style={{ color: "#fff", marginBottom: "20px", fontSize: "0.9rem" }}>
-        Envía un comunicado a todos los usuarios o a uno en específico. Esto enviará tanto una notificación interna en la aplicación como una notificación Push a quienes las tengan habilitadas.
-      </p>
+    <div className="container mt-4" style={{ maxWidth: "800px" }}>
+      <div className="d-flex flex-column gap-2 mb-4">
+        <h2 className="m-0" style={{ color: "#fff" }}>Enviar Comunicado</h2>
+        <p style={{ color: "#aaa", fontSize: "0.95rem", margin: 0 }}>
+          Envía un comunicado a todos los usuarios o a uno en específico. Esto enviará tanto una notificación interna en la aplicación como una notificación Push a quienes las tengan habilitadas.
+        </p>
+      </div>
 
       {loading ? (
         <LoaderSpinner />
       ) : (
-        <form className="admin-form" onSubmit={handleSubmit}>
-          <div className="admin-input-group full-width">
-            <label htmlFor="userId">Destinatario</label>
+        <form onSubmit={handleSubmit} className="p-4 rounded shadow-lg" style={{ backgroundColor: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
+          <div className="mb-3">
+            <label htmlFor="userId" className="form-label text-white">Destinatario</label>
             <select
               id="userId"
               name="userId"
               value={formData.userId}
               onChange={handleChange}
-              className="admin-form-input"
+              className="form-control"
+              style={{ backgroundColor: "#f8fafc", cursor: "pointer" }}
             >
               <option value="all">Todos los usuarios</option>
               {users.map((user) => (
@@ -75,8 +78,8 @@ function NotificationsTab({ users = [] }) {
             </select>
           </div>
 
-          <div className="admin-input-group full-width">
-            <label htmlFor="title">Título del comunicado</label>
+          <div className="mb-3">
+            <label htmlFor="title" className="form-label text-white">Título del comunicado</label>
             <input
               type="text"
               id="title"
@@ -84,12 +87,13 @@ function NotificationsTab({ users = [] }) {
               placeholder="Ej: Mantenimiento programado"
               value={formData.title}
               onChange={handleChange}
-              className="admin-form-input"
+              className="form-control"
+              style={{ backgroundColor: "#f8fafc" }}
             />
           </div>
 
-          <div className="admin-input-group full-width">
-            <label htmlFor="message">Mensaje</label>
+          <div className="mb-3">
+            <label htmlFor="message" className="form-label text-white">Mensaje</label>
             <textarea
               id="message"
               name="message"
@@ -97,13 +101,13 @@ function NotificationsTab({ users = [] }) {
               placeholder="Escribe el mensaje aquí..."
               value={formData.message}
               onChange={handleChange}
-              className="admin-form-input"
-              style={{ resize: "vertical", padding: "12px" }}
+              className="form-control"
+              style={{ resize: "vertical", backgroundColor: "#f8fafc" }}
             ></textarea>
           </div>
 
-          <div className="admin-input-group full-width">
-            <label htmlFor="link">Link adjunto (opcional)</label>
+          <div className="mb-4">
+            <label htmlFor="link" className="form-label text-white">Link adjunto (opcional)</label>
             <input
               type="text"
               id="link"
@@ -111,13 +115,14 @@ function NotificationsTab({ users = [] }) {
               placeholder="Ej: /predictions"
               value={formData.link}
               onChange={handleChange}
-              className="admin-form-input"
+              className="form-control"
+              style={{ backgroundColor: "#f8fafc" }}
             />
           </div>
 
-          <div className="admin-form-actions">
-            <button type="submit" className="btn-admin-submit">
-              Enviar Comunicado
+          <div className="d-flex justify-content-end mt-2">
+            <button type="submit" className="btn-admin-add" style={{ padding: "10px 24px" }}>
+              <i className="bi bi-send"></i> Enviar Comunicado
             </button>
           </div>
         </form>
