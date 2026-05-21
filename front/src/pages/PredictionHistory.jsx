@@ -290,7 +290,15 @@ function PredictionHistory() {
                                                     const pred = currentSession?.prediction?.find(p => p.position === pos);
                                                     const real = currentSession?.results?.find(r => r.position === pos);
                                                     const isMatch = pred && real && pred.driver._id === real.driver._id;
-                                                    const points = isMatch ? currentSession.points_system.points[idx] : 0;
+                                                    let points = isMatch ? currentSession.points_system.points[idx] : 0;
+
+                                                    if (isMatch && currentSession?.type?.toLowerCase() === 'qualy') {
+                                                        const sessionDate = new Date(currentSession.date_race);
+                                                        const cutoffDate = new Date("2026-05-21T00:00:00-03:00");
+                                                        if (sessionDate < cutoffDate) {
+                                                            points = points / 3;
+                                                        }
+                                                    }
 
                                                     return (
                                                         <div key={pos} className={`table-row ${pred && !isMatch && real ? 'no-match' : ''}`}>
@@ -403,7 +411,15 @@ function PredictionHistory() {
                                             const pred = currentSession?.prediction?.find(p => p.position === pos);
                                             const real = currentSession?.results?.find(r => r.position === pos);
                                             const isMatch = pred && real && pred.driver._id === real.driver._id;
-                                            const points = isMatch ? currentSession.points_system.points[idx] : 0;
+                                            let points = isMatch ? currentSession.points_system.points[idx] : 0;
+
+                                            if (isMatch && currentSession?.type?.toLowerCase() === 'qualy') {
+                                                const sessionDate = new Date(currentSession.date_race);
+                                                const cutoffDate = new Date("2026-05-21T00:00:00-03:00");
+                                                if (sessionDate < cutoffDate) {
+                                                    points = points / 3;
+                                                }
+                                            }
 
                                             return (
                                                 <div key={pos} className={`table-row ${pred && !isMatch && real ? 'no-match' : ''}`}>
