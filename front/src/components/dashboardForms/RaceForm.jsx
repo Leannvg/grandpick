@@ -537,7 +537,7 @@ const sortedPoints = useMemo(() => {
                 <div className="col-12 col-md-4">
                   <div className="gp-input-group-container mb-0">
                     <div className="gp-input-group">
-                      <span className="gp-input-label">{p.type}</span>
+                      <span className="gp-input-label" style={{ textTransform: "capitalize" }}>{p.type}</span>
                       <div className="d-flex align-items-center justify-content-center bg-white px-3 flex-fill">
                         <input
                           className="form-check-input m-0"
@@ -547,7 +547,7 @@ const sortedPoints = useMemo(() => {
                           disabled={
                             isEnabled && Object.values(enabledPoints).filter(Boolean).length === 1
                           }
-                          style={{ cursor: "pointer", width: "20px", height: "20px", border: "black 2px solid" }}
+                          style={{ cursor: "pointer", width: "20px", height: "20px", border: "black 2px solid", backgroundColor: isEnabled ? "white" : "#e0e0e0" }}
                         />
                       </div>
                     </div>
@@ -557,7 +557,7 @@ const sortedPoints = useMemo(() => {
                 {/* Fecha gp-input-group: col-6 col-md-4 */}
                 <div className="col-6 col-md-4">
                   <div className="gp-input-group-container mb-0">
-                    <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.date && isEnabled ? "is-invalid" : ""}`}>
+                    <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.date && isEnabled ? "is-invalid" : ""}`} style={{ backgroundColor: isEnabled ? "white" : "#e0e0e0" }}>
                       <span className="gp-input-label" style={{ width: "80px", minWidth: "80px" }}>Fecha</span>
                       <input
                         className="form-control"
@@ -578,7 +578,7 @@ const sortedPoints = useMemo(() => {
                 {/* Hora gp-input-group: col-6 col-md-4 */}
                 <div className="col-6 col-md-4">
                   <div className="gp-input-group-container mb-0">
-                    <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.time && isEnabled ? "is-invalid" : ""}`}>
+                    <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.time && isEnabled ? "is-invalid" : ""}`} style={{ backgroundColor: isEnabled ? "white" : "#e0e0e0" }}>
                       <span className="gp-input-label" style={{ width: "80px", minWidth: "80px" }}>Hora</span>
                       <input
                         className="form-control"
@@ -632,10 +632,11 @@ const sortedPoints = useMemo(() => {
                         transition: "background-color 0.2s",
                         opacity: enabledPoints[p._id] ? 1 : 0.4,
                         height: "48px",
+                        width: "100%",
+                        textTransform: "capitalize",
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
-                        width: "100%"
+                        justifyContent: "center"
                       }}
                     >
                       {p.type}
