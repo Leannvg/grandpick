@@ -439,7 +439,7 @@ function RaceForm({
       {/* GRUPO 1: Fin de semana */}
       <div className="row mb-5">
         <div className="col-12 col-md-3 mb-3 mb-md-0">
-          <div className="d-flex justify-content-center align-items-center rounded-3 p-2 text-white text-center section-header">
+          <div className="d-flex justify-content-center align-items-center rounded-3 p-2 text-white text-center" style={{ backgroundColor: "#111d2a", minHeight: "48px", fontSize: "14px", fontWeight: "500", letterSpacing: "0.5px" }}>
             Fin de semana
           </div>
         </div>
@@ -464,7 +464,7 @@ function RaceForm({
           </div>
 
           <div className="gp-input-group-container">
-            <div className={`gp-input-group ${errorsForm.id_circuit ? "is-invalid" : ""} overflow-visible`}>
+            <div className={`gp-input-group ${errorsForm.id_circuit ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
               <span className="gp-input-label">Circuito</span>
               <div className="flex-fill">
                 <SearchableSelect
@@ -524,7 +524,7 @@ function RaceForm({
       {/* GRUPO 2: Tipos */}
       <div className="row mb-5">
         <div className="col-12 col-md-3 mb-3 mb-md-0">
-          <div className="d-flex justify-content-center align-items-center rounded-3 p-2 text-white text-center section-header">
+          <div className="d-flex justify-content-center align-items-center rounded-3 p-2 text-white text-center" style={{ backgroundColor: "#111d2a", minHeight: "48px", fontSize: "14px", fontWeight: "500", letterSpacing: "0.5px" }}>
             Tipos
           </div>
         </div>
@@ -537,10 +537,17 @@ function RaceForm({
                 <div className="col-12 col-md-4">
                   <div className="gp-input-group-container mb-0">
                     <div className="gp-input-group">
-                      <span className="gp-input-label capitalize">{p.type}</span>
+                      <span className="gp-input-label" style={{ textTransform: "capitalize" }}>{p.type}</span>
                       <div className="d-flex align-items-center justify-content-center bg-white px-3 flex-fill">
                         <input
-                      className={"checkbox-base " + (isEnabled ? "checkbox-enabled" : "")}
+                          className="form-check-input m-0"
+                          type="checkbox"
+                          checked={isEnabled}
+                          onChange={(e) => handlePoints(p._id, e.target.checked)}
+                          disabled={
+                            isEnabled && Object.values(enabledPoints).filter(Boolean).length === 1
+                          }
+                          style={{ cursor: "pointer", width: "20px", height: "20px", border: "black 2px solid", accentColor: isEnabled ? "#4caf50" : undefined }}
                         />
                       </div>
                     </div>
@@ -550,8 +557,8 @@ function RaceForm({
                 {/* Fecha gp-input-group: col-6 col-md-4 */}
                 <div className="col-6 col-md-4">
                   <div className="gp-input-group-container mb-0">
-                    <div className={"gp-input-group " + (isEnabled ? "gp-input-group-enabled" : "gp-input-group-disabled") + ( !isEnabled ? " opacity-50" : "") + (errorsForm.perPoint?.[p._id]?.date && isEnabled ? " is-invalid" : "")}
-                        ><span className={`gp-input-label gp-label-fixed ${isEnabled ? "label-enabled" : "label-disabled"}`}>Fecha</span>
+                    <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.date && isEnabled ? "is-invalid" : ""}`} style={{ backgroundColor: isEnabled ? "white" : "#e0e0e0" }}>
+                      <span className="gp-input-label" style={{ width: "80px", minWidth: "80px", backgroundColor: isEnabled ? "#4a76a8" : "#a4a4a4ff" }}>Fecha</span>
                       <input
                         className="form-control"
                         type="date"
@@ -571,8 +578,8 @@ function RaceForm({
                 {/* Hora gp-input-group: col-6 col-md-4 */}
                 <div className="col-6 col-md-4">
                   <div className="gp-input-group-container mb-0">
-                    <div className={"gp-input-group " + (isEnabled ? "gp-input-group-enabled" : "gp-input-group-disabled") + ( !isEnabled ? " opacity-50" : "") + (errorsForm.perPoint?.[p._id]?.time && isEnabled ? " is-invalid" : "")}
-                        ><span className={`gp-input-label gp-label-fixed ${isEnabled ? "label-enabled" : "label-disabled"}`}>Hora</span>
+                    <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.time && isEnabled ? "is-invalid" : ""}`} style={{ backgroundColor: isEnabled ? "white" : "#e0e0e0" }}>
+                      <span className="gp-input-label" style={{ width: "80px", minWidth: "80px", backgroundColor: isEnabled ? "#4a76a8" : "#a4a4a4ff" }}>Hora</span>
                       <input
                         className="form-control"
                         type="time"
@@ -596,7 +603,7 @@ function RaceForm({
       {(action == "edit") && (
         <div className="row mb-5 align-items-start">
           <div className="col-12 col-md-3 mb-3 mb-md-0">
-            <div className="d-flex justify-content-center align-items-center rounded-3 p-2 text-white text-center section-header">
+            <div className="d-flex justify-content-center align-items-center rounded-3 p-2 text-white text-center" style={{ backgroundColor: "#111d2a", minHeight: "48px", fontSize: "14px", fontWeight: "500", letterSpacing: "0.5px" }}>
               Resultados
             </div>
           </div>
@@ -604,9 +611,9 @@ function RaceForm({
             <nav className="mb-4">
               <div className="row g-2" id="nav-tab" role="tablist">
                 {sortedPoints.map((p) => (
-                    <div className="col-6 col-md-4" key={p._id}>
+                  <div className="col-4" key={p._id}>
                     <button
-                      className={`nav-link result-btn ${activeTab === p.type ? "active result-btn-active" : ""} ${!enabledPoints[p._id] ? "result-btn-disabled" : ""}`}
+                      className={`nav-link ${activeTab === p.type ? "active" : ""}`}
                       id={`nav-${p.type}-tab`}
                       data-bs-toggle="pill"
                       data-bs-target={`#nav-${p.type}`}
@@ -616,7 +623,21 @@ function RaceForm({
                       aria-selected={activeTab === p.type}
                       disabled={!enabledPoints[p._id]}
                       onClick={() => setActiveTab(p.type)}
-
+                      style={{
+                        backgroundColor: activeTab === p.type ? "#2e7d32" : "#111d2a",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "8px",
+                        fontWeight: "500",
+                        transition: "background-color 0.2s",
+                        opacity: enabledPoints[p._id] ? 1 : 0.4,
+                        height: "48px",
+                        width: "100%",
+                        textTransform: "capitalize",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}
                     >
                       {p.type}
                     </button>
