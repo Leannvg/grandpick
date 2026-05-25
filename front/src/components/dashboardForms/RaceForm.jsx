@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import Points from "../../services/points.services.js";
 import RacesServices from "../../services/races.services.js";
 import CircuitsServices from "../../services/circuits.services.js";
@@ -29,6 +29,10 @@ function RaceForm({
   const [dateFinish, setDateFinish] = useState(initialData.dateFinish || "");
   const [raceTypes, setRaceTypes] = useState(initialRaceTypes);
   const [errorsForm, setErrors] = useState({});
+const sortedPoints = useMemo(() => {
+  const order = ["sprint","qualy","race"];
+  return [...points].sort((a,b) => order.indexOf(a.type) - order.indexOf(b.type));
+}, [points]);
   const [year, setYear] = useState(String(DateTime.now().year));
   const [usedCircuits, setUsedCircuits] = useState([]);
   const [activeTab, setActiveTab] = useState("");
@@ -37,11 +41,11 @@ function RaceForm({
   const { confirmDialog } = useDialog();
 
   useEffect(() => {
-    if (points.length > 0 && !activeTab) {
-      const firstEnabled = points.find(p => enabledPoints[p._id])?.type || points[0]?.type;
-      setActiveTab(firstEnabled);
-    }
-  }, [points, enabledPoints, activeTab]);
+  if (sortedPoints.length > 0 && !activeTab) {
+    const firstEnabled = sortedPoints.find(p => enabledPoints[p._id])?.type || sortedPoints[0]?.type;
+    setActiveTab(firstEnabled);
+  }
+}, [sortedPoints, enabledPoints, activeTab]);
 
 
   useEffect(() => {
@@ -525,10 +529,10 @@ function RaceForm({
           </div>
         </div>
         <div className="col-12 col-md-9">
-          {points.map((p) => {
+          {sortedPoints.map((p) => {
             const isEnabled = !!enabledPoints[p._id];
             return (
-              <div className="row g-2 mb-3 align-items-start" key={p._id}>
+              <div className="row g-2 mb-4 align-items-start" key={p._id}>
                 {/* Checkbox: col-12 col-md-4 */}
                 <div className="col-12 col-md-4">
                   <div className="gp-input-group-container mb-0">
@@ -605,39 +609,44 @@ function RaceForm({
           </div>
           <div className="col-12 col-md-9">
             <nav className="mb-4">
-              <div className="nav nav-pills gap-2" id="nav-tab" role="tablist">
-                {points.map((p) => (
-                  <button
-                    key={p._id}
-                    className={`nav-link ${activeTab === p.type ? "active" : ""}`}
-                    id={`nav-${p.type}-tab`}
-                    data-bs-toggle="pill"
-                    data-bs-target={`#nav-${p.type}`}
-                    type="button"
-                    role="tab"
-                    aria-controls={`nav-${p.type}`}
-                    aria-selected={activeTab === p.type}
-                    disabled={!enabledPoints[p._id]}
-                    onClick={() => setActiveTab(p.type)}
-                    style={{
-                      backgroundColor: activeTab === p.type ? "#2e7d32" : "#111d2a",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: "8px",
-                      padding: "8px 24px",
-                      fontWeight: "500",
-                      transition: "background-color 0.2s",
-                      opacity: enabledPoints[p._id] ? 1 : 0.4
-                    }}
-                  >
-                    {p.type}
-                  </button>
+              <div className="row g-2" id="nav-tab" role="tablist">
+                {sortedPoints.map((p) => (
+                  <div className="col-12 col-md-4" key={p._id}>
+                    <button
+                      className={`nav-link ${activeTab === p.type ? "active" : ""}`}
+                      id={`nav-${p.type}-tab`}
+                      data-bs-toggle="pill"
+                      data-bs-target={`#nav-${p.type}`}
+                      type="button"
+                      role="tab"
+                      aria-controls={`nav-${p.type}`}
+                      aria-selected={activeTab === p.type}
+                      disabled={!enabledPoints[p._id]}
+                      onClick={() => setActiveTab(p.type)}
+                      style={{
+                        backgroundColor: activeTab === p.type ? "#2e7d32" : "#111d2a",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "8px",
+                        fontWeight: "500",
+                        transition: "background-color 0.2s",
+                        opacity: enabledPoints[p._id] ? 1 : 0.4,
+                        height: "48px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "100%"
+                      }}
+                    >
+                      {p.type}
+                    </button>
+                  </div>
                 ))}
               </div>
             </nav>
 
             <div className="tab-content" id="nav-tabContent">
-              {points.map((p) => (
+              {sortedPoints.map((p) => (
                 <div
                   key={p._id}
                   className={`tab-pane fade ${activeTab === p.type ? "show active" : ""}`}
