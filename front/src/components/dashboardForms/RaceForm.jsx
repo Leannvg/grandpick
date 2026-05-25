@@ -29,10 +29,10 @@ function RaceForm({
   const [dateFinish, setDateFinish] = useState(initialData.dateFinish || "");
   const [raceTypes, setRaceTypes] = useState(initialRaceTypes);
   const [errorsForm, setErrors] = useState({});
-const sortedPoints = useMemo(() => {
-  const order = ["sprint","qualy","race"];
-  return [...points].sort((a,b) => order.indexOf(a.type) - order.indexOf(b.type));
-}, [points]);
+  const sortedPoints = useMemo(() => {
+    const order = ["sprint", "qualy", "race"];
+    return [...points].sort((a, b) => order.indexOf(a.type) - order.indexOf(b.type));
+  }, [points]);
   const [year, setYear] = useState(String(DateTime.now().year));
   const [usedCircuits, setUsedCircuits] = useState([]);
   const [activeTab, setActiveTab] = useState("");
@@ -41,11 +41,11 @@ const sortedPoints = useMemo(() => {
   const { confirmDialog } = useDialog();
 
   useEffect(() => {
-  if (sortedPoints.length > 0 && !activeTab) {
-    const firstEnabled = sortedPoints.find(p => enabledPoints[p._id])?.type || sortedPoints[0]?.type;
-    setActiveTab(firstEnabled);
-  }
-}, [sortedPoints, enabledPoints, activeTab]);
+    if (sortedPoints.length > 0 && !activeTab) {
+      const firstEnabled = sortedPoints.find(p => enabledPoints[p._id])?.type || sortedPoints[0]?.type;
+      setActiveTab(firstEnabled);
+    }
+  }, [sortedPoints, enabledPoints, activeTab]);
 
 
   useEffect(() => {
@@ -537,7 +537,7 @@ const sortedPoints = useMemo(() => {
                 <div className="col-12 col-md-4">
                   <div className="gp-input-group-container mb-0">
                     <div className="gp-input-group">
-                      <span className="gp-input-label" style={{ textTransform: "capitalize" }}>{p.type}</span>
+                      <span className="gp-input-label" style={{ textTransform: "capitalize", backgroundColor: isEnabled ? "transparent" : "#e0e0e0" }}>{p.type}</span>
                       <div className="d-flex align-items-center justify-content-center bg-white px-3 flex-fill">
                         <input
                           className="form-check-input m-0"
@@ -547,7 +547,7 @@ const sortedPoints = useMemo(() => {
                           disabled={
                             isEnabled && Object.values(enabledPoints).filter(Boolean).length === 1
                           }
-                          style={{ cursor: "pointer", width: "20px", height: "20px", border: "black 2px solid", backgroundColor: isEnabled ? "white" : "#e0e0e0" }}
+                          style={{ cursor: "pointer", width: "20px", height: "20px", border: "black 2px solid", accentColor: isEnabled ? "#4caf50" : undefined }}
                         />
                       </div>
                     </div>
