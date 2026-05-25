@@ -25,19 +25,26 @@ function RaceEdit({action}) {
   if (!initialData) return <p>Cargando...</p>;
 
   return (
-    <div className="container admin">
-      <h1>Editar Carrera</h1>
-      <div className="alert alert-danger d-flex align-items-center justify-content-center shadow rounded-3 my-4">
-        Recordá ingresar las fechas y horarios según la hora local del circuito. Estos serán utilizados como datos oficiales para todas las conversiones y horarios globales.
-      </div>
-      <RaceForm
-        initialData={initialData}
-        onSave={handleSave}
-        submitText="Actualizar carrera"
-        action={action}
-        race_types={initialData.race_types || []}
-      />
-    </div>
+    <main>
+      <section className="auth-section page-section container text-center">
+        <div className="auth-container" style={{ maxWidth: "550px" }}>
+          <header className="page-header">
+            <p className="section-label">Administración</p>
+            <h1 className="section-title">EDITAR CARRERA</h1>
+            <p className="section-subtitle">
+              Recordá ingresar las fechas y horarios según la hora local del circuito. Estos serán utilizados como datos oficiales para todas las conversiones y horarios globales.
+            </p>
+          </header>
+          <RaceForm
+            initialData={initialData}
+            onSave={handleSave}
+            submitText="Actualizar carrera"
+            action={action}
+            race_types={initialData.race_types || []}
+          />
+        </div>
+      </section>
+    </main>
   );
 }
 

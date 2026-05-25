@@ -9,6 +9,7 @@ import { DateTime } from "luxon";
 import { useAlert } from "../../context/AlertContext.jsx";
 import { useDialog } from "../../context/DialogContext.jsx";
 import SearchableSelect from "../SearchableSelect.jsx";
+import SubmitButton from "../SubmitButton.jsx";
 
 
 function RaceForm({
@@ -424,130 +425,149 @@ function RaceForm({
   return (
 
     <form onSubmit={handleSubmit}>
-      <div className="mb-3">
-        <label>Año</label>
-        <select
-          className="form-control"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-          disabled={action === "edit"}
-        >
-          <option value="">Selecciona un año</option>
-          {Array.from({ length: 7 }, (_, i) => DateTime.now().year - 1 + i).map((y) => (
-            <option key={y} value={y}>
-              {y}
-            </option>
-          ))}
-        </select>
+      <div className="gp-input-group-container">
+        <div className="gp-input-group">
+          <span className="gp-input-label">Año</span>
+          <select
+            className="form-control"
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            disabled={action === "edit"}
+          >
+            <option value="">Selecciona un año</option>
+            {Array.from({ length: 7 }, (_, i) => DateTime.now().year - 1 + i).map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div className="mb-3">
-        <label>Gran Premio</label>
-        <SearchableSelect
-          options={circuitsAll}
-          value={circuit}
-          onChange={handleCircuit}
-          isInvalid={!!errorsForm.id_circuit}
-          isDisabled={action === "edit"}
-          getOptionDisabled={(opt) => usedCircuits.includes(opt._id)}
-          placeholder="Selecciona un gran premio"
-        />
-
+      <div className="gp-input-group-container">
+        <div className={`gp-input-group ${errorsForm.id_circuit ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
+          <span className="gp-input-label">Gran Premio</span>
+          <div className="flex-fill">
+            <SearchableSelect
+              options={circuitsAll}
+              value={circuit}
+              onChange={handleCircuit}
+              isInvalid={!!errorsForm.id_circuit}
+              isDisabled={action === "edit"}
+              getOptionDisabled={(opt) => usedCircuits.includes(opt._id)}
+              placeholder="Selecciona un gran premio"
+            />
+          </div>
+        </div>
         {errorsForm.id_circuit && (
-          <div className="invalid-feedback">{errorsForm.id_circuit}</div>
+          <div className="invalid-feedback d-block text-start mt-1">{errorsForm.id_circuit}</div>
         )}
       </div>
 
-
-      <div className="d-flex gap-3">
-        <div className="mb-3 w-100">
-          <label>Fecha Inicio</label>
-          <input
-            className={`form-control ${errorsForm.date_gp_start ? "is-invalid" : ""}`}
-            type="date"
-            min={yearStart}
-            max={yearEnd}
-            value={dateStart}
-            onChange={(e) => setDateStart(e.target.value)}
-          />
+      <div className="d-flex gap-3 flex-column flex-md-row">
+        <div className="gp-input-group-container">
+          <div className={`gp-input-group ${errorsForm.date_gp_start ? "is-invalid" : ""}`}>
+            <span className="gp-input-label">Fecha Inicio</span>
+            <input
+              className="form-control"
+              type="date"
+              min={yearStart}
+              max={yearEnd}
+              value={dateStart}
+              onChange={(e) => setDateStart(e.target.value)}
+            />
+          </div>
           {errorsForm.date_gp_start && (
-            <div className="invalid-feedback">{errorsForm.date_gp_start}</div>
+            <div className="invalid-feedback d-block text-start mt-1">{errorsForm.date_gp_start}</div>
           )}
         </div>
-        <div className="mb-3 w-100">
-          <label>Fecha Fin</label>
-          <input
-            className={`form-control ${errorsForm.date_gp_end ? "is-invalid" : ""}`}
-            type="date"
-            min={yearStart}
-            max={yearEnd}
-            value={dateFinish}
-            onChange={(e) => setDateFinish(e.target.value)}
-          />
+
+        <div className="gp-input-group-container">
+          <div className={`gp-input-group ${errorsForm.date_gp_end ? "is-invalid" : ""}`}>
+            <span className="gp-input-label">Fecha Fin</span>
+            <input
+              className="form-control"
+              type="date"
+              min={yearStart}
+              max={yearEnd}
+              value={dateFinish}
+              onChange={(e) => setDateFinish(e.target.value)}
+            />
+          </div>
           {errorsForm.date_gp_end && (
-            <div className="invalid-feedback">{errorsForm.date_gp_end}</div>
+            <div className="invalid-feedback d-block text-start mt-1">{errorsForm.date_gp_end}</div>
           )}
         </div>
       </div>
 
       {points.map((p) => {
+        const isEnabled = !!enabledPoints[p._id];
         return (
-          <div className="d-flex gap-3" key={p._id}>
-            <div className="mb-3 w-100 d-flex justify-content-between align-items-end p-2">
-              <label>{p.type}</label>
-              <input
-                className="form-check-input"
-                type="checkbox"
-                checked={!!enabledPoints[p._id]}
-                onChange={(e) => handlePoints(p._id, e.target.checked)}
-                disabled={
-                  !!enabledPoints[p._id] && Object.values(enabledPoints).filter(Boolean).length === 1
-                }
-              />
+          <div className="mb-4 p-3 rounded border border-secondary" style={{ backgroundColor: "rgba(255,255,255,0.02)" }} key={p._id}>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <span className="text-white fw-bold text-uppercase" style={{ letterSpacing: "1px" }}>
+                {p.type}
+              </span>
+              <div className="form-check form-switch">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id={`switch-${p._id}`}
+                  checked={isEnabled}
+                  onChange={(e) => handlePoints(p._id, e.target.checked)}
+                  disabled={
+                    isEnabled && Object.values(enabledPoints).filter(Boolean).length === 1
+                  }
+                  style={{ cursor: "pointer", scale: "1.2" }}
+                />
+                <label className="form-check-label text-white-50 ms-2" style={{ fontSize: "14px", cursor: "pointer" }} htmlFor={`switch-${p._id}`}>
+                  Habilitar
+                </label>
+              </div>
             </div>
 
-            <div className="mb-3 w-100">
-              <label>Fecha</label>
+            <div className="d-flex gap-3 flex-column flex-md-row">
+              <div className="gp-input-group-container">
+                <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.date && isEnabled ? "is-invalid" : ""}`}>
+                  <span className="gp-input-label">Fecha</span>
+                  <input
+                    className="form-control"
+                    type="date"
+                    min={dateStart || yearStart}
+                    max={dateFinish || yearEnd}
+                    disabled={!isEnabled}
+                    value={pointData[p._id]?.fecha || ""}
+                    onChange={(e) => handlePointData(p._id, "fecha", e.target.value)}
+                  />
+                </div>
+                {errorsForm.perPoint?.[p._id]?.date && isEnabled && (
+                  <div className="invalid-feedback d-block text-start mt-1">{errorsForm.perPoint[p._id].date || errorsForm.date}</div>
+                )}
+              </div>
 
-              <input
-                className={`form-control ${errorsForm.perPoint?.[p._id]?.date && enabledPoints[p._id]
-                  ? "is-invalid"
-                  : ""
-                  }`}
-                type="date"
-                min={dateStart || yearStart}
-                max={dateFinish || yearEnd}
-                disabled={!enabledPoints[p._id]}
-                value={pointData[p._id]?.fecha || ""}
-                onChange={(e) => handlePointData(p._id, "fecha", e.target.value)}
-              />
-              {errorsForm.perPoint?.[p._id]?.date && enabledPoints[p._id] && (
-                <div className="invalid-feedback">{errorsForm.date}</div>
-              )}
-            </div>
-
-            <div className="mb-3 w-100">
-              <label>Hora</label>
-              <input
-                className={`form-control ${errorsForm.perPoint?.[p._id]?.time && enabledPoints[p._id]
-                  ? "is-invalid"
-                  : ""
-                  }`}
-                type="time"
-                disabled={!enabledPoints[p._id]}
-                value={pointData[p._id]?.hora || ""}
-                onChange={(e) => handlePointData(p._id, "hora", e.target.value)}
-              />
-              {errorsForm.perPoint?.[p._id]?.time && enabledPoints[p._id] && (
-                <div className="invalid-feedback">{errorsForm.perPoint[p._id].time}</div>
-              )}
+              <div className="gp-input-group-container">
+                <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.time && isEnabled ? "is-invalid" : ""}`}>
+                  <span className="gp-input-label">Hora</span>
+                  <input
+                    className="form-control"
+                    type="time"
+                    disabled={!isEnabled}
+                    value={pointData[p._id]?.hora || ""}
+                    onChange={(e) => handlePointData(p._id, "hora", e.target.value)}
+                  />
+                </div>
+                {errorsForm.perPoint?.[p._id]?.time && isEnabled && (
+                  <div className="invalid-feedback d-block text-start mt-1">{errorsForm.perPoint[p._id].time}</div>
+                )}
+              </div>
             </div>
           </div>
         );
       })}
 
       {(action == "edit") && (
-        <div>
+        <div className="mb-4">
           <nav>
             <div className="nav nav-tabs" id="nav-tab" role="tablist">
               {points.map((p, idx) => (
@@ -596,10 +616,8 @@ function RaceForm({
       )}
 
 
-      <div className="d-flex justify-content-center">
-        <button type="submit" className="btn btn-secondary">
-          {submitText}
-        </button>
+      <div className="d-flex justify-content-center mt-4">
+        <SubmitButton ariaLabel={submitText} />
       </div>
     </form>
   );

@@ -9,13 +9,21 @@ function RaceCreate({action}) {
   };
 
   return (
-    <div className="container admin">
-      <h1>Nueva Carrera</h1>
-      <div className="alert alert-danger d-flex align-items-center justify-content-center shadow rounded-3 my-4">
-        Recordá ingresar las fechas y horarios según la hora local del circuito. Estos serán utilizados como datos oficiales para todas las conversiones y horarios globales.
-      </div>
-      <RaceForm onSave={handleSave} submitText="Cargar carrera" action={action}/>
-    </div>
+    <main>
+      <section className="auth-section page-section container text-center">
+        <div className="auth-container" style={{ maxWidth: "550px" }}>
+          <header className="page-header">
+            <p className="section-label">Administración</p>
+            <h1 className="section-title">NUEVA CARRERA</h1>
+            <p className="section-subtitle">
+              Recordá ingresar las fechas y horarios según la hora local del circuito. Estos serán utilizados como datos oficiales para todas las conversiones y horarios globales.
+            </p>
+          </header>
+
+          <RaceForm onSave={handleSave} submitText="Cargar carrera" action={action}/>
+        </div>
+      </section>
+    </main>
   );
 }
 
