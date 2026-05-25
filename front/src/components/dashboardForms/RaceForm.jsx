@@ -558,7 +558,7 @@ function RaceForm({
                 <div className="col-6 col-md-4">
                   <div className="gp-input-group-container mb-0">
                     <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.date && isEnabled ? "is-invalid" : ""}`} style={{ backgroundColor: isEnabled ? "white" : "#e0e0e0" }}>
-                      <span className="gp-input-label" style={{ width: "80px", minWidth: "80px", backgroundColor: isEnabled ? "transparent" : "#e0e0e0" }}>Fecha</span>
+                      <span className="gp-input-label" style={{ width: "80px", minWidth: "80px", backgroundColor: isEnabled ? "#4a76a8" : "#a4a4a4ff" }}>Fecha</span>
                       <input
                         className="form-control"
                         type="date"
