@@ -611,7 +611,7 @@ const sortedPoints = useMemo(() => {
             <nav className="mb-4">
               <div className="row g-2" id="nav-tab" role="tablist">
                 {sortedPoints.map((p) => (
-                  <div className="col-12 col-md-4" key={p._id}>
+                  <div className="col-4" key={p._id}>
                     <button
                       className={`nav-link ${activeTab === p.type ? "active" : ""}`}
                       id={`nav-${p.type}-tab`}
