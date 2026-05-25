@@ -82,8 +82,8 @@ function PredictionsForm({ points = {}, race_types = [], onDriverChange }) {
       {points.points.map((_, index) => (
         <div className="gp-input-group-container" key={index}>
           <div className={`gp-input-group ${invalidIndexes.includes(index) ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
-            <span className="gp-input-label" style={{ minWidth: "70px", width: "70px" }}>
-              {String(index + 1).padStart(2, "0")}
+            <span className="gp-input-label" style={{ minWidth: "60px", width: "60px" }}>
+              {index + 1}
             </span>
             <div className="flex-fill">
               <SearchableSelect

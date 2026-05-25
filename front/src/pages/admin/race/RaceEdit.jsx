@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import RacesServices from "../../../services/races.services.js";
 import RaceForm from "../../../components/dashboardForms/RaceForm.jsx";
-import * as helpers from "../../../utils/helpers.js"; 
+import * as helpers from "../../../utils/helpers.js";
 import { DateTime } from "luxon";
 
-function RaceEdit({action}) {
+function RaceEdit({ action }) {
   const { id, year } = useParams();
   const [initialData, setInitialData] = useState(null);
 
@@ -27,7 +27,7 @@ function RaceEdit({action}) {
   return (
     <main>
       <section className="auth-section page-section container text-center">
-        <div className="auth-container" style={{ maxWidth: "800px" }}>
+        <div className="auth-container" style={{ maxWidth: "1070px" }}>
           <header className="page-header">
             <p className="section-label">Modificá los datos existentes</p>
             <h1 className="section-title">EDITAR CARRERA</h1>

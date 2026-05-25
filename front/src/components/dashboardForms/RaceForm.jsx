@@ -433,7 +433,7 @@ function RaceForm({
   return (
     <form onSubmit={handleSubmit} className="text-start">
       {/* GRUPO 1: Fin de semana */}
-      <div className="row mb-5 align-items-center">
+      <div className="row mb-5">
         <div className="col-12 col-md-3 mb-3 mb-md-0">
           <div className="d-flex justify-content-center align-items-center rounded-3 p-2 text-white text-center" style={{ backgroundColor: "#111d2a", minHeight: "48px", fontSize: "14px", fontWeight: "500", letterSpacing: "0.5px" }}>
             Fin de semana
@@ -518,7 +518,7 @@ function RaceForm({
       </div>
 
       {/* GRUPO 2: Tipos */}
-      <div className="row mb-5 align-items-center">
+      <div className="row mb-5">
         <div className="col-12 col-md-3 mb-3 mb-md-0">
           <div className="d-flex justify-content-center align-items-center rounded-3 p-2 text-white text-center" style={{ backgroundColor: "#111d2a", minHeight: "48px", fontSize: "14px", fontWeight: "500", letterSpacing: "0.5px" }}>
             Tipos
@@ -528,60 +528,66 @@ function RaceForm({
           {points.map((p) => {
             const isEnabled = !!enabledPoints[p._id];
             return (
-              <div className="d-flex gap-3 flex-column flex-md-row mb-3 align-items-start" key={p._id}>
-                {/* Checkbox embebido en gp-input-group */}
-                <div className="gp-input-group-container" style={{ maxWidth: "220px" }}>
-                  <div className="gp-input-group">
-                    <span className="gp-input-label">{p.type}</span>
-                    <div className="d-flex align-items-center justify-content-center bg-white px-3 flex-fill">
-                      <input
-                        className="form-check-input m-0"
-                        type="checkbox"
-                        checked={isEnabled}
-                        onChange={(e) => handlePoints(p._id, e.target.checked)}
-                        disabled={
-                          isEnabled && Object.values(enabledPoints).filter(Boolean).length === 1
-                        }
-                        style={{ cursor: "pointer", width: "18px", height: "18px" }}
-                      />
+              <div className="row g-2 mb-3 align-items-start" key={p._id}>
+                {/* Checkbox: col-12 col-md-4 */}
+                <div className="col-12 col-md-4">
+                  <div className="gp-input-group-container mb-0">
+                    <div className="gp-input-group">
+                      <span className="gp-input-label">{p.type}</span>
+                      <div className="d-flex align-items-center justify-content-center bg-white px-3 flex-fill">
+                        <input
+                          className="form-check-input m-0"
+                          type="checkbox"
+                          checked={isEnabled}
+                          onChange={(e) => handlePoints(p._id, e.target.checked)}
+                          disabled={
+                            isEnabled && Object.values(enabledPoints).filter(Boolean).length === 1
+                          }
+                          style={{ cursor: "pointer", width: "20px", height: "20px", border: "black 2px solid" }}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Fecha gp-input-group */}
-                <div className="gp-input-group-container">
-                  <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.date && isEnabled ? "is-invalid" : ""}`}>
-                    <span className="gp-input-label">Fecha</span>
-                    <input
-                      className="form-control"
-                      type="date"
-                      min={dateStart || yearStart}
-                      max={dateFinish || yearEnd}
-                      disabled={!isEnabled}
-                      value={pointData[p._id]?.fecha || ""}
-                      onChange={(e) => handlePointData(p._id, "fecha", e.target.value)}
-                    />
+                {/* Fecha gp-input-group: col-6 col-md-4 */}
+                <div className="col-6 col-md-4">
+                  <div className="gp-input-group-container mb-0">
+                    <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.date && isEnabled ? "is-invalid" : ""}`}>
+                      <span className="gp-input-label" style={{ width: "80px", minWidth: "80px" }}>Fecha</span>
+                      <input
+                        className="form-control"
+                        type="date"
+                        min={dateStart || yearStart}
+                        max={dateFinish || yearEnd}
+                        disabled={!isEnabled}
+                        value={pointData[p._id]?.fecha || ""}
+                        onChange={(e) => handlePointData(p._id, "fecha", e.target.value)}
+                      />
+                    </div>
+                    {errorsForm.perPoint?.[p._id]?.date && isEnabled && (
+                      <div className="invalid-feedback d-block text-start mt-1">{errorsForm.perPoint[p._id].date || errorsForm.date}</div>
+                    )}
                   </div>
-                  {errorsForm.perPoint?.[p._id]?.date && isEnabled && (
-                    <div className="invalid-feedback d-block text-start mt-1">{errorsForm.perPoint[p._id].date || errorsForm.date}</div>
-                  )}
                 </div>
 
-                {/* Hora gp-input-group */}
-                <div className="gp-input-group-container">
-                  <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.time && isEnabled ? "is-invalid" : ""}`}>
-                    <span className="gp-input-label">Hora</span>
-                    <input
-                      className="form-control"
-                      type="time"
-                      disabled={!isEnabled}
-                      value={pointData[p._id]?.hora || ""}
-                      onChange={(e) => handlePointData(p._id, "hora", e.target.value)}
-                    />
+                {/* Hora gp-input-group: col-6 col-md-4 */}
+                <div className="col-6 col-md-4">
+                  <div className="gp-input-group-container mb-0">
+                    <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.time && isEnabled ? "is-invalid" : ""}`}>
+                      <span className="gp-input-label" style={{ width: "80px", minWidth: "80px" }}>Hora</span>
+                      <input
+                        className="form-control"
+                        type="time"
+                        disabled={!isEnabled}
+                        value={pointData[p._id]?.hora || ""}
+                        onChange={(e) => handlePointData(p._id, "hora", e.target.value)}
+                      />
+                    </div>
+                    {errorsForm.perPoint?.[p._id]?.time && isEnabled && (
+                      <div className="invalid-feedback d-block text-start mt-1">{errorsForm.perPoint[p._id].time}</div>
+                    )}
                   </div>
-                  {errorsForm.perPoint?.[p._id]?.time && isEnabled && (
-                    <div className="invalid-feedback d-block text-start mt-1">{errorsForm.perPoint[p._id].time}</div>
-                  )}
                 </div>
               </div>
             );
