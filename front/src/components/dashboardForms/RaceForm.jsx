@@ -537,7 +537,7 @@ function RaceForm({
                 <div className="col-12 col-md-4">
                   <div className="gp-input-group-container mb-0">
                     <div className="gp-input-group">
-                      <span className="gp-input-label" style={{ textTransform: "capitalize", backgroundColor: isEnabled ? "transparent" : "#e0e0e0" }}>{p.type}</span>
+                      <span className="gp-input-label" style={{ textTransform: "capitalize" }}>{p.type}</span>
                       <div className="d-flex align-items-center justify-content-center bg-white px-3 flex-fill">
                         <input
                           className="form-check-input m-0"
@@ -558,7 +558,7 @@ function RaceForm({
                 <div className="col-6 col-md-4">
                   <div className="gp-input-group-container mb-0">
                     <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.date && isEnabled ? "is-invalid" : ""}`} style={{ backgroundColor: isEnabled ? "white" : "#e0e0e0" }}>
-                      <span className="gp-input-label" style={{ width: "80px", minWidth: "80px" }}>Fecha</span>
+                      <span className="gp-input-label" style={{ width: "80px", minWidth: "80px", backgroundColor: isEnabled ? "transparent" : "#e0e0e0" }}>Fecha</span>
                       <input
                         className="form-control"
                         type="date"
@@ -579,7 +579,7 @@ function RaceForm({
                 <div className="col-6 col-md-4">
                   <div className="gp-input-group-container mb-0">
                     <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.time && isEnabled ? "is-invalid" : ""}`} style={{ backgroundColor: isEnabled ? "white" : "#e0e0e0" }}>
-                      <span className="gp-input-label" style={{ width: "80px", minWidth: "80px" }}>Hora</span>
+                      <span className="gp-input-label" style={{ width: "80px", minWidth: "80px", backgroundColor: isEnabled ? "transparent" : "#e0e0e0" }}>Hora</span>
                       <input
                         className="form-control"
                         type="time"
