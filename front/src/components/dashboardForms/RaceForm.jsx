@@ -31,9 +31,17 @@ function RaceForm({
   const [errorsForm, setErrors] = useState({});
   const [year, setYear] = useState(String(DateTime.now().year));
   const [usedCircuits, setUsedCircuits] = useState([]);
+  const [activeTab, setActiveTab] = useState("");
   const redirectToTab = useRedirectToTab();
   const { showAlert } = useAlert();
   const { confirmDialog } = useDialog();
+
+  useEffect(() => {
+    if (points.length > 0 && !activeTab) {
+      const firstEnabled = points.find(p => enabledPoints[p._id])?.type || points[0]?.type;
+      setActiveTab(firstEnabled);
+    }
+  }, [points, enabledPoints, activeTab]);
 
 
   useEffect(() => {
@@ -423,200 +431,233 @@ function RaceForm({
 
 
   return (
-
-    <form onSubmit={handleSubmit}>
-      <div className="gp-input-group-container">
-        <div className="gp-input-group">
-          <span className="gp-input-label">Año</span>
-          <select
-            className="form-control"
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-            disabled={action === "edit"}
-          >
-            <option value="">Selecciona un año</option>
-            {Array.from({ length: 7 }, (_, i) => DateTime.now().year - 1 + i).map((y) => (
-              <option key={y} value={y}>
-                {y}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div className="gp-input-group-container">
-        <div className={`gp-input-group ${errorsForm.id_circuit ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
-          <span className="gp-input-label">Gran Premio</span>
-          <div className="flex-fill">
-            <SearchableSelect
-              options={circuitsAll}
-              value={circuit}
-              onChange={handleCircuit}
-              isInvalid={!!errorsForm.id_circuit}
-              isDisabled={action === "edit"}
-              getOptionDisabled={(opt) => usedCircuits.includes(opt._id)}
-              placeholder="Selecciona un gran premio"
-            />
+    <form onSubmit={handleSubmit} className="text-start">
+      {/* GRUPO 1: Fin de semana */}
+      <div className="row mb-5 align-items-center">
+        <div className="col-12 col-md-3 mb-3 mb-md-0">
+          <div className="d-flex justify-content-center align-items-center rounded-3 p-2 text-white text-center" style={{ backgroundColor: "#111d2a", minHeight: "48px", fontSize: "14px", fontWeight: "500", letterSpacing: "0.5px" }}>
+            Fin de semana
           </div>
         </div>
-        {errorsForm.id_circuit && (
-          <div className="invalid-feedback d-block text-start mt-1">{errorsForm.id_circuit}</div>
-        )}
-      </div>
-
-      <div className="d-flex gap-3 flex-column flex-md-row">
-        <div className="gp-input-group-container">
-          <div className={`gp-input-group ${errorsForm.date_gp_start ? "is-invalid" : ""}`}>
-            <span className="gp-input-label">Fecha Inicio</span>
-            <input
-              className="form-control"
-              type="date"
-              min={yearStart}
-              max={yearEnd}
-              value={dateStart}
-              onChange={(e) => setDateStart(e.target.value)}
-            />
+        <div className="col-12 col-md-9">
+          <div className="gp-input-group-container">
+            <div className="gp-input-group">
+              <span className="gp-input-label">Año</span>
+              <select
+                className="form-control"
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                disabled={action === "edit"}
+              >
+                <option value="">Selecciona un año</option>
+                {Array.from({ length: 7 }, (_, i) => DateTime.now().year - 1 + i).map((y) => (
+                  <option key={y} value={y}>
+                    {y}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-          {errorsForm.date_gp_start && (
-            <div className="invalid-feedback d-block text-start mt-1">{errorsForm.date_gp_start}</div>
-          )}
-        </div>
 
-        <div className="gp-input-group-container">
-          <div className={`gp-input-group ${errorsForm.date_gp_end ? "is-invalid" : ""}`}>
-            <span className="gp-input-label">Fecha Fin</span>
-            <input
-              className="form-control"
-              type="date"
-              min={yearStart}
-              max={yearEnd}
-              value={dateFinish}
-              onChange={(e) => setDateFinish(e.target.value)}
-            />
-          </div>
-          {errorsForm.date_gp_end && (
-            <div className="invalid-feedback d-block text-start mt-1">{errorsForm.date_gp_end}</div>
-          )}
-        </div>
-      </div>
-
-      {points.map((p) => {
-        const isEnabled = !!enabledPoints[p._id];
-        return (
-          <div className="mb-4 p-3 rounded border border-secondary" style={{ backgroundColor: "rgba(255,255,255,0.02)" }} key={p._id}>
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <span className="text-white fw-bold text-uppercase" style={{ letterSpacing: "1px" }}>
-                {p.type}
-              </span>
-              <div className="form-check form-switch">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  role="switch"
-                  id={`switch-${p._id}`}
-                  checked={isEnabled}
-                  onChange={(e) => handlePoints(p._id, e.target.checked)}
-                  disabled={
-                    isEnabled && Object.values(enabledPoints).filter(Boolean).length === 1
-                  }
-                  style={{ cursor: "pointer", scale: "1.2" }}
+          <div className="gp-input-group-container">
+            <div className={`gp-input-group ${errorsForm.id_circuit ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
+              <span className="gp-input-label">Circuito</span>
+              <div className="flex-fill">
+                <SearchableSelect
+                  options={circuitsAll}
+                  value={circuit}
+                  onChange={handleCircuit}
+                  isInvalid={!!errorsForm.id_circuit}
+                  isDisabled={action === "edit"}
+                  getOptionDisabled={(opt) => usedCircuits.includes(opt._id)}
+                  placeholder="Selecciona un circuito"
                 />
-                <label className="form-check-label text-white-50 ms-2" style={{ fontSize: "14px", cursor: "pointer" }} htmlFor={`switch-${p._id}`}>
-                  Habilitar
-                </label>
               </div>
             </div>
+            {errorsForm.id_circuit && (
+              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.id_circuit}</div>
+            )}
+          </div>
 
-            <div className="d-flex gap-3 flex-column flex-md-row">
-              <div className="gp-input-group-container">
-                <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.date && isEnabled ? "is-invalid" : ""}`}>
-                  <span className="gp-input-label">Fecha</span>
-                  <input
-                    className="form-control"
-                    type="date"
-                    min={dateStart || yearStart}
-                    max={dateFinish || yearEnd}
-                    disabled={!isEnabled}
-                    value={pointData[p._id]?.fecha || ""}
-                    onChange={(e) => handlePointData(p._id, "fecha", e.target.value)}
-                  />
-                </div>
-                {errorsForm.perPoint?.[p._id]?.date && isEnabled && (
-                  <div className="invalid-feedback d-block text-start mt-1">{errorsForm.perPoint[p._id].date || errorsForm.date}</div>
-                )}
+          <div className="d-flex gap-3 flex-column flex-md-row">
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.date_gp_start ? "is-invalid" : ""}`}>
+                <span className="gp-input-label">Inicio</span>
+                <input
+                  className="form-control"
+                  type="date"
+                  min={yearStart}
+                  max={yearEnd}
+                  value={dateStart}
+                  onChange={(e) => setDateStart(e.target.value)}
+                />
               </div>
+              {errorsForm.date_gp_start && (
+                <div className="invalid-feedback d-block text-start mt-1">{errorsForm.date_gp_start}</div>
+              )}
+            </div>
 
-              <div className="gp-input-group-container">
-                <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.time && isEnabled ? "is-invalid" : ""}`}>
-                  <span className="gp-input-label">Hora</span>
-                  <input
-                    className="form-control"
-                    type="time"
-                    disabled={!isEnabled}
-                    value={pointData[p._id]?.hora || ""}
-                    onChange={(e) => handlePointData(p._id, "hora", e.target.value)}
-                  />
-                </div>
-                {errorsForm.perPoint?.[p._id]?.time && isEnabled && (
-                  <div className="invalid-feedback d-block text-start mt-1">{errorsForm.perPoint[p._id].time}</div>
-                )}
+            <div className="gp-input-group-container">
+              <div className={`gp-input-group ${errorsForm.date_gp_end ? "is-invalid" : ""}`}>
+                <span className="gp-input-label">Fin</span>
+                <input
+                  className="form-control"
+                  type="date"
+                  min={yearStart}
+                  max={yearEnd}
+                  value={dateFinish}
+                  onChange={(e) => setDateFinish(e.target.value)}
+                />
               </div>
+              {errorsForm.date_gp_end && (
+                <div className="invalid-feedback d-block text-start mt-1">{errorsForm.date_gp_end}</div>
+              )}
             </div>
           </div>
-        );
-      })}
+        </div>
+      </div>
 
+      {/* GRUPO 2: Tipos */}
+      <div className="row mb-5 align-items-center">
+        <div className="col-12 col-md-3 mb-3 mb-md-0">
+          <div className="d-flex justify-content-center align-items-center rounded-3 p-2 text-white text-center" style={{ backgroundColor: "#111d2a", minHeight: "48px", fontSize: "14px", fontWeight: "500", letterSpacing: "0.5px" }}>
+            Tipos
+          </div>
+        </div>
+        <div className="col-12 col-md-9">
+          {points.map((p) => {
+            const isEnabled = !!enabledPoints[p._id];
+            return (
+              <div className="d-flex gap-3 flex-column flex-md-row mb-3 align-items-start" key={p._id}>
+                {/* Checkbox embebido en gp-input-group */}
+                <div className="gp-input-group-container" style={{ maxWidth: "220px" }}>
+                  <div className="gp-input-group">
+                    <span className="gp-input-label">{p.type}</span>
+                    <div className="d-flex align-items-center justify-content-center bg-white px-3 flex-fill">
+                      <input
+                        className="form-check-input m-0"
+                        type="checkbox"
+                        checked={isEnabled}
+                        onChange={(e) => handlePoints(p._id, e.target.checked)}
+                        disabled={
+                          isEnabled && Object.values(enabledPoints).filter(Boolean).length === 1
+                        }
+                        style={{ cursor: "pointer", width: "18px", height: "18px" }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Fecha gp-input-group */}
+                <div className="gp-input-group-container">
+                  <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.date && isEnabled ? "is-invalid" : ""}`}>
+                    <span className="gp-input-label">Fecha</span>
+                    <input
+                      className="form-control"
+                      type="date"
+                      min={dateStart || yearStart}
+                      max={dateFinish || yearEnd}
+                      disabled={!isEnabled}
+                      value={pointData[p._id]?.fecha || ""}
+                      onChange={(e) => handlePointData(p._id, "fecha", e.target.value)}
+                    />
+                  </div>
+                  {errorsForm.perPoint?.[p._id]?.date && isEnabled && (
+                    <div className="invalid-feedback d-block text-start mt-1">{errorsForm.perPoint[p._id].date || errorsForm.date}</div>
+                  )}
+                </div>
+
+                {/* Hora gp-input-group */}
+                <div className="gp-input-group-container">
+                  <div className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.time && isEnabled ? "is-invalid" : ""}`}>
+                    <span className="gp-input-label">Hora</span>
+                    <input
+                      className="form-control"
+                      type="time"
+                      disabled={!isEnabled}
+                      value={pointData[p._id]?.hora || ""}
+                      onChange={(e) => handlePointData(p._id, "hora", e.target.value)}
+                    />
+                  </div>
+                  {errorsForm.perPoint?.[p._id]?.time && isEnabled && (
+                    <div className="invalid-feedback d-block text-start mt-1">{errorsForm.perPoint[p._id].time}</div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* GRUPO 3: Resultados */}
       {(action == "edit") && (
-        <div className="mb-4">
-          <nav>
-            <div className="nav nav-tabs" id="nav-tab" role="tablist">
-              {points.map((p, idx) => (
-                <button
+        <div className="row mb-5 align-items-start">
+          <div className="col-12 col-md-3 mb-3 mb-md-0">
+            <div className="d-flex justify-content-center align-items-center rounded-3 p-2 text-white text-center" style={{ backgroundColor: "#111d2a", minHeight: "48px", fontSize: "14px", fontWeight: "500", letterSpacing: "0.5px" }}>
+              Resultados
+            </div>
+          </div>
+          <div className="col-12 col-md-9">
+            <nav className="mb-4">
+              <div className="nav nav-pills gap-2" id="nav-tab" role="tablist">
+                {points.map((p) => (
+                  <button
+                    key={p._id}
+                    className={`nav-link ${activeTab === p.type ? "active" : ""}`}
+                    id={`nav-${p.type}-tab`}
+                    data-bs-toggle="pill"
+                    data-bs-target={`#nav-${p.type}`}
+                    type="button"
+                    role="tab"
+                    aria-controls={`nav-${p.type}`}
+                    aria-selected={activeTab === p.type}
+                    disabled={!enabledPoints[p._id]}
+                    onClick={() => setActiveTab(p.type)}
+                    style={{
+                      backgroundColor: activeTab === p.type ? "#2e7d32" : "#111d2a",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: "8px",
+                      padding: "8px 24px",
+                      fontWeight: "500",
+                      transition: "background-color 0.2s",
+                      opacity: enabledPoints[p._id] ? 1 : 0.4
+                    }}
+                  >
+                    {p.type}
+                  </button>
+                ))}
+              </div>
+            </nav>
+
+            <div className="tab-content" id="nav-tabContent">
+              {points.map((p) => (
+                <div
                   key={p._id}
-                  className={`nav-link ${idx === 0 ? "active" : ""}`}
-                  id={`nav-${p.type}-tab`}
-                  data-bs-toggle="tab"
-                  data-bs-target={`#nav-${p.type}`}
-                  type="button"
-                  role="tab"
-                  aria-controls={`nav-${p.type}`}
-                  aria-selected={idx === 0}
-                  disabled={!enabledPoints[p._id]}
+                  className={`tab-pane fade ${activeTab === p.type ? "show active" : ""}`}
+                  id={`nav-${p.type}`}
+                  role="tabpanel"
+                  aria-labelledby={`nav-${p.type}-tab`}
                 >
-                  {p.type}
-                </button>
+                  {enabledPoints[p._id] ? (
+                    <PredictionsForm
+                      points={p}
+                      race_types={raceTypes}
+                      onDriverChange={handleDriverChange}
+                    />
+                  ) : (
+                    <div className="text-muted p-3">
+                      Habilita "{p.type}" arriba para editar predicciones.
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
-          </nav>
-
-          <div className="tab-content" id="nav-tabContent">
-            {points.map((p, idx) => (
-              <div
-                key={p._id}
-                className={`tab-pane fade ${idx === 0 ? "show active" : ""}`}
-                id={`nav-${p.type}`}
-                role="tabpanel"
-                aria-labelledby={`nav-${p.type}-tab`}
-              >
-                {enabledPoints[p._id] ? (
-                  <PredictionsForm
-                    points={p}
-                    race_types={raceTypes}
-                    onDriverChange={handleDriverChange}
-                  />
-                ) : (
-                  <div className="text-muted p-3">
-                    Habilita "{p.type}" arriba para editar predicciones.
-                  </div>
-                )}
-              </div>
-            ))}
           </div>
         </div>
       )}
 
-
-      <div className="d-flex justify-content-center mt-4">
+      <div className="d-flex justify-content-center mt-5">
         <SubmitButton ariaLabel={submitText} />
       </div>
     </form>

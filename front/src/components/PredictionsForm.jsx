@@ -80,28 +80,31 @@ function PredictionsForm({ points = {}, race_types = [], onDriverChange }) {
   return (
     <div>
       {points.points.map((_, index) => (
-        <div className="mb-3" key={index}>
-          <label>{index + 1}</label>
-
-          <div className={`react-select-container ${invalidIndexes.includes(index) ? "is-invalid" : ""}`}>
-            <SearchableSelect
-              isDriver={true}
-              value={selections[index] || ""}
-              onChange={(selected) => handleChange(index, selected?.value || "")}
-              options={drivers
-                .filter((d) => d.active === true || d._id === selections[index])
-                .map((d) => ({
-                  _id: d._id,
-                  name: d.full_name,
-                  teamName: d.team_info?.name || "",
-                  color: d.team_info?.color || "#ccc",
-                }))}
-              placeholder="Seleccione un piloto"
-            />
+        <div className="gp-input-group-container" key={index}>
+          <div className={`gp-input-group ${invalidIndexes.includes(index) ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
+            <span className="gp-input-label" style={{ minWidth: "70px", width: "70px" }}>
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <div className="flex-fill">
+              <SearchableSelect
+                isDriver={true}
+                value={selections[index] || ""}
+                onChange={(selected) => handleChange(index, selected?.value || "")}
+                options={drivers
+                  .filter((d) => d.active === true || d._id === selections[index])
+                  .map((d) => ({
+                    _id: d._id,
+                    name: d.full_name,
+                    teamName: d.team_info?.name || "",
+                    color: d.team_info?.color || "#ccc",
+                  }))}
+                placeholder="Seleccione un piloto"
+              />
+            </div>
           </div>
 
           {invalidIndexes.includes(index) && (
-            <div className="invalid-feedback d-block">
+            <div className="invalid-feedback d-block text-start mt-1">
               Este piloto fue reasignado a otra posición.
             </div>
           )}
