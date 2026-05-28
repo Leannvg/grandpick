@@ -129,7 +129,7 @@ function CircuitForm({
 
       {/* Fila 1: Nombre y Número de Vueltas */}
       <div className="row">
-        <div className="col-12 col-md-6 mb-3 mb-md-0">
+        <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.circuit_name ? "is-invalid" : ""}`}>
               <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Nombre</span>
@@ -168,7 +168,7 @@ function CircuitForm({
 
       {/* Fila 2: País y Ciudad/Estado */}
       <div className="row">
-        <div className="col-12 col-md-6 mb-3 mb-md-0">
+        <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.country ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
               <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>País</span>
@@ -235,7 +235,7 @@ function CircuitForm({
 
       {/* Fila 3: Nombre del GP y Longitud */}
       <div className="row">
-        <div className="col-12 col-md-6 mb-3 mb-md-0">
+        <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.gp_name ? "is-invalid" : ""}`}>
               <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Nombre del GP</span>
