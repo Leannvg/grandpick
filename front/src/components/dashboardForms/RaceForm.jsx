@@ -493,8 +493,8 @@ function RaceForm({
             )}
           </div>
 
-          <div className="d-flex gap-3 flex-column flex-md-row">
-            <div className="gp-input-group-container">
+          <div className="d-flex flex-column flex-md-row gap-0 gap-md-3">
+            <div className="gp-input-group-container mb-md-0">
               <div className={`gp-input-group ${errorsForm.date_gp_start ? "is-invalid" : ""}`}>
                 <span className="gp-input-label">Inicio</span>
                 <input
@@ -511,7 +511,7 @@ function RaceForm({
               )}
             </div>
 
-            <div className="gp-input-group-container">
+            <div className="gp-input-group-container mb-md-0">
               <div className={`gp-input-group ${errorsForm.date_gp_end ? "is-invalid" : ""}`}>
                 <span className="gp-input-label">Fin</span>
                 <input
