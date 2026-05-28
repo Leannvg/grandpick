@@ -40,6 +40,16 @@ function RaceForm({
   const { showAlert } = useAlert();
   const { confirmDialog } = useDialog();
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useEffect(() => {
     if (sortedPoints.length > 0 && !activeTab) {
       const firstEnabled = sortedPoints.find(p => enabledPoints[p._id])?.type || sortedPoints[0]?.type;
@@ -578,7 +588,7 @@ function RaceForm({
                     <div 
                       className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.date && isEnabled ? "is-invalid" : ""}`} 
                       style={{ 
-                        flexDirection: "column", 
+                        flexDirection: isMobile ? "column" : "row", 
                         alignItems: "stretch", 
                         backgroundColor: "white"
                       }}
@@ -586,15 +596,15 @@ function RaceForm({
                       <span 
                         className="gp-input-label" 
                         style={{ 
-                          width: "100%", 
-                          minWidth: "100%", 
-                          borderRadius: "8px 8px 0px 0px", 
+                          width: isMobile ? "100%" : "80px", 
+                          minWidth: isMobile ? "100%" : "80px", 
+                          borderRadius: isMobile ? "8px 8px 0px 0px" : "8px 0px 0px 8px", 
                           backgroundColor: isEnabled ? "#4a76a8" : "#b0b0b0", 
-                          height: "36px",
+                          height: isMobile ? "36px" : "auto",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          padding: "0"
+                          padding: isMobile ? "0" : "10px 15px"
                         }}
                       >
                         Fecha
@@ -612,7 +622,7 @@ function RaceForm({
                           color: "#222", 
                           border: "none", 
                           padding: "10px", 
-                          textAlign: "center"
+                          textAlign: isMobile ? "center" : "left"
                         }}
                       />
                     </div>
@@ -628,7 +638,7 @@ function RaceForm({
                     <div 
                       className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.time && isEnabled ? "is-invalid" : ""}`} 
                       style={{ 
-                        flexDirection: "column", 
+                        flexDirection: isMobile ? "column" : "row", 
                         alignItems: "stretch", 
                         backgroundColor: "white"
                       }}
@@ -636,15 +646,15 @@ function RaceForm({
                       <span 
                         className="gp-input-label" 
                         style={{ 
-                          width: "100%", 
-                          minWidth: "100%", 
-                          borderRadius: "8px 8px 0px 0px", 
+                          width: isMobile ? "100%" : "80px", 
+                          minWidth: isMobile ? "100%" : "80px", 
+                          borderRadius: isMobile ? "8px 8px 0px 0px" : "8px 0px 0px 8px", 
                           backgroundColor: isEnabled ? "#4a76a8" : "#b0b0b0", 
-                          height: "36px",
+                          height: isMobile ? "36px" : "auto",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          padding: "0"
+                          padding: isMobile ? "0" : "10px 15px"
                         }}
                       >
                         Hora
@@ -660,7 +670,7 @@ function RaceForm({
                           color: "#222", 
                           border: "none", 
                           padding: "10px", 
-                          textAlign: "center"
+                          textAlign: isMobile ? "center" : "left"
                         }}
                       />
                     </div>
