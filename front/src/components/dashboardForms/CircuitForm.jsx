@@ -85,8 +85,8 @@ function CircuitForm({
       {/* Vista previa de la imagen centrada */}
       {(previewUrl || currentImage) && (
         <div className="text-center mb-4">
-          <div 
-            className="d-inline-block p-3 rounded-4" 
+          <div
+            className="d-inline-block p-3 rounded-4"
             style={{ backgroundColor: "#111d2a", maxWidth: "450px", width: "100%" }}
           >
             <img
@@ -100,13 +100,13 @@ function CircuitForm({
       )}
 
       {/* Fila 0: Carga de Imagen */}
-      <div className="row mb-3">
+      <div className="row">
         <div className="col-12">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.img ? "is-invalid" : ""}`}>
               <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Imagen</span>
-              <label 
-                className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control" 
+              <label
+                className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control"
                 style={{ cursor: "pointer", minHeight: "44px" }}
               >
                 <input
@@ -128,7 +128,7 @@ function CircuitForm({
       </div>
 
       {/* Fila 1: Nombre y Número de Vueltas */}
-      <div className="row mb-3">
+      <div className="row">
         <div className="col-12 col-md-6 mb-3 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.circuit_name ? "is-invalid" : ""}`}>
@@ -167,7 +167,7 @@ function CircuitForm({
       </div>
 
       {/* Fila 2: País y Ciudad/Estado */}
-      <div className="row mb-3">
+      <div className="row">
         <div className="col-12 col-md-6 mb-3 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.country ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
@@ -215,7 +215,7 @@ function CircuitForm({
 
       {/* Timezone detectado (solo si se ha seleccionado ciudad/estado y existe timezone) */}
       {timezone && (
-        <div className="row mb-3">
+        <div className="row">
           <div className="col-12">
             <div className="gp-input-group-container">
               <div className="gp-input-group opacity-50">
@@ -234,7 +234,7 @@ function CircuitForm({
       )}
 
       {/* Fila 3: Nombre del GP y Longitud */}
-      <div className="row mb-3">
+      <div className="row">
         <div className="col-12 col-md-6 mb-3 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.gp_name ? "is-invalid" : ""}`}>
@@ -276,17 +276,17 @@ function CircuitForm({
       <div className="row mb-4">
         <div className="col-12">
           <div className="gp-input-group-container">
-            <div 
+            <div
               className={`gp-input-group ${errorsForm.description ? "is-invalid" : ""}`}
               style={{ flexDirection: "column", alignItems: "stretch" }}
             >
-              <span 
-                className="gp-input-label" 
-                style={{ 
-                  width: "100%", 
-                  minWidth: "100%", 
-                  borderRadius: "8px 8px 0px 0px", 
-                  height: "38px", 
+              <span
+                className="gp-input-label"
+                style={{
+                  width: "100%",
+                  minWidth: "100%",
+                  borderRadius: "8px 8px 0px 0px",
+                  height: "38px",
                   justifyContent: "start",
                   paddingLeft: "20px"
                 }}
@@ -298,10 +298,10 @@ function CircuitForm({
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Ingresa la descripción del circuito..."
-                style={{ 
-                  border: "none", 
-                  borderRadius: "0px 0px 8px 8px", 
-                  padding: "15px", 
+                style={{
+                  border: "none",
+                  borderRadius: "0px 0px 8px 8px",
+                  padding: "15px",
                   minHeight: "120px",
                   backgroundColor: "white",
                   color: "#222"
