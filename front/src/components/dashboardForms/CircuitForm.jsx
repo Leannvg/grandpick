@@ -213,6 +213,26 @@ function CircuitForm({
         </div>
       </div>
 
+      {/* Timezone detectado (solo si se ha seleccionado ciudad/estado y existe timezone) */}
+      {timezone && (
+        <div className="row mb-3">
+          <div className="col-12">
+            <div className="gp-input-group-container">
+              <div className="gp-input-group opacity-50">
+                <span className="gp-input-label" style={{ width: "140px", minWidth: "140px", backgroundColor: "#b0b0b0" }}>Timezone</span>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={timezone}
+                  disabled
+                  style={{ backgroundColor: "white", color: "#222" }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Fila 3: Nombre del GP y Longitud */}
       <div className="row mb-3">
         <div className="col-12 col-md-6 mb-3 mb-md-0">
