@@ -50,10 +50,21 @@ function CircuitCreate() {
   }
 
   return (
-    <div className="container admin">
-      <h1>Nuevo Circuito</h1>
-      <CircuitForm onSubmit={handleCreate} submitLabel="Crear" errorsForm={errorsForm} />
-    </div>
+    <main>
+      <section className="auth-section page-section container text-center">
+        <div className="auth-container" style={{ maxWidth: "1070px" }}>
+          <header className="page-header">
+            <p className="section-label">Añadí un nuevo trazado al sistema</p>
+            <h1 className="section-title">NUEVO CIRCUITO</h1>
+            <p className="section-subtitle">
+              Completá los datos del circuito para asociarlo a futuras carreras.
+            </p>
+          </header>
+
+          <CircuitForm onSubmit={handleCreate} submitLabel="Crear" errorsForm={errorsForm} />
+        </div>
+      </section>
+    </main>
   );
 }
 

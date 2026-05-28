@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getStatesByCountry, getStateDetails } from "../services/countries.services.js";
 import SearchableSelect from "../components/SearchableSelect.jsx";
 
-function CitySelect({ cityFunction, country, defaultValue = "", isInvalid = false, error }) {
+function CitySelect({ cityFunction, country, defaultValue = "", isInvalid = false, error, hideLabel = false }) {
   const [states, setStates] = useState([]);
   const [selectedCity, setSelectedCity] = useState("");
 
@@ -59,8 +59,8 @@ function CitySelect({ cityFunction, country, defaultValue = "", isInvalid = fals
   };
 
   return (
-    <div className="mb-3">
-      <label>Ciudad / Estado</label>
+    <div className={hideLabel ? "" : "mb-3"}>
+      {!hideLabel && <label>Ciudad / Estado</label>}
 
       <SearchableSelect
         options={states.map(s => ({

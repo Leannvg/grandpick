@@ -56,20 +56,31 @@ function CircuitEdit() {
   }
 
   return (
-    <div className="container admin">
-      <h1>Editar Circuito</h1>
-      {initialData.circuit_name ? (
-        <CircuitForm
-          initialData={initialData}
-          onSubmit={handleEdit}
-          submitLabel="Guardar Cambios"
-          isEdit
-          errorsForm={errorsForm}
-        />
-      ) : (
-        <p>Cargando datos...</p>
-      )}
-    </div>
+    <main>
+      <section className="auth-section page-section container text-center">
+        <div className="auth-container" style={{ maxWidth: "1070px" }}>
+          <header className="page-header">
+            <p className="section-label">Modificá los datos del trazado</p>
+            <h1 className="section-title">EDITAR CIRCUITO</h1>
+            <p className="section-subtitle">
+              Actualizá la información del circuito cargado en el sistema.
+            </p>
+          </header>
+
+          {initialData.circuit_name ? (
+            <CircuitForm
+              initialData={initialData}
+              onSubmit={handleEdit}
+              submitLabel="Guardar Cambios"
+              isEdit
+              errorsForm={errorsForm}
+            />
+          ) : (
+            <p>Cargando datos...</p>
+          )}
+        </div>
+      </section>
+    </main>
   );
 }
 
