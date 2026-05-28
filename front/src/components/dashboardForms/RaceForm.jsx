@@ -534,7 +534,7 @@ function RaceForm({
             return (
               <div className="row g-2 mb-4 align-items-start" key={p._id}>
                 {/* Checkbox: col-12 col-md-4 */}
-                <div className="col-12 col-md-4">
+                <div className="col-4">
                   <div className="gp-input-group-container mb-0">
                     <div className="gp-input-group">
                       <span className="gp-input-label" style={{ textTransform: "capitalize" }}>{p.type}</span>
