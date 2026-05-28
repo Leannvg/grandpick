@@ -65,20 +65,31 @@ function TeamEdit() {
 
 
   return (
-    <div className="container mt-4">
-      <h2>Editar Escudería</h2>
-      {initialData.name ? (
-        <TeamForm
-          initialData={initialData}
-          onSubmit={handleEdit}
-          submitLabel="Guardar Cambios"
-          isEdit
-          errorsForm={errorsForm}
-        />
-      ) : (
-        <p>Cargando datos...</p>
-      )}
-    </div>
+    <main>
+      <section className="auth-section page-section container text-center">
+        <div className="auth-container" style={{ maxWidth: "1070px" }}>
+          <header className="page-header">
+            <p className="section-label">Modificá los datos del equipo</p>
+            <h1 className="section-title">EDITAR ESCUDERÍA</h1>
+            <p className="section-subtitle">
+              Actualizá la información de la escudería registrada en el campeonato
+            </p>
+          </header>
+
+          {initialData.name ? (
+            <TeamForm
+              initialData={initialData}
+              onSubmit={handleEdit}
+              submitLabel="Guardar Cambios"
+              isEdit
+              errorsForm={errorsForm}
+            />
+          ) : (
+            <p>Cargando datos...</p>
+          )}
+        </div>
+      </section>
+    </main>
   );
 }
 

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import UploadImage from "./../UploadImage.jsx";
 import CountrySelect from "./../../components/CountrySelect.jsx";
 import CitySelect from "./../../components/CitySelect.jsx";
-import UploadsServices from "./../../services/uploads.services.js";
 import { getImageUrl } from "../../utils/cloudinary.js";
+import SubmitButton from "./../SubmitButton.jsx";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 function TeamForm({
@@ -13,7 +13,6 @@ function TeamForm({
   isEdit = false,
   errorsForm = {},
 }) {
-
   const [name, setName] = useState(initialData.name || "");
   const [full_team_name, setFullTeamName] = useState(initialData.full_team_name || "");
   const [chief, setChief] = useState(initialData.chief || "");
@@ -22,11 +21,14 @@ function TeamForm({
   const [country, setCountry] = useState(initialData.country || "");
   const [city, setCity] = useState(initialData.city || "");
   const [color, setColor] = useState(initialData.color || "");
-  
+
   const [logoFile, setLogoFile] = useState(null);
   const [isologoFile, setIsologoFile] = useState(null);
   const [currentLogo, setCurrentLogo] = useState(initialData.logo || "");
   const [currentIsologo, setCurrentIsologo] = useState(initialData.isologo || "");
+
+  const [previewLogoUrl, setPreviewLogoUrl] = useState("");
+  const [previewIsologoUrl, setPreviewIsologoUrl] = useState("");
 
   useEffect(() => {
     if (isEdit && initialData && Object.keys(initialData).length > 0) {
@@ -38,26 +40,46 @@ function TeamForm({
       setCountry(initialData.country || "");
       setCity(initialData.city || "");
       setColor(initialData.color || "");
-      setCurrentLogo(initialData.logo || "teams/default_logo.png");
-      setCurrentIsologo(initialData.isologo || "teams/default_isologo.png");
+      setCurrentLogo(initialData.logo || "");
+      setCurrentIsologo(initialData.isologo || "");
     }
   }, [initialData, isEdit]);
 
   useEffect(() => {
-    console.log("logoFile:", logoFile);
+    if (logoFile) {
+      const objectUrl = URL.createObjectURL(logoFile);
+      setPreviewLogoUrl(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreviewLogoUrl("");
+    }
   }, [logoFile]);
 
   useEffect(() => {
-    console.log("isologoFile:", isologoFile);
+    if (isologoFile) {
+      const objectUrl = URL.createObjectURL(isologoFile);
+      setPreviewIsologoUrl(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreviewIsologoUrl("");
+    }
   }, [isologoFile]);
 
-  useEffect(() => {
-    console.log("city:", city);
-  }, [city]);
+  const handleLogoChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const uniqueName = Math.round(Math.random() * 1e9) + '-' + file.name;
+    const renamedFile = new File([file], uniqueName, { type: file.type });
+    setLogoFile(renamedFile);
+  };
 
-
-  const handleLogoSelect = (file) => setLogoFile(file);
-  const handleIsologoSelect = (file) => setIsologoFile(file);
+  const handleIsologoChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const uniqueName = Math.round(Math.random() * 1e9) + '-' + file.name;
+    const renamedFile = new File([file], uniqueName, { type: file.type });
+    setIsologoFile(renamedFile);
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -75,143 +97,276 @@ function TeamForm({
       isologo: currentIsologo,
     };
 
-    console.log("Submitting team data:", teamData);
-
     await onSubmit(teamData, logoFile, isologoFile);
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="mb-3">
-        <label>Nombre corto</label>
-        <input
-          type="text"
-          className={`form-control ${errorsForm.name ? "is-invalid" : ""}`}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        {errorsForm.name && <div className="invalid-feedback">{errorsForm.name}</div>}
-      </div>
-
-      <div className="mb-3">
-        <label>Nombre completo</label>
-        <input
-          type="text"
-          className={`form-control ${errorsForm.full_team_name ? "is-invalid" : ""}`}
-          value={full_team_name}
-          onChange={(e) => setFullTeamName(e.target.value)}
-        />
-        {errorsForm.full_team_name && (
-          <div className="invalid-feedback">{errorsForm.full_team_name}</div>
-        )}
-      </div>
-
-      <div className="mb-3">
-        <label>Director</label>
-        <input
-          type="text"
-          className={`form-control ${errorsForm.chief ? "is-invalid" : ""}`}
-          value={chief}
-          onChange={(e) => setChief(e.target.value)}
-        />
-        {errorsForm.chief && <div className="invalid-feedback">{errorsForm.chief}</div>}
-      </div>
-
-      <div className="mb-3">
-        <label>Unidad de potencia</label>
-        <input
-          type="text"
-          className={`form-control ${errorsForm.power_unit ? "is-invalid" : ""}`}
-          value={power_unit}
-          onChange={(e) => setPowerUnit(e.target.value)}
-        />
-        {errorsForm.power_unit && (
-          <div className="invalid-feedback">{errorsForm.power_unit}</div>
-        )}
-      </div>
-
-      <div className="mb-3">
-        <label>Campeonatos mundiales</label>
-        <input
-          type="number"
-          className={`form-control ${errorsForm.world_championships ? "is-invalid" : ""}`}
-          value={world_championships}
-          onChange={(e) => setWorldChampionships(e.target.value)}
-        />
-        {errorsForm.world_championships && (
-          <div className="invalid-feedback">{errorsForm.world_championships}</div>
-        )}
-      </div>
-
-      <CountrySelect 
-        countryFunction={setCountry} 
-        defaultValue={country}
-        isInvalid={!!errorsForm.country}
-        error={errorsForm.country}
-      />
-
-      <CitySelect 
-        cityFunction={setCity} 
-        country={country} 
-        defaultValue={city} 
-        isInvalid={!!errorsForm.city}
-        error={errorsForm.city}
-      />
-
-
-      <div className="mb-3">
-        <label>Color</label>
-        <input
-          type="color"
-          className={`form-control form-control-color ${errorsForm.color ? "is-invalid" : ""}`}
-          value={color}
-          onChange={(e) => setColor(e.target.value)}
-        />
-        {errorsForm.color && <div className="invalid-feedback">{errorsForm.color}</div>}
-      </div>
-
-      <UploadImage
-        label={isEdit ? "Actualizar Isologo" : "Cargar Isologo"}
-        onImageSelect={handleIsologoSelect}
-        isInvalid={!!errorsForm.isologo}
-        error={errorsForm.isologo}
-      />
-      {isEdit && currentIsologo && (
-        <div className="mt-2">
-          <p>Isologo actual:</p>
-          <img
-            src={getImageUrl(currentIsologo, 500)}
-            alt="Isologo"
-            style={{ width: "120px" }}
-          />
+    <form onSubmit={handleSubmit} className="text-start">
+      {/* Vista previa de Logo e Isologo centrados */}
+      {(previewLogoUrl || currentLogo || previewIsologoUrl || currentIsologo) && (
+        <div className="d-flex justify-content-center gap-3 mb-4 flex-wrap">
+          {(previewLogoUrl || currentLogo) && (
+            <div 
+              className="p-3 rounded-4 text-center d-flex align-items-center justify-content-center" 
+              style={{ backgroundColor: "#111d2a", width: "220px", height: "180px" }}
+            >
+              <img
+                src={previewLogoUrl ? previewLogoUrl : getImageUrl(currentLogo, 500)}
+                alt="Logo"
+                className="img-fluid"
+                style={{ maxHeight: "140px", objectFit: "contain", borderRadius: "8px" }}
+              />
+            </div>
+          )}
+          {(previewIsologoUrl || currentIsologo) && (
+            <div 
+              className="p-3 rounded-4 text-center d-flex align-items-center justify-content-center" 
+              style={{ backgroundColor: "#111d2a", width: "220px", height: "180px" }}
+            >
+              <img
+                src={previewIsologoUrl ? previewIsologoUrl : getImageUrl(currentIsologo, 500)}
+                alt="Isologo"
+                className="img-fluid"
+                style={{ maxHeight: "140px", objectFit: "contain", borderRadius: "8px" }}
+              />
+            </div>
+          )}
         </div>
       )}
 
-      <UploadImage
-        label={isEdit ? "Actualizar Logo" : "Cargar Logo"}
-        onImageSelect={handleLogoSelect}
-        isInvalid={!!errorsForm.logo}
-        error={errorsForm.logo}
-      />
-      {isEdit && currentLogo && (
-        <div className="mt-2">
-          <p>Logo actual:</p>
-          <img
-            src={getImageUrl(currentLogo, 500)}
-            alt="Logo"
-            style={{ width: "120px" }}
-          />
+      {/* Fila 0: Cargas de Logo e Isologo */}
+      <div className="row">
+        <div className="col-12 col-md-6">
+          <div className="gp-input-group-container">
+            <div className={`gp-input-group ${errorsForm.logo ? "is-invalid" : ""}`}>
+              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Logo</span>
+              <label 
+                className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control" 
+                style={{ cursor: "pointer", minHeight: "44px" }}
+              >
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLogoChange}
+                  className="d-none"
+                />
+                <span className="text-secondary" style={{ fontSize: "0.95rem" }}>
+                  {logoFile ? logoFile.name : (currentLogo ? "Logo cargado" : "Selecciona Logo")}
+                </span>
+              </label>
+            </div>
+            {errorsForm.logo && (
+              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.logo}</div>
+            )}
+          </div>
         </div>
-      )}
 
-      <div className="d-flex justify-content-end">
-        <button type="submit" className="btn btn-primary">
-          {submitLabel}
-        </button>
+        <div className="col-12 col-md-6">
+          <div className="gp-input-group-container">
+            <div className={`gp-input-group ${errorsForm.isologo ? "is-invalid" : ""}`}>
+              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Isologo</span>
+              <label 
+                className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control" 
+                style={{ cursor: "pointer", minHeight: "44px" }}
+              >
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleIsologoChange}
+                  className="d-none"
+                />
+                <span className="text-secondary" style={{ fontSize: "0.95rem" }}>
+                  {isologoFile ? isologoFile.name : (currentIsologo ? "Isologo cargado" : "Selecciona Isologo")}
+                </span>
+              </label>
+            </div>
+            {errorsForm.isologo && (
+              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.isologo}</div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Fila 1: Nombre Completo (Ancho Completo) */}
+      <div className="row">
+        <div className="col-12">
+          <div className="gp-input-group-container">
+            <div className={`gp-input-group ${errorsForm.full_team_name ? "is-invalid" : ""}`}>
+              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Nombre completo</span>
+              <input
+                type="text"
+                className="form-control bg-white"
+                value={full_team_name}
+                onChange={(e) => setFullTeamName(e.target.value)}
+                placeholder="Nombre completo de la escudería"
+              />
+            </div>
+            {errorsForm.full_team_name && (
+              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.full_team_name}</div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Fila 2: Nombre Corto y Director */}
+      <div className="row">
+        <div className="col-12 col-md-6 mb-md-0">
+          <div className="gp-input-group-container">
+            <div className={`gp-input-group ${errorsForm.name ? "is-invalid" : ""}`}>
+              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Nombre corto</span>
+              <input
+                type="text"
+                className="form-control bg-white"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Nombre corto"
+              />
+            </div>
+            {errorsForm.name && (
+              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.name}</div>
+            )}
+          </div>
+        </div>
+
+        <div className="col-12 col-md-6">
+          <div className="gp-input-group-container">
+            <div className={`gp-input-group ${errorsForm.chief ? "is-invalid" : ""}`}>
+              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Director</span>
+              <input
+                type="text"
+                className="form-control bg-white"
+                value={chief}
+                onChange={(e) => setChief(e.target.value)}
+                placeholder="Director / Jefe de equipo"
+              />
+            </div>
+            {errorsForm.chief && (
+              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.chief}</div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Fila 3: País y Ciudad/Estado */}
+      <div className="row">
+        <div className="col-12 col-md-6 mb-md-0">
+          <div className="gp-input-group-container">
+            <div className={`gp-input-group ${errorsForm.country ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
+              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>País</span>
+              <div className="flex-fill">
+                <CountrySelect
+                  countryFunction={setCountry}
+                  defaultValue={country}
+                  isInvalid={!!errorsForm.country}
+                  error={errorsForm.country}
+                  hideLabel={true}
+                />
+              </div>
+            </div>
+            {errorsForm.country && (
+              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.country}</div>
+            )}
+          </div>
+        </div>
+
+        <div className="col-12 col-md-6">
+          <div className="gp-input-group-container">
+            <div className={`gp-input-group ${errorsForm.city ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
+              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Ciudad/Estado</span>
+              <div className="flex-fill">
+                <CitySelect
+                  cityFunction={setCity}
+                  country={country}
+                  defaultValue={city}
+                  isInvalid={!!errorsForm.city}
+                  error={errorsForm.city}
+                  hideLabel={true}
+                />
+              </div>
+            </div>
+            {errorsForm.city && (
+              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.city}</div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Fila 4: Unidad de potencia y Color */}
+      <div className="row">
+        <div className="col-12 col-md-6 mb-md-0">
+          <div className="gp-input-group-container">
+            <div className={`gp-input-group ${errorsForm.power_unit ? "is-invalid" : ""}`}>
+              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Unidad potencia</span>
+              <input
+                type="text"
+                className="form-control bg-white"
+                value={power_unit}
+                onChange={(e) => setPowerUnit(e.target.value)}
+                placeholder="Motor / Unidad de potencia"
+              />
+            </div>
+            {errorsForm.power_unit && (
+              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.power_unit}</div>
+            )}
+          </div>
+        </div>
+
+        <div className="col-12 col-md-6">
+          <div className="gp-input-group-container">
+            <div className={`gp-input-group ${errorsForm.color ? "is-invalid" : ""}`}>
+              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Color</span>
+              <div className="d-flex align-items-center bg-white px-3 flex-fill">
+                <input
+                  type="color"
+                  className="form-control form-control-color m-0 p-0 border-0"
+                  style={{ width: "40px", height: "30px", cursor: "pointer", backgroundColor: "transparent" }}
+                  value={color || "#ffffff"}
+                  onChange={(e) => setColor(e.target.value)}
+                />
+                <input
+                  type="text"
+                  className="form-control border-0 ms-2 bg-white"
+                  style={{ padding: "0" }}
+                  value={color}
+                  onChange={(e) => setColor(e.target.value)}
+                  placeholder="#HEXCODE"
+                />
+              </div>
+            </div>
+            {errorsForm.color && (
+              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.color}</div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Fila 5: Campeonatos Mundiales */}
+      <div className="row">
+        <div className="col-12 col-md-6 mb-md-0">
+          <div className="gp-input-group-container">
+            <div className={`gp-input-group ${errorsForm.world_championships ? "is-invalid" : ""}`}>
+              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Campeonatos</span>
+              <input
+                type="number"
+                className="form-control bg-white"
+                value={world_championships}
+                onChange={(e) => setWorldChampionships(e.target.value)}
+                placeholder="Campeonatos mundiales ganados"
+              />
+            </div>
+            {errorsForm.world_championships && (
+              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.world_championships}</div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Botón de Confirmación Circular */}
+      <div className="d-flex justify-content-center mt-4">
+        <SubmitButton ariaLabel={submitLabel} />
       </div>
     </form>
   );
 }
 
 export default TeamForm;
-

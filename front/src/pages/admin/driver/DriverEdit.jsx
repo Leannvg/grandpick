@@ -23,7 +23,6 @@ function DriverEdit() {
     fetchDriver();
   }, [id]);
 
-
   async function handleEdit(driverData, imageFile) {
     try {
       const dialog = {
@@ -63,25 +62,32 @@ function DriverEdit() {
     }
   }
 
-
-
-
-
   return (
-    <div className="container mt-4">
-      <h2>Editar Piloto</h2>
-      {initialData.full_name ? (
-        <DriverForm
-          initialData={initialData}
-          onSubmit={handleEdit}
-          submitLabel="Guardar Cambios"
-          isEdit
-          errorsForm={errorsForm}
-        />
-      ) : (
-        <p>Cargando datos...</p>
-      )}
-    </div>
+    <main>
+      <section className="auth-section page-section container text-center">
+        <div className="auth-container" style={{ maxWidth: "1070px" }}>
+          <header className="page-header">
+            <p className="section-label">Modificá los datos del piloto</p>
+            <h1 className="section-title">EDITAR PILOTO</h1>
+            <p className="section-subtitle">
+              Actualizá la información del piloto en el sistema.
+            </p>
+          </header>
+
+          {initialData.full_name ? (
+            <DriverForm
+              initialData={initialData}
+              onSubmit={handleEdit}
+              submitLabel="Guardar Cambios"
+              isEdit
+              errorsForm={errorsForm}
+            />
+          ) : (
+            <p>Cargando datos...</p>
+          )}
+        </div>
+      </section>
+    </main>
   );
 }
 

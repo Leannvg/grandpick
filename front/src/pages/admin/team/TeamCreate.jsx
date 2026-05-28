@@ -55,10 +55,21 @@ function TeamCreate() {
 
 
   return (
-    <div className="container mt-4">
-      <h2>Crear Nueva Escudería</h2>
-      <TeamForm onSubmit={handleCreate} submitLabel="Crear" errorsForm={errorsForm} />
-    </div>
+    <main>
+      <section className="auth-section page-section container text-center">
+        <div className="auth-container" style={{ maxWidth: "1070px" }}>
+          <header className="page-header">
+            <p className="section-label">Sumá un nuevo equipo al campeonato</p>
+            <h1 className="section-title">NUEVA ESCUDERÍA</h1>
+            <p className="section-subtitle">
+              Ingresá la información de la escudería para que forme parte de las próximas temporadas
+            </p>
+          </header>
+
+          <TeamForm onSubmit={handleCreate} submitLabel="Crear" errorsForm={errorsForm} />
+        </div>
+      </section>
+    </main>
   );
 }
 

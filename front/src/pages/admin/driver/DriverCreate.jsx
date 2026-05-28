@@ -49,19 +49,26 @@ function DriverCreate() {
     }
   }
 
-
-
-
-
   return (
-    <div className="container mt-4">
-      <h2>Crear Nuevo Piloto</h2>
-      <DriverForm
-        onSubmit={handleCreate}
-        submitLabel="Crear"
-        errorsForm={errorsForm}
-      />
-    </div>
+    <main>
+      <section className="auth-section page-section container text-center">
+        <div className="auth-container" style={{ maxWidth: "1070px" }}>
+          <header className="page-header">
+            <p className="section-label">Añadí un nuevo piloto al sistema</p>
+            <h1 className="section-title">NUEVO PILOTO</h1>
+            <p className="section-subtitle">
+              Completá los datos del piloto para incluirlo en las predicciones.
+            </p>
+          </header>
+
+          <DriverForm
+            onSubmit={handleCreate}
+            submitLabel="Crear"
+            errorsForm={errorsForm}
+          />
+        </div>
+      </section>
+    </main>
   );
 }
 
