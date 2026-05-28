@@ -108,7 +108,7 @@ function TeamForm({
           {(previewLogoUrl || currentLogo) && (
             <div 
               className="p-3 rounded-4 text-center d-flex align-items-center justify-content-center" 
-              style={{ backgroundColor: "#111d2a", width: "220px", height: "180px" }}
+              style={{ backgroundColor: "#ffffff", width: "220px", height: "180px", border: "1.5px solid #e0e0e0" }}
             >
               <img
                 src={previewLogoUrl ? previewLogoUrl : getImageUrl(currentLogo, 500)}
@@ -121,7 +121,7 @@ function TeamForm({
           {(previewIsologoUrl || currentIsologo) && (
             <div 
               className="p-3 rounded-4 text-center d-flex align-items-center justify-content-center" 
-              style={{ backgroundColor: "#111d2a", width: "220px", height: "180px" }}
+              style={{ backgroundColor: "#ffffff", width: "220px", height: "180px", border: "1.5px solid #e0e0e0" }}
             >
               <img
                 src={previewIsologoUrl ? previewIsologoUrl : getImageUrl(currentIsologo, 500)}
@@ -187,9 +187,9 @@ function TeamForm({
         </div>
       </div>
 
-      {/* Fila 1: Nombre Completo (Ancho Completo) */}
+      {/* Fila 1: Nombre Completo y Campeonatos */}
       <div className="row">
-        <div className="col-12">
+        <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.full_team_name ? "is-invalid" : ""}`}>
               <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Nombre completo</span>
@@ -203,6 +203,24 @@ function TeamForm({
             </div>
             {errorsForm.full_team_name && (
               <div className="invalid-feedback d-block text-start mt-1">{errorsForm.full_team_name}</div>
+            )}
+          </div>
+        </div>
+
+        <div className="col-12 col-md-6">
+          <div className="gp-input-group-container">
+            <div className={`gp-input-group ${errorsForm.world_championships ? "is-invalid" : ""}`}>
+              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Campeonatos</span>
+              <input
+                type="number"
+                className="form-control bg-white"
+                value={world_championships}
+                onChange={(e) => setWorldChampionships(e.target.value)}
+                placeholder="Campeonatos mundiales ganados"
+              />
+            </div>
+            {errorsForm.world_championships && (
+              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.world_championships}</div>
             )}
           </div>
         </div>
@@ -335,27 +353,6 @@ function TeamForm({
             </div>
             {errorsForm.color && (
               <div className="invalid-feedback d-block text-start mt-1">{errorsForm.color}</div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Fila 5: Campeonatos Mundiales */}
-      <div className="row">
-        <div className="col-12 col-md-6 mb-md-0">
-          <div className="gp-input-group-container">
-            <div className={`gp-input-group ${errorsForm.world_championships ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Campeonatos</span>
-              <input
-                type="number"
-                className="form-control bg-white"
-                value={world_championships}
-                onChange={(e) => setWorldChampionships(e.target.value)}
-                placeholder="Campeonatos mundiales ganados"
-              />
-            </div>
-            {errorsForm.world_championships && (
-              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.world_championships}</div>
             )}
           </div>
         </div>
