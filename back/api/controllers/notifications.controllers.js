@@ -145,6 +145,14 @@ export async function sendAdminNotification(req, res) {
       // 2. Asignar notificacion in-app
       await assignNotificationToUsers(notificationId, users);
 
+      // Emitir por socket.io para actualizar en tiempo real la campana
+      const io = req.app.get("io");
+      if (io) {
+        for (const u of users) {
+          io.to(`user:${u._id.toString()}`).emit("notifications:new");
+        }
+      }
+
       // 3. Enviar notificaciones push
       const { sendPushNotification } = await import("../../services/fcm.services.js");
       let pushEnviadas = 0;
