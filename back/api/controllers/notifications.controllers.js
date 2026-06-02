@@ -44,9 +44,10 @@ export async function markAsSeen(req, res) {
   try {
     const db = await connectDB();
     const { id } = req.params;
+    const userId = req.usuario.id;
 
     await db.collection("user_notifications").updateOne(
-      { _id: new ObjectId(id) },
+      { _id: new ObjectId(id), userId: new ObjectId(userId) },
       {
         $set: {
           seen: true,
@@ -54,6 +55,11 @@ export async function markAsSeen(req, res) {
         }
       }
     );
+
+    const io = req.app.get("io");
+    if (io) {
+      io.to(`user:${userId}`).emit("notifications:new");
+    }
 
     res.sendStatus(204);
   } catch (error) {
@@ -72,6 +78,11 @@ export async function deleteNotification(req, res) {
       _id: new ObjectId(id),
       userId: new ObjectId(userId)
     });
+
+    const io = req.app.get("io");
+    if (io) {
+      io.to(`user:${userId}`).emit("notifications:new");
+    }
 
     res.sendStatus(204);
   } catch (error) {
@@ -95,6 +106,11 @@ export async function markAllAsSeen(req, res) {
       }
     );
 
+    const io = req.app.get("io");
+    if (io) {
+      io.to(`user:${userId}`).emit("notifications:new");
+    }
+
     res.sendStatus(204);
   } catch (error) {
     console.error("Error al marcar todas las notificaciones como vistas:", error);
@@ -110,6 +126,11 @@ export async function deleteAllNotifications(req, res) {
     await db.collection("user_notifications").deleteMany({
       userId: new ObjectId(userId)
     });
+
+    const io = req.app.get("io");
+    if (io) {
+      io.to(`user:${userId}`).emit("notifications:new");
+    }
 
     res.sendStatus(204);
   } catch (error) {
