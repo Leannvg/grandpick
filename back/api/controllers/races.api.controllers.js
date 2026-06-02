@@ -86,13 +86,6 @@ export async function create(req, res) {
         const raceResult = await racesServices.createRace(newRace);
         const createdRace = await racesServices.findRaceById(raceResult.result.insertedId);
 
-        await sendGlobalNotification(req.app, {
-            title: "Nueva carrera creada",
-            message: "Ya podés predecir tus proximos resultados",
-            link: `/predictions`,
-            type: "success"
-        });
-
         const io = req.app.get("io");
         if (io) io.emit("races:updated");
 
