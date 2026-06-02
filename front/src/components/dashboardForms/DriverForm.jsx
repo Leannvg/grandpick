@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import CountrySelect from "./../CountrySelect.jsx";
 import TeamsServices from "./../../services/teams.services.js";
 import SearchableSelect from "./../SearchableSelect.jsx";
-import { getImageUrl } from "../../utils/cloudinary.js";
+import { getImageUrl, CLOUDINARY_DEFAULTS } from "../../utils/cloudinary.js";
 import SubmitButton from "./../SubmitButton.jsx";
 
 function DriverForm({
@@ -73,21 +73,19 @@ function DriverForm({
   return (
     <form onSubmit={handleSubmit} className="text-start">
       {/* Vista previa de la imagen */}
-      {(previewUrl || currentImage) && (
-        <div className="text-center mb-4">
-          <div
-            className="d-inline-block p-3 rounded-4"
-            style={{ backgroundColor: "#111d2a", maxWidth: "220px", width: "100%" }}
-          >
-            <img
-              src={previewUrl ? previewUrl : getImageUrl(currentImage, 500)}
-              alt="Vista previa del piloto"
-              className="img-fluid rounded-3"
-              style={{ maxHeight: "200px", objectFit: "contain", borderRadius: "10px" }}
-            />
-          </div>
+      <div className="text-center mb-4">
+        <div
+          className="d-inline-block p-3 rounded-4"
+          style={{ backgroundColor: "#111d2a", maxWidth: "220px", width: "100%" }}
+        >
+          <img
+            src={previewUrl ? previewUrl : getImageUrl(currentImage || CLOUDINARY_DEFAULTS.EMPTY, 500)}
+            alt="Vista previa del piloto"
+            className="img-fluid rounded-3"
+            style={{ maxHeight: "200px", objectFit: "contain", borderRadius: "10px" }}
+          />
         </div>
-      )}
+      </div>
 
       {/* Fila 0: Imagen */}
       <div className="row">

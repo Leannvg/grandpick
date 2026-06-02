@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import CountrySelect from "./../../components/CountrySelect.jsx";
 import CitySelect from "./../../components/CitySelect.jsx";
-import { getImageUrl } from "../../utils/cloudinary.js";
+import { getImageUrl, CLOUDINARY_DEFAULTS } from "../../utils/cloudinary.js";
 import SubmitButton from "./../SubmitButton.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -103,36 +103,30 @@ function TeamForm({
   return (
     <form onSubmit={handleSubmit} className="text-start">
       {/* Vista previa de Logo e Isologo centrados */}
-      {(previewLogoUrl || currentLogo || previewIsologoUrl || currentIsologo) && (
-        <div className="d-flex justify-content-center gap-3 mb-4 flex-wrap">
-          {(previewLogoUrl || currentLogo) && (
-            <div 
-              className="p-3 rounded-4 text-center d-flex align-items-center justify-content-center" 
-              style={{ backgroundColor: "#ffffff", width: "220px", height: "180px", border: "1.5px solid #e0e0e0" }}
-            >
-              <img
-                src={previewLogoUrl ? previewLogoUrl : getImageUrl(currentLogo, 500)}
-                alt="Logo"
-                className="img-fluid"
-                style={{ maxHeight: "140px", objectFit: "contain", borderRadius: "8px" }}
-              />
-            </div>
-          )}
-          {(previewIsologoUrl || currentIsologo) && (
-            <div 
-              className="p-3 rounded-4 text-center d-flex align-items-center justify-content-center" 
-              style={{ backgroundColor: "#ffffff", width: "220px", height: "180px", border: "1.5px solid #e0e0e0" }}
-            >
-              <img
-                src={previewIsologoUrl ? previewIsologoUrl : getImageUrl(currentIsologo, 500)}
-                alt="Isologo"
-                className="img-fluid"
-                style={{ maxHeight: "140px", objectFit: "contain", borderRadius: "8px" }}
-              />
-            </div>
-          )}
+      <div className="d-flex justify-content-center gap-3 mb-4 flex-wrap">
+        <div 
+          className="p-3 rounded-4 text-center d-flex align-items-center justify-content-center" 
+          style={{ backgroundColor: "#ffffff", width: "220px", height: "180px", border: "1.5px solid #e0e0e0" }}
+        >
+          <img
+            src={previewLogoUrl ? previewLogoUrl : getImageUrl(currentLogo || CLOUDINARY_DEFAULTS.EMPTY, 500)}
+            alt="Logo"
+            className="img-fluid"
+            style={{ maxHeight: "140px", objectFit: "contain", borderRadius: "8px" }}
+          />
         </div>
-      )}
+        <div 
+          className="p-3 rounded-4 text-center d-flex align-items-center justify-content-center" 
+          style={{ backgroundColor: "#ffffff", width: "220px", height: "180px", border: "1.5px solid #e0e0e0" }}
+        >
+          <img
+            src={previewIsologoUrl ? previewIsologoUrl : getImageUrl(currentIsologo || CLOUDINARY_DEFAULTS.EMPTY, 500)}
+            alt="Isologo"
+            className="img-fluid"
+            style={{ maxHeight: "140px", objectFit: "contain", borderRadius: "8px" }}
+          />
+        </div>
+      </div>
 
       {/* Fila 0: Cargas de Logo e Isologo */}
       <div className="row">

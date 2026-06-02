@@ -4,7 +4,7 @@ import UploadsServices from "./../../services/uploads.services.js";
 import SearchableSelect from "../SearchableSelect.jsx";
 import CountrySelect from "./../../components/CountrySelect.jsx";
 import CitySelect from "./../../components/CitySelect.jsx";
-import { getImageUrl } from "../../utils/cloudinary.js";
+import { getImageUrl, CLOUDINARY_DEFAULTS } from "../../utils/cloudinary.js";
 import SubmitButton from "./../SubmitButton.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -83,21 +83,19 @@ function CircuitForm({
   return (
     <form onSubmit={handleSubmit} className="text-start">
       {/* Vista previa de la imagen centrada */}
-      {(previewUrl || currentImage) && (
-        <div className="text-center mb-4">
-          <div
-            className="d-inline-block p-3 rounded-4"
-            style={{ backgroundColor: "#111d2a", maxWidth: "450px", width: "100%" }}
-          >
-            <img
-              src={previewUrl ? previewUrl : getImageUrl(currentImage, 500)}
-              alt="Vista previa del circuito"
-              className="img-fluid rounded-3"
-              style={{ maxHeight: "250px", objectFit: "contain", borderRadius: "10px" }}
-            />
-          </div>
+      <div className="text-center mb-4">
+        <div
+          className="d-inline-block p-3 rounded-4"
+          style={{ backgroundColor: "#111d2a", maxWidth: "450px", width: "100%" }}
+        >
+          <img
+            src={previewUrl ? previewUrl : getImageUrl(currentImage || CLOUDINARY_DEFAULTS.EMPTY, 500)}
+            alt="Vista previa del circuito"
+            className="img-fluid rounded-3"
+            style={{ maxHeight: "250px", objectFit: "contain", borderRadius: "10px" }}
+          />
         </div>
-      )}
+      </div>
 
       {/* Fila 0: Carga de Imagen */}
       <div className="row">
