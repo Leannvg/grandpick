@@ -26,6 +26,24 @@ async function deleteNotification(id) {
     });
 }
 
+async function markAsSeen(id) {
+    return apiFetch(`/api/notifications/${id}/seen`, {
+        method: 'PATCH',
+    });
+}
+
+async function markAllAsSeen() {
+    return apiFetch("/api/notifications/seen-all", {
+        method: 'PATCH',
+    });
+}
+
+async function deleteAllNotifications() {
+    return apiFetch("/api/notifications/all", {
+        method: 'DELETE',
+    });
+}
+
 async function sendAdminNotification(data) {
     return apiFetch(`/api/notifications/send`, {
         method: 'POST',
@@ -42,5 +60,8 @@ export default {
     markAllAsRead,
     getMyNotifications,
     deleteNotification,
+    markAsSeen,
+    markAllAsSeen,
+    deleteAllNotifications,
     sendAdminNotification
 }

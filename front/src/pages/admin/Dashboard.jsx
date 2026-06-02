@@ -313,7 +313,7 @@ function Dashboard() {
         fetchTeams();
       }
 
-      showAlert(`✅ Eliminado correctamente.`, "success");
+      showAlert(`Eliminado correctamente.`, "success");
     } catch (err) {
 
       console.error(err);
@@ -534,18 +534,18 @@ function Dashboard() {
           )}
         </div>
 
-      <div className="admin-tab-content">
-        {activeTab !== TABS.NOTIFICATIONS && (
-          <div className="admin-scroll-warning">
-            <i className="bi bi-arrow-left-right"></i>
-            <span>Desliza horizontalmente para ver la tabla completa</span>
-          </div>
-        )}
-        {loading ? <LoaderSpinner /> : renderTabContent()}
+        <div className="admin-tab-content">
+          {activeTab !== TABS.NOTIFICATIONS && (
+            <div className="admin-scroll-warning">
+              <i className="bi bi-arrow-left-right"></i>
+              <span>Desliza horizontalmente para ver la tabla completa</span>
+            </div>
+          )}
+          {loading ? <LoaderSpinner /> : renderTabContent()}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
 }
 
 export default Dashboard;

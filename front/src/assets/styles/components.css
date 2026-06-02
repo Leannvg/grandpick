@@ -110,8 +110,27 @@
     transition: background-color 0.2s;
 }
 
+.notification-item-wrapper.unread {
+    background-color: #f0f7fc;
+}
+
 .notification-item-wrapper:hover {
     background-color: #f8f9fa;
+}
+
+.notification-item-wrapper.unread:hover {
+    background-color: #e4f0fa;
+}
+
+.notification-unread-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #3975A2;
+    border-radius: 50%;
+    margin-left: 4px;
+    flex-shrink: 0;
+    box-shadow: 0 0 6px rgba(57, 117, 162, 0.6);
 }
 
 .notification-item {
@@ -219,8 +238,16 @@
         background-color: transparent !important;
     }
 
+    .notification-item-wrapper.unread {
+        background-color: rgba(57, 117, 162, 0.15) !important;
+    }
+
     .notification-item-wrapper:hover {
         background-color: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .notification-item-wrapper.unread:hover {
+        background-color: rgba(57, 117, 162, 0.25) !important;
     }
 
     .notification-title {

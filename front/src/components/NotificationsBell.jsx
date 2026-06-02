@@ -2,7 +2,7 @@ import { useNotifications } from "../context/NotificationsContext";
 import { Link } from "react-router-dom";
 
 function NotificationsBell({ onToggle }) {
-  const { notifications, deleteNotification } = useNotifications();
+  const { notifications, deleteNotification, markAsSeen, markAllAsSeen, deleteAllNotifications } = useNotifications();
   const unread = notifications.filter(n => !n.seen).length;
 
   return (
@@ -32,49 +32,108 @@ function NotificationsBell({ onToggle }) {
       </button>
 
       <div className="dropdown-menu dropdown-menu-end notifications-dropdown shadow-lg">
-        <div className="notifications-header p-3 border-bottom">
+        <div className="notifications-header p-3 border-bottom d-flex justify-content-between align-items-center">
           <p className="dropdown-header m-0 p-0 text-dark fw-bold">Notificaciones</p>
+          {notifications.length > 0 && (
+            <div className="d-flex gap-2 align-items-center">
+              <button
+                type="button"
+                className="btn btn-link p-0 text-decoration-none small text-primary fw-semibold"
+                style={{ fontSize: "12px", border: "none", background: "none" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  markAllAsSeen();
+                }}
+              >
+                Marcar leídas
+              </button>
+              <span className="text-muted small" style={{ fontSize: "10px" }}>|</span>
+              <button
+                type="button"
+                className="btn btn-link p-0 text-decoration-none small text-danger fw-semibold"
+                style={{ fontSize: "12px", border: "none", background: "none" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  deleteAllNotifications();
+                }}
+              >
+                Limpiar todas
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="notifications-body">
           <div className="list-group list-group-flush">
             {notifications.length === 0 ? (
-              <p className="text-center py-4 m-0">No hay notificaciones</p>
+              <p className="text-center py-4 m-0 text-muted small">No hay notificaciones</p>
             ) : (
-              notifications.map((n) => (
-                <div
-                  key={n.id}
-                  className="notification-item-wrapper position-relative border-bottom"
-                >
-                  <Link
-                    to={n.link?.startsWith("/results") ? "/prediction-history" : (n.link || "/predictions")}
-                    className="notification-item d-flex gap-3 p-3 text-decoration-none"
-                    onClick={() => deleteNotification(n.id)}
-                  >
+              notifications.map((n) => {
+                const hasLink = !!n.link;
+                const linkTarget = n.link?.startsWith("/results") ? "/prediction-history" : n.link;
+
+                const content = (
+                  <>
                     <span className="notification-icon fs-4">{n.icon || "🏁"}</span>
                     <div className="notification-content">
-                      <span className="notification-title fw-semibold text-dark d-block">{n.title}</span>
+                      <div className="d-flex align-items-center gap-2">
+                        <span className="notification-title fw-semibold text-dark">{n.title}</span>
+                        {!n.seen && <span className="notification-unread-dot"></span>}
+                      </div>
                       <p className="notification-message mb-0 text-muted small">{n.message}</p>
                     </div>
-                  </Link>
+                  </>
+                );
 
-                  <button
-                    type="button"
-                    className="notification-close-btn"
-                    aria-label="Borrar notificación"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      deleteNotification(n.id);
-                    }}
+                const handleClick = () => {
+                  if (!n.seen) {
+                    markAsSeen(n.id);
+                  }
+                };
+
+                return (
+                  <div
+                    key={n.id}
+                    className={`notification-item-wrapper position-relative border-bottom ${!n.seen ? "unread" : ""}`}
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
-                </div>
-              ))
+                    {hasLink ? (
+                      <Link
+                        to={linkTarget}
+                        className="notification-item d-flex gap-3 p-3 pe-5 text-decoration-none"
+                        onClick={handleClick}
+                      >
+                        {content}
+                      </Link>
+                    ) : (
+                      <div
+                        className="notification-item d-flex gap-3 p-3 pe-5 text-decoration-none"
+                        style={{ cursor: "pointer" }}
+                        onClick={handleClick}
+                      >
+                        {content}
+                      </div>
+                    )}
+
+                    <button
+                      type="button"
+                      className="notification-close-btn"
+                      aria-label="Borrar notificación"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        deleteNotification(n.id);
+                      }}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+                );
+              })
             )}
           </div>
         </div>

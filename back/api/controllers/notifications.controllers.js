@@ -80,6 +80,44 @@ export async function deleteNotification(req, res) {
   }
 }
 
+export async function markAllAsSeen(req, res) {
+  try {
+    const db = await connectDB();
+    const userId = req.usuario.id;
+
+    await db.collection("user_notifications").updateMany(
+      { userId: new ObjectId(userId), seen: false },
+      {
+        $set: {
+          seen: true,
+          seenAt: new Date()
+        }
+      }
+    );
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.error("Error al marcar todas las notificaciones como vistas:", error);
+    res.status(500).json({ error: "Error al marcar notificaciones" });
+  }
+}
+
+export async function deleteAllNotifications(req, res) {
+  try {
+    const db = await connectDB();
+    const userId = req.usuario.id;
+
+    await db.collection("user_notifications").deleteMany({
+      userId: new ObjectId(userId)
+    });
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.error("Error al eliminar todas las notificaciones:", error);
+    res.status(500).json({ error: "Error al eliminar notificaciones" });
+  }
+}
+
 export async function sendAdminNotification(req, res) {
   try {
     const { title, message, link, type, userId } = req.body;
