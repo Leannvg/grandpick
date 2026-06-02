@@ -86,7 +86,7 @@ function CircuitForm({
       <div className="text-center mb-4">
         <div
           className="d-inline-block p-3 rounded-4"
-          style={{ backgroundColor: "#111d2a", maxWidth: "450px", width: "100%" }}
+          style={{ backgroundColor: "#ffffff", maxWidth: "450px", width: "100%", border: "1.5px solid #e0e0e0" }}
         >
           <img
             src={previewUrl ? previewUrl : getImageUrl(currentImage || CLOUDINARY_DEFAULTS.EMPTY, 500)}
