@@ -1,12 +1,13 @@
 import { useState } from "react";
 import NotificationsServices from "../../services/notifications.services";
 import { useAlert } from "../../context/AlertContext";
+import { useDialog } from "../../context/DialogContext";
 import LoaderSpinner from "../LoaderSpinner";
 
 function NotificationsTab({ users = [] }) {
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const { showAlert } = useAlert();
+  const { confirmDialog } = useDialog();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -20,7 +21,7 @@ function NotificationsTab({ users = [] }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handlePreview = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.title.trim() || !formData.message.trim()) {
@@ -28,11 +29,35 @@ function NotificationsTab({ users = [] }) {
       return;
     }
 
-    setShowModal(true);
-  };
+    const recipientName = formData.userId === "all" 
+      ? "Todos los usuarios" 
+      : (() => {
+          const u = users.find((user) => user._id === formData.userId);
+          return u ? `${u.name} ${u.last_name} (${u.email})` : "Usuario específico";
+        })();
 
-  const confirmSend = async () => {
-    setShowModal(false);
+    try {
+      await confirmDialog({
+        title: "¿Confirmar Envío?",
+        message: (
+          <span>
+            Estás a punto de enviar una notificación a <strong>{recipientName}</strong>.<br /><br />
+            <strong>Título:</strong> {formData.title}<br />
+            <strong>Mensaje:</strong> {formData.message}
+            {formData.link && <><br /><strong>Link:</strong> {formData.link}</>}
+            <br /><br />
+            Esta acción disparará notificaciones push reales.
+          </span>
+        ),
+        confirmText: "Enviar",
+        cancelText: "Cancelar",
+        confirmVariant: "danger",
+      });
+    } catch (e) {
+      // Usuario canceló
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await NotificationsServices.sendAdminNotification(formData);
@@ -52,26 +77,10 @@ function NotificationsTab({ users = [] }) {
     }
   };
 
-  const recipientName = formData.userId === "all" 
-    ? "Todos los usuarios" 
-    : (() => {
-        const u = users.find((user) => user._id === formData.userId);
-        return u ? `${u.name} ${u.last_name} (${u.email})` : "Usuario específico";
-      })();
-
-  return (
-    <div className="container mt-4" style={{ maxWidth: "800px" }}>
-      <div className="d-flex flex-column gap-2 mb-4">
-        <h2 className="m-0" style={{ color: "#fff" }}>Enviar Comunicado</h2>
-        <p style={{ color: "#aaa", fontSize: "0.95rem", margin: 0 }}>
-          Envía un comunicado a todos los usuarios o a uno en específico. Esto enviará tanto una notificación interna en la aplicación como una notificación Push a quienes las tengan habilitadas.
-        </p>
-      </div>
-
       {loading ? (
         <LoaderSpinner />
       ) : (
-        <form onSubmit={handlePreview} className="p-4 rounded shadow-lg" style={{ backgroundColor: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
+        <form onSubmit={handleSubmit} className="p-4 rounded shadow-lg" style={{ backgroundColor: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
           <div className="mb-3">
             <label htmlFor="userId" className="form-label text-white">Destinatario</label>
             <select
@@ -133,46 +142,6 @@ function NotificationsTab({ users = [] }) {
             />
           </div>
 
-          <div className="d-flex justify-content-end mt-2">
-            <button type="submit" className="btn-admin-add" style={{ padding: "10px 24px" }}>
-              <i className="bi bi-send"></i> Revisar Comunicado
-            </button>
-          </div>
-        </form>
-      )}
-
-      {/* Modal de confirmación */}
-      {showModal && (
-        <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content" style={{ backgroundColor: "#1e2129", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
-              <div className="modal-header border-bottom-0 pb-0">
-                <h5 className="modal-title text-white">Confirmar Envío</h5>
-                <button type="button" className="btn-close btn-close-white" onClick={() => setShowModal(false)} aria-label="Close"></button>
-              </div>
-              <div className="modal-body text-white">
-                <p className="mb-2 text-muted">Estás a punto de enviar una notificación con los siguientes datos:</p>
-                <div className="p-3 rounded" style={{ backgroundColor: "rgba(0,0,0,0.3)" }}>
-                  <p className="mb-1"><strong>Destinatario:</strong> <span style={{ color: "var(--color-primary)" }}>{recipientName}</span></p>
-                  <p className="mb-1"><strong>Título:</strong> {formData.title}</p>
-                  <p className="mb-1"><strong>Mensaje:</strong> {formData.message}</p>
-                  {formData.link && <p className="mb-1"><strong>Link adjunto:</strong> <a href={formData.link} target="_blank" rel="noreferrer" style={{ color: "var(--color-primary)" }}>{formData.link}</a></p>}
-                </div>
-                <div className="alert alert-warning mt-3 mb-0" style={{ fontSize: "0.9rem" }}>
-                  <i className="bi bi-exclamation-triangle-fill me-2"></i>
-                  Esta acción no se puede deshacer y los usuarios recibirán alertas push inmediatamente.
-                </div>
-              </div>
-              <div className="modal-footer border-top-0 pt-0">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancelar</button>
-                <button type="button" className="btn-admin-add" onClick={confirmSend}>
-                  <i className="bi bi-send"></i> Confirmar y Enviar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
