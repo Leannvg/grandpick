@@ -187,17 +187,17 @@
     }
 
     .notifications-dropdown {
-        position: fixed !important;
-        top: 60px !important;
+        position: absolute !important;
+        top: 100% !important;
         left: 0 !important;
         right: 0 !important;
         width: 100vw !important;
         height: auto !important;
         max-height: calc(100vh - 100px) !important;
         margin: 0 !important;
-        border-radius: 0 !important;
+        border-radius: 0 0 12px 12px !important;
         border: none !important;
-        background-color: var(--color-dark-blue) !important;
+        background-color: #ffffff !important;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
         z-index: 2031;
 
@@ -217,15 +217,8 @@
         pointer-events: auto;
     }
 
-    .notifications-header {
-        background-color: rgba(255, 255, 255, 0.05) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-    }
-
     .notifications-header .dropdown-header {
-        color: #fff !important;
         padding: 15px !important;
-        font-weight: 700;
     }
 
     .notifications-body {
@@ -233,35 +226,12 @@
         overflow-y: auto;
     }
 
-    .notification-item-wrapper {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-        background-color: transparent !important;
-    }
-
-    .notification-item-wrapper.unread {
-        background-color: rgba(57, 117, 162, 0.15) !important;
-    }
-
-    .notification-item-wrapper:hover {
-        background-color: rgba(255, 255, 255, 0.05) !important;
-    }
-
-    .notification-item-wrapper.unread:hover {
-        background-color: rgba(57, 117, 162, 0.25) !important;
-    }
-
     .notification-title {
-        color: #fff !important;
         font-size: 16px;
     }
 
     .notification-message {
-        color: rgba(255, 255, 255, 0.7) !important;
         font-size: 14px;
-    }
-
-    .notification-close-btn {
-        color: #fff !important;
     }
 }
 
