@@ -294,7 +294,8 @@ function PredictionHistory() {
 
                                                     if (isMatch && currentSession?.type?.toLowerCase().includes('qual')) {
                                                         const sessionDate = new Date(currentSession.date_race);
-                                                        if (sessionDate < new Date()) {
+                                                        const cutoffDate = new Date('2026-05-03T00:00:00Z');
+                                                        if (sessionDate < cutoffDate) {
                                                             points = points / 3;
                                                         }
                                                     }
@@ -414,7 +415,8 @@ function PredictionHistory() {
 
                                             if (isMatch && currentSession?.type?.toLowerCase().includes('qual')) {
                                                 const sessionDate = new Date(currentSession.date_race);
-                                                if (sessionDate < new Date()) {
+                                                const cutoffDate = new Date('2026-05-03T00:00:00Z');
+                                                if (sessionDate < cutoffDate) {
                                                     points = points / 3;
                                                 }
                                             }
