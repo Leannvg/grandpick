@@ -69,10 +69,10 @@ export const removeTokenFromBackend = async () => {
         });
 
         if (token) {
-            await axios.delete(`${API_URL}/api/users/fcm-token`, {
-                headers: { "auth-token": authToken },
-                data: { token }
-            });
+            await axios.post(`${API_URL}/api/users/fcm-token/remove`, 
+                { token },
+                { headers: { "auth-token": authToken } }
+            );
             console.log("Token removido exitosamente del backend");
         }
     } catch (error) {
@@ -83,8 +83,14 @@ export const removeTokenFromBackend = async () => {
 /**
  * Escucha mensajes mientras la app está abierta (foreground)
  */
+let messageListener = null;
+
 export const onForegroundMessage = (navigate) => {
-    onMessage(messaging, (payload) => {
+    if (messageListener) {
+        messageListener(); // Desuscribir listener anterior si existe para evitar duplicados
+    }
+    
+    messageListener = onMessage(messaging, (payload) => {
         console.log("Mensaje recibido en primer plano:", payload);
 
         // Si el usuario quiere redirección automática cuando llega un mensaje de resultados
