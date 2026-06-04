@@ -77,6 +77,15 @@ function NotificationsTab({ users = [] }) {
     }
   };
 
+  return (
+    <div className="container mt-4" style={{ maxWidth: "800px" }}>
+      <div className="d-flex flex-column gap-2 mb-4">
+        <h2 className="m-0" style={{ color: "#fff" }}>Enviar Comunicado</h2>
+        <p style={{ color: "#aaa", fontSize: "0.95rem", margin: 0 }}>
+          Envía un comunicado a todos los usuarios o a uno en específico. Esto enviará tanto una notificación interna en la aplicación como una notificación Push a quienes las tengan habilitadas.
+        </p>
+      </div>
+
       {loading ? (
         <LoaderSpinner />
       ) : (
@@ -142,6 +151,13 @@ function NotificationsTab({ users = [] }) {
             />
           </div>
 
+          <div className="d-flex justify-content-end mt-2">
+            <button type="submit" className="btn-admin-add" style={{ padding: "10px 24px" }}>
+              <i className="bi bi-send"></i> Revisar Comunicado
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }
