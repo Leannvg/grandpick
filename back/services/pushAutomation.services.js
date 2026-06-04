@@ -136,6 +136,44 @@ export const checkAndTriggerPushNotifications = async () => {
              const typeName = race.points_system?.type || 'la carrera';
              const gpName = race.circuit?.gp_name || '';
              
+             // Lógica para evitar solapamiento de notificaciones entre Sprint y Qualy
+             if (typeName === "Qualy") {
+                 // Definir inicio y fin del día de la Clasificación (en UTC)
+                 const startOfDay = new Date(race.date_race);
+                 startOfDay.setUTCHours(0, 0, 0, 0);
+                 const endOfDay = new Date(race.date_race);
+                 endOfDay.setUTCHours(23, 59, 59, 999);
+
+                 const unfinishedSprint = await db.collection("Races").aggregate([
+                     {
+                         $match: {
+                             id_circuit: race.id_circuit,
+                             date_race: { $gte: startOfDay, $lte: endOfDay },
+                             state: { $ne: "Finalizado" }
+                         }
+                     },
+                     {
+                         $lookup: {
+                             from: "Points_System",
+                             localField: "points_system",
+                             foreignField: "_id",
+                             as: "points_system"
+                         }
+                     },
+                     { $unwind: { path: "$points_system", preserveNullAndEmptyArrays: true } },
+                     {
+                         $match: {
+                             "points_system.type": "Sprint"
+                         }
+                     }
+                 ]).toArray();
+
+                 if (unfinishedSprint.length > 0) {
+                     console.log(`[pushAutomation] Retrasando notificación de Qualy para ${gpName} porque la Sprint del mismo día no ha finalizado.`);
+                     continue; // Saltamos esta iteración para no enviar la notificación ni marcarla como enviada
+                 }
+             }
+             
              await notifyAllUsers({
                 title: `Predicciones habilitadas ${gpName}`,
                 body: `Ya podés hacer tus predicciones para la sesión de ${typeName}.`
