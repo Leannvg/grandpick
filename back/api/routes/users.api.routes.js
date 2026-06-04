@@ -61,6 +61,7 @@ route.route("/api/users/:id/unblock")
 
 route.route("/api/users/fcm-token")
     .post(autenticado, UsersApiController.addFcmToken)
+    .delete(autenticado, UsersApiController.removeFcmToken)
 
 route.route("/api/users/test-push")
     .post(autenticado, admin, UsersApiController.sendTestPush)

@@ -55,6 +55,32 @@ const saveTokenInBackend = async (userId, token) => {
 };
 
 /**
+ * Elimina el token del backend al cerrar sesión
+ */
+export const removeTokenFromBackend = async () => {
+    try {
+        const authToken = localStorage.getItem("auth-token");
+        if (!authToken) return;
+        
+        const registration = await navigator.serviceWorker.ready;
+        const token = await getToken(messaging, {
+            vapidKey: VAPID_KEY,
+            serviceWorkerRegistration: registration
+        });
+
+        if (token) {
+            await axios.delete(`${API_URL}/api/users/fcm-token`, {
+                headers: { "auth-token": authToken },
+                data: { token }
+            });
+            console.log("Token removido exitosamente del backend");
+        }
+    } catch (error) {
+        console.error("Error al remover el token del backend:", error);
+    }
+};
+
+/**
  * Escucha mensajes mientras la app está abierta (foreground)
  */
 export const onForegroundMessage = (navigate) => {

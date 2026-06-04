@@ -48,7 +48,7 @@ import { Routes, Route, useNavigate, Navigate, useLocation } from "react-router-
 import { useState, useEffect } from "react";
 
 import UsersServices from "./services/users.services.js";
-import { requestNotificationPermission, onForegroundMessage } from "./services/pushNotifications.services.js";
+import { requestNotificationPermission, onForegroundMessage, removeTokenFromBackend } from "./services/pushNotifications.services.js";
 
 
 function App() {
@@ -136,7 +136,10 @@ function App() {
 
 
 
-  function onLogout() {
+  async function onLogout() {
+    // Remove FCM token from backend before clearing local storage
+    await removeTokenFromBackend();
+
     setAutenticado(false);
     setUserId(null);
     setAdmin(false);

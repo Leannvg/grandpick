@@ -209,6 +209,20 @@ async function addFcmToken(userId, token) {
   );
 }
 
+async function removeFcmToken(userId, token) {
+  return users.updateOne(
+    { _id: new ObjectId(userId) },
+    { $pull: { fcmTokens: token } }
+  );
+}
+
+async function removeInvalidFcmToken(token) {
+  return users.updateMany(
+    { fcmTokens: token },
+    { $pull: { fcmTokens: token } }
+  );
+}
+
 export {
   getUsers,
   getUserById,
@@ -222,5 +236,7 @@ export {
   unblockUser,
   forgotPassword,
   resetPassword,
-  addFcmToken
+  addFcmToken,
+  removeFcmToken,
+  removeInvalidFcmToken
 };

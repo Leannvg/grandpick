@@ -302,6 +302,25 @@ async function addFcmToken(req, res) {
   }
 }
 
+async function removeFcmToken(req, res) {
+  try {
+    // If the token is sent in body
+    const { token } = req.body;
+    if (!token) {
+       return res.status(400).json({ message: "Token is required" });
+    }
+    
+    // We can use the token to remove it from ANY user in case they logged out
+    // or just the current logged in user.
+    // req.user or req.payload should have the ID if autenticado middleware is used.
+    // Since we added removeInvalidFcmToken, let's just use it to purge the token globally.
+    await UsersServices.removeInvalidFcmToken(token);
+    res.status(200).json({ message: "Token FCM removido con éxito" });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
 async function sendTestPush(req, res) {
   try {
     const { userId, title, body } = req.body;
@@ -390,6 +409,7 @@ export {
   forgotPassword,
   resetPassword,
   addFcmToken,
+  removeFcmToken,
   sendTestPush,
   sendBroadcastPush,
   forceLogoutAll
