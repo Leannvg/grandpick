@@ -105,7 +105,7 @@ function NextRaceCTA() {
                             {getFlagEmoji(race.circuit?.country || race.id_circuit?.country)}
                         </span>
                         <span className="nr-cta__country-name">{countryName.toUpperCase()}</span>
-                        <span className="nr-cta__date" style={{ marginLeft: '4px', fontSize: '11px', opacity: 0.85 }}>
+                        <span className="nr-cta__date">
                             {formatRaceDate(race.date_gp_start, race.date_gp_end, race.circuit?.timezone).toUpperCase()}
                         </span>
                     </div>
