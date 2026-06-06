@@ -404,7 +404,7 @@ p {
 }
 
 .nr-cta__date {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 300;
   color: #fff;
   opacity: 0.85;
@@ -628,6 +628,12 @@ p {
   .nr-cta__session-tag {
     font-size: 14px;
     padding: 3px 10px;
+  }
+
+  .live-indicator {
+    width: 10px;
+    height: 10px;
+    margin-right: 6px;
   }
 
   .nr-cta__time-value {
