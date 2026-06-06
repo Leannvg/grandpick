@@ -44,7 +44,7 @@ function TeamCreate() {
       await TeamsServices.createTeam(formData);
 
       redirectToTab("Escuderias");
-      showAlert(`Escudería ${teamData.name} creada con éxito ✅`, "success");
+      showAlert(`Escudería ${teamData.name} creada con éxito`, "success");
     } catch (error) {
       if (!error) return;
       const parsedErrors = helpers.parseErrorMessage(error);

@@ -229,7 +229,7 @@ function Predictions() {
       }
 
       await updateCurrentPrediction(user, race);
-      showAlert("Predicción cargada con éxito ✅", "success");
+      showAlert("Predicción cargada con éxito", "success");
     } catch (error) {
       console.error("Error al procesar predicción:", error);
       showAlert(
@@ -260,7 +260,7 @@ function Predictions() {
             {race.points_system?.type?.toUpperCase() || "RACE"}
           </span>
 
-          {!isPreWindow && (canPredict || (race && new Date(race.date_race).getTime() + (race.totalDuration || 5400000) > Date.now())) && (
+          {!isPreWindow && (canPredict || (race && race.state !== "Finalizado")) && (
             <div className="predictions-countdown">
               {!isClosed && <span className="countdown-label">Tiempo restante para predecir:</span>}
               <CountdownToRace

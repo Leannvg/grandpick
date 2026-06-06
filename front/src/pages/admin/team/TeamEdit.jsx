@@ -53,7 +53,7 @@ function TeamEdit() {
       await TeamsServices.editTeam(id, formData);
 
       redirectToTab("Escuderias");
-      showAlert(`Escudería ${teamData.name} actualizada con éxito ✅`, "success");
+      showAlert(`Escudería ${teamData.name} actualizada con éxito`, "success");
     } catch (error) {
       console.log(error);
       if (!error) return;

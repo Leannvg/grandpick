@@ -76,19 +76,9 @@ export function parseErrorMessage(error) {
 export function computeRaceState(race) {
   const now = Date.now();
   const start = new Date(race.date_race).getTime();
-  
-  let duration = race.totalDuration || 5400000; // 1.5 horas por defecto (ms)
-  if (!race.totalDuration && race.points_system?.type) {
-    const type = race.points_system.type.toLowerCase();
-    if (type === "sprint") duration = 0.5 * 60 * 60 * 1000; 
-    else if (type === "qualy" || type === "qualifying") duration = 1 * 60 * 60 * 1000;
-    else if (type === "race") duration = 1.5 * 60 * 60 * 1000;
-  }
-
-  const end = start + duration;
 
   // Finalizado
-  if (race.state === "Finalizado" || now > end) {
+  if (race.state === "Finalizado") {
     return {
       isClosed: true,
       isInProgress: false,
@@ -98,11 +88,11 @@ export function computeRaceState(race) {
     };
   }
 
-  // En curso (In Progress)
-  if (now >= start && now <= end) {
+  // En curso (In Progress) -> Ya pasó la hora de inicio pero NO se cerró
+  if (now >= start) {
     return {
       isClosed: true,
-      isInProgress: true, // Nueva propiedad
+      isInProgress: true,
       canPredict: false,
       isPreWindow: false,
       timeToOpen: null

@@ -203,47 +203,11 @@ export async function findCurrentOrNextRace() {
             },
             { $unwind: { path: "$points_system", preserveNullAndEmptyArrays: true } },
             {
-                $addFields: {
-                    start: "$date_race",
-                    end: {
-                        $add: [
-                            "$date_race",
-                            {
-                                $switch: {
-                                    branches: [
-                                        { case: { $eq: ["$points_system.type", "Sprint"] }, then: 0.5 * 60 * 60 * 1000 },
-                                        { case: { $eq: ["$points_system.type", "Qualy"] }, then: 60 * 60 * 1000 },
-                                        { case: { $eq: ["$points_system.type", "Race"] }, then: 1.5 * 60 * 60 * 1000 }
-                                    ],
-                                    default: 1.5 * 60 * 60 * 1000
-                                }
-                            }
-                        ]
-                    },
-                    totalDuration: {
-                        $switch: {
-                            branches: [
-                                { case: { $eq: ["$points_system.type", "Sprint"] }, then: 0.5 * 60 * 60 * 1000 },
-                                { case: { $eq: ["$points_system.type", "Qualy"] }, then: 60 * 60 * 1000 },
-                                { case: { $eq: ["$points_system.type", "Race"] }, then: 1.5 * 60 * 60 * 1000 }
-                            ],
-                            default: 1.5 * 60 * 60 * 1000
-                        }
-                    }
-                }
-            },
-            {
                 $match: {
-                    $or: [
-                        // 1) Sesión en curso que NO esté finalizada
-                        { start: { $lte: now }, end: { $gte: now }, state: { $ne: "Finalizado" } },
-
-                        // 2) Próxima futura (sin importar el estado, aunque suele ser Pendiente)
-                        { start: { $gt: now } }
-                    ]
+                    state: { $ne: "Finalizado" }
                 }
             },
-            { $sort: { start: 1 } },
+            { $sort: { date_race: 1 } },
             {
                 $lookup: {
                     from: "Circuits",

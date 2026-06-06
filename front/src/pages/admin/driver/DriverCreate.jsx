@@ -36,7 +36,7 @@ function DriverCreate() {
       await DriversServices.createDriver(formData);
 
       showAlert(
-        `Piloto ${driverData.full_name} creado con éxito ✅`,
+        `Piloto ${driverData.full_name} creado con éxito`,
         "success"
       );
       redirectToTab("Pilotos");

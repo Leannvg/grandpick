@@ -401,9 +401,9 @@ function RaceForm({
       setErrors({});
 
       if (action === "edit") {
-        showAlert("Carrera actualizada con éxito ✅", "success");
+        showAlert("Carrera actualizada con éxito", "success");
       } else {
-        showAlert("Carrera creada con éxito ✅", "success");
+        showAlert("Carrera creada con éxito", "success");
       }
 
       redirectToTab("Carreras")
@@ -547,23 +547,23 @@ function RaceForm({
                 <div className="col-12 col-md-4">
                   <div className="gp-input-group-container mb-0">
                     <div className="gp-input-group">
-                      <span 
-                        className="gp-input-label flex-fill text-center" 
-                        style={{ 
-                          textTransform: "capitalize", 
-                          backgroundColor: "#4a76a8", 
-                          justifyContent: "center", 
-                          width: "auto", 
-                          flex: "1" 
+                      <span
+                        className="gp-input-label flex-fill text-center"
+                        style={{
+                          textTransform: "capitalize",
+                          backgroundColor: "#4a76a8",
+                          justifyContent: "center",
+                          width: "auto",
+                          flex: "1"
                         }}
                       >
                         {p.type}
                       </span>
-                      <div 
-                        className="d-flex align-items-center justify-content-center bg-white px-3" 
-                        style={{ 
-                          width: "80px", 
-                          cursor: isEnabled && Object.values(enabledPoints).filter(Boolean).length === 1 ? "not-allowed" : "pointer" 
+                      <div
+                        className="d-flex align-items-center justify-content-center bg-white px-3"
+                        style={{
+                          width: "80px",
+                          cursor: isEnabled && Object.values(enabledPoints).filter(Boolean).length === 1 ? "not-allowed" : "pointer"
                         }}
                         onClick={() => {
                           const isOnlyOneEnabled = isEnabled && Object.values(enabledPoints).filter(Boolean).length === 1;
@@ -585,21 +585,21 @@ function RaceForm({
                 {/* Fecha gp-input-group: col-6 col-md-4 */}
                 <div className="col-6 col-md-4">
                   <div className="gp-input-group-container mb-0">
-                    <div 
-                      className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.date && isEnabled ? "is-invalid" : ""}`} 
-                      style={{ 
-                        flexDirection: isMobile ? "column" : "row", 
-                        alignItems: "stretch", 
+                    <div
+                      className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.date && isEnabled ? "is-invalid" : ""}`}
+                      style={{
+                        flexDirection: isMobile ? "column" : "row",
+                        alignItems: "stretch",
                         backgroundColor: "white"
                       }}
                     >
-                      <span 
-                        className="gp-input-label" 
-                        style={{ 
-                          width: isMobile ? "100%" : "80px", 
-                          minWidth: isMobile ? "100%" : "80px", 
-                          borderRadius: isMobile ? "8px 8px 0px 0px" : "8px 0px 0px 8px", 
-                          backgroundColor: isEnabled ? "#4a76a8" : "#b0b0b0", 
+                      <span
+                        className="gp-input-label"
+                        style={{
+                          width: isMobile ? "100%" : "80px",
+                          minWidth: isMobile ? "100%" : "80px",
+                          borderRadius: isMobile ? "8px 8px 0px 0px" : "8px 0px 0px 8px",
+                          backgroundColor: isEnabled ? "#4a76a8" : "#b0b0b0",
                           height: isMobile ? "36px" : "auto",
                           display: "flex",
                           alignItems: "center",
@@ -617,11 +617,11 @@ function RaceForm({
                         disabled={!isEnabled}
                         value={pointData[p._id]?.fecha || ""}
                         onChange={(e) => handlePointData(p._id, "fecha", e.target.value)}
-                        style={{ 
-                          backgroundColor: "white", 
-                          color: "#222", 
-                          border: "none", 
-                          padding: "10px", 
+                        style={{
+                          backgroundColor: "white",
+                          color: "#222",
+                          border: "none",
+                          padding: "10px",
                           textAlign: isMobile ? "center" : "left"
                         }}
                       />
@@ -635,21 +635,21 @@ function RaceForm({
                 {/* Hora gp-input-group: col-6 col-md-4 */}
                 <div className="col-6 col-md-4">
                   <div className="gp-input-group-container mb-0">
-                    <div 
-                      className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.time && isEnabled ? "is-invalid" : ""}`} 
-                      style={{ 
-                        flexDirection: isMobile ? "column" : "row", 
-                        alignItems: "stretch", 
+                    <div
+                      className={`gp-input-group ${!isEnabled ? "opacity-50" : ""} ${errorsForm.perPoint?.[p._id]?.time && isEnabled ? "is-invalid" : ""}`}
+                      style={{
+                        flexDirection: isMobile ? "column" : "row",
+                        alignItems: "stretch",
                         backgroundColor: "white"
                       }}
                     >
-                      <span 
-                        className="gp-input-label" 
-                        style={{ 
-                          width: isMobile ? "100%" : "80px", 
-                          minWidth: isMobile ? "100%" : "80px", 
-                          borderRadius: isMobile ? "8px 8px 0px 0px" : "8px 0px 0px 8px", 
-                          backgroundColor: isEnabled ? "#4a76a8" : "#b0b0b0", 
+                      <span
+                        className="gp-input-label"
+                        style={{
+                          width: isMobile ? "100%" : "80px",
+                          minWidth: isMobile ? "100%" : "80px",
+                          borderRadius: isMobile ? "8px 8px 0px 0px" : "8px 0px 0px 8px",
+                          backgroundColor: isEnabled ? "#4a76a8" : "#b0b0b0",
                           height: isMobile ? "36px" : "auto",
                           display: "flex",
                           alignItems: "center",
@@ -665,11 +665,11 @@ function RaceForm({
                         disabled={!isEnabled}
                         value={pointData[p._id]?.hora || ""}
                         onChange={(e) => handlePointData(p._id, "hora", e.target.value)}
-                        style={{ 
-                          backgroundColor: "white", 
-                          color: "#222", 
-                          border: "none", 
-                          padding: "10px", 
+                        style={{
+                          backgroundColor: "white",
+                          color: "#222",
+                          border: "none",
+                          padding: "10px",
                           textAlign: isMobile ? "center" : "left"
                         }}
                       />

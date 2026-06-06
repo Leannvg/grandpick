@@ -45,10 +45,10 @@ function CircuitEdit() {
 
       await CircuitsServices.updateCircuit(id, formData);
 
-      showAlert(`El circuito ${circuitData.circuit_name} se ha actualizado con éxito ✅`, "success");
+      showAlert(`El circuito ${circuitData.circuit_name} se ha actualizado con éxito`, "success");
       redirectToTab("Circuitos");
     } catch (error) {
-      if(!error) return
+      if (!error) return
       const parsedErrors = helpers.parseErrorMessage(error);
       setErrors(parsedErrors);
       showAlert("Ups! parece que hay campos incompletos.", "danger", true);

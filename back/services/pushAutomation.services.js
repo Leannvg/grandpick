@@ -3,21 +3,48 @@ import { sendPushToMultipleTokens } from "./fcm.services.js";
 import * as racesService from "./races.services.js";
 
 /**
- * Busca todos los usuarios con tokens de FCM y envía una notificación
+ * Busca todos los usuarios, crea una notificación interna para la app
+ * y envía Push a aquellos que tengan tokens FCM.
  */
 export const notifyAllUsers = async (notification, data = {}) => {
     const db = await connectDB();
-    const users = await db.collection("Users").find({
-        fcmTokens: { $exists: true, $not: { $size: 0 } }
-    }).toArray();
+    const users = await db.collection("Users").find({}).toArray();
 
-    const allTokens = users.flatMap(u => u.fcmTokens);
+    // 1. Crear notificación en la base de datos (In-App)
+    const { createGlobalNotification, assignNotificationToUsers } = await import("./notifications.services.js");
+    const notificationId = await createGlobalNotification({
+        title: notification.title,
+        message: notification.body,
+        link: data.link || "",
+        type: "info"
+    });
+
+    if (users.length > 0) {
+        await assignNotificationToUsers(notificationId, users);
+    }
+
+    // 2. Enviar notificaciones Push
+    const usersWithTokens = users.filter(u => u.fcmTokens && u.fcmTokens.length > 0);
+    const allTokens = usersWithTokens.flatMap(u => u.fcmTokens);
 
     if (allTokens.length > 0) {
         // Firebase Admin sendMulticast soporta hasta 500 tokens por llamada
-        // Para simplificar enviamos a todos, pero en prod real habría que paginar de a 500
         return sendPushToMultipleTokens(allTokens, notification, data);
     }
+};
+
+/**
+ * Verifica si existen sesiones previas del mismo GP que no han finalizado.
+ * Retorna true si hay alguna sesión pendiente que impide enviar notificaciones de la actual.
+ */
+const hasUnfinishedEarlierSessions = async (db, raceIdCircuit, raceDate) => {
+    const unfinished = await db.collection("Races").find({
+        id_circuit: raceIdCircuit,
+        date_race: { $lt: raceDate },
+        state: { $ne: "Finalizado" }
+    }).toArray();
+    
+    return unfinished.length > 0;
 };
 
 /**
@@ -59,6 +86,11 @@ export const checkAndTriggerPushNotifications = async () => {
         ]).toArray();
 
         for (const race of closingSoon) {
+            if (await hasUnfinishedEarlierSessions(db, race.id_circuit, race.date_race)) {
+                console.log(`[pushAutomation] Retrasando notificación (30 min) para circuito ${race.id_circuit} porque hay sesiones anteriores no finalizadas.`);
+                continue;
+            }
+
             const typeName = race.points_system?.type || 'la sesión';
             const circuitName = race.circuit?.circuit_name || 'el circuito';
             await notifyAllUsers({
@@ -90,6 +122,11 @@ export const checkAndTriggerPushNotifications = async () => {
         ]).toArray();
 
         for (const race of sessionsStarting) {
+            if (await hasUnfinishedEarlierSessions(db, race.id_circuit, race.date_race)) {
+                console.log(`[pushAutomation] Retrasando notificación (Inicio) para circuito ${race.id_circuit} porque hay sesiones anteriores no finalizadas.`);
+                continue;
+            }
+
             const typeName = race.points_system?.type || 'la carrera';
             await notifyAllUsers({
                 title: `¡Empieza ${typeName}!`,
@@ -133,46 +170,13 @@ export const checkAndTriggerPushNotifications = async () => {
         ]).toArray();
 
         for (const race of sessionsOpening) {
+             if (await hasUnfinishedEarlierSessions(db, race.id_circuit, race.date_race)) {
+                 console.log(`[pushAutomation] Retrasando notificación (Apertura) para circuito ${race.id_circuit} porque hay sesiones anteriores no finalizadas.`);
+                 continue;
+             }
+
              const typeName = race.points_system?.type || 'la carrera';
              const gpName = race.circuit?.gp_name || '';
-             
-             // Lógica para evitar solapamiento de notificaciones entre Sprint y Qualy
-             if (typeName === "Qualy") {
-                 // Definir inicio y fin del día de la Clasificación (en UTC)
-                 const startOfDay = new Date(race.date_race);
-                 startOfDay.setUTCHours(0, 0, 0, 0);
-                 const endOfDay = new Date(race.date_race);
-                 endOfDay.setUTCHours(23, 59, 59, 999);
-
-                 const unfinishedSprint = await db.collection("Races").aggregate([
-                     {
-                         $match: {
-                             id_circuit: race.id_circuit,
-                             date_race: { $gte: startOfDay, $lte: endOfDay },
-                             state: { $ne: "Finalizado" }
-                         }
-                     },
-                     {
-                         $lookup: {
-                             from: "Points_System",
-                             localField: "points_system",
-                             foreignField: "_id",
-                             as: "points_system"
-                         }
-                     },
-                     { $unwind: { path: "$points_system", preserveNullAndEmptyArrays: true } },
-                     {
-                         $match: {
-                             "points_system.type": "Sprint"
-                         }
-                     }
-                 ]).toArray();
-
-                 if (unfinishedSprint.length > 0) {
-                     console.log(`[pushAutomation] Retrasando notificación de Qualy para ${gpName} porque la Sprint del mismo día no ha finalizado.`);
-                     continue; // Saltamos esta iteración para no enviar la notificación ni marcarla como enviada
-                 }
-             }
              
              await notifyAllUsers({
                 title: `Predicciones habilitadas ${gpName}`,

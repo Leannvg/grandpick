@@ -102,7 +102,7 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
         )
       );
 
-      showAlert("Asignaciones actualizadas correctamente ✅", "success");
+      showAlert("Asignaciones actualizadas correctamente", "success");
       redirectToTab("Asignaciones");
     } catch (err) {
       console.error(err);

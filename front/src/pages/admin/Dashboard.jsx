@@ -351,10 +351,10 @@ function Dashboard() {
     try {
       if (user.blocked) {
         await UsersServices.unblockUser(user._id);
-        showAlert(`✅ Usuario "${user.name} ${user.last_name}" desbloqueado correctamente`, "success");
+        showAlert(`Usuario "${user.name} ${user.last_name}" desbloqueado correctamente`, "success");
       } else {
         await UsersServices.blockUser(user._id);
-        showAlert(`✅ Usuario "${user.name} ${user.last_name}" bloqueado correctamente`, "success");
+        showAlert(`Usuario "${user.name} ${user.last_name}" bloqueado correctamente`, "success");
       }
 
       fetchUsers();
@@ -395,10 +395,10 @@ function Dashboard() {
 
       if (driver.active) {
         await DriversServices.disableDriver(driver._id);
-        showAlert(`✅ Piloto deshabilitado correctamente`, "success");
+        showAlert(`Piloto deshabilitado correctamente`, "success");
       } else {
         await DriversServices.enableDriver(driver._id);
-        showAlert(`✅ Piloto habilitado correctamente`, "success");
+        showAlert(`Piloto habilitado correctamente`, "success");
       }
 
       fetchDrivers();

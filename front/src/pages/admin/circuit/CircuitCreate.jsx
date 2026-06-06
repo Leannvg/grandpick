@@ -22,7 +22,7 @@ function CircuitCreate() {
         cancelText: "Cancelar",
         confirmVariant: "success",
       }
-      
+
       const confirmed = await confirmDialog(dialog);
       if (!confirmed) return;
 
@@ -38,10 +38,10 @@ function CircuitCreate() {
 
       await CircuitsServices.create(formData);
 
-      showAlert("Circuito creado con éxito ✅", "success");
+      showAlert("Circuito creado con éxito", "success");
       redirectToTab("Circuitos");
     } catch (error) {
-      if(!error) return
+      if (!error) return
       console.log(error)
       const parsedErrors = helpers.parseErrorMessage(error);
       setErrors(parsedErrors);

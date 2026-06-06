@@ -28,13 +28,13 @@ function CountdownToRace({ raceDate, totalDuration, onExpire, onStartRace }) {
     }
   }, [timeToStart, timeToEnd, onStartRace]);
 
-  // Fin de ventana / carrera
-  useEffect(() => {
-    if (timeToEnd <= 0 && !expireHandledRef.current) {
-      expireHandledRef.current = true;
-      onExpire();
-    }
-  }, [timeToEnd, onExpire]);
+  // Fin de ventana ya no aplica, quitamos onExpire porque depende de Finalizado
+  // useEffect(() => {
+  //   if (timeToEnd <= 0 && !expireHandledRef.current) {
+  //     expireHandledRef.current = true;
+  //     onExpire();
+  //   }
+  // }, [timeToEnd, onExpire]);
 
   function formatDHMS(ms) {
     const totalSeconds = Math.floor(ms / 1000);
@@ -55,17 +55,11 @@ function CountdownToRace({ raceDate, totalDuration, onExpire, onStartRace }) {
     );
   }
 
-  // Carrera + ventana terminada
-  if (timeToEnd <= 0) {
-    return null;
-  }
-
-  // Carrera en curso
+  // Carrera en curso o esperando resultados
   return (
-    <div className="countdown-in-progress">
-      <p>🏁 La sesión está en curso</p>
-      <p>{formatDHMS(timeToEnd)}</p>
-      <p>restantes</p>
+    <div className="countdown-in-progress" style={{ margin: '20px 0', padding: '15px', backgroundColor: 'rgba(255, 255, 255, 0.05)', borderRadius: '12px' }}>
+      <p style={{ fontSize: '1.2rem', marginBottom: '8px' }}>🏁 La sesión está en curso</p>
+      <p style={{ color: '#aaa', fontSize: '0.95rem', margin: 0 }}>Esperando resultados oficiales para avanzar a la siguiente sesión.</p>
     </div>
   );
 }
