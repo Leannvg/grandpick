@@ -589,7 +589,6 @@ p {
   }
 
   .nr-cta__action {
-    margin-left: auto;
     font-size: 12px;
     padding: 3px 19px;
     white-space: nowrap;
