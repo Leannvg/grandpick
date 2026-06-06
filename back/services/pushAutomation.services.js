@@ -38,9 +38,11 @@ export const notifyAllUsers = async (notification, data = {}) => {
  * Retorna true si hay alguna sesión pendiente que impide enviar notificaciones de la actual.
  */
 const hasUnfinishedEarlierSessions = async (db, raceIdCircuit, raceDate) => {
+    const now = new Date();
+    const limitDate = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000); // ignorar carreras más antiguas a 14 días
     const unfinished = await db.collection("Races").find({
         id_circuit: raceIdCircuit,
-        date_race: { $lt: raceDate },
+        date_race: { $lt: raceDate, $gte: limitDate },
         state: { $ne: "Finalizado" }
     }).toArray();
     

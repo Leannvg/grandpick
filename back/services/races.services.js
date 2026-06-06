@@ -204,7 +204,8 @@ export async function findCurrentOrNextRace() {
             { $unwind: { path: "$points_system", preserveNullAndEmptyArrays: true } },
             {
                 $match: {
-                    state: { $ne: "Finalizado" }
+                    state: { $ne: "Finalizado" },
+                    date_race: { $gte: new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000) }
                 }
             },
             { $sort: { date_race: 1 } },
