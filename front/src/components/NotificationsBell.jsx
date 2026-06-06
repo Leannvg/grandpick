@@ -1,6 +1,28 @@
 import { useNotifications } from "../context/NotificationsContext";
 import { Link } from "react-router-dom";
 
+function formatTimeAgo(dateString) {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "";
+  
+  const now = new Date();
+  const diffInMs = now - date;
+  
+  const diffInMins = Math.floor(diffInMs / (1000 * 60));
+  const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  
+  if (diffInMins < 1) return "Hace un momento";
+  if (diffInMins < 60) return `Hace ${diffInMins} min`;
+  if (diffInHours < 24) return `Hace ${diffInHours} hs`;
+  if (diffInDays === 1) return "Hace 1 día";
+  if (diffInDays < 7) return `Hace ${diffInDays} días`;
+  
+  const options = { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
+  return date.toLocaleDateString('es-ES', options);
+}
+
 function NotificationsBell({ onToggle }) {
   const { notifications, deleteNotification, markAsSeen, markAllAsSeen, deleteAllNotifications } = useNotifications();
   const unread = notifications.filter(n => !n.seen).length;
@@ -76,11 +98,24 @@ function NotificationsBell({ onToggle }) {
 
                 const content = (
                   <>
-                    <span className="notification-icon fs-4">{n.icon || "🏁"}</span>
-                    <div className="notification-content">
-                      <div className="d-flex align-items-center gap-2">
+                    <div className="d-flex flex-column align-items-center justify-content-center me-2">
+                      <span className="notification-icon fs-4 mb-2">{n.icon || "🏁"}</span>
+                      {n.seen ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-envelope-open text-muted" viewBox="0 0 16 16">
+                          <path d="M8.47 1.318a1 1 0 0 0-.94 0l-6 3.2A1 1 0 0 0 1 5.4v.817l5.75 3.45L8 8.917l1.25.75L15 6.217V5.4a1 1 0 0 0-.53-.882l-6-3.2ZM15 7.383l-4.778 2.867L15 13.117V7.383Zm-.035 6.88L8 10.082l-6.965 4.18A1 1 0 0 0 2 15h12a1 1 0 0 0 .965-.738ZM1 13.116l4.778-2.867L1 7.383v5.734ZM7.059.435a2 2 0 0 1 1.882 0l6 3.2A2 2 0 0 1 16 5.4V14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5.4a2 2 0 0 1 1.059-1.765l6-3.2Z"/>
+                        </svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-envelope-fill text-primary" viewBox="0 0 16 16">
+                          <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                        </svg>
+                      )}
+                    </div>
+                    <div className="notification-content flex-grow-1">
+                      <div className="notification-timestamp mb-1 text-muted" style={{ fontSize: "10px", fontWeight: "500", textTransform: "uppercase" }}>
+                        {formatTimeAgo(n.createdAt)}
+                      </div>
+                      <div className="d-flex align-items-center gap-2 mb-1">
                         <span className="notification-title fw-semibold text-dark">{n.title}</span>
-                        {!n.seen && <span className="notification-unread-dot"></span>}
                       </div>
                       <p className="notification-message mb-0 text-muted small">{n.message}</p>
                     </div>

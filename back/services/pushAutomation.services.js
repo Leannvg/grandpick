@@ -1,6 +1,7 @@
 import { connectDB } from "./db.services.js";
 import { sendPushToMultipleTokens } from "./fcm.services.js";
 import * as racesService from "./races.services.js";
+import { getFlagEmoji } from "../utils/helpers.js";
 
 /**
  * Busca todos los usuarios, crea una notificación interna para la app
@@ -95,8 +96,11 @@ export const checkAndTriggerPushNotifications = async () => {
 
             const typeName = race.points_system?.type || 'la sesión';
             const circuitName = race.circuit?.circuit_name || 'el circuito';
+            const flag = getFlagEmoji(race.circuit?.country);
+            const titlePrefix = race.circuit ? `${circuitName} ${flag} | ` : '';
+
             await notifyAllUsers({
-                title: "¡Últimos 30 minutos!",
+                title: `${titlePrefix}¡Últimos 30 minutos!`,
                 body: `Faltan 30 minutos para que cierren las predicciones de ${typeName} en ${circuitName}.`
             }, { link: `/predictions` }); // Redirige a predicciones
 
@@ -130,8 +134,12 @@ export const checkAndTriggerPushNotifications = async () => {
             }
 
             const typeName = race.points_system?.type || 'la carrera';
+            const circuitName = race.circuit?.circuit_name || '';
+            const flag = getFlagEmoji(race.circuit?.country);
+            const titlePrefix = race.circuit ? `${circuitName} ${flag} | ` : '';
+
             await notifyAllUsers({
-                title: `¡Empieza ${typeName}!`,
+                title: `${titlePrefix}¡Empieza ${typeName}!`,
                 body: `El contador llegó a cero y la sesión de ${typeName} acaba de comenzar. ¡Mucha suerte a todos!`
             }, { link: `/predictions` });
 
@@ -179,9 +187,12 @@ export const checkAndTriggerPushNotifications = async () => {
 
              const typeName = race.points_system?.type || 'la carrera';
              const gpName = race.circuit?.gp_name || '';
+             const circuitName = race.circuit?.circuit_name || gpName;
+             const flag = getFlagEmoji(race.circuit?.country);
+             const titlePrefix = race.circuit ? `${circuitName} ${flag} | ` : '';
              
              await notifyAllUsers({
-                title: `Predicciones habilitadas ${gpName}`,
+                title: `${titlePrefix}Predicciones habilitadas ${gpName}`,
                 body: `Ya podés hacer tus predicciones para la sesión de ${typeName}.`
             }, { link: `/predictions` });
 

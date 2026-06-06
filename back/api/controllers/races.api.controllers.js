@@ -3,6 +3,8 @@ import * as pointsServices from './../../services/points.services.js'
 import * as racesServices from './../../services/races.services.js'
 /* import * as notificationsServices from "../../services/notifications.services.js"; */
 import { sendGlobalNotification } from "./../../services/realtimeNotifications.services.js";
+import { checkAndTriggerPushNotifications } from "../../services/pushAutomation.services.js";
+import { getFlagEmoji } from "../../utils/helpers.js";
 import { ObjectId } from "mongodb"
 
 export async function findAll(req, res) {
@@ -139,12 +141,22 @@ export async function editById(req, res) {
             updates.state = "Finalizado";
             await pointsServices.updatePointsAfterRace(raceId);
 
+            const updatedRace = await racesServices.findRaceById(raceId);
+            const circuitName = updatedRace?.circuit?.circuit_name || updatedRace?.circuit?.gp_name || '';
+            const flag = getFlagEmoji(updatedRace?.circuit?.country);
+            const titlePrefix = circuitName ? `${circuitName} ${flag} | ` : '';
+
             await sendGlobalNotification(req.app, {
-                title: "Resultados disponibles",
+                title: `${titlePrefix}Resultados disponibles`,
                 message: "Ya podés revisar si hiciste match con los resultados. Toca aquí para ver tus puntos en el historial.",
                 link: `/prediction-history`,
                 type: "success"
             });
+
+            // Disparar validación de notificaciones bloqueadas con 5 segundos de retraso para que no caigan juntas
+            setTimeout(() => {
+                checkAndTriggerPushNotifications().catch(err => console.error("Error disparando validaciones automáticas:", err));
+            }, 5000);
         }
 
         const io = req.app.get("io");
