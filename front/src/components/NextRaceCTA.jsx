@@ -105,17 +105,17 @@ function NextRaceCTA() {
                             {getFlagEmoji(race.circuit?.country || race.id_circuit?.country)}
                         </span>
                         <span className="nr-cta__country-name">{countryName.toUpperCase()}</span>
+                        <span className="nr-cta__date" style={{ marginLeft: '4px', fontSize: '11px', opacity: 0.85 }}>
+                            {formatRaceDate(race.date_gp_start, race.date_gp_end, race.circuit?.timezone).toUpperCase()}
+                        </span>
                     </div>
 
                     <div className="nr-cta__meta">
                         <span className="nr-cta__round">{race.points_system?.type?.toUpperCase() || "RACE"}</span>
-                        <span className="nr-cta__date">
-                            {formatRaceDate(race.date_gp_start, race.date_gp_end, race.circuit?.timezone).toUpperCase()}
-                        </span>
 
                         {status.isInProgress && (
                             <span className={`nr-cta__session-tag session-${race.points_system?.type || 'race'}`}>
-                                {race.points_system?.type?.toUpperCase()} EN CURSO
+                                EN CURSO
                             </span>
                         )}
 
