@@ -147,7 +147,7 @@ export async function editById(req, res) {
             const titlePrefix = circuitName ? `${circuitName} ${flag} | ` : '';
 
             await sendGlobalNotification(req.app, {
-                title: `${titlePrefix}Resultados disponibles`,
+                title: `${titlePrefix}🏆 Resultados disponibles`,
                 message: "Ya podés revisar si hiciste match con los resultados. Toca aquí para ver tus puntos en el historial.",
                 link: `/prediction-history`,
                 type: "success"
