@@ -114,8 +114,8 @@ function NextRaceCTA() {
                         <span className="nr-cta__round">{race.points_system?.type?.toUpperCase() || "RACE"}</span>
 
                         {status.isInProgress && (
-                            <span className={`nr-cta__session-tag session-${race.points_system?.type || 'race'}`}>
-                                EN CURSO
+                            <span className="nr-cta__session-tag">
+                                <span className="live-indicator"></span> EN CURSO
                             </span>
                         )}
 
