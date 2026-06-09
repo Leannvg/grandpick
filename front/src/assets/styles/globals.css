@@ -21,6 +21,15 @@ select {
   appearance: none;
 }
 
+/* Fix for Akshar font vertical metrics offset */
+button,
+input,
+select,
+textarea,
+.btn {
+  line-height: normal;
+}
+
 /* Scroll Lock */
 .body-scroll-lock {
   overflow: hidden !important;
