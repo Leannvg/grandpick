@@ -1554,7 +1554,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
         visibility: hidden;
         opacity: 0;
         transform: translateY(-10px);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
         pointer-events: none;
     }
 
