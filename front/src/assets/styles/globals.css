@@ -30,6 +30,12 @@ textarea,
   line-height: normal;
 }
 
+/* Altura global para react-select para alinear con inputs estándar */
+.react-select-container .react-select__control {
+  min-height: 40px !important;
+  height: 40px !important;
+}
+
 /* Scroll Lock */
 .body-scroll-lock {
   overflow: hidden !important;
