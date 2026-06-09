@@ -95,19 +95,9 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   const closeNotifications = () => {
     const dropdown = document.querySelector(".notifications-dropdown");
     if (dropdown && dropdown.classList.contains("show")) {
+      dropdown.classList.remove("show");
       const btn = document.querySelector(".nav-notifications [data-bs-toggle='dropdown']");
-      if (btn) {
-        if (window.bootstrap && window.bootstrap.Dropdown) {
-          const bsDropdown = window.bootstrap.Dropdown.getInstance(btn);
-          if (bsDropdown) {
-            bsDropdown.hide();
-            return;
-          }
-        }
-        btn.click(); // Foolproof fallback to close it
-      } else {
-        dropdown.classList.remove("show");
-      }
+      if (btn) btn.classList.remove("show");
     }
   };
 
