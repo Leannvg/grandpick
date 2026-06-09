@@ -272,14 +272,14 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                 {/* 🔔 NOTIFICACIONES DESKTOP */}
                 {autenticado && (
                   <li 
-                    className={`nav-item dropdown nav-notifications d-none d-lg-block ${hoveredMenu === 'notifications' ? 'is-active' : ''}`}
+                    className={`nav-item dropdown nav-notifications d-none d-lg-block ${activeMenu === 'notifications' ? 'is-active' : ''}`}
                     onMouseEnter={() => handleMouseEnter('notifications')}
                     onMouseLeave={handleMouseLeave}
                   >
                     <NotificationsBell 
                       onToggle={closeMenu} 
                       isDesktop={true} 
-                      forceOpen={hoveredMenu === 'notifications'} 
+                      forceOpen={activeMenu === 'notifications'} 
                     />
                   </li>
                 )}
