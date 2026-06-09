@@ -175,6 +175,10 @@
     color: #1f3b4d !important;
 }
 
+.notification-title.emoji-flag {
+    text-shadow: none !important;
+}
+
 .notification-message {
     font-size: 12px;
     color: #6c757d !important;
