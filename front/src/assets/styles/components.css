@@ -243,6 +243,12 @@
 
 .nav-notifications .nav-link {
     display: inline-block;
+    transition: color 0.2s;
+}
+
+.nav-notifications .nav-link:hover svg,
+.nav-notifications.is-active .nav-link svg {
+    color: #ffc107 !important;
 }
 
 .nav-toggle {
@@ -1540,6 +1546,23 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 
     .notifications-dropdown {
         width: 360px;
+        position: absolute !important;
+        top: 100% !important;
+        margin-top: 20px !important;
+        
+        display: block !important;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+    }
+
+    .notifications-dropdown.show {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
     }
 
     .gp-nav-dropdown {
