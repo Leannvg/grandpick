@@ -81,7 +81,6 @@ function Nav({ onLogout, autenticado, esAdmin }) {
 
   const handleMouseEnter = (menu) => {
     if (!isMobile.current) {
-      closeNotifications();
       setHoveredMenu(menu);
     }
   };
@@ -89,15 +88,6 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   const handleMouseLeave = () => {
     if (!isMobile.current) {
       setHoveredMenu(null);
-    }
-  };
-
-  const closeNotifications = () => {
-    const dropdown = document.querySelector(".notifications-dropdown");
-    if (dropdown && dropdown.classList.contains("show")) {
-      dropdown.classList.remove("show");
-      const btn = document.querySelector(".nav-notifications [data-bs-toggle='dropdown']");
-      if (btn) btn.classList.remove("show");
     }
   };
 
@@ -115,7 +105,6 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   };
 
   const handleMenuToggle = () => {
-    closeNotifications();
     const navBar = document.getElementById("mainNav");
     const isOpening = !navBar.classList.contains("show");
 
@@ -282,8 +271,16 @@ function Nav({ onLogout, autenticado, esAdmin }) {
 
                 {/* 🔔 NOTIFICACIONES DESKTOP */}
                 {autenticado && (
-                  <li className="nav-item dropdown nav-notifications d-none d-lg-block">
-                    <NotificationsBell onToggle={closeMenu} />
+                  <li 
+                    className={`nav-item dropdown nav-notifications d-none d-lg-block ${hoveredMenu === 'notifications' ? 'is-active' : ''}`}
+                    onMouseEnter={() => handleMouseEnter('notifications')}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <NotificationsBell 
+                      onToggle={closeMenu} 
+                      isDesktop={true} 
+                      forceOpen={hoveredMenu === 'notifications'} 
+                    />
                   </li>
                 )}
 

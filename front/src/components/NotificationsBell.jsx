@@ -23,17 +23,17 @@ function formatTimeAgo(dateString) {
   return date.toLocaleDateString('es-ES', options);
 }
 
-function NotificationsBell({ onToggle }) {
+function NotificationsBell({ onToggle, isDesktop, forceOpen }) {
   const { notifications, deleteNotification, markAsSeen, markAllAsSeen, deleteAllNotifications } = useNotifications();
   const unread = notifications.filter(n => !n.seen).length;
 
   return (
     <>
       <button
-        className="nav-link btn btn-link position-relative"
-        data-bs-toggle="dropdown"
+        className={`nav-link btn btn-link position-relative ${forceOpen ? 'show' : ''}`}
+        data-bs-toggle={isDesktop ? undefined : "dropdown"}
         aria-label="Notificaciones"
-        onClick={onToggle}
+        onClick={isDesktop ? undefined : onToggle}
       >
         <svg
           className={`icon-submit ${unread > 0 ? "unread" : ""}`}
@@ -53,7 +53,7 @@ function NotificationsBell({ onToggle }) {
         {unread > 0 && <span className="notification-badge">{unread}</span>}
       </button>
 
-      <div className="dropdown-menu dropdown-menu-end notifications-dropdown shadow-lg">
+      <div className={`dropdown-menu dropdown-menu-end notifications-dropdown shadow-lg ${forceOpen ? 'show' : ''}`} data-bs-popper={forceOpen ? 'static' : undefined}>
         <div className="notifications-header p-3 border-bottom d-flex justify-content-between align-items-center">
           <p className="dropdown-header m-0 p-0 text-dark fw-bold">Notificaciones</p>
           {notifications.length > 0 && (
