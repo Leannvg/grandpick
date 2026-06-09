@@ -95,9 +95,9 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   const closeNotifications = () => {
     const dropdown = document.querySelector(".notifications-dropdown");
     if (dropdown && dropdown.classList.contains("show")) {
-      const btn = document.querySelector("[data-bs-toggle='dropdown']");
+      const btn = document.querySelector(".nav-notifications [data-bs-toggle='dropdown']");
       if (btn && window.bootstrap && window.bootstrap.Dropdown) {
-        const bsDropdown = window.bootstrap.Dropdown.getOrCreateInstance(btn);
+        const bsDropdown = window.bootstrap.Dropdown.getInstance(btn) || window.bootstrap.Dropdown.getOrCreateInstance(btn);
         bsDropdown.hide();
       } else if (dropdown) {
         dropdown.classList.remove("show");
