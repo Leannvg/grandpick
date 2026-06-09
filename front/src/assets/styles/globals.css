@@ -21,14 +21,6 @@ select {
   appearance: none;
 }
 
-/* Fix for Akshar font vertical metrics offset */
-button,
-input,
-select,
-textarea,
-.btn {
-  line-height: normal;
-}
 
 /* Altura global para react-select para alinear con inputs estándar */
 .react-select-container .react-select__control {
@@ -58,6 +50,7 @@ body {
   /* ajustalo si tu texto principal no es blanco */
   overflow-x: hidden;
   height: 100%;
+  line-height: normal;
 }
 
 #root {
@@ -98,6 +91,12 @@ body {
 
 .main-content.home-content {
   margin: 0px;
+}
+
+@media (max-width: 991px) {
+  .main-content:not(.home-content) {
+    margin: 15px 0px;
+  }
 }
 
 .main-content.is-loading {
