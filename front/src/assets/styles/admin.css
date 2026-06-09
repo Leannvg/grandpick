@@ -130,14 +130,17 @@
   background-color: #1a2a3a;
   color: #fff;
   border: none;
-  padding: 10px 20px 6px; /* Ajuste visual por la tipografía */
+  padding: 10px 20px; 
   border-radius: 4px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
   flex: 1 1 auto;
-  /* Grow to fill space */
   text-align: center;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .admin-tab-btn.active {
