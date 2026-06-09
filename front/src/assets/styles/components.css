@@ -1545,13 +1545,13 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     }
 
     .notifications-dropdown {
-        width: 360px;
+        width: 450px;
         position: absolute !important;
-        top: 100% !important;
+        top: 120% !important;
         right: 0 !important;
         left: auto !important;
         margin-top: 50px !important;
-        
+
         display: block !important;
         visibility: hidden;
         opacity: 0;

@@ -53,7 +53,7 @@ function NotificationsBell({ onToggle, isDesktop, forceOpen }) {
         {unread > 0 && <span className="notification-badge">{unread}</span>}
       </button>
 
-      <div className={`dropdown-menu dropdown-menu-end notifications-dropdown shadow-lg ${forceOpen ? 'show' : ''}`} data-bs-popper={forceOpen ? 'static' : undefined}>
+      <div className={`dropdown-menu dropdown-menu-end notifications-dropdown shadow-lg ${forceOpen ? 'show' : ''}`} data-bs-popper={isDesktop ? 'static' : (forceOpen ? 'static' : undefined)}>
         <div className="notifications-header p-3 border-bottom d-flex justify-content-between align-items-center">
           <p className="dropdown-header m-0 p-0 text-dark fw-bold">Notificaciones</p>
           {notifications.length > 0 && (
