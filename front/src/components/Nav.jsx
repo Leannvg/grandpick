@@ -81,6 +81,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
 
   const handleMouseEnter = (menu) => {
     if (!isMobile.current) {
+      closeNotifications();
       setHoveredMenu(menu);
     }
   };
