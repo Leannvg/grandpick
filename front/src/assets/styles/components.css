@@ -1550,7 +1550,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
         top: 100% !important;
         right: 0 !important;
         left: auto !important;
-        margin-top: 35px !important;
+        margin-top: 50px !important;
         
         display: block !important;
         visibility: hidden;
