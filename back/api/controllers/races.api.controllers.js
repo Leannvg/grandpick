@@ -103,8 +103,15 @@ export async function editById(req, res) {
     try {
 
         const raceId = req.params.raceId;
-        const data = req.body
+        const data = req.body;
         const updates = {};
+
+        // Verificamos si ya tenía resultados antes de la edición
+        const existingRace = await racesServices.findRaceById(raceId);
+        if (!existingRace) {
+            return res.status(404).json({ error: "Carrera no encontrada" });
+        }
+        const hadPreviousResults = Array.isArray(existingRace.results) && existingRace.results.length > 0;
 
         if (data.id_circuit) updates.id_circuit = new ObjectId(data.id_circuit);
         if (data.date_gp_start) updates.date_gp_start = new Date(data.date_gp_start);
@@ -146,9 +153,17 @@ export async function editById(req, res) {
             const flag = getFlagEmoji(updatedRace?.circuit?.country);
             const titlePrefix = circuitName ? `${circuitName} ${flag} | ` : '';
 
+            let notificationTitle = `${titlePrefix}🏆 Resultados disponibles`;
+            let notificationMessage = "Ya podés revisar si hiciste match con los resultados. Toca aquí para ver tus puntos en el historial.";
+
+            if (hadPreviousResults) {
+                notificationTitle = `${titlePrefix}⚖️ Resultados actualizados`;
+                notificationMessage = "La FIA modificó los resultados oficiales de la carrera y tus puntos pudieron haber cambiado. ¡Revisá tu historial!";
+            }
+
             await sendGlobalNotification(req.app, {
-                title: `${titlePrefix}🏆 Resultados disponibles`,
-                message: "Ya podés revisar si hiciste match con los resultados. Toca aquí para ver tus puntos en el historial.",
+                title: notificationTitle,
+                message: notificationMessage,
                 link: `/prediction-history`,
                 type: "success"
             });
