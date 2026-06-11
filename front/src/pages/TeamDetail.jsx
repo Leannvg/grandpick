@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import teamsServices from "../services/teams.services";
 import DriverCardMobile from "../components/drivers/DriverCardMobile";
 import { useLoader } from "../context/LoaderContext";
@@ -34,6 +34,13 @@ function TeamDetail() {
     return (
         <main>
             <section className="teams-section text-center page-section container">
+                {/* BREADCRUMB */}
+                <div className="text-start mb-3">
+                    <Link to="/teams" className="text-decoration-none fw-bold" style={{ color: "var(--color-accent)", fontSize: "0.85rem", letterSpacing: "1px" }}>
+                        &larr; VOLVER A TODAS LAS ESCUDERÍAS
+                    </Link>
+                </div>
+
                 <header className="page-header">
                     <p className="section-label">Escudería</p>
                     <h1 className="section-title">{team.name.toUpperCase()}</h1>

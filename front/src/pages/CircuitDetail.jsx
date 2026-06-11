@@ -1,6 +1,6 @@
 import { formatRaceDate, getFlagEmoji } from "../utils/helpers";
 import API_URL from "../services/api";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import circuitsServices from "../services/circuits.services";
 import racesServices from "../services/races.services";
@@ -49,6 +49,13 @@ function CircuitDetail() {
         <main>
             <section className="circuits-section page-section container text-center">
                 <article className="circuit-detail">
+                    {/* BREADCRUMB */}
+                    <div className="text-start mb-3">
+                        <Link to="/circuits" className="text-decoration-none fw-bold" style={{ color: "var(--color-accent)", fontSize: "0.85rem", letterSpacing: "1px" }}>
+                            &larr; VOLVER A TODOS LOS CIRCUITOS
+                        </Link>
+                    </div>
+
                     {/* HEADER */}
                     <header className="page-header">
                         <span className="circuit-country-detail section-label">
