@@ -1,6 +1,4 @@
 .profile-section {
-    padding-top: var(--space-nav-first);
-    padding-bottom: 80px;
     min-height: 80vh;
 }
 
@@ -65,7 +63,7 @@
         height: 200px;
         margin-bottom: 0;
     }
-    
+
     .user-avatar-box:hover {
         transform: scale(1.03);
         box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);

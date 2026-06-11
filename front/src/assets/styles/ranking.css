@@ -1,5 +1,4 @@
 .ranking-page {
-    padding: 60px 20px;
     color: #fff;
 }
 
@@ -247,7 +246,8 @@
 }
 
 .btn-jump-to-me {
-    background: #ff3333; /* Brighter red as requested */
+    background: #ff3333;
+    /* Brighter red as requested */
     border: none;
     width: 26px;
     height: 26px;
@@ -288,7 +288,8 @@
 
 .btn-jump-to-me:hover {
     transform: scale(1.1);
-    background: #ff4d4d; /* Slightly lighter on hover */
+    background: #ff4d4d;
+    /* Slightly lighter on hover */
 }
 
 /* Adjustments for Filters with User Bar */
