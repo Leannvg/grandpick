@@ -298,7 +298,6 @@ function Predictions() {
                   }}
                 />
               </div>
-              <span>¡Vuelve pronto para cargar tu equipo!</span>
             </div>
           )}
         </header>
