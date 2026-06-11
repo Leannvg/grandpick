@@ -1008,8 +1008,8 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 }
 
 .breadcrumb-wrapper {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 0px;
+    margin-bottom: 10px;
 }
 /* ----- LEFT COLUM ----- */
 .race-info {
