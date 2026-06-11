@@ -1476,8 +1476,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     }
 
     .circuit-detail {
-        max-width: 960px;
-        margin: 0 auto;
+        max-width: 100%;
     }
 
     .circuit-stats {
@@ -1810,7 +1809,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     }
 
     .circuit-detail {
-        max-width: 1100px;
+        max-width: 100%;
     }
 
     .circuit-header {
