@@ -123,7 +123,7 @@ function PredictionHistory() {
 
     return (
         <section className="prediction-history-page page-section container">
-            <header className="history-header text-center">
+            <header className="page-header text-center">
                 <span className="section-label">Mi Historial</span>
                 <h1 className="section-title">PREDICCIONES</h1>
                 <p className="section-subtitle">Esto fue lo que pensaste en los anteriores GP</p>

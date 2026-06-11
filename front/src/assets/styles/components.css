@@ -1011,6 +1011,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     margin-top: 0px;
     margin-bottom: 10px;
 }
+
 /* ----- LEFT COLUM ----- */
 .race-info {
     width: 100%;
@@ -1198,7 +1199,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 /* -------------------------------------- */
 
 .circuit-detail {
-    padding: 24px 20px 32px;
+    /* padding: 24px 20px 32px; */
     color: #fff;
 }
 
