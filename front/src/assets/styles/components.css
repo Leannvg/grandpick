@@ -1007,11 +1007,11 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     transform: translateX(-5px);
 }
 
-.breadcrumb-wrapper {
+/* .breadcrumb-wrapper {
     position: absolute;
     top: 0;
 }
-
+ */
 /* ----- LEFT COLUM ----- */
 .race-info {
     width: 100%;
