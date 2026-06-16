@@ -29,11 +29,10 @@ const InstallAppBanner = () => {
             (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) ||
             (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-        const hasDismissed = localStorage.getItem('grandpick_app_dismissed') === 'true';
         const hasInstalled = localStorage.getItem('grandpick_app_installed') === 'true';
 
         if (isIOS) {
-            if (!hasDismissed && !hasInstalled) {
+            if (!hasInstalled) {
                 setIsVisible(true);
             }
         }
@@ -56,8 +55,8 @@ const InstallAppBanner = () => {
                 // significa que la app fue desinstalada. Borramos la marca y volvemos a mostrar el banner.
                 localStorage.removeItem('grandpick_app_installed');
                 setIsVisible(true);
-            } else if (localStorage.getItem('grandpick_app_dismissed') !== 'true') {
-                // Mostrar el banner solo si no fue descartado previamente
+            } else {
+                // Mostrar el banner si no está instalada
                 setIsVisible(true);
             }
         };
@@ -111,29 +110,7 @@ const InstallAppBanner = () => {
     if (!isVisible) return null;
 
     return (
-        <section className="install-banner" style={{ position: 'relative' }}>
-            <button 
-                onClick={() => {
-                    setIsVisible(false);
-                    localStorage.setItem('grandpick_app_dismissed', 'true');
-                }}
-                style={{ 
-                    position: 'absolute', 
-                    top: '10px', 
-                    right: '10px', 
-                    background: 'none', 
-                    border: 'none', 
-                    color: 'white', 
-                    opacity: 0.6, 
-                    cursor: 'pointer', 
-                    fontSize: '18px',
-                    padding: '5px',
-                    zIndex: 2
-                }}
-                aria-label="Cerrar banner"
-            >
-                ✕
-            </button>
+        <section className="install-banner">
             <div className="container">
                 {!showInstructions ? (
                     <div className="install-banner__content">
