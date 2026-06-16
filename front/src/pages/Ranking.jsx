@@ -176,7 +176,7 @@ function Ranking() {
                 <p className="section-subtitle">Campeonato de predicciones</p>
             </header>
 
-            <div className="info-page__modes-toggle info-page__modes-toggle--desktop mx-auto mb-4" style={{maxWidth: '400px'}}>
+            <div className="d-flex justify-content-center justify-content-md-end gap-2 mb-4 w-100">
                 <button 
                     className={`info-page__mode-btn ${mode === 'global' ? 'is-active' : ''}`}
                     onClick={() => setMode('global')}
