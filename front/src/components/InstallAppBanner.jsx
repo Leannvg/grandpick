@@ -8,12 +8,19 @@ const InstallAppBanner = () => {
     useEffect(() => {
         // Verificar si la app ya está instalada o en modo standalone
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+        const hasInstalled = localStorage.getItem('grandpick_app_installed') === 'true';
         
-        if (isStandalone) {
+        if (isStandalone || hasInstalled) {
             setIsVisible(false);
             return;
-        } else {
-            // Mostrar siempre a menos que ya esté instalada (modo standalone)
+        }
+
+        // Detectar iOS, ya que no dispara el evento beforeinstallprompt
+        const isIOS = 
+            (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) ||
+            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+        if (isIOS) {
             setIsVisible(true);
         }
 
@@ -22,6 +29,8 @@ const InstallAppBanner = () => {
             e.preventDefault();
             // Guardar el evento para dispararlo luego
             setDeferredPrompt(e);
+            // Mostrar el banner solo cuando sabemos que se puede instalar
+            setIsVisible(true);
         };
 
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -31,6 +40,7 @@ const InstallAppBanner = () => {
             setDeferredPrompt(null);
             setIsVisible(false);
             setShowInstructions(false);
+            localStorage.setItem('grandpick_app_installed', 'true');
         };
         
         window.addEventListener('appinstalled', handleAppInstalled);
@@ -48,6 +58,7 @@ const InstallAppBanner = () => {
             const { outcome } = await deferredPrompt.userChoice;
             if (outcome === 'accepted') {
                 setIsVisible(false);
+                localStorage.setItem('grandpick_app_installed', 'true');
             }
             
             setDeferredPrompt(null);
