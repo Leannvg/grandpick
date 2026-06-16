@@ -6,11 +6,10 @@ const InstallAppBanner = () => {
     const [showInstructions, setShowInstructions] = useState(false);
 
     useEffect(() => {
-        // Verificar si la app ya está instalada o en modo standalone
+        // Verificar si la app está en modo standalone
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-        const hasInstalled = localStorage.getItem('grandpick_app_installed') === 'true';
         
-        if (isStandalone || hasInstalled) {
+        if (isStandalone) {
             setIsVisible(false);
             return;
         }
@@ -20,8 +19,13 @@ const InstallAppBanner = () => {
             (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) ||
             (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
+        const hasDismissed = localStorage.getItem('grandpick_app_dismissed') === 'true';
+        const hasInstalled = localStorage.getItem('grandpick_app_installed') === 'true';
+
         if (isIOS) {
-            setIsVisible(true);
+            if (!hasDismissed && !hasInstalled) {
+                setIsVisible(true);
+            }
         }
 
         const handleBeforeInstallPrompt = (e) => {
@@ -29,8 +33,18 @@ const InstallAppBanner = () => {
             e.preventDefault();
             // Guardar el evento para dispararlo luego
             setDeferredPrompt(e);
-            // Mostrar el banner solo cuando sabemos que se puede instalar
-            setIsVisible(true);
+            
+            const wasInstalled = localStorage.getItem('grandpick_app_installed') === 'true';
+            
+            if (wasInstalled) {
+                // Si teníamos guardado que estaba instalada pero el navegador nos dispara este evento,
+                // significa que la app fue desinstalada. Borramos la marca y volvemos a mostrar el banner.
+                localStorage.removeItem('grandpick_app_installed');
+                setIsVisible(true);
+            } else if (localStorage.getItem('grandpick_app_dismissed') !== 'true') {
+                // Mostrar el banner solo si no fue descartado previamente
+                setIsVisible(true);
+            }
         };
 
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -75,7 +89,7 @@ const InstallAppBanner = () => {
             <button 
                 onClick={() => {
                     setIsVisible(false);
-                    localStorage.setItem('grandpick_app_installed', 'true');
+                    localStorage.setItem('grandpick_app_dismissed', 'true');
                 }}
                 style={{ 
                     position: 'absolute', 
