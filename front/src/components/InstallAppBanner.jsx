@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
+// Escuchar el evento a nivel global para no perderlo si el componente se monta después de que se disparó (ej: al navegar o desloguear)
+let globalDeferredPrompt = null;
+if (typeof window !== 'undefined') {
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        globalDeferredPrompt = e;
+        window.dispatchEvent(new Event('pwa_installable'));
+    });
+}
+
 const InstallAppBanner = () => {
     const [deferredPrompt, setDeferredPrompt] = useState(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -29,10 +39,15 @@ const InstallAppBanner = () => {
         }
 
         const handleBeforeInstallPrompt = (e) => {
-            // Prevenir el banner de instalación automático de Chrome
-            e.preventDefault();
+            if (e && typeof e.preventDefault === 'function') {
+                e.preventDefault();
+            }
+            
+            const promptToUse = e || globalDeferredPrompt;
+            if (!promptToUse) return;
+
             // Guardar el evento para dispararlo luego
-            setDeferredPrompt(e);
+            setDeferredPrompt(promptToUse);
             
             const wasInstalled = localStorage.getItem('grandpick_app_installed') === 'true';
             
@@ -47,6 +62,16 @@ const InstallAppBanner = () => {
             }
         };
 
+        // Si el evento ya se disparó a nivel global antes de que este componente se montara
+        if (globalDeferredPrompt) {
+            handleBeforeInstallPrompt(globalDeferredPrompt);
+        }
+
+        // Escuchar cuando se dispare a nivel global mientras el componente está montado
+        const onGlobalPrompt = () => handleBeforeInstallPrompt(globalDeferredPrompt);
+        window.addEventListener('pwa_installable', onGlobalPrompt);
+        
+        // Mantener el listener original por si acaso
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
         // Ocultar si el usuario instaló la app
@@ -60,6 +85,7 @@ const InstallAppBanner = () => {
         window.addEventListener('appinstalled', handleAppInstalled);
 
         return () => {
+            window.removeEventListener('pwa_installable', onGlobalPrompt);
             window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
             window.removeEventListener('appinstalled', handleAppInstalled);
         };
