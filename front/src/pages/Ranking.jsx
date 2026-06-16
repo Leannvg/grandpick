@@ -169,29 +169,51 @@ function Ranking() {
     } = usePagination(filteredStats, 20);
 
     return (
-        <section className="ranking-page page-section container text-center">
+        <section className="ranking-page page-section container-fluid px-3 px-md-5 text-center">
             <header className="page-header">
                 <p className="section-label">Todos quieren subirse al podio</p>
                 <h1 className="section-title">{mode === 'global' ? 'PUNTUACIÓN GLOBAL' : 'PUNTUACIÓN POR GRAN PREMIO'}</h1>
                 <p className="section-subtitle">Campeonato de predicciones</p>
             </header>
 
-            <div className="d-flex justify-content-center justify-content-md-end gap-2 mb-4 w-100">
-                <button 
-                    className={`info-page__mode-btn ${mode === 'global' ? 'is-active' : ''}`}
-                    onClick={() => setMode('global')}
-                >
-                    Global
-                </button>
-                <button 
-                    className={`info-page__mode-btn ${mode === 'grand_prix' ? 'is-active' : ''}`}
-                    onClick={() => {
-                        setMode('grand_prix');
-                        setPage(1);
-                    }}
-                >
-                    Por Gran Premio
-                </button>
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 w-100 gap-3">
+                <div className="d-flex w-100 justify-content-center justify-content-md-start" style={{ flex: 1 }}>
+                    {mode === 'grand_prix' && (
+                        <select 
+                            className="form-select bg-dark text-light border-secondary"
+                            value={selectedCircuitId}
+                            onChange={(e) => {
+                                setSelectedCircuitId(e.target.value);
+                                setPage(1);
+                            }}
+                            style={{ width: '100%', maxWidth: '350px' }}
+                        >
+                            <option value="" disabled>Seleccionar Gran Premio</option>
+                            {racesList.map(c => (
+                                <option key={c.id} value={c.id} disabled={!c.enabled}>
+                                    {c.name} {!c.enabled ? '(Próximamente)' : ''}
+                                </option>
+                            ))}
+                        </select>
+                    )}
+                </div>
+                <div className="d-flex gap-2 w-100 justify-content-center justify-content-md-end" style={{ flex: 1 }}>
+                    <button 
+                        className={`info-page__mode-btn ${mode === 'global' ? 'is-active' : ''}`}
+                        onClick={() => setMode('global')}
+                    >
+                        Global
+                    </button>
+                    <button 
+                        className={`info-page__mode-btn ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                        onClick={() => {
+                            setMode('grand_prix');
+                            setPage(1);
+                        }}
+                    >
+                        Por Gran Premio
+                    </button>
+                </div>
             </div>
 
             <div className="ranking-filters">
@@ -208,25 +230,6 @@ function Ranking() {
                             <option key={year} value={year}>{year}</option>
                         ))}
                     </select>
-
-                    {mode === 'grand_prix' && (
-                        <select 
-                            className="form-select bg-dark text-light border-secondary"
-                            value={selectedCircuitId}
-                            onChange={(e) => {
-                                setSelectedCircuitId(e.target.value);
-                                setPage(1);
-                            }}
-                            style={{ width: 'auto', minWidth: '200px' }}
-                        >
-                            <option value="" disabled>Seleccionar Gran Premio</option>
-                            {racesList.map(c => (
-                                <option key={c.id} value={c.id} disabled={!c.enabled}>
-                                    {c.name} {!c.enabled ? '(Próximamente)' : ''}
-                                </option>
-                            ))}
-                        </select>
-                    )}
 
                     <div className="d-flex align-items-center">
                         <label className="me-2 text-light small">Mostrar:</label>
