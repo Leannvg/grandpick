@@ -452,24 +452,40 @@ export async function getGrandPrixRanking(circuitId, year) {
             return new Date(a.date_prediction) - new Date(b.date_prediction);
         });
 
+        // First pass: identify tie groups
+        const pointsCounts = {};
+        ranking.forEach(entry => {
+            pointsCounts[entry.points] = (pointsCounts[entry.points] || 0) + 1;
+        });
+
         // Calculate Rank and Gap
         let currentRank = 1;
         let currentTiedGroupLeaderDate = null;
+        let currentTiedGroupPoints = -1;
         
-        ranking.forEach((entry, index) => {
+        ranking.forEach((entry) => {
             entry.globalRank = currentRank;
             currentRank++;
             
-            if (index === 0) {
-                entry.gap = "Líder";
-                currentTiedGroupLeaderDate = new Date(entry.date_prediction);
+            const isTiedWithSomeone = pointsCounts[entry.points] > 1;
+
+            if (!isTiedWithSomeone) {
+                entry.gap = "-";
             } else {
-                const prev = ranking[index - 1];
-                if (entry.points < prev.points) {
-                    entry.gap = `-${prev.points - entry.points} pts`;
+                if (entry.points !== currentTiedGroupPoints) {
+                    // First person of this new tie group
+                    currentTiedGroupPoints = entry.points;
                     currentTiedGroupLeaderDate = new Date(entry.date_prediction);
+                    
+                    // Format exact time in Argentina Timezone
+                    entry.gap = currentTiedGroupLeaderDate.toLocaleString("es-AR", { 
+                        timeZone: "America/Argentina/Buenos_Aires", 
+                        hour: '2-digit', 
+                        minute: '2-digit', 
+                        second: '2-digit' 
+                    });
                 } else {
-                    // Tie in points!
+                    // Subsequent person in the tie group
                     const timeDiff = new Date(entry.date_prediction) - currentTiedGroupLeaderDate;
                     entry.gap = formatTimeGap(timeDiff);
                 }

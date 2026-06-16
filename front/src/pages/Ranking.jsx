@@ -256,7 +256,7 @@ function Ranking() {
                             {mode === 'grand_prix' && (
                                 <div className="status-item status-item--avg">
                                     <span className="status-label">GAP</span>
-                                    <span className="status-value" style={{ color: currentUserStat.gap === 'Líder' ? '#d4af37' : '#aaa' }}>
+                                    <span className="status-value text-muted">
                                         {currentUserStat.gap}
                                     </span>
                                 </div>
@@ -362,7 +362,7 @@ function Ranking() {
                                         {mode === 'global' && <td>{totalPredictions}</td>}
                                         {mode === 'global' && <td>{avgPoints}</td>}
                                         {mode === 'global' && <td>{totalSuccesses}</td>}
-                                        {mode === 'grand_prix' && <td style={{ color: item.gap === 'Líder' ? '#d4af37' : '#aaa' }}>{item.gap}</td>}
+                                        {mode === 'grand_prix' && <td className="text-muted">{item.gap}</td>}
                                     </tr>
                                 );
                             })}
