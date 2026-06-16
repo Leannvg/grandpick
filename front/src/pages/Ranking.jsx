@@ -1,6 +1,8 @@
 import { useEffect, useState, useMemo } from "react";
 import { useLoader } from "../context/LoaderContext";
 import UsersServices from "../services/users.services";
+import PredictionsServices from "../services/predictions.services";
+import RacesServices from "../services/races.services";
 import { getFlagEmoji } from "../utils/helpers";
 import { usePagination } from "../hooks/usePagination";
 import { getCountries } from "../services/countries.services";
@@ -12,40 +14,109 @@ function Ranking() {
     const { showLoader, hideLoader } = useLoader();
     const [searchTerm, setSearchTerm] = useState("");
     const [countriesMap, setCountriesMap] = useState({});
+    
+    const [mode, setMode] = useState("global");
+    const [racesList, setRacesList] = useState([]);
+    const [selectedCircuitId, setSelectedCircuitId] = useState("");
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+
+    useEffect(() => {
+        const fetchRacesList = async () => {
+            if (mode !== "grand_prix") return;
+            try {
+                const allRaces = await RacesServices.findAllByYear(selectedYear);
+                const circuitsData = [];
+                const seen = new Set();
+                allRaces.forEach(r => {
+                    const cid = r.id_circuit || r.circuit?._id;
+                    if (cid && !seen.has(cid)) {
+                        seen.add(cid);
+                        const hasResults = r.results && r.results.length > 0;
+                        const isFinished = r.state === 'Finalizado';
+                        circuitsData.push({ 
+                            id: cid, 
+                            name: r.circuit?.name || "Circuito Desconocido",
+                            enabled: hasResults || isFinished
+                        });
+                    } else if (cid && seen.has(cid)) {
+                        // Si ya lo agregamos pero hay otra sesión de este GP con resultados, lo habilitamos
+                        const hasResults = r.results && r.results.length > 0;
+                        const isFinished = r.state === 'Finalizado';
+                        if (hasResults || isFinished) {
+                            const existing = circuitsData.find(c => c.id === cid);
+                            if (existing) existing.enabled = true;
+                        }
+                    }
+                });
+                setRacesList(circuitsData);
+                
+                // Autoselect the last enabled circuit if none is selected or if the selected one is not in the list
+                const enabledCircuits = circuitsData.filter(c => c.enabled);
+                if (enabledCircuits.length > 0 && (!selectedCircuitId || !circuitsData.find(c => c.id === selectedCircuitId))) {
+                    setSelectedCircuitId(enabledCircuits[enabledCircuits.length - 1].id);
+                } else if (enabledCircuits.length === 0) {
+                    setSelectedCircuitId("");
+                }
+            } catch (error) {
+                console.error("Error fetching races list:", error);
+            }
+        };
+        fetchRacesList();
+    }, [mode, selectedYear]);
 
     useEffect(() => {
         const fetchStats = async () => {
             showLoader();
             try {
-                const data = await UsersServices.getAllUsersStats();
-                // ... sorting logic ...
-                const sortedData = [...data].sort((a, b) => {
-                    const pointsA = a.stats?.points?.total || 0;
-                    const pointsB = b.stats?.points?.total || 0;
-                    if (pointsB !== pointsA) return pointsB - pointsA;
-
-                    const successesA = a.stats?.successes?.total || 0;
-                    const successesB = b.stats?.successes?.total || 0;
-                    if (successesB !== successesA) return successesB - successesA;
-
-                    const avgA = a.stats?.predictions?.total > 0 ? pointsA / a.stats.predictions.total : 0;
-                    const avgB = b.stats?.predictions?.total > 0 ? pointsB / b.stats.predictions.total : 0;
-                    return avgB - avgA;
-                }).map((item, index) => ({
-                    ...item,
-                    globalRank: index + 1
-                }));
-
-                setStats(sortedData);
-                
-                // Buscar la posición del usuario logueado
                 const profile = await UsersServices.getUserProfile();
-                if (profile) {
-                    const userFound = sortedData.find(u => u._id === profile._id);
-                    if (userFound) {
-                        setCurrentUserStat(userFound);
+
+                if (mode === "global") {
+                    const data = await UsersServices.getAllUsersStats();
+                    const sortedData = [...data].sort((a, b) => {
+                        const pointsA = a.stats?.points?.total || 0;
+                        const pointsB = b.stats?.points?.total || 0;
+                        if (pointsB !== pointsA) return pointsB - pointsA;
+
+                        const successesA = a.stats?.successes?.total || 0;
+                        const successesB = b.stats?.successes?.total || 0;
+                        if (successesB !== successesA) return successesB - successesA;
+
+                        const avgA = a.stats?.predictions?.total > 0 ? pointsA / a.stats.predictions.total : 0;
+                        const avgB = b.stats?.predictions?.total > 0 ? pointsB / b.stats.predictions.total : 0;
+                        return avgB - avgA;
+                    }).map((item, index) => ({
+                        ...item,
+                        globalRank: index + 1
+                    }));
+
+                    setStats(sortedData);
+                    
+                    if (profile) {
+                        const userFound = sortedData.find(u => u._id === profile._id);
+                        if (userFound) {
+                            setCurrentUserStat(userFound);
+                        } else {
+                            setCurrentUserStat(null);
+                        }
+                    }
+                } else if (mode === "grand_prix") {
+                    if (!selectedCircuitId) {
+                        setStats([]);
+                        setCurrentUserStat(null);
+                    } else {
+                        const data = await PredictionsServices.getGrandPrixRanking(selectedCircuitId, selectedYear);
+                        setStats(data);
+                        if (profile) {
+                            const userFound = data.find(u => u._id === profile._id);
+                            if (userFound) {
+                                setCurrentUserStat(userFound);
+                            } else {
+                                setCurrentUserStat(null);
+                            }
+                        }
                     }
                 }
+
                 // Cargar mapa de países
                 try {
                     const countriesList = await getCountries();
@@ -64,7 +135,7 @@ function Ranking() {
         };
 
         fetchStats();
-    }, []);
+    }, [mode, selectedCircuitId, selectedYear]);
 
     const filteredStats = useMemo(() => {
         return stats.filter(userStat => {
@@ -82,22 +153,67 @@ function Ranking() {
         paginatedData
     } = usePagination(filteredStats, 20);
 
-
     return (
         <section className="ranking-page page-section container text-center">
             <header className="page-header">
                 <p className="section-label">Todos quieren subirse al podio</p>
-                <h1 className="section-title">PUNTUACIÓN GLOBAL</h1>
+                <h1 className="section-title">{mode === 'global' ? 'PUNTUACIÓN GLOBAL' : 'PUNTUACIÓN POR GRAN PREMIO'}</h1>
                 <p className="section-subtitle">Campeonato de predicciones</p>
             </header>
 
+            <div className="info-page__modes-toggle info-page__modes-toggle--desktop mx-auto mb-4" style={{maxWidth: '400px'}}>
+                <button 
+                    className={`info-page__mode-btn ${mode === 'global' ? 'is-active' : ''}`}
+                    onClick={() => setMode('global')}
+                >
+                    Global
+                </button>
+                <button 
+                    className={`info-page__mode-btn ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                    onClick={() => {
+                        setMode('grand_prix');
+                        setPage(1);
+                    }}
+                >
+                    Por Gran Premio
+                </button>
+            </div>
+
             <div className="ranking-filters">
-                <div className="ranking-filters__left">
-                    <select className="ranking-filters__year">
-                        <option value={new Date().getFullYear()}>{new Date().getFullYear()}</option>
+                <div className="ranking-filters__left d-flex flex-wrap align-items-center gap-3">
+                    <select 
+                        className="ranking-filters__year"
+                        value={selectedYear}
+                        onChange={(e) => {
+                            setSelectedYear(Number(e.target.value));
+                            setPage(1);
+                        }}
+                    >
+                        {Array.from({ length: new Date().getFullYear() - 2024 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                            <option key={year} value={year}>{year}</option>
+                        ))}
                     </select>
 
-                    <div className="d-flex align-items-center ms-3">
+                    {mode === 'grand_prix' && (
+                        <select 
+                            className="form-select bg-dark text-light border-secondary"
+                            value={selectedCircuitId}
+                            onChange={(e) => {
+                                setSelectedCircuitId(e.target.value);
+                                setPage(1);
+                            }}
+                            style={{ width: 'auto', minWidth: '200px' }}
+                        >
+                            <option value="" disabled>Seleccionar Gran Premio</option>
+                            {racesList.map(c => (
+                                <option key={c.id} value={c.id} disabled={!c.enabled}>
+                                    {c.name} {!c.enabled ? '(Próximamente)' : ''}
+                                </option>
+                            ))}
+                        </select>
+                    )}
+
+                    <div className="d-flex align-items-center">
                         <label className="me-2 text-light small">Mostrar:</label>
                         <select
                             value={pageSize}
@@ -114,7 +230,7 @@ function Ranking() {
                     </div>
                 </div>
 
-                {/* User Ranking Status Bar (Integrated above table) */}
+                {/* User Ranking Status Bar */}
                 {currentUserStat && !searchTerm && (
                     <div className="ranking-user-status">
                         <div className="ranking-user-status__content">
@@ -128,16 +244,27 @@ function Ranking() {
                                 <span className="status-value">{currentUserStat.name} {currentUserStat.last_name}</span>
                             </div>
 
-                            <div className="status-item status-item--avg">
-                                <span className="status-label">PROMEDIO</span>
-                                <span className="status-value">
-                                    {currentUserStat.stats?.predictions?.total > 0 ? (currentUserStat.stats.points.total / currentUserStat.stats.predictions.total).toFixed(1) : "0.0"}
-                                </span>
-                            </div>
+                            {mode === 'global' && (
+                                <div className="status-item status-item--avg">
+                                    <span className="status-label">PROMEDIO</span>
+                                    <span className="status-value">
+                                        {currentUserStat.stats?.predictions?.total > 0 ? (currentUserStat.stats.points.total / currentUserStat.stats.predictions.total).toFixed(1) : "0.0"}
+                                    </span>
+                                </div>
+                            )}
+
+                            {mode === 'grand_prix' && (
+                                <div className="status-item status-item--avg">
+                                    <span className="status-label">GAP</span>
+                                    <span className="status-value" style={{ color: currentUserStat.gap === 'Líder' ? '#d4af37' : '#aaa' }}>
+                                        {currentUserStat.gap}
+                                    </span>
+                                </div>
+                            )}
 
                             <div className="status-item status-item--points">
                                 <span className="status-label">PUNTOS</span>
-                                <span className="status-value">{currentUserStat.stats?.points?.total || 0}</span>
+                                <span className="status-value">{mode === 'global' ? (currentUserStat.stats?.points?.total || 0) : currentUserStat.points}</span>
                             </div>
 
                             <button 
@@ -151,12 +278,10 @@ function Ranking() {
 
                                     const targetPage = Math.floor(userIndex / pageSize) + 1;
                                     
-                                    // Cambiar de página si es necesario
                                     if (page !== targetPage) {
                                         setPage(targetPage);
                                     }
 
-                                    // Esperar al renderizado para scrollear y resaltar
                                     setTimeout(() => {
                                         const element = document.getElementById(`user-row-${currentUserStat._id}`);
                                         if (element) {
@@ -166,7 +291,7 @@ function Ranking() {
                                                 element.classList.remove('row-highlight-pulse');
                                             }, 3000);
                                         }
-                                    }, page !== targetPage ? 300 : 50); // Más tiempo si hay cambio de página
+                                    }, page !== targetPage ? 300 : 50);
                                 }}
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: 14 }}>
@@ -177,7 +302,7 @@ function Ranking() {
                     </div>
                 )}
 
-                <div className="ranking-search">
+                <div className="ranking-search mt-3 mt-md-0">
                     <input
                         type="text"
                         placeholder="Buscador"
@@ -198,9 +323,10 @@ function Ranking() {
                                 <th>Usuario</th>
                                 <th>País</th>
                                 <th>Puntos totales</th>
-                                <th>Predicciones jugadas</th>
-                                <th>Promedio por predicción</th>
-                                <th>Aciertos totales</th>
+                                {mode === 'global' && <th>Predicciones jugadas</th>}
+                                {mode === 'global' && <th>Promedio por predicción</th>}
+                                {mode === 'global' && <th>Aciertos totales</th>}
+                                {mode === 'grand_prix' && <th>Intervalo (Gap)</th>}
                             </tr>
                         </thead>
                         <tbody>
@@ -209,9 +335,9 @@ function Ranking() {
                                 const isTop3 = pos <= 3;
                                 const posClass = isTop3 ? `pos-${pos}` : "";
 
-                                const totalPoints = item.stats?.points?.total || 0;
-                                const totalPredictions = item.stats?.predictions?.total || 0;
-                                const totalSuccesses = item.stats?.successes?.total || 0;
+                                const totalPoints = mode === 'global' ? (item.stats?.points?.total || 0) : item.points;
+                                const totalPredictions = mode === 'global' ? (item.stats?.predictions?.total || 0) : item.predictionsCount;
+                                const totalSuccesses = mode === 'global' ? (item.stats?.successes?.total || 0) : 0;
                                 const avgPoints = totalPredictions > 0 ? (totalPoints / totalPredictions).toFixed(1) : "0.0";
 
                                 return (
@@ -233,15 +359,16 @@ function Ranking() {
                                             </span>
                                         </td>
                                         <td><strong>{totalPoints}</strong></td>
-                                        <td>{totalPredictions}</td>
-                                        <td>{avgPoints}</td>
-                                        <td>{totalSuccesses}</td>
+                                        {mode === 'global' && <td>{totalPredictions}</td>}
+                                        {mode === 'global' && <td>{avgPoints}</td>}
+                                        {mode === 'global' && <td>{totalSuccesses}</td>}
+                                        {mode === 'grand_prix' && <td style={{ color: item.gap === 'Líder' ? '#d4af37' : '#aaa' }}>{item.gap}</td>}
                                     </tr>
                                 );
                             })}
                             {paginatedData.length === 0 && (
                                 <tr>
-                                    <td colSpan="7" style={{ padding: '40px', color: '#666' }}>
+                                    <td colSpan={mode === 'global' ? "7" : "5"} style={{ padding: '40px', color: '#666' }}>
                                         No se encontraron usuarios
                                     </td>
                                 </tr>
@@ -250,7 +377,6 @@ function Ranking() {
                     </table>
                 </div>
 
-                {/* PAGINACIÓN INFERIOR */}
                 <div className="d-flex justify-content-end align-items-center mt-3 p-3">
                     <div className="pagination-controls d-flex gap-2 align-items-center">
                         <button

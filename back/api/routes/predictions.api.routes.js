@@ -45,4 +45,9 @@ router.route('/api/users/:UserId/predictions-history')
         predictionsApiControllers.getHistoryByUserId
     );
 
+router.route('/api/ranking/circuit/:circuitId/year/:year')
+    .get(
+        predictionsApiControllers.getGrandPrixRanking
+    );
+
 export default router

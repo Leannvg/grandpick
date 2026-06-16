@@ -24,9 +24,14 @@ async function findHistoryByUser(userId, year) {
     return apiFetch(`/api/users/${userId}/predictions-history?year=${year}`);
 }
 
+async function getGrandPrixRanking(circuitId, year) {
+    return apiFetch(`/api/ranking/circuit/${circuitId}/year/${year}`);
+}
+
 export default {
     createPrediction,
     editPrediction,
     findPredictionByUserAndRace,
-    findHistoryByUser
+    findHistoryByUser,
+    getGrandPrixRanking
 }

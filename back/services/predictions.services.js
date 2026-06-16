@@ -378,6 +378,112 @@ export async function getUserPredictionHistory(userId, year) {
     }
 }
 
+function formatTimeGap(ms) {
+    if (ms < 0) ms = 0;
+    const hours = Math.floor(ms / (1000 * 60 * 60));
+    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+    const milliseconds = ms % 1000;
+    
+    if (hours > 0) return `+${hours}h ${minutes}m ${seconds}s`;
+    if (minutes > 0) return `+${minutes}m ${seconds}s`;
+    return `+${seconds}.${milliseconds.toString().padStart(3, '0')}s`;
+}
+
+export async function getGrandPrixRanking(circuitId, year) {
+    try {
+        const db = await connectDB();
+        const startOfYear = new Date(`${year}-01-01T00:00:00.000Z`);
+        const endOfYear = new Date(`${year}-12-31T23:59:59.999Z`);
+
+        const races = await db.collection("Races").find({
+            id_circuit: new ObjectId(circuitId),
+            date_gp_start: { $gte: startOfYear, $lte: endOfYear }
+        }).toArray();
+
+        if (races.length === 0) return [];
+
+        const raceIds = races.map(r => r._id);
+
+        const predictions = await db.collection("Predictions").find({
+            raceId: { $in: raceIds }
+        }).toArray();
+
+        // Group by user
+        const userStats = {};
+        for (const pred of predictions) {
+            const uid = pred.userId.toString();
+            if (!userStats[uid]) {
+                userStats[uid] = {
+                    userId: pred.userId,
+                    totalPoints: 0,
+                    earliestDate: pred.date_prediction,
+                    predictionsCount: 0
+                };
+            }
+            userStats[uid].totalPoints += (pred.previous_points || 0);
+            userStats[uid].predictionsCount += 1;
+            if (new Date(pred.date_prediction) < new Date(userStats[uid].earliestDate)) {
+                userStats[uid].earliestDate = pred.date_prediction;
+            }
+        }
+
+        const userIds = Object.values(userStats).map(u => u.userId);
+        const users = await db.collection("Users").find({ _id: { $in: userIds } }).toArray();
+        const userMap = new Map(users.map(u => [u._id.toString(), u]));
+
+        let ranking = Object.values(userStats).map(stat => {
+            const user = userMap.get(stat.userId.toString());
+            return {
+                _id: stat.userId.toString(),
+                name: user?.name || "Desconocido",
+                last_name: user?.last_name || "",
+                country: user?.country || "AR",
+                img_user: user?.img_user || "",
+                points: stat.totalPoints,
+                date_prediction: stat.earliestDate,
+                predictionsCount: stat.predictionsCount
+            };
+        });
+
+        // Sort: Points DESC, Date ASC
+        ranking.sort((a, b) => {
+            if (b.points !== a.points) return b.points - a.points;
+            return new Date(a.date_prediction) - new Date(b.date_prediction);
+        });
+
+        // Calculate Rank and Gap
+        let currentRank = 1;
+        let currentTiedGroupLeaderDate = null;
+        
+        ranking.forEach((entry, index) => {
+            entry.globalRank = currentRank;
+            currentRank++;
+            
+            if (index === 0) {
+                entry.gap = "Líder";
+                currentTiedGroupLeaderDate = new Date(entry.date_prediction);
+            } else {
+                const prev = ranking[index - 1];
+                if (entry.points < prev.points) {
+                    entry.gap = `-${prev.points - entry.points} pts`;
+                    currentTiedGroupLeaderDate = new Date(entry.date_prediction);
+                } else {
+                    // Tie in points!
+                    const timeDiff = new Date(entry.date_prediction) - currentTiedGroupLeaderDate;
+                    entry.gap = formatTimeGap(timeDiff);
+                }
+            }
+        });
+
+        return ranking;
+
+    } catch (err) {
+        console.error("Error en getGrandPrixRanking:", err);
+        throw err;
+    }
+}
+
 export default {
     createPrediction,
     editPrediction: updatePrediction,
@@ -387,5 +493,6 @@ export default {
     findAllPredictions,
     findPredictionById,
     deletePrediction,
-    getUserPredictionHistory
+    getUserPredictionHistory,
+    getGrandPrixRanking
 }

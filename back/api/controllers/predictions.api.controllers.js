@@ -95,3 +95,13 @@ export async function getHistoryByUserId(req, res) {
         res.status(500).json({ error: err.message });
     }
 }
+
+export async function getGrandPrixRanking(req, res) {
+    const { circuitId, year } = req.params;
+    try {
+        const ranking = await predictionsServices.getGrandPrixRanking(circuitId, year);
+        res.status(200).json(ranking);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
