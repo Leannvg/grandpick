@@ -272,8 +272,8 @@ function Ranking() {
                             )}
 
                             {mode === 'grand_prix' && (
-                                <div className="status-item status-item--avg" title="Desempate por hora de predicción de Carrera">
-                                    <span className="status-label">GAP (CARRERA)</span>
+                                <div className="status-item status-item--avg">
+                                    <span className="status-label">GAP</span>
                                     <span className="status-value text-muted">
                                         {currentUserStat.gap}
                                     </span>
@@ -344,14 +344,7 @@ function Ranking() {
                                 {mode === 'global' && <th>Predicciones jugadas</th>}
                                 {mode === 'global' && <th>Promedio por predicción</th>}
                                 {mode === 'global' && <th>Aciertos totales</th>}
-                                {mode === 'grand_prix' && (
-                                    <th>
-                                        Intervalo (Gap)
-                                        <div style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#a0aec0', marginTop: '4px' }}>
-                                            *Desempate por hora de predicción de Carrera
-                                        </div>
-                                    </th>
-                                )}
+                                {mode === 'grand_prix' && <th>Intervalo de Desempate (Gap)</th>}
                             </tr>
                         </thead>
                         <tbody>

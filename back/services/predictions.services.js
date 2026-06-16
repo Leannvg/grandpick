@@ -495,12 +495,13 @@ export async function getGrandPrixRanking(circuitId, year) {
                     currentTiedGroupLeaderDate = new Date(entry.date_prediction);
                     
                     // Format exact time in Argentina Timezone
-                    entry.gap = currentTiedGroupLeaderDate.toLocaleString("es-AR", { 
+                    const timeStr = currentTiedGroupLeaderDate.toLocaleString("es-AR", { 
                         timeZone: "America/Argentina/Buenos_Aires", 
                         hour: '2-digit', 
                         minute: '2-digit', 
                         second: '2-digit' 
                     });
+                    entry.gap = `${timeStr} (RACE)`;
                 } else {
                     // Subsequent person in the tie group
                     const timeDiff = new Date(entry.date_prediction) - currentTiedGroupLeaderDate;
