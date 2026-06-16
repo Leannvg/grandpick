@@ -501,11 +501,24 @@ export async function getGrandPrixRanking(circuitId, year) {
                         minute: '2-digit', 
                         second: '2-digit' 
                     });
-                    entry.gap = `${timeStr} (RACE)`;
+                    const dateStr = currentTiedGroupLeaderDate.toLocaleString("es-AR", { 
+                        timeZone: "America/Argentina/Buenos_Aires", 
+                        day: '2-digit', 
+                        month: '2-digit',
+                        year: '2-digit'
+                    });
+                    entry.gap = `${dateStr} - ${timeStr} (RACE)`;
                 } else {
                     // Subsequent person in the tie group
-                    const timeDiff = new Date(entry.date_prediction) - currentTiedGroupLeaderDate;
-                    entry.gap = formatTimeGap(timeDiff);
+                    const entryDate = new Date(entry.date_prediction);
+                    const timeDiff = entryDate - currentTiedGroupLeaderDate;
+                    const dateStr = entryDate.toLocaleString("es-AR", { 
+                        timeZone: "America/Argentina/Buenos_Aires", 
+                        day: '2-digit', 
+                        month: '2-digit',
+                        year: '2-digit'
+                    });
+                    entry.gap = `${dateStr} - ${formatTimeGap(timeDiff)}`;
                 }
             }
         });
