@@ -71,7 +71,29 @@ const InstallAppBanner = () => {
     if (!isVisible) return null;
 
     return (
-        <section className="install-banner">
+        <section className="install-banner" style={{ position: 'relative' }}>
+            <button 
+                onClick={() => {
+                    setIsVisible(false);
+                    localStorage.setItem('grandpick_app_installed', 'true');
+                }}
+                style={{ 
+                    position: 'absolute', 
+                    top: '10px', 
+                    right: '10px', 
+                    background: 'none', 
+                    border: 'none', 
+                    color: 'white', 
+                    opacity: 0.6, 
+                    cursor: 'pointer', 
+                    fontSize: '18px',
+                    padding: '5px',
+                    zIndex: 2
+                }}
+                aria-label="Cerrar banner"
+            >
+                ✕
+            </button>
             <div className="container">
                 {!showInstructions ? (
                     <div className="install-banner__content">
@@ -96,9 +118,21 @@ const InstallAppBanner = () => {
                                 <li>💻 <strong>PC:</strong> Toca el ícono de instalación en la barra de direcciones del navegador.</li>
                             </ul>
                         </div>
-                        <button onClick={() => setShowInstructions(false)} className="btn-install" style={{ backgroundColor: 'transparent', border: '1px solid rgba(255,255,255,0.5)', boxShadow: 'none' }}>
-                            Volver
-                        </button>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '140px' }}>
+                            <button onClick={() => setShowInstructions(false)} className="btn-install" style={{ backgroundColor: 'transparent', border: '1px solid rgba(255,255,255,0.5)', boxShadow: 'none' }}>
+                                Volver
+                            </button>
+                            <button 
+                                onClick={() => {
+                                    setIsVisible(false);
+                                    localStorage.setItem('grandpick_app_installed', 'true');
+                                }} 
+                                className="btn-install" 
+                                style={{ backgroundColor: 'transparent', border: 'none', boxShadow: 'none', fontSize: '0.85rem', opacity: 0.8, padding: '8px' }}
+                            >
+                                Ya la instalé
+                            </button>
+                        </div>
                     </div>
                 )}
             </div>
