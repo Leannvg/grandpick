@@ -35,7 +35,7 @@ function Ranking() {
                         const isFinished = r.state === 'Finalizado';
                         circuitsData.push({ 
                             id: cid, 
-                            name: r.circuit?.name || "Circuito Desconocido",
+                            name: r.circuit?.circuit_name || "Circuito Desconocido",
                             enabled: hasResults || isFinished
                         });
                     } else if (cid && seen.has(cid)) {
