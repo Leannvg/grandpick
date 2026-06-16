@@ -89,7 +89,8 @@ async function getUserWithStats(userId, racesInfo = null, psystems = null) {
   const stats = {
     predictions: { total: preds.length, qualifying: 0, sprint: 0, race: 0 },
     successes: { total: 0, qualifying: 0, sprint: 0, race: 0 },
-    points: { total: 0, qualifying: 0, sprint: 0, race: 0 }
+    points: { total: 0, qualifying: 0, sprint: 0, race: 0 },
+    bestScores: []
   };
 
   for (const p of preds) {
@@ -114,6 +115,8 @@ async function getUserWithStats(userId, racesInfo = null, psystems = null) {
     }
   }
 
+  const gpPointsMap = {};
+
   for (const pb of pointsByRace) {
     const race = racesInfo.find(r => r._id.toString() === pb.raceId.toString());
     if (!race) continue;
@@ -123,7 +126,14 @@ async function getUserWithStats(userId, racesInfo = null, psystems = null) {
 
     stats.points.total += pb.points;
     stats.points[type] = (stats.points[type] || 0) + pb.points;
+
+    if (race.id_circuit) {
+      const circuitIdStr = race.id_circuit.toString();
+      gpPointsMap[circuitIdStr] = (gpPointsMap[circuitIdStr] || 0) + pb.points;
+    }
   }
+
+  stats.bestScores = Object.values(gpPointsMap).sort((a, b) => b - a);
 
   return { ...user, stats };
 }

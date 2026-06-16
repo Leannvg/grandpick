@@ -83,7 +83,22 @@ function Ranking() {
 
                         const avgA = a.stats?.predictions?.total > 0 ? pointsA / a.stats.predictions.total : 0;
                         const avgB = b.stats?.predictions?.total > 0 ? pointsB / b.stats.predictions.total : 0;
-                        return avgB - avgA;
+                        if (avgB !== avgA) return avgB - avgA;
+
+                        // COUNTBACK: Desempate por mejores fines de semana (estilo F1)
+                        const scoresA = a.stats?.bestScores || [];
+                        const scoresB = b.stats?.bestScores || [];
+                        const maxLength = Math.max(scoresA.length, scoresB.length);
+                        
+                        for (let i = 0; i < maxLength; i++) {
+                            const scoreA = scoresA[i] || 0;
+                            const scoreB = scoresB[i] || 0;
+                            if (scoreA !== scoreB) {
+                                return scoreB - scoreA;
+                            }
+                        }
+
+                        return 0; // Empate absoluto
                     }).map((item, index) => ({
                         ...item,
                         globalRank: index + 1

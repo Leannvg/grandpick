@@ -403,6 +403,9 @@ export async function getGrandPrixRanking(circuitId, year) {
 
         if (races.length === 0) return [];
 
+        const mainRace = races.find(r => r.type && r.type.toLowerCase() === 'race');
+        const mainRaceId = mainRace ? mainRace._id.toString() : null;
+
         const raceIds = races.map(r => r._id);
 
         const predictions = await db.collection("Predictions").find({
@@ -418,12 +421,16 @@ export async function getGrandPrixRanking(circuitId, year) {
                     userId: pred.userId,
                     totalPoints: 0,
                     earliestDate: pred.date_prediction,
+                    mainRaceDate: null,
                     predictionsCount: 0
                 };
             }
             userStats[uid].totalPoints += (pred.previous_points || 0);
             userStats[uid].predictionsCount += 1;
-            if (new Date(pred.date_prediction) < new Date(userStats[uid].earliestDate)) {
+            
+            if (mainRaceId && pred.raceId.toString() === mainRaceId) {
+                userStats[uid].mainRaceDate = pred.date_prediction;
+            } else if (new Date(pred.date_prediction) < new Date(userStats[uid].earliestDate)) {
                 userStats[uid].earliestDate = pred.date_prediction;
             }
         }
@@ -434,6 +441,10 @@ export async function getGrandPrixRanking(circuitId, year) {
 
         let ranking = Object.values(userStats).map(stat => {
             const user = userMap.get(stat.userId.toString());
+            // Usamos mainRaceDate preferentemente
+            const datePrediction = stat.mainRaceDate || stat.earliestDate;
+            const hasMainRace = !!stat.mainRaceDate;
+            
             return {
                 _id: stat.userId.toString(),
                 name: user?.name || "Desconocido",
@@ -441,14 +452,20 @@ export async function getGrandPrixRanking(circuitId, year) {
                 country: user?.country || "AR",
                 img_user: user?.img_user || "",
                 points: stat.totalPoints,
-                date_prediction: stat.earliestDate,
+                date_prediction: datePrediction,
+                hasMainRace: hasMainRace,
                 predictionsCount: stat.predictionsCount
             };
         });
 
-        // Sort: Points DESC, Date ASC
+        // Sort: Points DESC, Has Race Prediction, Date ASC
         ranking.sort((a, b) => {
             if (b.points !== a.points) return b.points - a.points;
+            
+            if (a.hasMainRace !== b.hasMainRace) {
+                return a.hasMainRace ? -1 : 1; // Priorizar al que tiene carrera
+            }
+            
             return new Date(a.date_prediction) - new Date(b.date_prediction);
         });
 
