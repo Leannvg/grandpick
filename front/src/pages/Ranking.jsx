@@ -176,81 +176,98 @@ function Ranking() {
                 <p className="section-subtitle">Campeonato de predicciones</p>
             </header>
             
-            <div className="d-flex justify-content-center justify-content-md-end gap-2 mb-4 w-100">
-                <button 
-                    className={`info-page__mode-btn ${mode === 'global' ? 'is-active' : ''}`}
-                    onClick={() => setMode('global')}
-                >
-                    Global
-                </button>
-                <button 
-                    className={`info-page__mode-btn ${mode === 'grand_prix' ? 'is-active' : ''}`}
-                    onClick={() => {
-                        setMode('grand_prix');
-                        setPage(1);
-                    }}
-                >
-                    Por Gran Premio
-                </button>
-            </div>
-
-            <div className="ranking-filters">
-                <div className="ranking-filters__left d-flex flex-wrap align-items-center gap-3">
-                    <div className="ranking-input-group">
-                        <span className="ranking-input-group-text">Año</span>
-                        <select 
-                            value={selectedYear}
-                            onChange={(e) => {
-                                setSelectedYear(Number(e.target.value));
-                                setPage(1);
-                            }}
-                        >
-                            {Array.from({ length: new Date().getFullYear() - 2024 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
-                                <option key={year} value={year}>{year}</option>
-                            ))}
-                        </select>
-                    </div>
-
-                    {mode === 'grand_prix' && (
+            <div className="w-100 mb-4">
+                {/* Row 1: AÑO | MOSTRAR | [Global] [Por Gran Premio] */}
+                <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-3 w-100">
+                    <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-start gap-3">
                         <div className="ranking-input-group">
-                            <span className="ranking-input-group-text">Circuito</span>
+                            <span className="ranking-input-group-text">Año</span>
                             <select 
-                                value={selectedCircuitId}
+                                value={selectedYear}
                                 onChange={(e) => {
-                                    setSelectedCircuitId(e.target.value);
+                                    setSelectedYear(Number(e.target.value));
                                     setPage(1);
                                 }}
-                                style={{ maxWidth: '250px' }}
                             >
-                                <option value="" disabled>Seleccionar Gran Premio</option>
-                                {racesList.map(c => (
-                                    <option key={c.id} value={c.id} disabled={!c.enabled}>
-                                        {c.name}
-                                    </option>
+                                {Array.from({ length: new Date().getFullYear() - 2024 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                                    <option key={year} value={year}>{year}</option>
                                 ))}
                             </select>
                         </div>
-                    )}
+                        <div className="ranking-input-group">
+                            <span className="ranking-input-group-text">Mostrar</span>
+                            <select
+                                value={pageSize}
+                                onChange={(e) => setPageSize(Number(e.target.value))}
+                            >
+                                <option value={2}>2</option>
+                                <option value={5}>5</option>
+                                <option value={10}>10</option>
+                                <option value={20}>20</option>
+                                <option value={50}>50</option>
+                                <option value={filteredStats.length}>Todos</option>
+                            </select>
+                        </div>
+                    </div>
 
-                    <div className="ranking-input-group">
-                        <span className="ranking-input-group-text">Mostrar</span>
-                        <select
-                            value={pageSize}
-                            onChange={(e) => setPageSize(Number(e.target.value))}
+                    <div className="d-flex justify-content-center justify-content-md-end gap-2 w-100" style={{ flex: 1, maxWidth: '400px' }}>
+                        <button 
+                            className={`info-page__mode-btn ${mode === 'global' ? 'is-active' : ''}`}
+                            onClick={() => setMode('global')}
+                            style={{ flex: 1 }}
                         >
-                            <option value={2}>2</option>
-                            <option value={5}>5</option>
-                            <option value={10}>10</option>
-                            <option value={20}>20</option>
-                            <option value={50}>50</option>
-                            <option value={filteredStats.length}>Todos</option>
-                        </select>
+                            Global
+                        </button>
+                        <button 
+                            className={`info-page__mode-btn ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                            onClick={() => {
+                                setMode('grand_prix');
+                                setPage(1);
+                            }}
+                            style={{ flex: 1 }}
+                        >
+                            Por Gran Premio
+                        </button>
                     </div>
                 </div>
 
-                {/* User Ranking Status Bar */}
+                {/* Row 2: CIRCUITO */}
+                {mode === 'grand_prix' && (
+                    <div className="ranking-input-group mb-3 w-100">
+                        <span className="ranking-input-group-text">Circuito</span>
+                        <select 
+                            value={selectedCircuitId}
+                            onChange={(e) => {
+                                setSelectedCircuitId(e.target.value);
+                                setPage(1);
+                            }}
+                            style={{ flex: 1, width: '100%' }}
+                        >
+                            <option value="" disabled>Seleccionar Gran Premio</option>
+                            {racesList.map(c => (
+                                <option key={c.id} value={c.id} disabled={!c.enabled}>
+                                    {c.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
+
+                {/* Row 3: BUSCADOR */}
+                <div className="ranking-search mb-3 w-100">
+                    <input
+                        type="text"
+                        placeholder="Buscador"
+                        className="ranking-search__input w-100"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <button className="ranking-search__button">Buscar</button>
+                </div>
+
+                {/* Row 4: TU PUESTO */}
                 {currentUserStat && !searchTerm && (
-                    <div className="ranking-user-status">
+                    <div className="ranking-user-status mb-3 w-100">
                         <div className="ranking-user-status__content">
                             <div className="status-item status-item--rank">
                                 <span className="status-label">TU PUESTO</span>
@@ -261,8 +278,6 @@ function Ranking() {
                                 <span className="status-label">USUARIO</span>
                                 <span className="status-value">{currentUserStat.name} {currentUserStat.last_name}</span>
                             </div>
-
-
 
                             <div className="status-item status-item--points">
                                 <span className="status-label">PUNTOS</span>
@@ -303,17 +318,6 @@ function Ranking() {
                         </div>
                     </div>
                 )}
-
-                <div className="ranking-search mt-3 mt-md-0">
-                    <input
-                        type="text"
-                        placeholder="Buscador"
-                        className="ranking-search__input"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <button className="ranking-search__button">Buscar</button>
-                </div>
             </div>
 
             <div className="ranking-card">
