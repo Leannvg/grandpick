@@ -14,7 +14,7 @@ function Ranking() {
     const { showLoader, hideLoader } = useLoader();
     const [searchTerm, setSearchTerm] = useState("");
     const [countriesMap, setCountriesMap] = useState({});
-    
+
     const [mode, setMode] = useState("global");
     const [racesList, setRacesList] = useState([]);
     const [selectedCircuitId, setSelectedCircuitId] = useState("");
@@ -33,8 +33,8 @@ function Ranking() {
                         seen.add(cid);
                         const hasResults = r.results && r.results.length > 0;
                         const isFinished = r.state === 'Finalizado';
-                        circuitsData.push({ 
-                            id: cid, 
+                        circuitsData.push({
+                            id: cid,
                             name: r.circuit?.circuit_name || "Circuito Desconocido",
                             enabled: hasResults || isFinished
                         });
@@ -49,7 +49,7 @@ function Ranking() {
                     }
                 });
                 setRacesList(circuitsData);
-                
+
                 // Autoselect the last enabled circuit if none is selected or if the selected one is not in the list
                 const enabledCircuits = circuitsData.filter(c => c.enabled);
                 if (enabledCircuits.length > 0 && (!selectedCircuitId || !circuitsData.find(c => c.id === selectedCircuitId))) {
@@ -89,7 +89,7 @@ function Ranking() {
                         const scoresA = a.stats?.bestScores || [];
                         const scoresB = b.stats?.bestScores || [];
                         const maxLength = Math.max(scoresA.length, scoresB.length);
-                        
+
                         for (let i = 0; i < maxLength; i++) {
                             const scoreA = scoresA[i] || 0;
                             const scoreB = scoresB[i] || 0;
@@ -105,7 +105,7 @@ function Ranking() {
                     }));
 
                     setStats(sortedData);
-                    
+
                     if (profile) {
                         const userFound = sortedData.find(u => u._id === profile._id);
                         if (userFound) {
@@ -138,7 +138,7 @@ function Ranking() {
                     const map = {};
                     countriesList.forEach(c => map[c.iso2] = c.name);
                     setCountriesMap(map);
-                } catch(err) {
+                } catch (err) {
                     console.error("Error al cargar mapa de países:", err);
                 }
 
@@ -169,74 +169,74 @@ function Ranking() {
     } = usePagination(filteredStats, 20);
 
     return (
-        <section className="ranking-page page-section container-fluid px-3 px-md-5 text-center">
+        <section className="ranking-page page-section container-fluid px-3 px-md-5 text-center container">
             <header className="page-header">
                 <p className="section-label">Todos quieren subirse al podio</p>
                 <h1 className="section-title">{mode === 'global' ? 'PUNTUACIÓN GLOBAL' : 'PUNTUACIÓN POR GRAN PREMIO'}</h1>
                 <p className="section-subtitle">Campeonato de predicciones</p>
             </header>
-
-            <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 w-100 gap-3">
-                <div className="d-flex w-100 justify-content-center justify-content-md-start" style={{ flex: 1 }}>
-                    {mode === 'grand_prix' && (
-                        <select 
-                            className="form-select bg-dark text-light border-secondary"
-                            value={selectedCircuitId}
-                            onChange={(e) => {
-                                setSelectedCircuitId(e.target.value);
-                                setPage(1);
-                            }}
-                            style={{ width: '100%', maxWidth: '350px' }}
-                        >
-                            <option value="" disabled>Seleccionar Gran Premio</option>
-                            {racesList.map(c => (
-                                <option key={c.id} value={c.id} disabled={!c.enabled}>
-                                    {c.name} {!c.enabled ? '(Próximamente)' : ''}
-                                </option>
-                            ))}
-                        </select>
-                    )}
-                </div>
-                <div className="d-flex gap-2 w-100 justify-content-center justify-content-md-end" style={{ flex: 1 }}>
-                    <button 
-                        className={`info-page__mode-btn ${mode === 'global' ? 'is-active' : ''}`}
-                        onClick={() => setMode('global')}
-                    >
-                        Global
-                    </button>
-                    <button 
-                        className={`info-page__mode-btn ${mode === 'grand_prix' ? 'is-active' : ''}`}
-                        onClick={() => {
-                            setMode('grand_prix');
-                            setPage(1);
-                        }}
-                    >
-                        Por Gran Premio
-                    </button>
-                </div>
+            
+            <div className="d-flex justify-content-center justify-content-md-end gap-2 mb-4 w-100">
+                <button 
+                    className={`info-page__mode-btn ${mode === 'global' ? 'is-active' : ''}`}
+                    onClick={() => setMode('global')}
+                >
+                    Global
+                </button>
+                <button 
+                    className={`info-page__mode-btn ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                    onClick={() => {
+                        setMode('grand_prix');
+                        setPage(1);
+                    }}
+                >
+                    Por Gran Premio
+                </button>
             </div>
 
             <div className="ranking-filters">
                 <div className="ranking-filters__left d-flex flex-wrap align-items-center gap-3">
-                    <select 
-                        className="ranking-filters__year"
-                        value={selectedYear}
-                        onChange={(e) => {
-                            setSelectedYear(Number(e.target.value));
-                            setPage(1);
-                        }}
-                    >
-                        {Array.from({ length: new Date().getFullYear() - 2024 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
-                            <option key={year} value={year}>{year}</option>
-                        ))}
-                    </select>
+                    <div className="ranking-input-group">
+                        <span className="ranking-input-group-text">Año</span>
+                        <select 
+                            value={selectedYear}
+                            onChange={(e) => {
+                                setSelectedYear(Number(e.target.value));
+                                setPage(1);
+                            }}
+                        >
+                            {Array.from({ length: new Date().getFullYear() - 2024 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                                <option key={year} value={year}>{year}</option>
+                            ))}
+                        </select>
+                    </div>
 
-                    <div className="d-flex align-items-center">
-                        <label className="me-2 text-light small">Mostrar:</label>
+                    {mode === 'grand_prix' && (
+                        <div className="ranking-input-group">
+                            <span className="ranking-input-group-text">Circuito</span>
+                            <select 
+                                value={selectedCircuitId}
+                                onChange={(e) => {
+                                    setSelectedCircuitId(e.target.value);
+                                    setPage(1);
+                                }}
+                                style={{ maxWidth: '250px' }}
+                            >
+                                <option value="" disabled>Seleccionar Gran Premio</option>
+                                {racesList.map(c => (
+                                    <option key={c.id} value={c.id} disabled={!c.enabled}>
+                                        {c.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+
+                    <div className="ranking-input-group">
+                        <span className="ranking-input-group-text">Mostrar</span>
                         <select
                             value={pageSize}
                             onChange={(e) => setPageSize(Number(e.target.value))}
-                            className="form-select bg-dark text-light border-secondary"
                         >
                             <option value={2}>2</option>
                             <option value={5}>5</option>
@@ -256,7 +256,7 @@ function Ranking() {
                                 <span className="status-label">TU PUESTO</span>
                                 <span className="status-value">#{currentUserStat.globalRank}</span>
                             </div>
-                            
+
                             <div className="status-item status-item--user">
                                 <span className="status-label">USUARIO</span>
                                 <span className="status-value">{currentUserStat.name} {currentUserStat.last_name}</span>
@@ -285,17 +285,17 @@ function Ranking() {
                                 <span className="status-value">{mode === 'global' ? (currentUserStat.stats?.points?.total || 0) : currentUserStat.points}</span>
                             </div>
 
-                            <button 
+                            <button
                                 className="btn-jump-to-me"
                                 title="Ir a mi posición"
                                 onClick={() => {
                                     if (!currentUserStat) return;
-                                    
+
                                     const userIndex = filteredStats.findIndex(u => u._id === currentUserStat._id);
                                     if (userIndex === -1) return;
 
                                     const targetPage = Math.floor(userIndex / pageSize) + 1;
-                                    
+
                                     if (page !== targetPage) {
                                         setPage(targetPage);
                                     }
@@ -359,8 +359,8 @@ function Ranking() {
                                 const avgPoints = totalPredictions > 0 ? (totalPoints / totalPredictions).toFixed(1) : "0.0";
 
                                 return (
-                                    <tr 
-                                        key={item._id || pos} 
+                                    <tr
+                                        key={item._id || pos}
                                         id={item._id ? `user-row-${item._id}` : undefined}
                                         className={currentUserStat?._id === item._id ? 'is-current-user' : ''}
                                     >

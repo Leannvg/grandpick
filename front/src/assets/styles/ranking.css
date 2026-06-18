@@ -44,14 +44,44 @@
     height: 44px;
 }
 
-.ranking-filters__year {
-    background: rgba(14, 47, 68, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
-    padding: 0 16px;
+.ranking-input-group {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
     border-radius: 4px;
-    font-size: 14px;
+    overflow: hidden;
+    height: 38px;
+    transition: all 0.3s ease;
+}
+
+.ranking-input-group-text {
+    background-color: #f0f4f8;
+    color: #4a5568;
+    padding: 0 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
     height: 100%;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid #e2e8f0;
+    user-select: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ranking-input-group select {
+    background-color: transparent !important;
+    color: #2d3748 !important;
+    border: none !important;
+    height: 100%;
+    padding: 0 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-width: 70px;
+    text-align: center;
+    text-align-last: center;
+    outline: none;
 }
 
 .ranking-search {
