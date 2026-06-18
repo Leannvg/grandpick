@@ -174,31 +174,13 @@ function Ranking() {
                 <p className="section-label">Todos quieren subirse al podio</p>
                 <h1 className="section-title">{mode === 'global' ? 'PUNTUACIÓN GLOBAL' : 'PUNTUACIÓN POR GRAN PREMIO'}</h1>
                 <p className="section-subtitle">Campeonato de predicciones</p>
-            </header>
-            
-            {/* Desktop Mode Buttons */}
-            <div className="d-none d-md-flex justify-content-end gap-2 mb-4 w-100">
-                <button 
-                    className={`info-page__mode-btn ${mode === 'global' ? 'is-active' : ''}`}
-                    onClick={() => setMode('global')}
-                >
-                    Global
-                </button>
-                <button 
-                    className={`info-page__mode-btn ${mode === 'grand_prix' ? 'is-active' : ''}`}
-                    onClick={() => {
-                        setMode('grand_prix');
-                        setPage(1);
-                    }}
-                >
-                    Por Gran Premio
-                </button>
-            </div>
-
-            <div className="ranking-filters">
-                <div className="ranking-filters__left w-100 w-md-auto">
-                    <div className="row g-2 align-items-center m-0">
-                        <div className="col-6 col-md-auto px-1 px-md-0 me-md-2 order-1">
+            </header            <div className="ranking-filters">
+                {/* Row 1: Filters & Mode Buttons */}
+                <div className="d-flex flex-column flex-md-row justify-content-between align-items-center w-100 gap-2 mb-2">
+                    
+                    {/* Mobile Bottom / Desktop Left: Mostrar & Año */}
+                    <div className="row g-2 w-100 w-md-auto order-2 order-md-1 m-0 flex-md-nowrap">
+                        <div className="col-6 col-md-auto px-1 px-md-0 me-md-2">
                             <div className="ranking-input-group w-100">
                                 <span className="ranking-input-group-text">Mostrar</span>
                                 <select
@@ -216,10 +198,10 @@ function Ranking() {
                             </div>
                         </div>
 
-                        <div className="col-6 col-md-auto px-1 px-md-0 me-md-2 order-2">
+                        <div className="col-6 col-md-auto px-1 px-md-0 me-md-2">
                             <div className="ranking-input-group w-100">
                                 <span className="ranking-input-group-text">Año</span>
-                                <select 
+                                <select
                                     value={selectedYear}
                                     onChange={(e) => {
                                         setSelectedYear(Number(e.target.value));
@@ -233,59 +215,85 @@ function Ranking() {
                                 </select>
                             </div>
                         </div>
+                    </div>
 
-                        <div className="col-6 px-1 d-md-none order-3">
+                    {/* Mobile Top / Desktop Right: Mode Buttons */}
+                    <div className="row g-2 w-100 w-md-auto order-1 order-md-2 m-0 flex-md-nowrap">
+                        <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2">
                             <button 
                                 className={`info-page__mode-btn w-100 m-0 ${mode === 'global' ? 'is-active' : ''}`}
                                 onClick={() => setMode('global')}
-                                style={{ height: '38px', padding: '0' }}
+                                style={{ height: '38px', padding: '0 15px' }}
                             >
                                 Global
                             </button>
                         </div>
-
-                        <div className="col-6 px-1 d-md-none order-4">
+                        <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-md-none">
                             <button 
                                 className={`info-page__mode-btn w-100 m-0 ${mode === 'grand_prix' ? 'is-active' : ''}`}
                                 onClick={() => {
                                     setMode('grand_prix');
                                     setPage(1);
                                 }}
-                                style={{ height: '38px', padding: '0' }}
+                                style={{ height: '38px', padding: '0 15px' }}
                             >
                                 GP
                             </button>
                         </div>
-
-                        {mode === 'grand_prix' && (
-                            <div className="col-12 col-md-auto px-1 px-md-0 order-5 order-md-3 mt-2 mt-md-0">
-                                <div className="ranking-input-group w-100">
-                                    <span className="ranking-input-group-text">Circuito</span>
-                                    <select 
-                                        value={selectedCircuitId}
-                                        onChange={(e) => {
-                                            setSelectedCircuitId(e.target.value);
-                                            setPage(1);
-                                        }}
-                                        className="w-100"
-                                        style={{ maxWidth: '250px' }}
-                                    >
-                                        <option value="" disabled>Seleccionar Gran Premio</option>
-                                        {racesList.map(c => (
-                                            <option key={c.id} value={c.id} disabled={!c.enabled}>
-                                                {c.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-                        )}
+                        <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-none d-md-block">
+                            <button 
+                                className={`info-page__mode-btn w-100 m-0 ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                                onClick={() => {
+                                    setMode('grand_prix');
+                                    setPage(1);
+                                }}
+                                style={{ height: '38px', padding: '0 15px' }}
+                            >
+                                Por Gran Premio
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                {/* User Ranking Status Bar */}
+                {/* Row 2: Circuito (Only in GP Mode) */}
+                {mode === 'grand_prix' && (
+                    <div className="w-100 mb-2">
+                        <div className="ranking-input-group w-100">
+                            <span className="ranking-input-group-text">Circuito</span>
+                            <select
+                                value={selectedCircuitId}
+                                onChange={(e) => {
+                                    setSelectedCircuitId(e.target.value);
+                                    setPage(1);
+                                }}
+                                className="w-100"
+                            >
+                                <option value="" disabled>Seleccionar Gran Premio</option>
+                                {racesList.map(c => (
+                                    <option key={c.id} value={c.id} disabled={!c.enabled}>
+                                        {c.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                )}
+
+                {/* Row 3: BUSCADOR */}
+                <div className="ranking-search w-100 mb-2">
+                    <input
+                        type="text"
+                        placeholder="Buscador"
+                        className="ranking-search__input w-100"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <button className="ranking-search__button">Buscar</button>
+                </div>
+
+                {/* Row 4: TU PUESTO */}
                 {currentUserStat && !searchTerm && (
-                    <div className="ranking-user-status">
+                    <div className="ranking-user-status w-100">
                         <div className="ranking-user-status__content">
                             <div className="status-item status-item--rank">
                                 <span className="status-label">TU PUESTO</span>
@@ -336,17 +344,6 @@ function Ranking() {
                         </div>
                     </div>
                 )}
-
-                <div className="ranking-search mt-3 mt-md-0 w-100 w-md-auto">
-                    <input
-                        type="text"
-                        placeholder="Buscador"
-                        className="ranking-search__input"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <button className="ranking-search__button">Buscar</button>
-                </div>
             </div>
 
             <div className="ranking-card">
