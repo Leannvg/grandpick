@@ -181,7 +181,7 @@ function Ranking() {
                 <div className="row w-100 m-0 g-2 justify-content-between align-items-center">
 
                     {/* Mobile Bottom / Desktop Left: Mostrar & Año */}
-                    <div className="col-12 col-md-auto order-2 order-md-1 px-0">
+                    <div className="col-12 col-md-auto order-2 order-md-1 px-0 m-0">
                         <div className="row g-2 m-0 w-100">
                             <div className="col-6 col-md-auto px-1 px-md-0 me-md-2">
                                 <div className="ranking-input-group w-100" style={{ height: '38px' }}>
