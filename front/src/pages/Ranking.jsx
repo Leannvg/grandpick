@@ -262,23 +262,7 @@ function Ranking() {
                                 <span className="status-value">{currentUserStat.name} {currentUserStat.last_name}</span>
                             </div>
 
-                            {mode === 'global' && (
-                                <div className="status-item status-item--avg">
-                                    <span className="status-label">PROMEDIO</span>
-                                    <span className="status-value">
-                                        {currentUserStat.stats?.predictions?.total > 0 ? (currentUserStat.stats.points.total / currentUserStat.stats.predictions.total).toFixed(1) : "0.0"}
-                                    </span>
-                                </div>
-                            )}
 
-                            {mode === 'grand_prix' && (
-                                <div className="status-item status-item--avg">
-                                    <span className="status-label">GAP</span>
-                                    <span className="status-value text-muted">
-                                        {currentUserStat.gap}
-                                    </span>
-                                </div>
-                            )}
 
                             <div className="status-item status-item--points">
                                 <span className="status-label">PUNTOS</span>
