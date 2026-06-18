@@ -222,7 +222,7 @@ function Ranking() {
                     </div>
 
                     {/* Mobile Top / Desktop Right: Mode Buttons */}
-                    <div className="col-12 col-md-auto order-1 order-md-2 px-0">
+                    <div className="col-12 col-md-auto order-1 order-md-2 px-0 m-0">
                         <div className="row g-2 m-0 w-100 justify-content-end h-100">
                             <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex">
                                 <button
