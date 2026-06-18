@@ -178,8 +178,8 @@ function Ranking() {
 
             <div className="ranking-filters">
                 {/* Row 1: Filters & Mode Buttons */}
-                <div className="row w-100 m-0 mb-2 g-2 justify-content-between align-items-center">
-                    
+                <div className="row w-100 m-0 g-2 justify-content-between align-items-center">
+
                     {/* Mobile Bottom / Desktop Left: Mostrar & Año */}
                     <div className="col-12 col-md-auto order-2 order-md-1 px-0">
                         <div className="row g-2 m-0 w-100">
@@ -225,7 +225,7 @@ function Ranking() {
                     <div className="col-12 col-md-auto order-1 order-md-2 px-0">
                         <div className="row g-2 m-0 w-100 justify-content-end h-100">
                             <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex">
-                                <button 
+                                <button
                                     className={`info-page__mode-btn w-100 m-0 ${mode === 'global' ? 'is-active' : ''}`}
                                     onClick={() => setMode('global')}
                                     style={{ height: '38px', padding: '0 15px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}
@@ -234,7 +234,7 @@ function Ranking() {
                                 </button>
                             </div>
                             <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex d-md-none">
-                                <button 
+                                <button
                                     className={`info-page__mode-btn w-100 m-0 ${mode === 'grand_prix' ? 'is-active' : ''}`}
                                     onClick={() => {
                                         setMode('grand_prix');
@@ -246,7 +246,7 @@ function Ranking() {
                                 </button>
                             </div>
                             <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-none d-md-flex">
-                                <button 
+                                <button
                                     className={`info-page__mode-btn w-100 m-0 ${mode === 'grand_prix' ? 'is-active' : ''}`}
                                     onClick={() => {
                                         setMode('grand_prix');
@@ -286,7 +286,7 @@ function Ranking() {
                 )}
 
                 {/* Row 3: BUSCADOR */}
-                <div className="ranking-search w-100 mb-2">
+                <div className="ranking-search w-100">
                     <input
                         type="text"
                         placeholder="Buscador"
