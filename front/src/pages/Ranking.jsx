@@ -174,7 +174,9 @@ function Ranking() {
                 <p className="section-label">Todos quieren subirse al podio</p>
                 <h1 className="section-title">{mode === 'global' ? 'PUNTUACIÓN GLOBAL' : 'PUNTUACIÓN POR GRAN PREMIO'}</h1>
                 <p className="section-subtitle">Campeonato de predicciones</p>
-            </header            <div className="ranking-filters">
+            </header>
+
+            <div className="ranking-filters">
                 {/* Row 1: Filters & Mode Buttons */}
                 <div className="d-flex flex-column flex-md-row justify-content-between align-items-center w-100 gap-2 mb-2">
                     
