@@ -182,71 +182,81 @@ function Ranking() {
                     
                     {/* Mobile Bottom / Desktop Left: Mostrar & Año */}
                     <div className="col-12 col-md-auto order-2 order-md-1 px-0">
-                        <div className="d-flex gap-2">
-                            <div className="ranking-input-group flex-fill" style={{ height: '38px', minWidth: '130px' }}>
-                                <span className="ranking-input-group-text">Mostrar</span>
-                                <select
-                                    value={pageSize}
-                                    onChange={(e) => setPageSize(Number(e.target.value))}
-                                    className="w-100"
-                                >
-                                    <option value={2}>2</option>
-                                    <option value={5}>5</option>
-                                    <option value={10}>10</option>
-                                    <option value={20}>20</option>
-                                    <option value={50}>50</option>
-                                    <option value={filteredStats.length}>Todos</option>
-                                </select>
+                        <div className="row g-2 m-0 w-100">
+                            <div className="col-6 col-md-auto px-1 px-md-0 me-md-2">
+                                <div className="ranking-input-group w-100" style={{ height: '38px' }}>
+                                    <span className="ranking-input-group-text">Mostrar</span>
+                                    <select
+                                        value={pageSize}
+                                        onChange={(e) => setPageSize(Number(e.target.value))}
+                                        className="w-100"
+                                    >
+                                        <option value={2}>2</option>
+                                        <option value={5}>5</option>
+                                        <option value={10}>10</option>
+                                        <option value={20}>20</option>
+                                        <option value={50}>50</option>
+                                        <option value={filteredStats.length}>Todos</option>
+                                    </select>
+                                </div>
                             </div>
 
-                            <div className="ranking-input-group flex-fill" style={{ height: '38px', minWidth: '130px' }}>
-                                <span className="ranking-input-group-text">Año</span>
-                                <select
-                                    value={selectedYear}
-                                    onChange={(e) => {
-                                        setSelectedYear(Number(e.target.value));
-                                        setPage(1);
-                                    }}
-                                    className="w-100"
-                                >
-                                    {Array.from({ length: new Date().getFullYear() - 2024 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
-                                        <option key={year} value={year}>{year}</option>
-                                    ))}
-                                </select>
+                            <div className="col-6 col-md-auto px-1 px-md-0">
+                                <div className="ranking-input-group w-100" style={{ height: '38px' }}>
+                                    <span className="ranking-input-group-text">Año</span>
+                                    <select
+                                        value={selectedYear}
+                                        onChange={(e) => {
+                                            setSelectedYear(Number(e.target.value));
+                                            setPage(1);
+                                        }}
+                                        className="w-100"
+                                    >
+                                        {Array.from({ length: new Date().getFullYear() - 2024 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                                            <option key={year} value={year}>{year}</option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Mobile Top / Desktop Right: Mode Buttons */}
                     <div className="col-12 col-md-auto order-1 order-md-2 px-0">
-                        <div className="d-flex gap-2 h-100 justify-content-end">
-                            <button 
-                                className={`info-page__mode-btn flex-fill m-0 ${mode === 'global' ? 'is-active' : ''}`}
-                                onClick={() => setMode('global')}
-                                style={{ height: '38px', padding: '0 15px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                            >
-                                Global
-                            </button>
-                            <button 
-                                className={`info-page__mode-btn flex-fill m-0 d-md-none ${mode === 'grand_prix' ? 'is-active' : ''}`}
-                                onClick={() => {
-                                    setMode('grand_prix');
-                                    setPage(1);
-                                }}
-                                style={{ height: '38px', padding: '0 15px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                            >
-                                GP
-                            </button>
-                            <button 
-                                className={`info-page__mode-btn flex-fill m-0 d-none d-md-flex ${mode === 'grand_prix' ? 'is-active' : ''}`}
-                                onClick={() => {
-                                    setMode('grand_prix');
-                                    setPage(1);
-                                }}
-                                style={{ height: '38px', padding: '0 15px', alignItems: 'center', justifyContent: 'center' }}
-                            >
-                                Por Gran Premio
-                            </button>
+                        <div className="row g-2 m-0 w-100 justify-content-end h-100">
+                            <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex">
+                                <button 
+                                    className={`info-page__mode-btn w-100 m-0 ${mode === 'global' ? 'is-active' : ''}`}
+                                    onClick={() => setMode('global')}
+                                    style={{ height: '38px', padding: '0 15px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}
+                                >
+                                    Global
+                                </button>
+                            </div>
+                            <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex d-md-none">
+                                <button 
+                                    className={`info-page__mode-btn w-100 m-0 ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                                    onClick={() => {
+                                        setMode('grand_prix');
+                                        setPage(1);
+                                    }}
+                                    style={{ height: '38px', padding: '0 15px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}
+                                >
+                                    GP
+                                </button>
+                            </div>
+                            <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-none d-md-flex">
+                                <button 
+                                    className={`info-page__mode-btn w-100 m-0 ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                                    onClick={() => {
+                                        setMode('grand_prix');
+                                        setPage(1);
+                                    }}
+                                    style={{ height: '38px', padding: '0 15px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}
+                                >
+                                    Por Gran Premio
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
