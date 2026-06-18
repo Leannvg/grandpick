@@ -177,58 +177,57 @@ function Ranking() {
             </header>
             
             <div className="w-100 mb-4">
-                {/* Row 1: AÑO | MOSTRAR | [Global] [Por Gran Premio] */}
-                <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-3 w-100">
-                    <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-start gap-3">
-                        <div className="ranking-input-group">
-                            <span className="ranking-input-group-text">Año</span>
-                            <select 
-                                value={selectedYear}
-                                onChange={(e) => {
-                                    setSelectedYear(Number(e.target.value));
-                                    setPage(1);
-                                }}
-                            >
-                                {Array.from({ length: new Date().getFullYear() - 2024 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
-                                    <option key={year} value={year}>{year}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="ranking-input-group">
-                            <span className="ranking-input-group-text">Mostrar</span>
-                            <select
-                                value={pageSize}
-                                onChange={(e) => setPageSize(Number(e.target.value))}
-                            >
-                                <option value={2}>2</option>
-                                <option value={5}>5</option>
-                                <option value={10}>10</option>
-                                <option value={20}>20</option>
-                                <option value={50}>50</option>
-                                <option value={filteredStats.length}>Todos</option>
-                            </select>
-                        </div>
+                {/* Row 1: MOSTRAR | AÑO | [Global] [GP] */}
+                <div className="d-flex flex-wrap gap-3 mb-3 w-100">
+                    <div className="ranking-input-group" style={{ flex: '1 1 calc(25% - 12px)', minWidth: '130px' }}>
+                        <span className="ranking-input-group-text">Mostrar</span>
+                        <select
+                            value={pageSize}
+                            onChange={(e) => setPageSize(Number(e.target.value))}
+                            style={{ width: '100%' }}
+                        >
+                            <option value={2}>2</option>
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                            <option value={50}>50</option>
+                            <option value={filteredStats.length}>Todos</option>
+                        </select>
                     </div>
 
-                    <div className="d-flex justify-content-center justify-content-md-end gap-2 w-100" style={{ flex: 1, maxWidth: '400px' }}>
-                        <button 
-                            className={`info-page__mode-btn ${mode === 'global' ? 'is-active' : ''}`}
-                            onClick={() => setMode('global')}
-                            style={{ flex: 1 }}
-                        >
-                            Global
-                        </button>
-                        <button 
-                            className={`info-page__mode-btn ${mode === 'grand_prix' ? 'is-active' : ''}`}
-                            onClick={() => {
-                                setMode('grand_prix');
+                    <div className="ranking-input-group" style={{ flex: '1 1 calc(25% - 12px)', minWidth: '130px' }}>
+                        <span className="ranking-input-group-text">Año</span>
+                        <select 
+                            value={selectedYear}
+                            onChange={(e) => {
+                                setSelectedYear(Number(e.target.value));
                                 setPage(1);
                             }}
-                            style={{ flex: 1 }}
+                            style={{ width: '100%' }}
                         >
-                            Por Gran Premio
-                        </button>
+                            {Array.from({ length: new Date().getFullYear() - 2024 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                                <option key={year} value={year}>{year}</option>
+                            ))}
+                        </select>
                     </div>
+
+                    <button 
+                        className={`info-page__mode-btn m-0 ${mode === 'global' ? 'is-active' : ''}`}
+                        onClick={() => setMode('global')}
+                        style={{ flex: '1 1 calc(25% - 12px)', minWidth: '130px', padding: '0 10px' }}
+                    >
+                        Global
+                    </button>
+                    <button 
+                        className={`info-page__mode-btn m-0 ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                        onClick={() => {
+                            setMode('grand_prix');
+                            setPage(1);
+                        }}
+                        style={{ flex: '1 1 calc(25% - 12px)', minWidth: '130px', padding: '0 10px' }}
+                    >
+                        GP
+                    </button>
                 </div>
 
                 {/* Row 2: CIRCUITO */}
