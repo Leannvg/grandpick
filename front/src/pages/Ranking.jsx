@@ -178,12 +178,12 @@ function Ranking() {
 
             <div className="ranking-filters">
                 {/* Row 1: Filters & Mode Buttons */}
-                <div className="d-flex flex-column flex-md-row justify-content-between align-items-center w-100 gap-2 mb-2">
+                <div className="row w-100 m-0 mb-2 g-2 justify-content-between align-items-center">
                     
                     {/* Mobile Bottom / Desktop Left: Mostrar & Año */}
-                    <div className="row g-2 w-100 w-md-auto order-2 order-md-1 m-0 flex-md-nowrap">
-                        <div className="col-6 col-md-auto px-1 px-md-0 me-md-2">
-                            <div className="ranking-input-group w-100">
+                    <div className="col-12 col-md-auto order-2 order-md-1 px-0">
+                        <div className="d-flex gap-2">
+                            <div className="ranking-input-group flex-fill" style={{ height: '38px', minWidth: '130px' }}>
                                 <span className="ranking-input-group-text">Mostrar</span>
                                 <select
                                     value={pageSize}
@@ -198,10 +198,8 @@ function Ranking() {
                                     <option value={filteredStats.length}>Todos</option>
                                 </select>
                             </div>
-                        </div>
 
-                        <div className="col-6 col-md-auto px-1 px-md-0 me-md-2">
-                            <div className="ranking-input-group w-100">
+                            <div className="ranking-input-group flex-fill" style={{ height: '38px', minWidth: '130px' }}>
                                 <span className="ranking-input-group-text">Año</span>
                                 <select
                                     value={selectedYear}
@@ -220,36 +218,32 @@ function Ranking() {
                     </div>
 
                     {/* Mobile Top / Desktop Right: Mode Buttons */}
-                    <div className="row g-2 w-100 w-md-auto order-1 order-md-2 m-0 flex-md-nowrap">
-                        <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2">
+                    <div className="col-12 col-md-auto order-1 order-md-2 px-0">
+                        <div className="d-flex gap-2 h-100 justify-content-end">
                             <button 
-                                className={`info-page__mode-btn w-100 m-0 ${mode === 'global' ? 'is-active' : ''}`}
+                                className={`info-page__mode-btn flex-fill m-0 ${mode === 'global' ? 'is-active' : ''}`}
                                 onClick={() => setMode('global')}
-                                style={{ height: '38px', padding: '0 15px' }}
+                                style={{ height: '38px', padding: '0 15px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                             >
                                 Global
                             </button>
-                        </div>
-                        <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-md-none">
                             <button 
-                                className={`info-page__mode-btn w-100 m-0 ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                                className={`info-page__mode-btn flex-fill m-0 d-md-none ${mode === 'grand_prix' ? 'is-active' : ''}`}
                                 onClick={() => {
                                     setMode('grand_prix');
                                     setPage(1);
                                 }}
-                                style={{ height: '38px', padding: '0 15px' }}
+                                style={{ height: '38px', padding: '0 15px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                             >
                                 GP
                             </button>
-                        </div>
-                        <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-none d-md-block">
                             <button 
-                                className={`info-page__mode-btn w-100 m-0 ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                                className={`info-page__mode-btn flex-fill m-0 d-none d-md-flex ${mode === 'grand_prix' ? 'is-active' : ''}`}
                                 onClick={() => {
                                     setMode('grand_prix');
                                     setPage(1);
                                 }}
-                                style={{ height: '38px', padding: '0 15px' }}
+                                style={{ height: '38px', padding: '0 15px', alignItems: 'center', justifyContent: 'center' }}
                             >
                                 Por Gran Premio
                             </button>
