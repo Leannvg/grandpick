@@ -261,95 +261,103 @@ function Ranking() {
                     </div>
                 </div>
 
-                {/* Row 2: Circuito (Only in GP Mode) */}
-                {mode === 'grand_prix' && (
-                    <div className="w-100 mb-2">
-                        <div className="ranking-input-group w-100">
-                            <span className="ranking-input-group-text">Circuito</span>
-                            <select
-                                value={selectedCircuitId}
-                                onChange={(e) => {
-                                    setSelectedCircuitId(e.target.value);
-                                    setPage(1);
-                                }}
-                                className="w-100"
-                            >
-                                <option value="" disabled>Seleccionar Gran Premio</option>
-                                {racesList.map(c => (
-                                    <option key={c.id} value={c.id} disabled={!c.enabled}>
-                                        {c.name}
-                                    </option>
-                                ))}
-                            </select>
+                {/* Row 2: Secondary Row (Circuito, TU PUESTO, Buscador) */}
+                <div className="d-flex flex-column flex-md-row w-100 gap-2 mb-3">
+                    
+                    {/* Circuito (Only in GP Mode) */}
+                    {mode === 'grand_prix' && (
+                        <div className="order-3 order-md-1 flex-md-fill" style={{ minWidth: '200px' }}>
+                            <div className="ranking-input-group w-100 m-0" style={{ height: '44px' }}>
+                                <span className="ranking-input-group-text">Circuito</span>
+                                <select
+                                    value={selectedCircuitId}
+                                    onChange={(e) => {
+                                        setSelectedCircuitId(e.target.value);
+                                        setPage(1);
+                                    }}
+                                    className="w-100"
+                                >
+                                    <option value="" disabled>Seleccionar Gran Premio</option>
+                                    {racesList.map(c => (
+                                        <option key={c.id} value={c.id} disabled={!c.enabled}>
+                                            {c.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
 
-                {/* Row 3: BUSCADOR */}
-                <div className="ranking-search w-100">
-                    <input
-                        type="text"
-                        placeholder="Buscador"
-                        className="ranking-search__input w-100"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <button className="ranking-search__button">Buscar</button>
-                </div>
+                    {/* TU PUESTO */}
+                    {currentUserStat && !searchTerm && (
+                        <div className="order-2 order-md-2 flex-md-fill" style={{ minWidth: '250px' }}>
+                            <div className="ranking-user-status w-100 m-0 h-100" style={{ minHeight: '44px' }}>
+                                <div className="ranking-user-status__content">
+                                    <div className="status-item status-item--rank">
+                                        <span className="status-label">TU PUESTO</span>
+                                        <span className="status-value">#{currentUserStat.globalRank}</span>
+                                    </div>
 
-                {/* Row 4: TU PUESTO */}
-                {currentUserStat && !searchTerm && (
-                    <div className="ranking-user-status w-100">
-                        <div className="ranking-user-status__content">
-                            <div className="status-item status-item--rank">
-                                <span className="status-label">TU PUESTO</span>
-                                <span className="status-value">#{currentUserStat.globalRank}</span>
-                            </div>
+                                    <div className="status-item status-item--user">
+                                        <span className="status-label">USUARIO</span>
+                                        <span className="status-value">{currentUserStat.name} {currentUserStat.last_name}</span>
+                                    </div>
 
-                            <div className="status-item status-item--user">
-                                <span className="status-label">USUARIO</span>
-                                <span className="status-value">{currentUserStat.name} {currentUserStat.last_name}</span>
-                            </div>
+                                    <div className="status-item status-item--points">
+                                        <span className="status-label">PUNTOS</span>
+                                        <span className="status-value">{mode === 'global' ? (currentUserStat.stats?.points?.total || 0) : currentUserStat.points}</span>
+                                    </div>
 
-                            <div className="status-item status-item--points">
-                                <span className="status-label">PUNTOS</span>
-                                <span className="status-value">{mode === 'global' ? (currentUserStat.stats?.points?.total || 0) : currentUserStat.points}</span>
-                            </div>
+                                    <button
+                                        className="btn-jump-to-me"
+                                        title="Ir a mi posición"
+                                        onClick={() => {
+                                            if (!currentUserStat) return;
 
-                            <button
-                                className="btn-jump-to-me"
-                                title="Ir a mi posición"
-                                onClick={() => {
-                                    if (!currentUserStat) return;
+                                            const userIndex = filteredStats.findIndex(u => u._id === currentUserStat._id);
+                                            if (userIndex === -1) return;
 
-                                    const userIndex = filteredStats.findIndex(u => u._id === currentUserStat._id);
-                                    if (userIndex === -1) return;
+                                            const targetPage = Math.floor(userIndex / pageSize) + 1;
 
-                                    const targetPage = Math.floor(userIndex / pageSize) + 1;
+                                            if (page !== targetPage) {
+                                                setPage(targetPage);
+                                            }
 
-                                    if (page !== targetPage) {
-                                        setPage(targetPage);
-                                    }
-
-                                    setTimeout(() => {
-                                        const element = document.getElementById(`user-row-${currentUserStat._id}`);
-                                        if (element) {
-                                            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                            element.classList.add('row-highlight-pulse');
                                             setTimeout(() => {
-                                                element.classList.remove('row-highlight-pulse');
-                                            }, 3000);
-                                        }
-                                    }, page !== targetPage ? 300 : 50);
-                                }}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: 14 }}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11.25l-3-3m0 0l-3 3m3-3v7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </button>
+                                                const element = document.getElementById(`user-row-${currentUserStat._id}`);
+                                                if (element) {
+                                                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                                    element.classList.add('row-highlight-pulse');
+                                                    setTimeout(() => {
+                                                        element.classList.remove('row-highlight-pulse');
+                                                    }, 3000);
+                                                }
+                                            }, page !== targetPage ? 300 : 50);
+                                        }}
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: 14 }}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 11.25l-3-3m0 0l-3 3m3-3v7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* BUSCADOR */}
+                    <div className="order-1 order-md-3 flex-md-fill" style={{ minWidth: '200px' }}>
+                        <div className="ranking-search w-100 m-0" style={{ height: '44px', maxWidth: 'none' }}>
+                            <input
+                                type="text"
+                                placeholder="Buscador"
+                                className="ranking-search__input w-100"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                            <button className="ranking-search__button">Buscar</button>
                         </div>
                     </div>
-                )}
+                </div>
             </div>
 
             <div className="ranking-card">
