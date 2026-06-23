@@ -369,7 +369,7 @@
 
 @media (max-width: 767px) {
     .ranking-table {
-        min-width: 800px;
+        min-width: 500px;
         /* Enforce min-width to trigger horizontal scroll */
     }
 
