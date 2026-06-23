@@ -372,4 +372,10 @@
         min-width: 800px;
         /* Enforce min-width to trigger horizontal scroll */
     }
+    
+    .col-user {
+        max-width: 130px;
+        white-space: normal;
+        overflow-wrap: break-word;
+    }
 }

@@ -366,7 +366,7 @@ function Ranking() {
                         <thead>
                             <tr>
                                 <th>Pos.</th>
-                                <th className="text-start">Usuario</th>
+                                <th className="text-start col-user">Usuario</th>
                                 <th style={{ width: '80px' }}>País</th>
                                 <th style={{ width: '120px' }}>Puntos totales</th>
                                 {mode === 'global' && <th>Predicciones jugadas</th>}
@@ -393,7 +393,7 @@ function Ranking() {
                                         className={currentUserStat?._id === item._id ? 'is-current-user' : ''}
                                     >
                                         <td className={`pos-cell ${posClass}`}>{pos}</td>
-                                        <td className="text-start">
+                                        <td className="text-start col-user">
                                             <div className="user-info">
                                                 <span className="user-name">{item.name}</span>
                                                 <span className="user-lastname">{item.last_name}</span>
@@ -409,7 +409,7 @@ function Ranking() {
                                         {mode === 'global' && <td>{avgPoints}</td>}
                                         {mode === 'global' && <td>{totalSuccesses}</td>}
                                         {mode === 'grand_prix' && <td className="text-start">
-                                            {item.gapText ? item.gapText : "-"}
+                                            {item.gap ? item.gap : "-"}
                                         </td>}
                                     </tr>
                                 );
