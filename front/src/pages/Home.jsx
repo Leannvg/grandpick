@@ -302,8 +302,8 @@ const Home = () => {
                                     <thead>
                                         <tr>
                                             <th>Pos</th>
-                                            <th>Nombre</th>
                                             <th>País</th>
+                                            <th>Nombre</th>
                                             <th>Aciertos</th>
                                             <th>Predicciones</th>
                                             <th>Puntos</th>
@@ -314,10 +314,10 @@ const Home = () => {
                                             Array.from({ length: 5 }).map((_, i) => (
                                                 <tr key={`skeleton-${i}`} className="ranking__skeleton-row">
                                                     <td className="ranking__posicion"><div className="skeleton skeleton-pos"></div></td>
+                                                    <td><div className="skeleton skeleton-flag"></div></td>
                                                     <td>
                                                         <div className="skeleton skeleton-text skeleton-name"></div>
                                                     </td>
-                                                    <td><div className="skeleton skeleton-flag"></div></td>
                                                     <td><div className="skeleton skeleton-text skeleton-stat"></div></td>
                                                     <td><div className="skeleton skeleton-text skeleton-stat"></div></td>
                                                     <td><div className="skeleton skeleton-text skeleton-points"></div></td>
@@ -328,12 +328,12 @@ const Home = () => {
                                                 <tr key={item._id}>
                                                     <td className="ranking__posicion">{item.globalRank}</td>
                                                     <td>
-                                                        {item.name} <span className="ranking__apellido">{item.last_name}</span>
-                                                    </td>
-                                                    <td>
                                                         <span className="emoji-flag" style={{ fontSize: '1.2rem' }}>
                                                             {getFlagEmoji(item.country)}
                                                         </span>
+                                                    </td>
+                                                    <td>
+                                                        {item.name} <span className="ranking__apellido">{item.last_name}</span>
                                                     </td>
                                                     <td>{item.stats?.successes?.total || 0}</td>
                                                     <td>{item.stats?.predictions?.total || 0}</td>

@@ -58,7 +58,7 @@ function Ranking() {
                         }
                     }
                 });
-                
+
                 // Ordenar por fecha de inicio
                 circuitsData.sort((a, b) => new Date(a.date_gp_start) - new Date(b.date_gp_start));
                 setRacesList(circuitsData);
@@ -376,7 +376,7 @@ function Ranking() {
                         <thead>
                             <tr>
                                 <th>Pos.</th>
-                                <th style={{ width: '80px' }}>País</th>
+                                <th style={{ width: '50px' }}>País</th>
                                 <th className="text-start col-user">Usuario</th>
                                 <th style={{ width: '120px' }}>Puntos totales</th>
                                 {mode === 'global' && <th>Predicciones jugadas</th>}
