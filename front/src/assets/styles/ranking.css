@@ -374,7 +374,7 @@
     }
     
     .col-user {
-        max-width: 130px;
+        max-width: 100px;
         white-space: normal;
         overflow-wrap: break-word;
     }
