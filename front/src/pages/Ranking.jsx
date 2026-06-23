@@ -366,13 +366,13 @@ function Ranking() {
                         <thead>
                             <tr>
                                 <th>Pos.</th>
-                                <th>Usuario</th>
-                                <th>País</th>
-                                <th>Puntos totales</th>
+                                <th className="text-start">Usuario</th>
+                                <th style={{ width: '80px' }}>País</th>
+                                <th style={{ width: '120px' }}>Puntos totales</th>
                                 {mode === 'global' && <th>Predicciones jugadas</th>}
                                 {mode === 'global' && <th>Promedio por predicción</th>}
                                 {mode === 'global' && <th>Aciertos totales</th>}
-                                {mode === 'grand_prix' && <th>Intervalo de Desempate (Gap)</th>}
+                                {mode === 'grand_prix' && <th className="text-start">Intervalo de Desempate (Gap)</th>}
                             </tr>
                         </thead>
                         <tbody>
@@ -393,7 +393,7 @@ function Ranking() {
                                         className={currentUserStat?._id === item._id ? 'is-current-user' : ''}
                                     >
                                         <td className={`pos-cell ${posClass}`}>{pos}</td>
-                                        <td>
+                                        <td className="text-start">
                                             <div className="user-info">
                                                 <span className="user-name">{item.name}</span>
                                                 <span className="user-lastname">{item.last_name}</span>
@@ -408,7 +408,9 @@ function Ranking() {
                                         {mode === 'global' && <td>{totalPredictions}</td>}
                                         {mode === 'global' && <td>{avgPoints}</td>}
                                         {mode === 'global' && <td>{totalSuccesses}</td>}
-                                        {mode === 'grand_prix' && <td className="text-muted">{item.gap}</td>}
+                                        {mode === 'grand_prix' && <td className="text-start">
+                                            {item.gapText ? item.gapText : "-"}
+                                        </td>}
                                     </tr>
                                 );
                             })}
