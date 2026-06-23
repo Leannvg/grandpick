@@ -304,9 +304,9 @@ const Home = () => {
                                             <th>Pos.</th>
                                             <th style={{ width: '50px' }}>País</th>
                                             <th className="text-start col-user">Nombre</th>
-                                            <th>Aciertos</th>
-                                            <th>Predicciones</th>
                                             <th style={{ width: '120px' }}>Puntos</th>
+                                            <th>Predicciones</th>
+                                            <th>Aciertos</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -318,9 +318,9 @@ const Home = () => {
                                                     <td className="text-start col-user">
                                                         <div className="skeleton skeleton-text skeleton-name"></div>
                                                     </td>
-                                                    <td><div className="skeleton skeleton-text skeleton-stat"></div></td>
-                                                    <td><div className="skeleton skeleton-text skeleton-stat"></div></td>
                                                     <td><div className="skeleton skeleton-text skeleton-points"></div></td>
+                                                    <td><div className="skeleton skeleton-text skeleton-stat"></div></td>
+                                                    <td><div className="skeleton skeleton-text skeleton-stat"></div></td>
                                                 </tr>
                                             ))
                                         ) : (
@@ -343,9 +343,9 @@ const Home = () => {
                                                                 <span className="user-lastname">{item.last_name}</span>
                                                             </div>
                                                         </td>
-                                                        <td>{item.stats?.successes?.total || 0}</td>
-                                                        <td>{item.stats?.predictions?.total || 0}</td>
                                                         <td><strong>{item.stats?.points?.total || 0}</strong></td>
+                                                        <td>{item.stats?.predictions?.total || 0}</td>
+                                                        <td>{item.stats?.successes?.total || 0}</td>
                                                     </tr>
                                                 );
                                             })
