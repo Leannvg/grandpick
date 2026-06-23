@@ -263,7 +263,7 @@ function Ranking() {
 
                 {/* Row 2: Secondary Row (Circuito, TU PUESTO, Buscador) */}
                 <div className="d-flex flex-column flex-md-row w-100 gap-2 mb-3">
-                    
+
                     {/* Circuito (Only in GP Mode) */}
                     {mode === 'grand_prix' && (
                         <div className="order-3 order-md-1 flex-md-fill" style={{ minWidth: '200px' }}>
@@ -366,7 +366,7 @@ function Ranking() {
                         <thead>
                             <tr>
                                 <th>Pos.</th>
-                                <th className="text-start col-user" style={{ width: '180px' }}>Usuario</th>
+                                <th className="text-start col-user">Usuario</th>
                                 <th style={{ width: '80px' }}>País</th>
                                 <th style={{ width: '120px' }}>Puntos totales</th>
                                 {mode === 'global' && <th>Predicciones jugadas</th>}
