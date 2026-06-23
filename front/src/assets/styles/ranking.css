@@ -406,21 +406,25 @@
 }
 
 /* Disabled options color */
+.react-select__option--is-disabled,
+.react-select__option--is-disabled * {
+    color: #ffffff !important;
+}
 .react-select__option--is-disabled {
-    color: #999999 !important;
-    background-color: #f0f0f0 !important;
+    background-color: #a0a0a0 !important;
     font-style: italic;
     cursor: not-allowed;
 }
 
 /* Selected option color */
-.ranking-input-group .react-select__option--is-selected {
+.react-select__option--is-selected,
+.react-select__option--is-selected * {
     background-color: #4a90e2 !important;
     color: #ffffff !important;
 }
 
 /* Focused option color */
-.ranking-input-group .react-select__option--is-focused:not(.react-select__option--is-selected) {
+.react-select__option--is-focused:not(.react-select__option--is-selected) {
     background-color: rgba(74, 144, 226, 0.1) !important;
 }
 
