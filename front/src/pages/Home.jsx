@@ -304,9 +304,9 @@ const Home = () => {
                                             <th>Pos.</th>
                                             <th style={{ width: '50px' }}>País</th>
                                             <th className="text-start col-user">Nombre</th>
-                                            <th style={{ width: '120px' }}>Puntos</th>
-                                            <th>Predicciones</th>
-                                            <th>Aciertos</th>
+                                            <th style={{ width: '120px' }}>Puntos totales</th>
+                                            <th>Predicciones jugadas</th>
+                                            <th>Aciertos totales</th>
                                         </tr>
                                     </thead>
                                     <tbody>
