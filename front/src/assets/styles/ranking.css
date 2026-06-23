@@ -374,7 +374,41 @@
     }
 
     .col-user {
+        width: 140px;
         white-space: normal;
         overflow-wrap: break-word;
     }
+}
+
+/* SEARCHABLE SELECT IN RANKING */
+.ranking-input-group .react-select-container {
+    height: 100%;
+}
+
+.ranking-input-group .react-select__control {
+    border: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    height: 100%;
+    min-height: 44px;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.ranking-input-group .react-select__value-container {
+    padding: 0 10px;
+}
+
+.ranking-input-group .react-select__single-value {
+    color: #2d3748;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* Disabled options color */
+.react-select__option--is-disabled {
+    color: #a0a0a0 !important;
+    background-color: #f7f7f7 !important;
+    font-style: italic;
+    cursor: not-allowed;
 }

@@ -6,6 +6,7 @@ import RacesServices from "../services/races.services";
 import { getFlagEmoji } from "../utils/helpers";
 import { usePagination } from "../hooks/usePagination";
 import { getCountries } from "../services/countries.services";
+import SearchableSelect from "../components/SearchableSelect";
 import "../assets/styles/ranking.css";
 
 function Ranking() {
@@ -34,8 +35,11 @@ function Ranking() {
                         const hasResults = r.results && r.results.length > 0;
                         const isFinished = r.state === 'Finalizado';
                         circuitsData.push({
+                            _id: cid,
                             id: cid,
                             name: r.circuit?.circuit_name || "Circuito Desconocido",
+                            country: r.circuit?.country,
+                            emoji: getFlagEmoji(r.circuit?.country),
                             enabled: hasResults || isFinished
                         });
                     } else if (cid && seen.has(cid)) {
@@ -269,21 +273,18 @@ function Ranking() {
                         <div className="order-3 order-md-1 flex-md-fill" style={{ minWidth: '200px' }}>
                             <div className="ranking-input-group w-100 m-0" style={{ height: '44px' }}>
                                 <span className="ranking-input-group-text">Circuito</span>
-                                <select
-                                    value={selectedCircuitId}
-                                    onChange={(e) => {
-                                        setSelectedCircuitId(e.target.value);
-                                        setPage(1);
-                                    }}
-                                    className="w-100"
-                                >
-                                    <option value="" disabled>Seleccionar Gran Premio</option>
-                                    {racesList.map(c => (
-                                        <option key={c.id} value={c.id} disabled={!c.enabled}>
-                                            {c.name}
-                                        </option>
-                                    ))}
-                                </select>
+                                <div style={{ flexGrow: 1, height: '100%' }}>
+                                    <SearchableSelect
+                                        options={racesList}
+                                        value={selectedCircuitId}
+                                        onChange={(selected) => {
+                                            setSelectedCircuitId(selected.value);
+                                            setPage(1);
+                                        }}
+                                        getOptionDisabled={(opt) => !opt.enabled}
+                                        placeholder="Seleccionar Gran Premio"
+                                    />
+                                </div>
                             </div>
                         </div>
                     )}
@@ -366,7 +367,7 @@ function Ranking() {
                         <thead>
                             <tr>
                                 <th>Pos.</th>
-                                <th className="text-start col-user" style={{ width: '140px' }}>Usuario</th>
+                                <th className="text-start col-user">Usuario</th>
                                 <th style={{ width: '80px' }}>País</th>
                                 <th style={{ width: '120px' }}>Puntos totales</th>
                                 {mode === 'global' && <th>Predicciones jugadas</th>}
