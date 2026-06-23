@@ -419,7 +419,21 @@ function Ranking() {
                                         {mode === 'global' && <td>{avgPoints}</td>}
                                         {mode === 'global' && <td>{totalSuccesses}</td>}
                                         {mode === 'grand_prix' && <td className="text-start">
-                                            {item.gap ? item.gap : "-"}
+                                            {(() => {
+                                                if (!item.gap || item.gap === "-") return "-";
+                                                const parts = item.gap.split(" - ");
+                                                if (parts.length >= 2) {
+                                                    const datePart = parts[0];
+                                                    const restPart = parts.slice(1).join(" - ");
+                                                    return (
+                                                        <div className="gap-info d-flex flex-column align-items-start gap-1">
+                                                            <span className="gap-date">{datePart}</span>
+                                                            <span className="gap-value">{restPart}</span>
+                                                        </div>
+                                                    );
+                                                }
+                                                return item.gap;
+                                            })()}
                                         </td>}
                                     </tr>
                                 );
