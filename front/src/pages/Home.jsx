@@ -296,26 +296,26 @@ const Home = () => {
                             ))}
                         </div>
 
-                        <div className="ranking__card">
-                            <div className="table-responsive">
-                                <table className="ranking__table">
+                        <div className="ranking-card">
+                            <div className="ranking-table-container table-responsive">
+                                <table className="ranking-table">
                                     <thead>
                                         <tr>
-                                            <th>Pos</th>
-                                            <th>País</th>
-                                            <th>Nombre</th>
+                                            <th>Pos.</th>
+                                            <th style={{ width: '50px' }}>País</th>
+                                            <th className="text-start col-user">Nombre</th>
                                             <th>Aciertos</th>
                                             <th>Predicciones</th>
-                                            <th>Puntos</th>
+                                            <th style={{ width: '120px' }}>Puntos</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {loading ? (
                                             Array.from({ length: 5 }).map((_, i) => (
                                                 <tr key={`skeleton-${i}`} className="ranking__skeleton-row">
-                                                    <td className="ranking__posicion"><div className="skeleton skeleton-pos"></div></td>
+                                                    <td className="pos-cell"><div className="skeleton skeleton-pos"></div></td>
                                                     <td><div className="skeleton skeleton-flag"></div></td>
-                                                    <td>
+                                                    <td className="text-start col-user">
                                                         <div className="skeleton skeleton-text skeleton-name"></div>
                                                     </td>
                                                     <td><div className="skeleton skeleton-text skeleton-stat"></div></td>
@@ -324,22 +324,31 @@ const Home = () => {
                                                 </tr>
                                             ))
                                         ) : (
-                                            stats.map((item) => (
-                                                <tr key={item._id}>
-                                                    <td className="ranking__posicion">{item.globalRank}</td>
-                                                    <td>
-                                                        <span className="emoji-flag" style={{ fontSize: '1.2rem' }}>
-                                                            {getFlagEmoji(item.country)}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        {item.name} <span className="ranking__apellido">{item.last_name}</span>
-                                                    </td>
-                                                    <td>{item.stats?.successes?.total || 0}</td>
-                                                    <td>{item.stats?.predictions?.total || 0}</td>
-                                                    <td className="ranking__points">{item.stats?.points?.total || 0}</td>
-                                                </tr>
-                                            ))
+                                            stats.map((item) => {
+                                                const pos = item.globalRank;
+                                                const isTop3 = pos <= 3;
+                                                const posClass = isTop3 ? `pos-${pos}` : "";
+
+                                                return (
+                                                    <tr key={item._id}>
+                                                        <td className={`pos-cell ${posClass}`}>{pos}</td>
+                                                        <td>
+                                                            <span className="emoji-flag" title={item.country}>
+                                                                {getFlagEmoji(item.country)}
+                                                            </span>
+                                                        </td>
+                                                        <td className="text-start col-user">
+                                                            <div className="user-info">
+                                                                <span className="user-name">{item.name}</span>
+                                                                <span className="user-lastname">{item.last_name}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>{item.stats?.successes?.total || 0}</td>
+                                                        <td>{item.stats?.predictions?.total || 0}</td>
+                                                        <td><strong>{item.stats?.points?.total || 0}</strong></td>
+                                                    </tr>
+                                                );
+                                            })
                                         )}
                                         {!loading && stats.length === 0 && (
                                             <tr>
