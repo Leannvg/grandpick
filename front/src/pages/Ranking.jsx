@@ -366,7 +366,7 @@ function Ranking() {
                         <thead>
                             <tr>
                                 <th>Pos.</th>
-                                <th className="text-start col-user">Usuario</th>
+                                <th className="text-start col-user" style={{ width: '140px' }}>Usuario</th>
                                 <th style={{ width: '80px' }}>País</th>
                                 <th style={{ width: '120px' }}>Puntos totales</th>
                                 {mode === 'global' && <th>Predicciones jugadas</th>}
