@@ -407,8 +407,19 @@
 
 /* Disabled options color */
 .react-select__option--is-disabled {
-    color: #a0a0a0 !important;
-    background-color: #f7f7f7 !important;
+    color: #999999 !important;
+    background-color: #f0f0f0 !important;
     font-style: italic;
     cursor: not-allowed;
+}
+
+/* Selected option color */
+.ranking-input-group .react-select__option--is-selected {
+    background-color: #4a90e2 !important;
+    color: #ffffff !important;
+}
+
+/* Focused option color */
+.ranking-input-group .react-select__option--is-focused:not(.react-select__option--is-selected) {
+    background-color: rgba(74, 144, 226, 0.1) !important;
 }

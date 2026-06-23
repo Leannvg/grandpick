@@ -40,18 +40,27 @@ function Ranking() {
                             name: r.circuit?.circuit_name || "Circuito Desconocido",
                             country: r.circuit?.country,
                             emoji: getFlagEmoji(r.circuit?.country),
-                            enabled: hasResults || isFinished
+                            enabled: hasResults || isFinished,
+                            date_gp_start: r.date_gp_start || new Date().toISOString()
                         });
                     } else if (cid && seen.has(cid)) {
                         // Si ya lo agregamos pero hay otra sesión de este GP con resultados, lo habilitamos
                         const hasResults = r.results && r.results.length > 0;
                         const isFinished = r.state === 'Finalizado';
-                        if (hasResults || isFinished) {
-                            const existing = circuitsData.find(c => c.id === cid);
-                            if (existing) existing.enabled = true;
+                        const existing = circuitsData.find(c => c.id === cid);
+                        if (existing) {
+                            if (hasResults || isFinished) {
+                                existing.enabled = true;
+                            }
+                            if (r.date_gp_start && new Date(r.date_gp_start) < new Date(existing.date_gp_start)) {
+                                existing.date_gp_start = r.date_gp_start;
+                            }
                         }
                     }
                 });
+                
+                // Ordenar por fecha de inicio
+                circuitsData.sort((a, b) => new Date(a.date_gp_start) - new Date(b.date_gp_start));
                 setRacesList(circuitsData);
 
                 // Autoselect the last enabled circuit if none is selected or if the selected one is not in the list
