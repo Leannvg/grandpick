@@ -244,8 +244,8 @@
 /* -------------------------------------- */
 
 .race-info {
-    position: relative; 
-    overflow: hidden; 
+    position: relative;
+    overflow: hidden;
     /* removed padding-right to reclaim space */
 }
 
@@ -256,7 +256,8 @@
     left: auto;
     width: 0;
     height: 100%;
-    background: #495057; /* Dark gray */
+    background: #495057;
+    /* Dark gray */
     color: white;
     z-index: 10;
     display: flex;
@@ -270,9 +271,10 @@
 
 .schedule-overlay.open {
     width: 100%;
-    background: #495057; /* Stay dark gray */
+    background: #495057;
+    /* Stay dark gray */
     color: white;
-    padding: 10px 24px 10px 10px; 
+    padding: 10px 24px 10px 10px;
     justify-content: flex-start;
     cursor: default;
 }
@@ -328,7 +330,9 @@
 }
 
 @keyframes fadeInList {
-    to { opacity: 1; }
+    to {
+        opacity: 1;
+    }
 }
 
 .schedule-column {
@@ -341,7 +345,8 @@
 
 .session-type {
     font-weight: 800;
-    color: white; /* White text on orange */
+    color: white;
+    /* White text on orange */
     letter-spacing: 0.5px;
     margin-bottom: 4px;
     font-size: clamp(9px, 2.5vw, 11px);
@@ -354,7 +359,8 @@
 }
 
 .time-circuit {
-    color: rgba(255, 255, 255, 0.85); /* Lighter text for circuit time */
+    color: rgba(255, 255, 255, 0.85);
+    /* Lighter text for circuit time */
     white-space: nowrap;
 }
 
@@ -1172,7 +1178,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 /* ----- LEFT COLUM ----- */
 .race-info {
     width: 100%;
-    padding: 10px 16px;
+    padding: 10px 12px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1234,7 +1240,8 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 /* ----- RIGHT COLUM ----- */
 .race-date {
     width: 30%;
-    padding: 10px 0 10px 32px; /* padding-left matches toggle width so text isn't covered */
+    padding: 10px 0 10px 32px;
+    /* padding-left matches toggle width so text isn't covered */
     border-radius: 0;
     color: white;
     display: flex;

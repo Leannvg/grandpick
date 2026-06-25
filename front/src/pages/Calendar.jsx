@@ -171,7 +171,7 @@ function Calendar() {
                                     <div key={s._id} className="schedule-column">
                                         <span className="session-type">{s.points_system?.type?.toUpperCase() || 'RACE'}</span>
                                         <div className="session-times text-center">
-                                            <div className="time-circuit" title="Hora del circuito">{getFlagEmoji(country)} {dt.toFormat("dd/MM HH:mm")}</div>
+                                            <div className="time-circuit emoji-flag" title="Hora del circuito">{getFlagEmoji(country)} {dt.toFormat("dd/MM HH:mm")}</div>
                                             <div className="time-local" title="Tu hora local">📍 {localDt.toFormat("dd/MM HH:mm")}</div>
                                         </div>
                                     </div>
@@ -209,17 +209,17 @@ function Calendar() {
                                         </div>
                                         <div className="d-flex align-items-center">
                                             {race.sessionTypes.includes('sprint') && (
-                                                <span className="race-sessions sprint-tag me-2">SPRINT</span>
+                                                <span className="race-sessions sprint-tag">SPRINT</span>
                                             )}
                                         </div>
                                     </div>
                                     <p className="race-circuit">{race.circuit.circuit_name}</p>
-                                    
-                                    <ScheduleOverlay 
-                                        sessions={race.sessions} 
-                                        timezone={race.circuit?.timezone} 
+
+                                    <ScheduleOverlay
+                                        sessions={race.sessions}
+                                        timezone={race.circuit?.timezone}
                                         country={race.circuit?.country}
-                                        onClose={() => toggleSchedule(race._id || index)} 
+                                        onClose={() => toggleSchedule(race._id || index)}
                                         isOpen={!!openSchedules[race._id || index]}
                                     />
                                 </div>
@@ -247,17 +247,17 @@ function Calendar() {
                                         </div>
                                         <div className="d-flex align-items-center">
                                             {race.sessionTypes.includes('sprint') && (
-                                                <span className="race-sessions sprint-tag me-2">SPRINT</span>
+                                                <span className="race-sessions sprint-tag">SPRINT</span>
                                             )}
                                         </div>
                                     </div>
                                     <p className="race-circuit">{race.circuit.circuit_name}</p>
 
-                                    <ScheduleOverlay 
-                                        sessions={race.sessions} 
-                                        timezone={race.circuit?.timezone} 
+                                    <ScheduleOverlay
+                                        sessions={race.sessions}
+                                        timezone={race.circuit?.timezone}
                                         country={race.circuit?.country}
-                                        onClose={() => toggleSchedule(race._id || (midPoint + index))} 
+                                        onClose={() => toggleSchedule(race._id || (midPoint + index))}
                                         isOpen={!!openSchedules[race._id || (midPoint + index)]}
                                     />
                                 </div>
