@@ -1157,7 +1157,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     max-width: 80%;
     max-height: 120px;
     object-fit: contain;
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.4));
     transition: transform 0.3s ease;
 }
 
@@ -1241,7 +1241,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 .circuit-map img {
     width: 100%;
     /*max-width: 500px;*/
-    max-width: 800px;
+    max-width: 380px;
     height: auto;
     filter: drop-shadow(2px 2px 0px black);
 }
