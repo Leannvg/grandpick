@@ -152,8 +152,8 @@ function Calendar() {
 
     const ScheduleOverlay = ({ sessions, timezone, onClose }) => {
         const sortedSessions = [...sessions].sort((a, b) => {
-            const tA = DateTime.fromFormat(`${a.date} ${a.time}`, "yyyy-MM-dd HH:mm", { zone: timezone || "UTC" }).toMillis();
-            const tB = DateTime.fromFormat(`${b.date} ${b.time}`, "yyyy-MM-dd HH:mm", { zone: timezone || "UTC" }).toMillis();
+            const tA = DateTime.fromISO(a.date_race).toMillis();
+            const tB = DateTime.fromISO(b.date_race).toMillis();
             return tA - tB;
         });
 
@@ -162,11 +162,12 @@ function Calendar() {
                 <button className="close-schedule-btn" onClick={onClose} title="Cerrar horarios">&times;</button>
                 <div className="schedule-list">
                     {sortedSessions.map(s => {
-                        const dt = DateTime.fromFormat(`${s.date} ${s.time}`, "yyyy-MM-dd HH:mm", { zone: timezone || "UTC" });
-                        const localDt = dt.setZone('local');
+                        const utcDt = DateTime.fromISO(s.date_race);
+                        const dt = utcDt.setZone(timezone || "UTC");
+                        const localDt = utcDt.setZone('local');
                         return (
                             <div key={s._id} className="schedule-row d-flex justify-content-between align-items-center">
-                                <span className="session-type">{s.points_system.type.toUpperCase()}</span>
+                                <span className="session-type">{s.points_system?.type?.toUpperCase() || 'RACE'}</span>
                                 <div className="session-times text-end">
                                     <div className="time-circuit">🏁 {dt.toFormat("HH:mm")} <span className="tz-label">{(timezone || "").split('/')[1]?.replace('_',' ') || timezone}</span></div>
                                     <div className="time-local">📍 {localDt.toFormat("HH:mm")} <span className="tz-label">Tu hora</span></div>
