@@ -244,28 +244,50 @@
 /* -------------------------------------- */
 
 .race-info {
-    position: relative; /* important for overlay */
-    overflow: hidden; /* So the overlay sliding in from the right is hidden until it enters */
+    position: relative; 
+    overflow: hidden; 
+    padding-right: 46px; /* Space for the docked bar */
 }
 
 .schedule-overlay {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    right: 0;
+    left: auto;
+    width: 46px;
     height: 100%;
-    background: #f4f4f4; /* Match card white bg */
+    background: #e15b2e; /* Racing orange */
+    color: white;
     z-index: 10;
-    padding: 10px 24px 10px 10px; /* space for close button */
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
+    cursor: pointer;
+    transition: width 0.3s ease, background 0.3s ease;
+    padding: 0;
+    transform: none;
+}
+
+.schedule-overlay:hover {
+    background: #d14a1d; 
 }
 
 .schedule-overlay.open {
-    transform: translateX(0);
+    width: 100%;
+    background: #f4f4f4; /* Expand to cover the white background */
+    color: #333;
+    padding: 10px 24px 10px 10px; 
+    justify-content: flex-start;
+    cursor: default;
+}
+
+.schedule-overlay-toggle {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 
 .schedule-list {
@@ -273,6 +295,13 @@
     display: flex;
     justify-content: space-around;
     gap: 8px;
+    width: 100%;
+    opacity: 0;
+    animation: fadeInList 0.3s ease 0.2s forwards;
+}
+
+@keyframes fadeInList {
+    to { opacity: 1; }
 }
 
 .schedule-column {
@@ -308,23 +337,6 @@
 .tz-label {
     opacity: 0.6;
     font-weight: 400;
-}
-
-.btn-toggle-schedule-floating {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    color: #2b4b66;
-    transition: transform 0.2s ease;
-    z-index: 5;
-}
-
-.btn-toggle-schedule-floating:hover {
-    transform: scale(1.1);
 }
 
 .close-schedule-btn {

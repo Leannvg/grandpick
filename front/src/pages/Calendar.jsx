@@ -150,7 +150,7 @@ function Calendar() {
         setOpenSchedules(prev => ({ ...prev, [id]: !prev[id] }));
     };
 
-    const ScheduleOverlay = ({ sessions, timezone, onClose, isOpen }) => {
+    const ScheduleOverlay = ({ sessions, timezone, onClose, onOpen, isOpen }) => {
         const sortedSessions = [...sessions].sort((a, b) => {
             const tA = DateTime.fromISO(a.date_race).toMillis();
             const tB = DateTime.fromISO(b.date_race).toMillis();
@@ -158,24 +158,36 @@ function Calendar() {
         });
 
         return (
-            <div className={`schedule-overlay ${isOpen ? 'open' : ''}`}>
-                <button className="close-schedule-btn" onClick={onClose} title="Cerrar horarios">&times;</button>
-                <div className="schedule-list">
-                    {sortedSessions.map(s => {
-                        const utcDt = DateTime.fromISO(s.date_race);
-                        const dt = utcDt.setZone(timezone || "UTC");
-                        const localDt = utcDt.setZone('local');
-                        return (
-                            <div key={s._id} className="schedule-column">
-                                <span className="session-type">{s.points_system?.type?.toUpperCase() || 'RACE'}</span>
-                                <div className="session-times text-center">
-                                    <div className="time-circuit" title="Hora del circuito">🏁 {dt.toFormat("dd/MM HH:mm")}</div>
-                                    <div className="time-local" title="Tu hora local">📍 {localDt.toFormat("dd/MM HH:mm")}</div>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
+            <div 
+                className={`schedule-overlay ${isOpen ? 'open' : ''}`}
+                onClick={!isOpen ? onOpen : undefined}
+            >
+                {!isOpen && (
+                    <div className="schedule-overlay-toggle" title="Ver Horarios">
+                        <i className="bi bi-clock me-1"></i> ⏱️
+                    </div>
+                )}
+                {isOpen && (
+                    <>
+                        <button className="close-schedule-btn" onClick={(e) => { e.stopPropagation(); onClose(); }} title="Cerrar horarios">&times;</button>
+                        <div className="schedule-list">
+                            {sortedSessions.map(s => {
+                                const utcDt = DateTime.fromISO(s.date_race);
+                                const dt = utcDt.setZone(timezone || "UTC");
+                                const localDt = utcDt.setZone('local');
+                                return (
+                                    <div key={s._id} className="schedule-column">
+                                        <span className="session-type">{s.points_system?.type?.toUpperCase() || 'RACE'}</span>
+                                        <div className="session-times text-center">
+                                            <div className="time-circuit" title="Hora del circuito">🏁 {dt.toFormat("dd/MM HH:mm")}</div>
+                                            <div className="time-local" title="Tu hora local">📍 {localDt.toFormat("dd/MM HH:mm")}</div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </>
+                )}
             </div>
         );
     };
@@ -211,14 +223,11 @@ function Calendar() {
                                     </div>
                                     <p className="race-circuit">{race.circuit.circuit_name}</p>
                                     
-                                    <button className="btn-toggle-schedule-floating" onClick={() => toggleSchedule(race._id || index)} title="Ver Horarios">
-                                        ⏱️
-                                    </button>
-
                                     <ScheduleOverlay 
                                         sessions={race.sessions} 
                                         timezone={race.circuit?.timezone} 
-                                        onClose={() => toggleSchedule(race._id || index)} 
+                                        onClose={() => toggleSchedule(race._id || index)}
+                                        onOpen={() => toggleSchedule(race._id || index)} 
                                         isOpen={!!openSchedules[race._id || index]}
                                     />
                                 </div>
@@ -249,14 +258,11 @@ function Calendar() {
                                     </div>
                                     <p className="race-circuit">{race.circuit.circuit_name}</p>
 
-                                    <button className="btn-toggle-schedule-floating" onClick={() => toggleSchedule(race._id || (midPoint + index))} title="Ver Horarios">
-                                        ⏱️
-                                    </button>
-
                                     <ScheduleOverlay 
                                         sessions={race.sessions} 
                                         timezone={race.circuit?.timezone} 
                                         onClose={() => toggleSchedule(race._id || (midPoint + index))} 
+                                        onOpen={() => toggleSchedule(race._id || (midPoint + index))}
                                         isOpen={!!openSchedules[race._id || (midPoint + index)]}
                                     />
                                 </div>
