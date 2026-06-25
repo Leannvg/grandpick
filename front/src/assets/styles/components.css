@@ -246,7 +246,7 @@
 .race-info {
     position: relative; 
     overflow: hidden; 
-    padding-right: 46px; /* Space for the docked bar */
+    /* removed padding-right to reclaim space */
 }
 
 .schedule-overlay {
@@ -254,7 +254,7 @@
     top: 0;
     right: 0;
     left: auto;
-    width: 46px;
+    width: 0;
     height: 100%;
     background: #e15b2e; /* Racing orange */
     color: white;
@@ -262,14 +262,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: width 0.3s ease, background 0.3s ease;
+    transition: width 0.3s ease;
     padding: 0;
     transform: none;
-}
-
-.schedule-overlay:hover {
-    background: #d14a1d; 
+    overflow: hidden;
 }
 
 .schedule-overlay.open {
@@ -281,17 +277,25 @@
     cursor: default;
 }
 
-.schedule-overlay.open:hover {
-    background: #e15b2e; /* Disable hover darken when open */
-}
-
 .schedule-overlay-toggle {
+    position: absolute;
+    left: 0;
+    top: 0;
     font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 32px;
     height: 100%;
+    background: #e15b2e;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.schedule-overlay-toggle:hover {
+    background: #d14a1d;
 }
 
 .schedule-list {
@@ -1208,7 +1212,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 /* ----- RIGHT COLUM ----- */
 .race-date {
     width: 30%;
-    padding: 10px 0;
+    padding: 10px 0 10px 32px; /* padding-left matches toggle width so text isn't covered */
     border-radius: 0;
     color: white;
     display: flex;
@@ -1216,6 +1220,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     align-items: center;
     justify-content: center;
     font-weight: 700;
+    position: relative;
 }
 
 .race-day {

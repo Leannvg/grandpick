@@ -150,7 +150,7 @@ function Calendar() {
         setOpenSchedules(prev => ({ ...prev, [id]: !prev[id] }));
     };
 
-    const ScheduleOverlay = ({ sessions, timezone, onClose, onOpen, isOpen }) => {
+    const ScheduleOverlay = ({ sessions, timezone, onClose, isOpen }) => {
         const sortedSessions = [...sessions].sort((a, b) => {
             const tA = DateTime.fromISO(a.date_race).toMillis();
             const tB = DateTime.fromISO(b.date_race).toMillis();
@@ -158,15 +158,7 @@ function Calendar() {
         });
 
         return (
-            <div 
-                className={`schedule-overlay ${isOpen ? 'open' : ''}`}
-                onClick={!isOpen ? onOpen : undefined}
-            >
-                {!isOpen && (
-                    <div className="schedule-overlay-toggle" title="Ver Horarios">
-                        <i className="bi bi-clock"></i>
-                    </div>
-                )}
+            <div className={`schedule-overlay ${isOpen ? 'open' : ''}`}>
                 {isOpen && (
                     <>
                         <button className="close-schedule-btn" onClick={(e) => { e.stopPropagation(); onClose(); }} title="Cerrar horarios">&times;</button>
@@ -226,12 +218,14 @@ function Calendar() {
                                     <ScheduleOverlay 
                                         sessions={race.sessions} 
                                         timezone={race.circuit?.timezone} 
-                                        onClose={() => toggleSchedule(race._id || index)}
-                                        onOpen={() => toggleSchedule(race._id || index)} 
+                                        onClose={() => toggleSchedule(race._id || index)} 
                                         isOpen={!!openSchedules[race._id || index]}
                                     />
                                 </div>
                                 <div className={`race-date ${getStatusClass(index)}`}>
+                                    <button className="schedule-overlay-toggle" onClick={() => toggleSchedule(race._id || index)} title="Ver Horarios">
+                                        <i className="bi bi-clock"></i>
+                                    </button>
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
                                     <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
                                 </div>
@@ -262,11 +256,13 @@ function Calendar() {
                                         sessions={race.sessions} 
                                         timezone={race.circuit?.timezone} 
                                         onClose={() => toggleSchedule(race._id || (midPoint + index))} 
-                                        onOpen={() => toggleSchedule(race._id || (midPoint + index))}
                                         isOpen={!!openSchedules[race._id || (midPoint + index)]}
                                     />
                                 </div>
                                 <div className={`race-date ${getStatusClass(midPoint + index)}`}>
+                                    <button className="schedule-overlay-toggle" onClick={() => toggleSchedule(race._id || (midPoint + index))} title="Ver Horarios">
+                                        <i className="bi bi-clock"></i>
+                                    </button>
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
                                     <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
                                 </div>
