@@ -150,12 +150,26 @@ function Calendar() {
         setOpenSchedules(prev => ({ ...prev, [id]: !prev[id] }));
     };
 
+    const getUserCountryCode = () => {
+        try {
+            const locale = navigator.language || (Intl && Intl.DateTimeFormat().resolvedOptions().locale);
+            if (locale && locale.includes('-')) {
+                return locale.split('-')[1].toUpperCase();
+            }
+        } catch (e) {
+            console.error(e);
+        }
+        return null;
+    };
+
     const ScheduleOverlay = ({ sessions, timezone, country, onClose, isOpen }) => {
         const sortedSessions = [...sessions].sort((a, b) => {
             const tA = DateTime.fromISO(a.date_race).toMillis();
             const tB = DateTime.fromISO(b.date_race).toMillis();
             return tA - tB;
         });
+
+        const localCountryCode = getUserCountryCode();
 
         return (
             <div className={`schedule-overlay ${isOpen ? 'open' : ''}`}>
@@ -172,7 +186,7 @@ function Calendar() {
                                         <span className="session-type">{s.points_system?.type?.toUpperCase() || 'RACE'}</span>
                                         <div className="session-times text-center">
                                             <div className="time-circuit" title="Hora del circuito"><span className="emoji-flag">{getFlagEmoji(country)}</span> {dt.toFormat("dd/MM HH:mm")}</div>
-                                            <div className="time-local" title="Tu hora local">📍 {localDt.toFormat("dd/MM HH:mm")}</div>
+                                            <div className="time-local" title="Tu hora local"><span className="emoji-flag">{localCountryCode ? getFlagEmoji(localCountryCode) : '📍'}</span> {localDt.toFormat("dd/MM HH:mm")}</div>
                                         </div>
                                     </div>
                                 );
