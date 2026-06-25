@@ -1120,78 +1120,87 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 /* CIRCUITS                               */
 /* -------------------------------------- */
 
-.circuits-section .container {
+.circuits-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
 }
 
-.circuit-card {
-    display: grid;
-    grid-template-columns: 1fr 96px;
-    align-items: stretch;
-
-    background: #f4f4f4;
-    border-radius: 6px;
+.track-card {
+    background: #1a293d;
+    border-radius: 12px;
     overflow: hidden;
-
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-}
-
-.circuit-info {
-    padding: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    height: 100%;
 }
 
-.circuit-name {
-    margin: 0 0 6px;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.4px;
-    color: var(--circuit-name);
-    line-height: 1.2;
-    max-width: 100%;
-    text-align: left;
+.track-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-color: #4a90e2;
 }
 
-.circuit-country {
+.track-card-header {
+    position: relative;
+    padding: 20px;
+    background: radial-gradient(circle at center, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    color: #555;
+    min-height: 180px;
 }
 
-.circuit-country img {
-    width: 18px;
-    height: auto;
-    border-radius: 2px;
+.track-card-image {
+    max-width: 80%;
+    max-height: 120px;
+    object-fit: contain;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));
+    transition: transform 0.3s ease;
 }
 
-.circuit-length {
-    background: #1f3b4d;
+.track-card:hover .track-card-image {
+    transform: scale(1.05);
+}
+
+.track-card-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
     color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
-.circuit-length:hover {
-    background: var(--color-accent);
+.track-card-body {
+    padding: 20px;
+    text-align: left;
+    background: #1e2e42;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    flex-grow: 1;
 }
 
-.length-value {
-    font-size: 15px;
-    font-weight: 700;
-    line-height: 1.1;
+.track-card-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 5px 0;
 }
 
-.length-label {
-    font-size: 11px;
-    opacity: 0.75;
+.track-card-subtitle {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin: 0;
 }
 
 /* -------------------------------------- */

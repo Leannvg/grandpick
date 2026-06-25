@@ -4,6 +4,7 @@ import circuitsServices from "../services/circuits.services";
 import * as countriesServices from "../services/countries.services";
 import { useLoader } from "../context/LoaderContext";
 import { getFlagEmoji } from "../utils/helpers";
+import { getImageUrl } from "../utils/cloudinary";
 
 function Circuits() {
     const [circuits, setCircuits] = useState([]);
@@ -40,7 +41,6 @@ function Circuits() {
     }, []);
 
     return (
-
         <section className="circuits-section page-section container text-center">
             <header className="page-header">
                 <p className="section-label">Los templos de la velocidad</p>
@@ -49,31 +49,31 @@ function Circuits() {
                     Cada pista, un desafío distinto
                 </p>
             </header>
-            <div className="container">
+            <div className="container circuits-grid">
                 {circuits.map((circuit) => (
-
-                    <Link to={`/circuits/${circuit._id}`} className="text-decoration-none">
-                        <article className="circuit-card">
-                            <div className="circuit-info text-start">
-                                <h3 className="circuit-name">{circuit.circuit_name}</h3>
-
-                                <div className="circuit-country">
-                                    <span className="emoji-flag me-2">{getFlagEmoji(circuit.country)}</span>
-                                    <span>{circuit.country_name}</span>
+                    <Link to={`/circuits/${circuit._id}`} className="text-decoration-none" key={circuit._id}>
+                        <article className="track-card">
+                            <div className="track-card-header">
+                                <img 
+                                    src={getImageUrl(circuit.img, 500)} 
+                                    alt={circuit.circuit_name} 
+                                    className="track-card-image"
+                                    onError={(e) => { e.target.src = "https://via.placeholder.com/500x300?text=Circuito"; }}
+                                />
+                                <div className="track-card-badge">
+                                    <span className="emoji-flag me-1">{getFlagEmoji(circuit.country)}</span>
+                                    {circuit.country_name}
                                 </div>
                             </div>
-
-                            <div className="circuit-length">
-                                <span className="length-value">{circuit.length} km</span>
-                                <span className="length-label">Longitud</span>
+                            <div className="track-card-body">
+                                <h3 className="track-card-title">{circuit.gp_name || circuit.circuit_name}</h3>
+                                <p className="track-card-subtitle">{circuit.circuit_name}</p>
                             </div>
                         </article>
                     </Link>
-
                 ))}
             </div>
         </section>
-
     );
 }
 
