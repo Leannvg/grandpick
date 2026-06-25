@@ -671,6 +671,11 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 .driver-photo-vertical {
     width: 300px;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.driver-card-vertical:hover .driver-photo-vertical {
+    transform: scale(1.05);
 }
 
 .driver-top-overlay-vertical {
@@ -1358,6 +1363,11 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     .driver-photo-horizontal {
         object-fit: cover;
         border-radius: 8px;
+        transition: transform 0.3s ease;
+    }
+
+    .driver-card-horizontal:hover .driver-photo-horizontal {
+        transform: scale(1.05);
     }
 
     .teams-section .container {
