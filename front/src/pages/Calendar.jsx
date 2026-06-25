@@ -26,13 +26,15 @@ function Calendar() {
                 if (!groupedMap.has(key)) {
                     groupedMap.set(key, {
                         ...race,
-                        sessionTypes: [race.points_system.type]
+                        sessionTypes: [race.points_system.type],
+                        sessions: [race]
                     });
                 } else {
                     const existing = groupedMap.get(key);
                     if (!existing.sessionTypes.includes(race.points_system.type)) {
                         existing.sessionTypes.push(race.points_system.type);
                     }
+                    existing.sessions.push(race);
 
                     // Mantener la fecha de fin más tardía del grupo
                     if (new Date(race.date_gp_end) > new Date(existing.date_gp_end)) {
@@ -143,6 +145,40 @@ function Calendar() {
     const leftRaces = races.slice(0, midPoint);
     const rightRaces = races.slice(midPoint);
 
+    const [openSchedules, setOpenSchedules] = useState({});
+    const toggleSchedule = (id) => {
+        setOpenSchedules(prev => ({ ...prev, [id]: !prev[id] }));
+    };
+
+    const ScheduleOverlay = ({ sessions, timezone, onClose }) => {
+        const sortedSessions = [...sessions].sort((a, b) => {
+            const tA = DateTime.fromFormat(`${a.date} ${a.time}`, "yyyy-MM-dd HH:mm", { zone: timezone || "UTC" }).toMillis();
+            const tB = DateTime.fromFormat(`${b.date} ${b.time}`, "yyyy-MM-dd HH:mm", { zone: timezone || "UTC" }).toMillis();
+            return tA - tB;
+        });
+
+        return (
+            <div className="schedule-overlay">
+                <button className="close-schedule-btn" onClick={onClose} title="Cerrar horarios">&times;</button>
+                <div className="schedule-list">
+                    {sortedSessions.map(s => {
+                        const dt = DateTime.fromFormat(`${s.date} ${s.time}`, "yyyy-MM-dd HH:mm", { zone: timezone || "UTC" });
+                        const localDt = dt.setZone('local');
+                        return (
+                            <div key={s._id} className="schedule-row d-flex justify-content-between align-items-center">
+                                <span className="session-type">{s.points_system.type.toUpperCase()}</span>
+                                <div className="session-times text-end">
+                                    <div className="time-circuit">🏁 {dt.toFormat("HH:mm")} <span className="tz-label">{(timezone || "").split('/')[1]?.replace('_',' ') || timezone}</span></div>
+                                    <div className="time-local">📍 {localDt.toFormat("HH:mm")} <span className="tz-label">Tu hora</span></div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        );
+    };
+
     return (
         <main>
             <section className="calendar-section page-section container text-center">
@@ -160,18 +196,32 @@ function Calendar() {
                         {leftRaces.map((race, index) => (
                             <article className="calendar-item" key={race._id || index}>
                                 <div className="race-info">
-                                    <div className="race-top">
-                                        <div className="race-location">
-                                            <span className="emoji-flag me-2">{getFlagEmoji(race.circuit?.country)}</span>
-                                            <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
-                                            <span className="race-round">/ RONDA {index + 1}</span>
-                                        </div>
-                                        {race.sessionTypes.includes('sprint') && (
-                                            <span className="race-sessions sprint-tag">SPRINT</span>
-                                        )}
-                                    </div>
-                                    <p className="race-circuit">{race.circuit.circuit_name}</p>
-
+                                    {openSchedules[race._id || index] ? (
+                                        <ScheduleOverlay 
+                                            sessions={race.sessions} 
+                                            timezone={race.circuit?.timezone} 
+                                            onClose={() => toggleSchedule(race._id || index)} 
+                                        />
+                                    ) : (
+                                        <>
+                                            <div className="race-top">
+                                                <div className="race-location">
+                                                    <span className="emoji-flag me-2">{getFlagEmoji(race.circuit?.country)}</span>
+                                                    <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
+                                                    <span className="race-round">/ RONDA {index + 1}</span>
+                                                </div>
+                                                <div className="d-flex align-items-center">
+                                                    {race.sessionTypes.includes('sprint') && (
+                                                        <span className="race-sessions sprint-tag me-2">SPRINT</span>
+                                                    )}
+                                                    <button className="btn-toggle-schedule" onClick={() => toggleSchedule(race._id || index)}>
+                                                        ⏱️ Horarios
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <p className="race-circuit">{race.circuit.circuit_name}</p>
+                                        </>
+                                    )}
                                 </div>
                                 <div className={`race-date ${getStatusClass(index)}`}>
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
@@ -186,17 +236,32 @@ function Calendar() {
                         {rightRaces.map((race, index) => (
                             <article className="calendar-item" key={race._id || index}>
                                 <div className="race-info">
-                                    <div className="race-top">
-                                        <div className="race-location">
-                                            <span className="emoji-flag me-2">{getFlagEmoji(race.circuit?.country)}</span>
-                                            <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
-                                            <span className="race-round">/ RONDA {midPoint + index + 1}</span>
-                                        </div>
-                                        {race.sessionTypes.includes('sprint') && (
-                                            <span className="race-sessions sprint-tag">SPRINT</span>
-                                        )}
-                                    </div>
-                                    <p className="race-circuit">{race.circuit.circuit_name}</p>
+                                    {openSchedules[race._id || (midPoint + index)] ? (
+                                        <ScheduleOverlay 
+                                            sessions={race.sessions} 
+                                            timezone={race.circuit?.timezone} 
+                                            onClose={() => toggleSchedule(race._id || (midPoint + index))} 
+                                        />
+                                    ) : (
+                                        <>
+                                            <div className="race-top">
+                                                <div className="race-location">
+                                                    <span className="emoji-flag me-2">{getFlagEmoji(race.circuit?.country)}</span>
+                                                    <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
+                                                    <span className="race-round">/ RONDA {midPoint + index + 1}</span>
+                                                </div>
+                                                <div className="d-flex align-items-center">
+                                                    {race.sessionTypes.includes('sprint') && (
+                                                        <span className="race-sessions sprint-tag me-2">SPRINT</span>
+                                                    )}
+                                                    <button className="btn-toggle-schedule" onClick={() => toggleSchedule(race._id || (midPoint + index))}>
+                                                        ⏱️ Horarios
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <p className="race-circuit">{race.circuit.circuit_name}</p>
+                                        </>
+                                    )}
                                 </div>
                                 <div className={`race-date ${getStatusClass(midPoint + index)}`}>
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>

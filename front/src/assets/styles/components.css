@@ -235,11 +235,104 @@
     }
 
     .notification-message {
-        font-size: 14px;
+        font-size: 13px;
     }
 }
 
+/* -------------------------------------- */
+/* SCHEDULE OVERLAY                       */
+/* -------------------------------------- */
 
+.race-info {
+    position: relative; /* important for overlay */
+}
+
+.schedule-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f4f4f4; /* Match card white bg */
+    z-index: 10;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+}
+
+.close-schedule-btn {
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    line-height: 1;
+}
+
+.close-schedule-btn:hover {
+    color: #333;
+}
+
+.schedule-list {
+    margin-top: 10px;
+}
+
+.schedule-row {
+    font-size: 13px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding: 6px 0;
+}
+
+.schedule-row:last-child {
+    border-bottom: none;
+}
+
+.session-type {
+    font-weight: 800;
+    color: #2b4b66;
+    letter-spacing: 0.5px;
+}
+
+.session-times {
+    font-size: 11px;
+    line-height: 1.3;
+}
+
+.time-circuit {
+    color: #666;
+}
+
+.time-local {
+    font-weight: 700;
+    color: #1a293d;
+}
+
+.tz-label {
+    opacity: 0.6;
+    font-weight: 400;
+}
+
+.btn-toggle-schedule {
+    background: #eef2f6;
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 8px;
+    cursor: pointer;
+    color: #2b4b66;
+    transition: all 0.2s ease;
+}
+
+.btn-toggle-schedule:hover {
+    background: #e0e7ee;
+    color: #1a293d;
+}
 
 .nav-notifications .nav-link {
     display: inline-block;
