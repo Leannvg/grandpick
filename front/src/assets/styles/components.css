@@ -274,11 +274,15 @@
 
 .schedule-overlay.open {
     width: 100%;
-    background: #f4f4f4; /* Expand to cover the white background */
-    color: #333;
+    background: #e15b2e; /* Stay orange */
+    color: white;
     padding: 10px 24px 10px 10px; 
     justify-content: flex-start;
     cursor: default;
+}
+
+.schedule-overlay.open:hover {
+    background: #e15b2e; /* Disable hover darken when open */
 }
 
 .schedule-overlay-toggle {
@@ -314,7 +318,7 @@
 
 .session-type {
     font-weight: 800;
-    color: #2b4b66;
+    color: white; /* White text on orange */
     letter-spacing: 0.5px;
     margin-bottom: 4px;
     font-size: 11px;
@@ -326,12 +330,12 @@
 }
 
 .time-circuit {
-    color: #666;
+    color: rgba(255, 255, 255, 0.85); /* Lighter text for circuit time */
 }
 
 .time-local {
     font-weight: 700;
-    color: #1a293d;
+    color: white;
 }
 
 .tz-label {
@@ -347,12 +351,12 @@
     border: none;
     font-size: 24px;
     cursor: pointer;
-    color: #888;
+    color: rgba(255, 255, 255, 0.7);
     line-height: 1;
 }
 
 .close-schedule-btn:hover {
-    color: #333;
+    color: white;
 }
 
 .nav-notifications .nav-link {

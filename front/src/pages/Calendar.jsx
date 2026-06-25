@@ -164,7 +164,7 @@ function Calendar() {
             >
                 {!isOpen && (
                     <div className="schedule-overlay-toggle" title="Ver Horarios">
-                        <i className="bi bi-clock me-1"></i> ⏱️
+                        <i className="bi bi-clock"></i>
                     </div>
                 )}
                 {isOpen && (
