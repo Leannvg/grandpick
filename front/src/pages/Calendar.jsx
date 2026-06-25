@@ -150,7 +150,7 @@ function Calendar() {
         setOpenSchedules(prev => ({ ...prev, [id]: !prev[id] }));
     };
 
-    const ScheduleOverlay = ({ sessions, timezone, onClose, isOpen }) => {
+    const ScheduleOverlay = ({ sessions, timezone, country, onClose, isOpen }) => {
         const sortedSessions = [...sessions].sort((a, b) => {
             const tA = DateTime.fromISO(a.date_race).toMillis();
             const tB = DateTime.fromISO(b.date_race).toMillis();
@@ -171,7 +171,7 @@ function Calendar() {
                                     <div key={s._id} className="schedule-column">
                                         <span className="session-type">{s.points_system?.type?.toUpperCase() || 'RACE'}</span>
                                         <div className="session-times text-center">
-                                            <div className="time-circuit" title="Hora del circuito">🏁 {dt.toFormat("dd/MM HH:mm")}</div>
+                                            <div className="time-circuit" title="Hora del circuito">{getFlagEmoji(country)} {dt.toFormat("dd/MM HH:mm")}</div>
                                             <div className="time-local" title="Tu hora local">📍 {localDt.toFormat("dd/MM HH:mm")}</div>
                                         </div>
                                     </div>
@@ -218,6 +218,7 @@ function Calendar() {
                                     <ScheduleOverlay 
                                         sessions={race.sessions} 
                                         timezone={race.circuit?.timezone} 
+                                        country={race.circuit?.country}
                                         onClose={() => toggleSchedule(race._id || index)} 
                                         isOpen={!!openSchedules[race._id || index]}
                                     />
@@ -255,6 +256,7 @@ function Calendar() {
                                     <ScheduleOverlay 
                                         sessions={race.sessions} 
                                         timezone={race.circuit?.timezone} 
+                                        country={race.circuit?.country}
                                         onClose={() => toggleSchedule(race._id || (midPoint + index))} 
                                         isOpen={!!openSchedules[race._id || (midPoint + index)]}
                                     />

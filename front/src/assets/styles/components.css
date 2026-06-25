@@ -256,7 +256,7 @@
     left: auto;
     width: 0;
     height: 100%;
-    background: #e15b2e; /* Racing orange */
+    background: #495057; /* Dark gray */
     color: white;
     z-index: 10;
     display: flex;
@@ -270,11 +270,17 @@
 
 .schedule-overlay.open {
     width: 100%;
-    background: #e15b2e; /* Stay orange */
+    background: #495057; /* Stay dark gray */
     color: white;
     padding: 10px 24px 10px 10px; 
     justify-content: flex-start;
     cursor: default;
+}
+
+@media (max-width: 576px) {
+    .schedule-overlay.open {
+        padding: 5px 18px 5px 5px;
+    }
 }
 
 .schedule-overlay-toggle {
@@ -287,15 +293,22 @@
     justify-content: center;
     width: 32px;
     height: 100%;
-    background: #e15b2e;
+    background: #495057;
     color: white;
     border: none;
     cursor: pointer;
     transition: background 0.3s ease;
 }
 
+@media (max-width: 576px) {
+    .schedule-overlay-toggle {
+        width: 28px;
+        font-size: 14px;
+    }
+}
+
 .schedule-overlay-toggle:hover {
-    background: #d14a1d;
+    background: #343a40;
 }
 
 .schedule-list {
@@ -306,6 +319,12 @@
     width: 100%;
     opacity: 0;
     animation: fadeInList 0.3s ease 0.2s forwards;
+}
+
+@media (max-width: 576px) {
+    .schedule-list {
+        gap: 4px;
+    }
 }
 
 @keyframes fadeInList {
@@ -325,21 +344,24 @@
     color: white; /* White text on orange */
     letter-spacing: 0.5px;
     margin-bottom: 4px;
-    font-size: 11px;
+    font-size: clamp(9px, 2.5vw, 11px);
+    white-space: nowrap;
 }
 
 .session-times {
-    font-size: 12px;
+    font-size: clamp(10px, 3vw, 12px);
     line-height: 1.4;
 }
 
 .time-circuit {
     color: rgba(255, 255, 255, 0.85); /* Lighter text for circuit time */
+    white-space: nowrap;
 }
 
 .time-local {
     font-weight: 700;
     color: white;
+    white-space: nowrap;
 }
 
 .tz-label {
@@ -1223,12 +1245,19 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     position: relative;
 }
 
+@media (max-width: 576px) {
+    .race-date {
+        padding: 8px 0 8px 28px;
+    }
+}
+
 .race-day {
-    font-size: 24px;
+    font-size: clamp(16px, 4.5vw, 24px);
+    white-space: nowrap;
 }
 
 .race-month {
-    font-size: 14px;
+    font-size: clamp(11px, 3vw, 14px);
     margin-top: -4px;
     opacity: 0.9;
 }
