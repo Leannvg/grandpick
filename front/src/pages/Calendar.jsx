@@ -171,7 +171,7 @@ function Calendar() {
                                     <div key={s._id} className="schedule-column">
                                         <span className="session-type">{s.points_system?.type?.toUpperCase() || 'RACE'}</span>
                                         <div className="session-times text-center">
-                                            <div className="time-circuit emoji-flag" title="Hora del circuito">{getFlagEmoji(country)} {dt.toFormat("dd/MM HH:mm")}</div>
+                                            <div className="time-circuit" title="Hora del circuito"><span className="emoji-flag">{getFlagEmoji(country)}</span> {dt.toFormat("dd/MM HH:mm")}</div>
                                             <div className="time-local" title="Tu hora local">📍 {localDt.toFormat("dd/MM HH:mm")}</div>
                                         </div>
                                     </div>
