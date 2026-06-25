@@ -154,7 +154,33 @@ function Calendar() {
         try {
             const locale = navigator.language || (Intl && Intl.DateTimeFormat().resolvedOptions().locale);
             if (locale && locale.includes('-')) {
-                return locale.split('-')[1].toUpperCase();
+                const code = locale.split('-')[1].toUpperCase();
+                if (/^[A-Z]{2}$/.test(code)) return code;
+            }
+            
+            // Fallback for locales like es-419
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            if (tz) {
+                if (tz.includes("Argentina")) return "AR";
+                if (tz.includes("Mexico")) return "MX";
+                if (tz.includes("Chile")) return "CL";
+                if (tz.includes("Colombia")) return "CO";
+                if (tz.includes("Peru") || tz === "America/Lima") return "PE";
+                if (tz.includes("Uruguay")) return "UY";
+                if (tz.includes("Venezuela") || tz === "America/Caracas") return "VE";
+                if (tz.includes("Ecuador") || tz === "America/Guayaquil") return "EC";
+                if (tz.includes("Bolivia") || tz === "America/La_Paz") return "BO";
+                if (tz.includes("Paraguay") || tz === "America/Asuncion") return "PY";
+                if (tz.includes("Costa_Rica")) return "CR";
+                if (tz.includes("Panama")) return "PA";
+                if (tz.includes("Guatemala")) return "GT";
+                if (tz.includes("El_Salvador")) return "SV";
+                if (tz.includes("Honduras") || tz === "America/Tegucigalpa") return "HN";
+                if (tz.includes("Nicaragua") || tz === "America/Managua") return "NI";
+                if (tz.includes("Dominican") || tz === "America/Santo_Domingo") return "DO";
+                if (tz.includes("Cuba") || tz === "America/Havana") return "CU";
+                if (tz.includes("Puerto_Rico")) return "PR";
+                if (tz.includes("Madrid") || tz.includes("Canary")) return "ES";
             }
         } catch (e) {
             console.error(e);
