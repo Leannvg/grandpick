@@ -517,7 +517,8 @@ export async function getGrandPrixRanking(circuitId, year) {
                         timeZone: "America/Argentina/Buenos_Aires", 
                         hour: '2-digit', 
                         minute: '2-digit', 
-                        second: '2-digit' 
+                        second: '2-digit',
+                        hour12: false
                     });
                     const dateStr = currentTiedGroupLeaderDate.toLocaleString("es-AR", { 
                         timeZone: "America/Argentina/Buenos_Aires", 
