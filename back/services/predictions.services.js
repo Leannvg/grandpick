@@ -403,8 +403,19 @@ export async function getGrandPrixRanking(circuitId, year) {
 
         if (races.length === 0) return [];
 
-        const mainRace = races.find(r => r.type && r.type.toLowerCase() === 'race');
-        const mainRaceId = mainRace ? mainRace._id.toString() : null;
+        // Determinar qué sesión usar como referencia de desempate
+        const sessionsWithResults = races.filter(r => r.results && r.results.length > 0);
+        let tiebreakerSession = null;
+        if (sessionsWithResults.length > 0) {
+            sessionsWithResults.sort((a, b) => new Date(a.date_race) - new Date(b.date_race));
+            tiebreakerSession = sessionsWithResults[sessionsWithResults.length - 1];
+        } else {
+            tiebreakerSession = races.find(r => r.type && r.type.toLowerCase() === 'race') || races[races.length - 1];
+        }
+
+        const tiebreakerSessionId = tiebreakerSession ? tiebreakerSession._id.toString() : null;
+        let tiebreakerSessionName = tiebreakerSession ? (tiebreakerSession.type ? tiebreakerSession.type.toUpperCase() : 'SESSION') : 'RACE';
+        if (tiebreakerSessionName === 'QUALIFYING') tiebreakerSessionName = 'QUALY';
 
         const raceIds = races.map(r => r._id);
 
@@ -421,15 +432,15 @@ export async function getGrandPrixRanking(circuitId, year) {
                     userId: pred.userId,
                     totalPoints: 0,
                     earliestDate: pred.date_prediction,
-                    mainRaceDate: null,
+                    tiebreakerDate: null,
                     predictionsCount: 0
                 };
             }
             userStats[uid].totalPoints += (pred.previous_points || 0);
             userStats[uid].predictionsCount += 1;
             
-            if (mainRaceId && pred.raceId.toString() === mainRaceId) {
-                userStats[uid].mainRaceDate = pred.date_prediction;
+            if (tiebreakerSessionId && pred.raceId.toString() === tiebreakerSessionId) {
+                userStats[uid].tiebreakerDate = pred.date_prediction;
             } else if (new Date(pred.date_prediction) < new Date(userStats[uid].earliestDate)) {
                 userStats[uid].earliestDate = pred.date_prediction;
             }
@@ -441,9 +452,9 @@ export async function getGrandPrixRanking(circuitId, year) {
 
         let ranking = Object.values(userStats).map(stat => {
             const user = userMap.get(stat.userId.toString());
-            // Usamos mainRaceDate preferentemente
-            const datePrediction = stat.mainRaceDate || stat.earliestDate;
-            const hasMainRace = !!stat.mainRaceDate;
+            // Usamos tiebreakerDate preferentemente
+            const datePrediction = stat.tiebreakerDate || stat.earliestDate;
+            const hasTiebreaker = !!stat.tiebreakerDate;
             
             return {
                 _id: stat.userId.toString(),
@@ -453,17 +464,17 @@ export async function getGrandPrixRanking(circuitId, year) {
                 img_user: user?.img_user || "",
                 points: stat.totalPoints,
                 date_prediction: datePrediction,
-                hasMainRace: hasMainRace,
+                hasTiebreaker: hasTiebreaker,
                 predictionsCount: stat.predictionsCount
             };
         });
 
-        // Sort: Points DESC, Has Race Prediction, Date ASC
+        // Sort: Points DESC, Has Tiebreaker Prediction, Date ASC
         ranking.sort((a, b) => {
             if (b.points !== a.points) return b.points - a.points;
             
-            if (a.hasMainRace !== b.hasMainRace) {
-                return a.hasMainRace ? -1 : 1; // Priorizar al que tiene carrera
+            if (a.hasTiebreaker !== b.hasTiebreaker) {
+                return a.hasTiebreaker ? -1 : 1; // Priorizar al que tiene la predicción de desempate
             }
             
             return new Date(a.date_prediction) - new Date(b.date_prediction);
@@ -507,7 +518,7 @@ export async function getGrandPrixRanking(circuitId, year) {
                         month: '2-digit',
                         year: '2-digit'
                     });
-                    entry.gap = `${dateStr} - ${timeStr} (RACE)`;
+                    entry.gap = `${dateStr} - ${timeStr} (${tiebreakerSessionName})`;
                 } else {
                     // Subsequent person in the tie group
                     const entryDate = new Date(entry.date_prediction);

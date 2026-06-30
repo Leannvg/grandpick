@@ -445,3 +445,27 @@
     color: #2d3748;
     white-space: nowrap;
 }
+
+.gap-session-tag {
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.gap-session-sprint {
+    background: var(--color-stat-sprint, #FFCD56);
+    color: #000;
+}
+
+.gap-session-qualy {
+    background: var(--color-stat-qualy, #E6E6E6);
+    color: #000;
+}
+
+.gap-session-race {
+    background: var(--color-stat-race, #D40000);
+    color: #fff;
+}

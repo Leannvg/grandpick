@@ -424,11 +424,22 @@ function Ranking() {
                                                 const parts = item.gap.split(" - ");
                                                 if (parts.length >= 2) {
                                                     const datePart = parts[0];
-                                                    const restPart = parts.slice(1).join(" - ");
+                                                    let restPart = parts.slice(1).join(" - ");
+                                                    let sessionTag = null;
+                                                    let sessionClass = "";
+                                                    
+                                                    const sessionMatch = restPart.match(/\s*\((RACE|QUALY|SPRINT)\)$/);
+                                                    if (sessionMatch) {
+                                                        sessionTag = sessionMatch[1];
+                                                        restPart = restPart.replace(sessionMatch[0], "");
+                                                        sessionClass = `gap-session-${sessionTag.toLowerCase()}`;
+                                                    }
+
                                                     return (
                                                         <div className="gap-info d-flex flex-row align-items-center gap-2">
                                                             <span className="gap-date">{datePart}</span>
                                                             <span className="gap-value">{restPart}</span>
+                                                            {sessionTag && <span className={`gap-session-tag ${sessionClass}`}>{sessionTag}</span>}
                                                         </div>
                                                     );
                                                 }
