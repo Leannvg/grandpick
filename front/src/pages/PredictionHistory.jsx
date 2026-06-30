@@ -229,7 +229,7 @@ function PredictionHistory() {
                                                 );
                                                 const isSelected = selectedSessionType === type;
                                                 const status = getSessionButtonStatus(session);
-                                                const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' ? 'PRÓXIMAMENTE' : (status === 'pending_results' ? 'CORRIENDO / A CONFIRMAR' : 'NO APLICA'));
+                                                const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' ? 'PRÓXIMAMENTE' : (status === 'pending_results' ? 'EN CURSO' : 'NO APLICA'));
                                                 const statusValue = status === 'finished' ? session.points : '';
 
                                                 return (
@@ -351,7 +351,7 @@ function PredictionHistory() {
                                         );
                                         const isSelected = selectedSessionType === type;
                                         const status = getSessionButtonStatus(session);
-                                        const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' ? 'PRÓXIMAMENTE' : (status === 'pending_results' ? 'CORRIENDO / A CONFIRMAR' : 'NO APLICA'));
+                                        const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' ? 'PRÓXIMAMENTE' : (status === 'pending_results' ? 'EN CURSO' : 'NO APLICA'));
                                         const statusValue = status === 'finished' ? session.points : '';
 
                                         return (

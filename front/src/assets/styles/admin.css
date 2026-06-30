@@ -295,8 +295,8 @@
 
 /* Specific column widths */
 .admin-table .col-piloto {
-  width: 160px;
-  min-width: 160px;
+  width: 145px;
+  min-width: 145px;
   white-space: nowrap;
 }
 
