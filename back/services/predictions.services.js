@@ -410,11 +410,18 @@ export async function getGrandPrixRanking(circuitId, year) {
             sessionsWithResults.sort((a, b) => new Date(a.date_race) - new Date(b.date_race));
             tiebreakerSession = sessionsWithResults[sessionsWithResults.length - 1];
         } else {
-            tiebreakerSession = races.find(r => r.type && r.type.toLowerCase() === 'race') || races[races.length - 1];
+            races.sort((a, b) => new Date(a.date_race) - new Date(b.date_race));
+            tiebreakerSession = races[races.length - 1];
         }
 
         const tiebreakerSessionId = tiebreakerSession ? tiebreakerSession._id.toString() : null;
-        let tiebreakerSessionName = tiebreakerSession ? (tiebreakerSession.type ? tiebreakerSession.type.toUpperCase() : 'SESSION') : 'RACE';
+        let tiebreakerSessionName = 'SESSION';
+        if (tiebreakerSession && tiebreakerSession.points_system) {
+            const ps = await db.collection("Points_System").findOne({ _id: new ObjectId(tiebreakerSession.points_system) });
+            if (ps && ps.type) {
+                tiebreakerSessionName = ps.type.toUpperCase();
+            }
+        }
         if (tiebreakerSessionName === 'QUALIFYING') tiebreakerSessionName = 'QUALY';
 
         const raceIds = races.map(r => r._id);
