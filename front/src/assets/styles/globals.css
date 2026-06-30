@@ -616,7 +616,7 @@ p {
   .nr-cta__country {
     display: flex;
     align-items: baseline;
-    gap: 2px;
+    gap: 4px;
   }
 
   .nr-cta__country-name {
