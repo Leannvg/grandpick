@@ -432,7 +432,7 @@
     width: 100%;
     gap: 6px;
   }
-  
+
   .admin-input-group {
     flex: 1;
     min-width: 0;
@@ -453,8 +453,8 @@
   .btn-admin-add {
     flex: 1;
     min-width: 0;
-    padding: 8px 6px;
-    font-size: 0.8rem;
+    padding: 9px 6px;
+    font-size: 14px;
     justify-content: center;
   }
 }
