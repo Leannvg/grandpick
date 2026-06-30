@@ -428,11 +428,13 @@ function Ranking() {
                                                     let sessionTag = null;
                                                     let sessionClass = "";
                                                     
-                                                    const sessionMatch = restPart.match(/\s*\((RACE|QUALY|SPRINT)\)$/);
+                                                    const sessionMatch = restPart.match(/\s*\(([^)]+)\)$/);
                                                     if (sessionMatch) {
                                                         sessionTag = sessionMatch[1];
                                                         restPart = restPart.replace(sessionMatch[0], "");
-                                                        sessionClass = `gap-session-${sessionTag.toLowerCase()}`;
+                                                        // Ensure spaces are replaced with dashes if needed, and lowercase
+                                                        const safeClass = sessionTag.toLowerCase().replace(/\s+/g, '-');
+                                                        sessionClass = `gap-session-${safeClass}`;
                                                     }
 
                                                     return (

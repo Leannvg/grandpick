@@ -453,6 +453,8 @@
     font-weight: 700;
     letter-spacing: 0.5px;
     text-transform: uppercase;
+    background: #5c8ab3; /* fallback background */
+    color: #fff;
 }
 
 .gap-session-sprint {
