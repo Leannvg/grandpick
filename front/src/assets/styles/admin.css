@@ -270,6 +270,7 @@
   left: 0;
   z-index: 2;
   background-color: #5c85b5; /* keep th color */
+  box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.2);
 }
 
 .admin-table td.sticky-col {
@@ -277,6 +278,7 @@
   left: 0;
   z-index: 1;
   background-color: #fff; /* keep td color */
+  box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.15);
 }
 
 .admin-table tr:hover td.sticky-col {
