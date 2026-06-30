@@ -424,7 +424,6 @@ p {
   color: #fff;
   opacity: 0.85;
   text-transform: uppercase;
-  margin-left: 6px;
 }
 
 .nr-cta__action {
@@ -636,7 +635,6 @@ p {
 
   .nr-cta__date {
     font-size: 14px;
-    margin-left: 10px;
   }
 
   .nr-cta__session-tag {

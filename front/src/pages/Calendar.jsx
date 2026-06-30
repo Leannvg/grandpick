@@ -203,7 +203,7 @@ function Calendar() {
                                 <div className="race-info">
                                     <div className="race-top">
                                         <div className="race-location">
-                                            <span className="emoji-flag me-2">{getFlagEmoji(race.circuit?.country)}</span>
+                                            <span className="emoji-flag">{getFlagEmoji(race.circuit?.country)}</span>
                                             <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
                                             <span className="race-round">/ RONDA {index + 1}</span>
                                         </div>
