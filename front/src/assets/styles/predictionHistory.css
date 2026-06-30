@@ -263,7 +263,7 @@
 }
 
 .history-session-tab.status-pending_results .session-status-block {
-    background-color: var(--color-confirm);
+    background-color: var(--color-soon);
 }
 
 .history-session-tab.status-none .session-status-block {
