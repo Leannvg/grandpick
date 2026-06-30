@@ -238,6 +238,11 @@
   /* Evita el amontonamiento de columnas en dispositivos móviles */
 }
 
+/* Reducir el ancho mínimo para la tabla de asignaciones que tiene menos columnas */
+.admin-table-assignments {
+  min-width: 600px;
+}
+
 .admin-table th {
   background-color: #5c85b5;
   color: #fff;

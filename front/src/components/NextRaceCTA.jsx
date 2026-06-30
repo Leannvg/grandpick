@@ -101,7 +101,7 @@ function NextRaceCTA() {
             <div className="nr-cta__container container">
                 <div className="nr-cta__info">
                     <div className="nr-cta__country">
-                        <span className="emoji-flag me-2 nr-cta__flag">
+                        <span className="emoji-flag nr-cta__flag">
                             {getFlagEmoji(race.circuit?.country || race.id_circuit?.country)}
                         </span>
                         <span className="nr-cta__country-name">{countryName.toUpperCase()}</span>

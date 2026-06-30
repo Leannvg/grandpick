@@ -133,7 +133,7 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
     <>
       <div className="admin-table-container">
         <div className="table-responsive">
-          <table className="admin-table">
+          <table className="admin-table admin-table-assignments">
             <thead>
               <tr>
                 <th className="sticky-col col-piloto">Piloto</th>
