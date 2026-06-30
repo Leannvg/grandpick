@@ -27,7 +27,6 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-wrap: wrap;
 }
 
 .admin-filters-right {
@@ -425,6 +424,38 @@
     flex: 1 1 calc(33.333% - 8px);
     padding: 8px 10px;
     font-size: 13px;
+  }
+
+  /* Make filters shrink on small screens */
+  .admin-filters-left {
+    flex-wrap: nowrap;
+    width: 100%;
+    gap: 6px;
+  }
+  
+  .admin-input-group {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .admin-input-group-text {
+    padding: 0 6px;
+    font-size: 0.7rem;
+  }
+
+  .admin-input-group select {
+    min-width: 0;
+    padding: 0 4px;
+    font-size: 0.8rem;
+    width: 100%;
+  }
+
+  .btn-admin-add {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 6px;
+    font-size: 0.8rem;
+    justify-content: center;
   }
 }
 
