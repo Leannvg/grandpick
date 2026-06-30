@@ -288,6 +288,13 @@
   /* keep hover color */
 }
 
+/* Specific column widths */
+.admin-table .col-piloto {
+  width: 160px;
+  min-width: 160px;
+  white-space: nowrap;
+}
+
 
 /* Pagination Outside */
 .admin-pagination {
