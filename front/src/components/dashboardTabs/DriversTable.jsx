@@ -18,7 +18,7 @@ export default function DriversTable({ drivers, onEdit, onDelete, onToggle, page
           <table className="admin-table">
             <thead>
               <tr>
-                <th>Nombre</th>
+                <th className="sticky-col">Nombre</th>
                 <th>Trigrama</th>
                 <th>Número</th>
                 <th>País</th>
@@ -31,7 +31,7 @@ export default function DriversTable({ drivers, onEdit, onDelete, onToggle, page
             <tbody>
               {paginatedData.map((d) => (
                 <tr key={d._id}>
-                  <td>{d.full_name}</td>
+                  <td className="sticky-col">{d.full_name}</td>
                   <td>{d.trigram}</td>
                   <td>{d.number}</td>
                   <td>

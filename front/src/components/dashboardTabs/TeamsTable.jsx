@@ -18,7 +18,7 @@ export default function TeamsTable({ teams, onEdit, onDelete, pageSize }) {
           <table className="admin-table">
             <thead>
               <tr>
-                <th>Nombre</th>
+                <th className="sticky-col">Nombre</th>
                 <th>Director</th>
                 <th>Motor</th>
                 <th>Pilotos</th>
@@ -30,7 +30,7 @@ export default function TeamsTable({ teams, onEdit, onDelete, pageSize }) {
             <tbody>
               {paginatedData.map((t) => (
                 <tr key={t._id}>
-                  <td>{t.name}</td>
+                  <td className="sticky-col">{t.name}</td>
                   <td>{t.chief}</td>
                   <td>{t.power_unit}</td>
 

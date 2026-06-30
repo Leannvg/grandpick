@@ -20,7 +20,7 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
           <thead>
             <tr>
               <th>Ronda</th>
-              <th>País</th>
+              <th className="sticky-col">País</th>
               <th>Nombre del circuito</th>
               <th>Fecha de inicio</th>
               <th>Fecha de finalización</th>
@@ -33,7 +33,7 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
             {paginatedData.map((r) => (
               <tr key={r.gpRaceId}>
                 <td>{r.round}</td>
-                <td><CountryDisplay iso2={r.country} /></td>
+                <td className="sticky-col"><CountryDisplay iso2={r.country} /></td>
                 <td>{r.gp_name}</td>
                 <td>{formatDateInTimezone(r.dateStart, r.timezone)}</td>
                 <td>{formatDateInTimezone(r.dateEnd, r.timezone)}</td>

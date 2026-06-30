@@ -19,7 +19,7 @@ export default function CircuitsTable({ circuits, onEdit, onDelete, pageSize }) 
             <thead>
               <tr>
                 <th>Nombre</th>
-                <th>País</th>
+                <th className="sticky-col">País</th>
                 <th>Longitud</th>
                 <th>Vueltas</th>
                 <th>Acciones</th>
@@ -29,7 +29,7 @@ export default function CircuitsTable({ circuits, onEdit, onDelete, pageSize }) 
               {paginatedData.map((c) => (
                 <tr key={c._id}>
                   <td>{c.circuit_name}</td>
-                  <td>
+                  <td className="sticky-col">
                     <CountryDisplay iso2={c.country} />
                   </td>
                   <td>{c.length}</td>

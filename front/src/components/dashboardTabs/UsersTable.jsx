@@ -19,7 +19,7 @@ export default function UsersTable({ users, onToggleBlock, pageSize }) {
           <table className="admin-table">
             <thead>
               <tr>
-                <th>Nombre</th>
+                <th className="sticky-col">Nombre</th>
                 <th>Email</th>
                 <th>Puntos</th>
                 <th>País</th>
@@ -31,7 +31,7 @@ export default function UsersTable({ users, onToggleBlock, pageSize }) {
             <tbody>
               {paginatedData.map((u) => (
                 <tr key={u._id}>
-                  <td>{`${u.name} ${u.last_name}`}</td>
+                  <td className="sticky-col">{`${u.name} ${u.last_name}`}</td>
                   <td>{u.email}</td>
                   <td>{u.points}</td>
                   <td><CountryDisplay iso2={u.country} /></td>

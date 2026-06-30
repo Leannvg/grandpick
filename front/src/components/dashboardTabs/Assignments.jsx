@@ -136,7 +136,7 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
           <table className="admin-table">
             <thead>
               <tr>
-                <th>Piloto</th>
+                <th className="sticky-col">Piloto</th>
                 <th>Escudería actual</th>
                 <th>Cambiar a</th>
               </tr>
@@ -148,7 +148,7 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
 
                 return (
                   <tr key={driver._id} className={isInvalid ? "table-danger" : ""}>
-                    <td>{driver.full_name}</td>
+                    <td className="sticky-col">{driver.full_name}</td>
 
                     <td>
                       {currentTeam ? (

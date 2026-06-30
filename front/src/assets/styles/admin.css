@@ -264,6 +264,26 @@
   background-color: #f8faff;
 }
 
+/* Sticky Columns for Horizontal Scroll */
+.admin-table th.sticky-col {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background-color: #5c85b5; /* keep th color */
+}
+
+.admin-table td.sticky-col {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background-color: #fff; /* keep td color */
+}
+
+.admin-table tr:hover td.sticky-col {
+  background-color: #f8faff; /* keep hover color */
+}
+
+
 /* Pagination Outside */
 .admin-pagination {
   display: flex;
