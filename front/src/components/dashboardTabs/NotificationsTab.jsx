@@ -30,12 +30,12 @@ function NotificationsTab({ users = [] }) {
       return;
     }
 
-    const recipientName = formData.userId === "all" 
-      ? "Todos los usuarios" 
+    const recipientName = formData.userId === "all"
+      ? "Todos los usuarios"
       : (() => {
-          const u = users.find((user) => user._id === formData.userId);
-          return u ? `${u.name} ${u.last_name} (${u.email})` : "Usuario específico";
-        })();
+        const u = users.find((user) => user._id === formData.userId);
+        return u ? `${u.name} ${u.last_name} (${u.email})` : "Usuario específico";
+      })();
 
     try {
       await confirmDialog({
@@ -87,7 +87,7 @@ function NotificationsTab({ users = [] }) {
   ];
 
   return (
-    <div className="container mt-4" style={{ maxWidth: "800px" }}>
+    <div className="mt-4">
       <div className="bg-white p-4 rounded-3 shadow-sm mb-4 text-start">
         <h2 className="m-0 fw-bold pb-3 border-bottom" style={{ color: "#000", textTransform: "uppercase", fontSize: "1.5rem" }}>
           Enviar Comunicado
@@ -102,8 +102,9 @@ function NotificationsTab({ users = [] }) {
       ) : (
         <form onSubmit={handleSubmit} className="text-start">
           <div className="row">
-            <div className="col-12">
-              <div className="gp-input-group-container">
+            {/* Columna Izquierda */}
+            <div className="col-lg-6 col-12 d-flex flex-column">
+              <div className="gp-input-group-container mb-4">
                 <div className="gp-input-group" style={{ overflow: "visible" }}>
                   <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Destinatario</span>
                   <div className="flex-fill" style={{ minWidth: 0 }}>
@@ -116,12 +117,8 @@ function NotificationsTab({ users = [] }) {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className="row">
-            <div className="col-12">
-              <div className="gp-input-group-container">
+              <div className="gp-input-group-container mb-4">
                 <div className="gp-input-group">
                   <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Título del comunicado</span>
                   <input
@@ -136,14 +133,29 @@ function NotificationsTab({ users = [] }) {
                   />
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className="row">
-            <div className="col-12">
-              <div className="gp-input-group-container">
+              <div className="gp-input-group-container mb-4 mb-lg-0">
+                <div className="gp-input-group">
+                  <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Link adjunto (opcional)</span>
+                  <input
+                    type="text"
+                    id="link"
+                    name="link"
+                    placeholder="Ej: /predictions"
+                    value={formData.link}
+                    onChange={handleChange}
+                    className="form-control bg-white m-0"
+                    style={{ border: "none" }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Columna Derecha */}
+            <div className="col-lg-6 col-12 d-flex flex-column mt-0">
+              <div className="gp-input-group-container flex-grow-1 d-flex flex-column mb-0">
                 <div
-                  className="gp-input-group"
+                  className="gp-input-group flex-grow-1"
                   style={{ flexDirection: "column", alignItems: "stretch" }}
                 >
                   <span
@@ -162,40 +174,19 @@ function NotificationsTab({ users = [] }) {
                   <textarea
                     id="message"
                     name="message"
-                    rows="4"
                     placeholder="Escribe el mensaje aquí..."
                     value={formData.message}
                     onChange={handleChange}
-                    className="form-control text-start bg-white m-0"
+                    className="form-control text-start bg-white m-0 flex-grow-1"
                     style={{
                       border: "none",
                       borderRadius: "0px 0px 8px 8px",
                       padding: "15px",
                       minHeight: "120px",
-                      resize: "vertical",
+                      resize: "none",
                       color: "#222"
                     }}
                   ></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-12">
-              <div className="gp-input-group-container">
-                <div className="gp-input-group">
-                  <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Link adjunto (opcional)</span>
-                  <input
-                    type="text"
-                    id="link"
-                    name="link"
-                    placeholder="Ej: /predictions"
-                    value={formData.link}
-                    onChange={handleChange}
-                    className="form-control bg-white m-0"
-                    style={{ border: "none" }}
-                  />
                 </div>
               </div>
             </div>
