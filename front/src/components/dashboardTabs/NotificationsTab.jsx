@@ -104,7 +104,7 @@ function NotificationsTab({ users = [] }) {
           <div className="row">
             {/* Columna Izquierda */}
             <div className="col-lg-6 col-12 d-flex flex-column">
-              <div className="gp-input-group-container mb-4">
+              <div className="gp-input-group-container">
                 <div className="gp-input-group" style={{ overflow: "visible" }}>
                   <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Destinatario</span>
                   <div className="flex-fill" style={{ minWidth: 0 }}>
@@ -118,7 +118,7 @@ function NotificationsTab({ users = [] }) {
                 </div>
               </div>
 
-              <div className="gp-input-group-container mb-4">
+              <div className="gp-input-group-container">
                 <div className="gp-input-group">
                   <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Título del comunicado</span>
                   <input
@@ -134,7 +134,7 @@ function NotificationsTab({ users = [] }) {
                 </div>
               </div>
 
-              <div className="gp-input-group-container mb-4 mb-lg-0">
+              <div className="gp-input-group-container mb-lg-0">
                 <div className="gp-input-group">
                   <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Link adjunto (opcional)</span>
                   <input
