@@ -92,7 +92,7 @@ function NotificationsTab({ users = [] }) {
         <LoaderSpinner />
       ) : (
         <form onSubmit={handleSubmit} className="text-start">
-          <div className="row mb-3">
+          <div className="row">
             <div className="col-12">
               <div className="gp-input-group-container">
                 <div className="gp-input-group">
@@ -117,7 +117,7 @@ function NotificationsTab({ users = [] }) {
             </div>
           </div>
 
-          <div className="row mb-3">
+          <div className="row">
             <div className="col-12">
               <div className="gp-input-group-container">
                 <div className="gp-input-group">
@@ -137,7 +137,7 @@ function NotificationsTab({ users = [] }) {
             </div>
           </div>
 
-          <div className="row mb-3">
+          <div className="row">
             <div className="col-12">
               <div className="gp-input-group-container">
                 <div
@@ -179,7 +179,7 @@ function NotificationsTab({ users = [] }) {
             </div>
           </div>
 
-          <div className="row mb-4">
+          <div className="row">
             <div className="col-12">
               <div className="gp-input-group-container">
                 <div className="gp-input-group">
