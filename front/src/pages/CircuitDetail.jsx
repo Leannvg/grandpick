@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import circuitsServices from "../services/circuits.services";
 import racesServices from "../services/races.services";
 import { useLoader } from "../context/LoaderContext";
-import CountdownTimer from '../components/CountdownTimer';
 import BackButton from '../components/BackButton';
 import CountryDisplay from "../components/CountryDisplay.jsx";
 import "../assets/styles/globals.css";
