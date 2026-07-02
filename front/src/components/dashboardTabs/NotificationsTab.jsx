@@ -89,10 +89,10 @@ function NotificationsTab({ users = [] }) {
   return (
     <div className="mt-4">
       <div className="bg-white p-4 rounded-3 shadow-sm mb-4 text-start">
-        <h2 className="m-0 fw-bold pb-3 border-bottom" style={{ color: "#000", textTransform: "uppercase", fontSize: "1.5rem" }}>
+        <h2 className="m-0 fw-bold pb-3 border-bottom admin-tab-title">
           Enviar Comunicado
         </h2>
-        <p className="mt-3" style={{ color: "#222", fontSize: "1rem", margin: 0 }}>
+        <p className="mt-3 mb-0 admin-tab-subtitle">
           Envía un comunicado a todos los usuarios o a uno en específico. Esto enviará tanto una notificación interna en la aplicación como una notificación Push a quienes las tengan habilitadas.
         </p>
       </div>
@@ -105,9 +105,9 @@ function NotificationsTab({ users = [] }) {
             {/* Columna Izquierda */}
             <div className="col-lg-6 col-12 d-flex flex-column">
               <div className="gp-input-group-container">
-                <div className="gp-input-group" style={{ overflow: "visible" }}>
-                  <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Destinatario</span>
-                  <div className="flex-fill" style={{ minWidth: 0 }}>
+                <div className="gp-input-group overflow-visible">
+                  <span className="gp-input-label gp-input-label-fixed">Destinatario</span>
+                  <div className="flex-fill gp-input-content-flex">
                     <SearchableSelect
                       options={userOptions}
                       value={formData.userId}
@@ -120,7 +120,7 @@ function NotificationsTab({ users = [] }) {
 
               <div className="gp-input-group-container">
                 <div className="gp-input-group">
-                  <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Título del comunicado</span>
+                  <span className="gp-input-label gp-input-label-fixed">Título del comunicado</span>
                   <input
                     type="text"
                     id="title"
@@ -128,15 +128,14 @@ function NotificationsTab({ users = [] }) {
                     placeholder="Ej: Mantenimiento programado"
                     value={formData.title}
                     onChange={handleChange}
-                    className="form-control bg-white m-0"
-                    style={{ border: "none" }}
+                    className="form-control bg-white m-0 border-0"
                   />
                 </div>
               </div>
 
               <div className="gp-input-group-container mb-lg-0">
                 <div className="gp-input-group">
-                  <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Link adjunto (opcional)</span>
+                  <span className="gp-input-label gp-input-label-fixed">Link adjunto (opcional)</span>
                   <input
                     type="text"
                     id="link"
@@ -144,8 +143,7 @@ function NotificationsTab({ users = [] }) {
                     placeholder="Ej: /predictions"
                     value={formData.link}
                     onChange={handleChange}
-                    className="form-control bg-white m-0"
-                    style={{ border: "none" }}
+                    className="form-control bg-white m-0 border-0"
                   />
                 </div>
               </div>
@@ -154,21 +152,8 @@ function NotificationsTab({ users = [] }) {
             {/* Columna Derecha */}
             <div className="col-lg-6 col-12 d-flex flex-column mt-0">
               <div className="gp-input-group-container flex-grow-1 d-flex flex-column mb-0">
-                <div
-                  className="gp-input-group flex-grow-1"
-                  style={{ flexDirection: "column", alignItems: "stretch" }}
-                >
-                  <span
-                    className="gp-input-label"
-                    style={{
-                      width: "100%",
-                      minWidth: "100%",
-                      borderRadius: "8px 8px 0px 0px",
-                      height: "38px",
-                      justifyContent: "start",
-                      paddingLeft: "20px"
-                    }}
-                  >
+                <div className="gp-input-group flex-grow-1 flex-column align-items-stretch">
+                  <span className="gp-input-label gp-textarea-label">
                     Mensaje
                   </span>
                   <textarea
@@ -177,15 +162,7 @@ function NotificationsTab({ users = [] }) {
                     placeholder="Escribe el mensaje aquí..."
                     value={formData.message}
                     onChange={handleChange}
-                    className="form-control text-start bg-white m-0 flex-grow-1"
-                    style={{
-                      border: "none",
-                      borderRadius: "0px 0px 8px 8px",
-                      padding: "15px",
-                      minHeight: "120px",
-                      resize: "none",
-                      color: "#222"
-                    }}
+                    className="form-control text-start bg-white m-0 flex-grow-1 gp-textarea-input"
                   ></textarea>
                 </div>
               </div>
@@ -193,7 +170,7 @@ function NotificationsTab({ users = [] }) {
           </div>
 
           <div className="d-flex justify-content-center mt-4">
-            <button type="submit" className="btn-admin-add" style={{ padding: "10px 24px" }}>
+            <button type="submit" className="btn-admin-add btn-admin-submit">
               <i className="bi bi-send"></i> Revisar Comunicado
             </button>
           </div>
