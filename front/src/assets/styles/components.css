@@ -694,6 +694,7 @@ input[type="date"].form-control,
 input[type="time"].form-control {
     min-height: 44px;
     position: relative;
+    text-align: center;
 }
 
 .is-empty-date::-webkit-datetime-edit,
@@ -706,9 +707,9 @@ input[type="time"].form-control {
     color: #888;
     position: absolute;
     pointer-events: none;
-    left: 15px;
+    left: 50%;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translate(-50%, -50%);
 }
 
 .is-empty-time::before {
@@ -716,9 +717,9 @@ input[type="time"].form-control {
     color: #888;
     position: absolute;
     pointer-events: none;
-    left: 15px;
+    left: 50%;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translate(-50%, -50%);
 }
 
 .gp-password-toggle {
