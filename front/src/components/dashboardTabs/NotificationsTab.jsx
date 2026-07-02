@@ -79,9 +79,11 @@ function NotificationsTab({ users = [] }) {
 
   return (
     <div className="container mt-4" style={{ maxWidth: "800px" }}>
-      <div className="d-flex flex-column gap-2 mb-4">
-        <h2 className="m-0" style={{ color: "#fff" }}>Enviar Comunicado</h2>
-        <p style={{ color: "#aaa", fontSize: "0.95rem", margin: 0 }}>
+      <div className="bg-white p-4 rounded-3 shadow-sm mb-4 text-start">
+        <h2 className="m-0 fw-bold pb-3 border-bottom" style={{ color: "#000", textTransform: "uppercase", fontSize: "1.5rem" }}>
+          Enviar Comunicado
+        </h2>
+        <p className="mt-3" style={{ color: "#222", fontSize: "1rem", margin: 0 }}>
           Envía un comunicado a todos los usuarios o a uno en específico. Esto enviará tanto una notificación interna en la aplicación como una notificación Push a quienes las tengan habilitadas.
         </p>
       </div>
