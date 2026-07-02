@@ -3,6 +3,7 @@ import NotificationsServices from "../../services/notifications.services";
 import { useAlert } from "../../context/AlertContext";
 import { useDialog } from "../../context/DialogContext";
 import LoaderSpinner from "../LoaderSpinner";
+import SearchableSelect from "../SearchableSelect";
 
 function NotificationsTab({ users = [] }) {
   const [loading, setLoading] = useState(false);
@@ -77,6 +78,14 @@ function NotificationsTab({ users = [] }) {
     }
   };
 
+  const userOptions = [
+    { _id: "all", full_name: "Todos los usuarios" },
+    ...users.map((user) => ({
+      _id: user._id,
+      full_name: `${user.name} ${user.last_name} (${user.email})`,
+    })),
+  ];
+
   return (
     <div className="container mt-4" style={{ maxWidth: "800px" }}>
       <div className="bg-white p-4 rounded-3 shadow-sm mb-4 text-start">
@@ -95,23 +104,16 @@ function NotificationsTab({ users = [] }) {
           <div className="row">
             <div className="col-12">
               <div className="gp-input-group-container">
-                <div className="gp-input-group">
+                <div className="gp-input-group" style={{ overflow: "visible" }}>
                   <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Destinatario</span>
-                  <select
-                    id="userId"
-                    name="userId"
-                    value={formData.userId}
-                    onChange={handleChange}
-                    className="form-control bg-white m-0"
-                    style={{ border: "none", cursor: "pointer" }}
-                  >
-                    <option value="all">Todos los usuarios</option>
-                    {users.map((user) => (
-                      <option key={user._id} value={user._id}>
-                        {user.name} {user.last_name} ({user.email})
-                      </option>
-                    ))}
-                  </select>
+                  <div className="flex-fill" style={{ minWidth: 0 }}>
+                    <SearchableSelect
+                      options={userOptions}
+                      value={formData.userId}
+                      onChange={(selected) => setFormData((prev) => ({ ...prev, userId: selected ? selected.value : "all" }))}
+                      placeholder="Buscar usuario..."
+                    />
+                  </div>
                 </div>
               </div>
             </div>
