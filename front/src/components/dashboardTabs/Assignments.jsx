@@ -165,7 +165,7 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
                       )}
                     </td>
 
-                    <td style={{ minWidth: '250px' }}>
+                    <td className="col-team-select">
                       <SearchableSelect
                         options={teamsWithNone}
                         value={driver.team || ""}
@@ -190,9 +190,8 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
       <div className="d-flex justify-content-end mt-4">
         <button
           onClick={handleSave}
-          className="btn-admin-add"
+          className={`btn-admin-add ${invalidTeams.length > 0 ? 'bg-secondary border-secondary' : 'bg-success border-success'}`}
           disabled={saving}
-          style={{ background: invalidTeams.length > 0 ? '#6c757d' : '#2e7d32' }}
         >
           {saving
             ? "Guardando..."

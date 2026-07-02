@@ -84,7 +84,7 @@ function Login({ onLogin }) {
             />
 
             <div className="mt-2 text-end">
-              <Link to="/forgot-password" style={{ color: "white", fontSize: "12px", textDecoration: "none" }}>
+              <Link to="/forgot-password" className="auth-link-small">
                 ¿Olvidaste tu contraseña?
               </Link>
             </div>
@@ -108,8 +108,8 @@ function Login({ onLogin }) {
           </form>
 
           <div className="auth-teaser mt-4">
-            <p className="text-white opacity-75 mb-1" style={{ fontSize: '14px' }}>¿Todavía no tenés una cuenta?</p>
-            <Link to="/register" style={{ color: "var(--color-red)", fontWeight: "600", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+            <p className="text-white opacity-75 mb-1 auth-teaser-text">¿Todavía no tenés una cuenta?</p>
+            <Link to="/register" className="auth-link-bold">
               Registrate acá
             </Link>
           </div>

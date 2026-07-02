@@ -121,15 +121,15 @@ function Profile() {
           <span>MIS ESTADISTICAS</span>
           <div className="stats-legend">
             <div className="legend-item">
-              <span className="dot" style={{ backgroundColor: "#E6E6E6" }}></span>
+              <span className="dot bg-qualy"></span>
               <span>Qualy</span>
             </div>
             <div className="legend-item">
-              <span className="dot" style={{ backgroundColor: "#FFCD56" }}></span>
+              <span className="dot bg-sprint"></span>
               <span>Sprint</span>
             </div>
             <div className="legend-item">
-              <span className="dot" style={{ backgroundColor: "#D40000" }}></span>
+              <span className="dot bg-race"></span>
               <span>Race</span>
             </div>
           </div>
@@ -138,7 +138,7 @@ function Profile() {
         <div className="charts-grid">
           {/* Predicciones Chart */}
           <div className="chart-item">
-            <div style={{ height: "180px" }}>
+            <div className="h-180px">
               <Doughnut data={createChartData(usuario.stats, "predictions")} options={chartOptions} />
             </div>
             <div className="chart-label-center">
@@ -149,7 +149,7 @@ function Profile() {
 
           {/* Aciertos Chart */}
           <div className="chart-item">
-            <div style={{ height: "180px" }}>
+            <div className="h-180px">
               <Doughnut data={createChartData(usuario.stats, "successes")} options={chartOptions} />
             </div>
             <div className="chart-label-center">
@@ -160,7 +160,7 @@ function Profile() {
 
           {/* Puntos Chart */}
           <div className="chart-item">
-            <div style={{ height: "180px" }}>
+            <div className="h-180px">
               <Doughnut data={createChartData(usuario.stats, "points")} options={chartOptions} />
             </div>
             <div className="chart-label-center">

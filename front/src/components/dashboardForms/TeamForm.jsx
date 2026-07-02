@@ -105,25 +105,21 @@ function TeamForm({
       {/* Vista previa de Logo e Isologo centrados */}
       <div className="d-flex justify-content-center gap-3 mb-4 flex-wrap">
         <div 
-          className="p-3 rounded-4 text-center d-flex align-items-center justify-content-center" 
-          style={{ backgroundColor: "#ffffff", width: "220px", height: "180px", border: "1.5px solid #e0e0e0" }}
+          className="p-3 rounded-4 text-center d-flex align-items-center justify-content-center gp-image-preview-container"
         >
           <img
             src={previewLogoUrl ? previewLogoUrl : getImageUrl(currentLogo || CLOUDINARY_DEFAULTS.EMPTY, 500)}
             alt="Logo"
-            className="img-fluid"
-            style={{ maxHeight: "140px", objectFit: "contain", borderRadius: "8px" }}
+            className="img-fluid gp-image-preview"
           />
         </div>
         <div 
-          className="p-3 rounded-4 text-center d-flex align-items-center justify-content-center" 
-          style={{ backgroundColor: "#ffffff", width: "220px", height: "180px", border: "1.5px solid #e0e0e0" }}
+          className="p-3 rounded-4 text-center d-flex align-items-center justify-content-center gp-image-preview-container"
         >
           <img
             src={previewIsologoUrl ? previewIsologoUrl : getImageUrl(currentIsologo || CLOUDINARY_DEFAULTS.EMPTY, 500)}
             alt="Isologo"
-            className="img-fluid"
-            style={{ maxHeight: "140px", objectFit: "contain", borderRadius: "8px" }}
+            className="img-fluid gp-image-preview"
           />
         </div>
       </div>
@@ -133,10 +129,9 @@ function TeamForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.logo ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Logo</span>
+              <span className="gp-input-label gp-input-label-sm">Logo</span>
               <label 
-                className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control" 
-                style={{ cursor: "pointer", minHeight: "44px" }}
+                className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control gp-file-upload-label"
               >
                 <input
                   type="file"
@@ -144,7 +139,7 @@ function TeamForm({
                   onChange={handleLogoChange}
                   className="d-none"
                 />
-                <span className="text-secondary" style={{ fontSize: "0.95rem" }}>
+                <span className="text-secondary fs-sm">
                   {logoFile ? logoFile.name : (currentLogo ? "Logo cargado" : "Selecciona Logo")}
                 </span>
               </label>
@@ -158,10 +153,9 @@ function TeamForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.isologo ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Isologo</span>
+              <span className="gp-input-label gp-input-label-sm">Isologo</span>
               <label 
-                className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control" 
-                style={{ cursor: "pointer", minHeight: "44px" }}
+                className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control gp-file-upload-label"
               >
                 <input
                   type="file"
@@ -169,7 +163,7 @@ function TeamForm({
                   onChange={handleIsologoChange}
                   className="d-none"
                 />
-                <span className="text-secondary" style={{ fontSize: "0.95rem" }}>
+                <span className="text-secondary fs-sm">
                   {isologoFile ? isologoFile.name : (currentIsologo ? "Isologo cargado" : "Selecciona Isologo")}
                 </span>
               </label>
@@ -186,7 +180,7 @@ function TeamForm({
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.full_team_name ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Nombre completo</span>
+              <span className="gp-input-label gp-input-label-sm">Nombre completo</span>
               <input
                 type="text"
                 className="form-control bg-white"
@@ -204,7 +198,7 @@ function TeamForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.world_championships ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Campeonatos</span>
+              <span className="gp-input-label gp-input-label-sm">Campeonatos</span>
               <input
                 type="number"
                 className="form-control bg-white"
@@ -225,7 +219,7 @@ function TeamForm({
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.name ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Nombre corto</span>
+              <span className="gp-input-label gp-input-label-sm">Nombre corto</span>
               <input
                 type="text"
                 className="form-control bg-white"
@@ -243,7 +237,7 @@ function TeamForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.chief ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Director</span>
+              <span className="gp-input-label gp-input-label-sm">Director</span>
               <input
                 type="text"
                 className="form-control bg-white"
@@ -263,8 +257,8 @@ function TeamForm({
       <div className="row">
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
-            <div className={`gp-input-group ${errorsForm.country ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>País</span>
+            <div className={`gp-input-group overflow-visible ${errorsForm.country ? "is-invalid" : ""}`}>
+              <span className="gp-input-label gp-input-label-sm">País</span>
               <div className="flex-fill">
                 <CountrySelect
                   countryFunction={setCountry}
@@ -283,8 +277,8 @@ function TeamForm({
 
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
-            <div className={`gp-input-group ${errorsForm.city ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Ciudad/Estado</span>
+            <div className={`gp-input-group overflow-visible ${errorsForm.city ? "is-invalid" : ""}`}>
+              <span className="gp-input-label gp-input-label-sm">Ciudad/Estado</span>
               <div className="flex-fill">
                 <CitySelect
                   cityFunction={setCity}
@@ -308,7 +302,7 @@ function TeamForm({
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.power_unit ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Unidad potencia</span>
+              <span className="gp-input-label gp-input-label-sm">Unidad potencia</span>
               <input
                 type="text"
                 className="form-control bg-white"
@@ -326,19 +320,17 @@ function TeamForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.color ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Color</span>
+              <span className="gp-input-label gp-input-label-sm">Color</span>
               <div className="d-flex align-items-center bg-white px-3 flex-fill">
                 <input
                   type="color"
-                  className="form-control form-control-color m-0 p-0 border-0"
-                  style={{ width: "40px", height: "30px", cursor: "pointer", backgroundColor: "transparent" }}
+                  className="form-control form-control-color m-0 p-0 border-0 gp-color-picker"
                   value={color || "#ffffff"}
                   onChange={(e) => setColor(e.target.value)}
                 />
                 <input
                   type="text"
-                  className="form-control border-0 ms-2 bg-white"
-                  style={{ padding: "0" }}
+                  className="form-control border-0 ms-2 bg-white p-0"
                   value={color}
                   onChange={(e) => setColor(e.target.value)}
                   placeholder="#HEXCODE"

@@ -509,45 +509,232 @@
   font-weight: 500 !important;
   font-size: 0.9rem !important;
 }
- / *   N o t i f i c a t i o n s   T a b   C u s t o m   S t y l e s   * / 
- . a d m i n - t a b - t i t l e   { 
-     c o l o r :   # 0 0 0 ; 
-     t e x t - t r a n s f o r m :   u p p e r c a s e ; 
-     f o n t - s i z e :   1 . 5 r e m ; 
- } 
- 
- . a d m i n - t a b - s u b t i t l e   { 
-     c o l o r :   # 2 2 2 ; 
-     f o n t - s i z e :   1 r e m ; 
- } 
- 
- . g p - i n p u t - l a b e l - f i x e d   { 
-     w i d t h :   2 0 0 p x ; 
-     m i n - w i d t h :   2 0 0 p x ; 
- } 
- 
- . g p - i n p u t - c o n t e n t - f l e x   { 
-     m i n - w i d t h :   0 ; 
- } 
- 
- . g p - t e x t a r e a - l a b e l   { 
-     w i d t h :   1 0 0 % ; 
-     m i n - w i d t h :   1 0 0 % ; 
-     b o r d e r - r a d i u s :   8 p x   8 p x   0 p x   0 p x ; 
-     h e i g h t :   3 8 p x ; 
-     j u s t i f y - c o n t e n t :   f l e x - s t a r t ; 
-     p a d d i n g - l e f t :   2 0 p x ; 
- } 
- 
- . g p - t e x t a r e a - i n p u t   { 
-     b o r d e r :   n o n e ; 
-     b o r d e r - r a d i u s :   0 p x   0 p x   8 p x   8 p x ; 
-     p a d d i n g :   1 5 p x ; 
-     r e s i z e :   n o n e ; 
-     c o l o r :   # 2 2 2 ; 
- } 
- 
- . b t n - a d m i n - s u b m i t   { 
-     p a d d i n g :   1 0 p x   2 4 p x ; 
- }  
- 
+
+/* Notifications Tab Custom Styles */
+.admin-tab-title {
+  color: #000;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+}
+
+.admin-tab-subtitle {
+  color: #222;
+  font-size: 1rem;
+}
+
+.gp-input-label-fixed {
+  width: 200px;
+  min-width: 200px;
+}
+
+.gp-input-content-flex {
+  min-width: 0;
+}
+
+.gp-textarea-label {
+  width: 100%;
+  min-width: 100%;
+  border-radius: 8px 8px 0px 0px;
+  height: 38px;
+  justify-content: flex-start;
+  padding-left: 20px;
+}
+
+.gp-textarea-input {
+  border: none;
+  border-radius: 0px 0px 8px 8px;
+  padding: 15px;
+  resize: none;
+  color: #222;
+}
+
+.btn-admin-submit {
+  padding: 10px 24px;
+}
+
+/* Dashboard Forms Specific Styles */
+.gp-input-label-sm {
+  width: 140px;
+  min-width: 140px;
+}
+
+.gp-image-preview-container {
+  background-color: #ffffff;
+  width: 220px;
+  height: 180px;
+  border: 1.5px solid #e0e0e0;
+}
+
+.gp-image-preview {
+  max-height: 140px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.gp-file-upload-label {
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.gp-color-picker {
+  width: 40px;
+  height: 30px;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.fs-sm {
+  font-size: 0.95rem;
+}
+
+.gp-driver-image-container {
+  background-color: #ffffff;
+  max-width: 220px;
+  width: 100%;
+  border: 1.5px solid #e0e0e0;
+}
+
+.gp-driver-image {
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.gp-circuit-image-container {
+  background-color: #ffffff;
+  max-width: 450px;
+  width: 100%;
+  border: 1.5px solid #e0e0e0;
+}
+
+.gp-circuit-image {
+  max-height: 250px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.bg-disabled {
+  background-color: #b0b0b0 !important;
+}
+
+.col-team-select {
+  min-width: 250px;
+}
+
+.auth-container-admin {
+  max-width: 1070px;
+}
+
+.gp-alert-danger {
+  background-color: #c35147;
+  border-color: #c35147;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Race Form Specific Styles */
+.gp-section-title {
+  background-color: #111d2a;
+  min-height: 48px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.gp-race-type-label {
+  text-transform: capitalize;
+  background-color: #4a76a8;
+  justify-content: center;
+  width: auto;
+  flex: 1;
+}
+
+.gp-race-type-checkbox-container {
+  width: 80px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+.gp-checkbox-icon {
+  font-size: 22px;
+  color: #222;
+  font-weight: bold;
+}
+
+.gp-checkbox-empty {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #888;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.gp-datetime-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gp-datetime-label.enabled {
+  background-color: #4a76a8;
+}
+.gp-datetime-label.disabled {
+  background-color: #b0b0b0;
+}
+
+.gp-datetime-input {
+  background-color: white;
+  color: #222;
+  border: none;
+  padding: 10px;
+}
+
+.gp-race-tab-btn {
+  background-color: #111d2a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  height: 48px;
+  width: 100%;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gp-race-tab-btn.active {
+  background-color: #2e7d32;
+}
+
+@media (max-width: 767px) {
+  .gp-datetime-label {
+    width: 100%;
+    min-width: 100%;
+    border-radius: 8px 8px 0px 0px;
+    height: 36px;
+    padding: 0;
+  }
+  .gp-datetime-input {
+    text-align: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .gp-datetime-label {
+    width: 80px;
+    min-width: 80px;
+    border-radius: 8px 0px 0px 8px;
+    height: auto;
+    padding: 10px 15px;
+  }
+  .gp-datetime-input {
+    text-align: left;
+  }
+}

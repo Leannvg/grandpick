@@ -111,7 +111,7 @@ function Register() {
 
             {/* PAIS */}
             <div className="gp-input-group-container">
-              <div className={`gp-input-group ${errorsForm.country ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
+              <div className={`gp-input-group overflow-visible ${errorsForm.country ? "is-invalid" : ""}`}>
                 <span className="gp-input-label">País</span>
                 <div className="flex-fill">
                   <CountrySelect
@@ -176,9 +176,9 @@ function Register() {
           </form>
 
           <div className="auth-teaser mt-4">
-            <p className="text-white opacity-75 mb-1" style={{ fontSize: '14px' }}>¿Ya tenés una cuenta?</p>
-            <Link to="/login" style={{ color: "var(--color-red)", fontWeight: "600", textDecoration: "none", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-              Iniciá sesión acá
+            <p className="text-white opacity-75 mb-1 auth-teaser-text">¿Ya tenés una cuenta?</p>
+            <Link to="/login" className="auth-link-bold">
+              Inicia sesión acá
             </Link>
           </div>
         </div>

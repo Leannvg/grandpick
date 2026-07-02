@@ -27,7 +27,7 @@ function RaceEdit({ action }) {
   return (
     <main>
       <section className="auth-section page-section container text-center">
-        <div className="auth-container" style={{ maxWidth: "1070px" }}>
+        <div className="auth-container auth-container-admin">
           <header className="page-header">
             <p className="section-label">Modificá los datos existentes</p>
             <h1 className="section-title">EDITAR CARRERA</h1>
@@ -36,7 +36,7 @@ function RaceEdit({ action }) {
             </p>
           </header>
 
-          <div className="alert alert-danger shadow rounded-3 my-4 p-3 text-center" style={{ backgroundColor: "#c35147", borderColor: "#c35147", color: "#fff", fontSize: "14px", fontWeight: "500" }}>
+          <div className="alert alert-danger shadow rounded-3 my-4 p-3 text-center gp-alert-danger">
             Recordá ingresar las fechas y horarios según la hora local del circuito. Estos serán utilizados como datos oficiales para todas las conversiones y horarios globales.
           </div>
 

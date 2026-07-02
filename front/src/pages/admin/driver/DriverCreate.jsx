@@ -52,7 +52,7 @@ function DriverCreate() {
   return (
     <main>
       <section className="auth-section page-section container text-center">
-        <div className="auth-container" style={{ maxWidth: "1070px" }}>
+        <div className="auth-container auth-container-admin">
           <header className="page-header">
             <p className="section-label">Añadí un nuevo piloto al sistema</p>
             <h1 className="section-title">NUEVO PILOTO</h1>

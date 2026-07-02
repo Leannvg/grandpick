@@ -85,14 +85,12 @@ function CircuitForm({
       {/* Vista previa de la imagen centrada */}
       <div className="text-center mb-4">
         <div
-          className="d-inline-block p-3 rounded-4"
-          style={{ backgroundColor: "#ffffff", maxWidth: "450px", width: "100%", border: "1.5px solid #e0e0e0" }}
+          className="d-inline-block p-3 rounded-4 gp-circuit-image-container"
         >
           <img
             src={previewUrl ? previewUrl : getImageUrl(currentImage || CLOUDINARY_DEFAULTS.EMPTY, 500)}
             alt="Vista previa del circuito"
-            className="img-fluid rounded-3"
-            style={{ maxHeight: "250px", objectFit: "contain", borderRadius: "10px" }}
+            className="img-fluid rounded-3 gp-circuit-image"
           />
         </div>
       </div>
@@ -102,10 +100,9 @@ function CircuitForm({
         <div className="col-12">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.img ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Imagen</span>
+              <span className="gp-input-label gp-input-label-sm">Imagen</span>
               <label
-                className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control"
-                style={{ cursor: "pointer", minHeight: "44px" }}
+                className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control gp-file-upload-label"
               >
                 <input
                   type="file"
@@ -113,7 +110,7 @@ function CircuitForm({
                   onChange={handleFileChange}
                   className="d-none"
                 />
-                <span className="text-secondary" style={{ fontSize: "0.95rem" }}>
+                <span className="text-secondary fs-sm">
                   {imageFile ? imageFile.name : (currentImage ? "Imagen cargada" : "Selecciona una imagen")}
                 </span>
               </label>
@@ -130,7 +127,7 @@ function CircuitForm({
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.circuit_name ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Nombre</span>
+              <span className="gp-input-label gp-input-label-sm">Nombre</span>
               <input
                 type="text"
                 className="form-control bg-white"
@@ -148,7 +145,7 @@ function CircuitForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.laps ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Numero de vueltas</span>
+              <span className="gp-input-label gp-input-label-sm">Numero de vueltas</span>
               <input
                 type="number"
                 className="form-control bg-white"
@@ -168,8 +165,8 @@ function CircuitForm({
       <div className="row">
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
-            <div className={`gp-input-group ${errorsForm.country ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>País</span>
+            <div className={`gp-input-group overflow-visible ${errorsForm.country ? "is-invalid" : ""}`}>
+              <span className="gp-input-label gp-input-label-sm">País</span>
               <div className="flex-fill">
                 <CountrySelect
                   countryFunction={setCountry}
@@ -188,8 +185,8 @@ function CircuitForm({
 
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
-            <div className={`gp-input-group ${errorsForm.city ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Ciudad/Estado</span>
+            <div className={`gp-input-group overflow-visible ${errorsForm.city ? "is-invalid" : ""}`}>
+              <span className="gp-input-label gp-input-label-sm">Ciudad/Estado</span>
               <div className="flex-fill">
                 <CitySelect
                   cityFunction={(id, tz) => {
@@ -217,13 +214,12 @@ function CircuitForm({
           <div className="col-12">
             <div className="gp-input-group-container">
               <div className="gp-input-group opacity-50">
-                <span className="gp-input-label" style={{ width: "140px", minWidth: "140px", backgroundColor: "#b0b0b0" }}>Timezone</span>
+                <span className="gp-input-label gp-input-label-sm bg-disabled">Timezone</span>
                 <input
                   type="text"
-                  className="form-control"
+                  className="form-control bg-white text-dark"
                   value={timezone}
                   disabled
-                  style={{ backgroundColor: "white", color: "#222" }}
                 />
               </div>
             </div>
@@ -236,7 +232,7 @@ function CircuitForm({
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.gp_name ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Nombre del GP</span>
+              <span className="gp-input-label gp-input-label-sm">Nombre del GP</span>
               <input
                 type="text"
                 className="form-control bg-white"
@@ -254,7 +250,7 @@ function CircuitForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.length ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Longitud (km)</span>
+              <span className="gp-input-label gp-input-label-sm">Longitud (km)</span>
               <input
                 type="text"
                 className="form-control bg-white"
@@ -275,35 +271,16 @@ function CircuitForm({
         <div className="col-12">
           <div className="gp-input-group-container">
             <div
-              className={`gp-input-group ${errorsForm.description ? "is-invalid" : ""}`}
-              style={{ flexDirection: "column", alignItems: "stretch" }}
+              className={`gp-input-group flex-column align-items-stretch ${errorsForm.description ? "is-invalid" : ""}`}
             >
-              <span
-                className="gp-input-label"
-                style={{
-                  width: "100%",
-                  minWidth: "100%",
-                  borderRadius: "8px 8px 0px 0px",
-                  height: "38px",
-                  justifyContent: "start",
-                  paddingLeft: "20px"
-                }}
-              >
+              <span className="gp-input-label gp-textarea-label">
                 Descripción
               </span>
               <textarea
-                className="form-control text-start bg-white"
+                className="form-control text-start bg-white gp-textarea-input"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Ingresa la descripción del circuito..."
-                style={{
-                  border: "none",
-                  borderRadius: "0px 0px 8px 8px",
-                  padding: "15px",
-                  minHeight: "120px",
-                  backgroundColor: "white",
-                  color: "#222"
-                }}
               />
             </div>
             {errorsForm.description && (

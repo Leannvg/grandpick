@@ -75,14 +75,12 @@ function DriverForm({
       {/* Vista previa de la imagen */}
       <div className="text-center mb-4">
         <div
-          className="d-inline-block p-3 rounded-4"
-          style={{ backgroundColor: "#ffffff", maxWidth: "220px", width: "100%", border: "1.5px solid #e0e0e0" }}
+          className="d-inline-block p-3 rounded-4 gp-driver-image-container"
         >
           <img
             src={previewUrl ? previewUrl : getImageUrl(currentImage || CLOUDINARY_DEFAULTS.EMPTY, 500)}
             alt="Vista previa del piloto"
-            className="img-fluid rounded-3"
-            style={{ maxHeight: "200px", objectFit: "contain", borderRadius: "10px" }}
+            className="img-fluid rounded-3 gp-driver-image"
           />
         </div>
       </div>
@@ -92,10 +90,9 @@ function DriverForm({
         <div className="col-12">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.img ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Imagen</span>
+              <span className="gp-input-label gp-input-label-sm">Imagen</span>
               <label
-                className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control"
-                style={{ cursor: "pointer", minHeight: "44px" }}
+                className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control gp-file-upload-label"
               >
                 <input
                   type="file"
@@ -103,7 +100,7 @@ function DriverForm({
                   onChange={handleFileChange}
                   className="d-none"
                 />
-                <span className="text-secondary" style={{ fontSize: "0.95rem" }}>
+                <span className="text-secondary fs-sm">
                   {imageFile ? imageFile.name : (currentImage ? "Imagen cargada" : "Selecciona una imagen")}
                 </span>
               </label>
@@ -120,7 +117,7 @@ function DriverForm({
         <div className="col-12">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.full_name ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Nombre completo</span>
+              <span className="gp-input-label gp-input-label-sm">Nombre completo</span>
               <input
                 type="text"
                 className="form-control bg-white"
@@ -141,7 +138,7 @@ function DriverForm({
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.trigram ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Trigrama</span>
+              <span className="gp-input-label gp-input-label-sm">Trigrama</span>
               <input
                 type="text"
                 className="form-control bg-white"
@@ -160,7 +157,7 @@ function DriverForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.number ? "is-invalid" : ""}`}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Número</span>
+              <span className="gp-input-label gp-input-label-sm">Número</span>
               <input
                 type="number"
                 className="form-control bg-white"
@@ -180,8 +177,8 @@ function DriverForm({
       <div className="row">
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
-            <div className={`gp-input-group ${errorsForm.country ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>País</span>
+            <div className={`gp-input-group overflow-visible ${errorsForm.country ? "is-invalid" : ""}`}>
+              <span className="gp-input-label gp-input-label-sm">País</span>
               <div className="flex-fill">
                 <CountrySelect
                   countryFunction={setCountry}
@@ -201,8 +198,8 @@ function DriverForm({
         {/* Fila 3b: Escudería */}
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
-            <div className={`gp-input-group ${errorsForm.team ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
-              <span className="gp-input-label" style={{ width: "140px", minWidth: "140px" }}>Escudería</span>
+            <div className={`gp-input-group overflow-visible ${errorsForm.team ? "is-invalid" : ""}`}>
+              <span className="gp-input-label gp-input-label-sm">Escudería</span>
               <div className="flex-fill">
                 <SearchableSelect
                   options={allTeams}

@@ -76,6 +76,18 @@
     object-fit: cover;
 }
 
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Utilities for Profile.jsx */
+.bg-qualy { background-color: #E6E6E6; }
+.bg-sprint { background-color: #FFCD56; }
+.bg-race { background-color: #D40000; }
+.h-180px { height: 180px; }
+
 .user-details {
     display: flex;
     flex-direction: column;

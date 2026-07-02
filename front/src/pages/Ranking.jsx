@@ -197,7 +197,7 @@ function Ranking() {
                     <div className="col-12 col-md-auto order-2 order-md-1 px-0 m-0">
                         <div className="row g-2 m-0 w-100">
                             <div className="col-6 col-md-auto px-1 px-md-0 me-md-2">
-                                <div className="ranking-input-group w-100" style={{ height: '38px' }}>
+                                <div className="ranking-input-group w-100 h-38px">
                                     <span className="ranking-input-group-text">Mostrar</span>
                                     <select
                                         value={pageSize}
@@ -215,7 +215,7 @@ function Ranking() {
                             </div>
 
                             <div className="col-6 col-md-auto px-1 px-md-0">
-                                <div className="ranking-input-group w-100" style={{ height: '38px' }}>
+                                <div className="ranking-input-group w-100 h-38px">
                                     <span className="ranking-input-group-text">Año</span>
                                     <select
                                         value={selectedYear}
@@ -239,33 +239,30 @@ function Ranking() {
                         <div className="row g-2 m-0 w-100 justify-content-end h-100">
                             <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex">
                                 <button
-                                    className={`info-page__mode-btn w-100 m-0 ${mode === 'global' ? 'is-active' : ''}`}
+                                    className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'global' ? 'is-active' : ''}`}
                                     onClick={() => setMode('global')}
-                                    style={{ height: '38px', padding: '0 15px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}
                                 >
                                     Global
                                 </button>
                             </div>
                             <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex d-md-none">
                                 <button
-                                    className={`info-page__mode-btn w-100 m-0 ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                                    className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'grand_prix' ? 'is-active' : ''}`}
                                     onClick={() => {
                                         setMode('grand_prix');
                                         setPage(1);
                                     }}
-                                    style={{ height: '38px', padding: '0 15px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}
                                 >
                                     GP
                                 </button>
                             </div>
                             <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-none d-md-flex">
                                 <button
-                                    className={`info-page__mode-btn w-100 m-0 ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                                    className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'grand_prix' ? 'is-active' : ''}`}
                                     onClick={() => {
                                         setMode('grand_prix');
                                         setPage(1);
                                     }}
-                                    style={{ height: '38px', padding: '0 15px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}
                                 >
                                     Por Gran Premio
                                 </button>
@@ -279,10 +276,10 @@ function Ranking() {
 
                     {/* Circuito (Only in GP Mode) */}
                     {mode === 'grand_prix' && (
-                        <div className="order-3 order-md-1 flex-md-fill" style={{ minWidth: '200px' }}>
-                            <div className="ranking-input-group w-100 m-0" style={{ height: '44px' }}>
+                        <div className="order-3 order-md-1 flex-md-fill min-w-200">
+                            <div className="ranking-input-group w-100 m-0 h-44px">
                                 <span className="ranking-input-group-text">Circuito</span>
-                                <div style={{ flexGrow: 1, height: '100%' }}>
+                                <div className="flex-grow-1 h-100">
                                     <SearchableSelect
                                         options={racesList}
                                         value={selectedCircuitId}
@@ -300,8 +297,8 @@ function Ranking() {
 
                     {/* TU PUESTO */}
                     {currentUserStat && !searchTerm && (
-                        <div className="order-2 order-md-2 flex-md-fill" style={{ minWidth: '250px' }}>
-                            <div className="ranking-user-status w-100 m-0 h-100" style={{ minHeight: '44px' }}>
+                        <div className="order-2 order-md-2 flex-md-fill min-w-250">
+                            <div className="ranking-user-status w-100 m-0 h-100 min-h-44px">
                                 <div className="ranking-user-status__content">
                                     <div className="status-item status-item--rank">
                                         <span className="status-label">TU PUESTO</span>
@@ -345,7 +342,7 @@ function Ranking() {
                                             }, page !== targetPage ? 300 : 50);
                                         }}
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: 14 }}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-14px">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 11.25l-3-3m0 0l-3 3m3-3v7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </button>
@@ -355,8 +352,8 @@ function Ranking() {
                     )}
 
                     {/* BUSCADOR */}
-                    <div className="order-1 order-md-3 flex-md-fill" style={{ minWidth: '200px' }}>
-                        <div className="ranking-search w-100 m-0" style={{ height: '44px', maxWidth: 'none' }}>
+                    <div className="order-1 order-md-3 flex-md-fill min-w-200">
+                        <div className="ranking-search w-100 m-0 h-44px max-w-none">
                             <input
                                 type="text"
                                 placeholder="Buscador"
@@ -376,9 +373,9 @@ function Ranking() {
                         <thead>
                             <tr>
                                 <th>Pos.</th>
-                                <th style={{ width: '50px' }}>País</th>
+                                <th className="w-50px">País</th>
                                 <th className="text-start col-user">Usuario</th>
-                                <th style={{ width: '120px' }}>Puntos totales</th>
+                                <th className="w-120px">Puntos totales</th>
                                 {mode === 'global' && <th>Predicciones jugadas</th>}
                                 {mode === 'global' && <th>Promedio por predicción</th>}
                                 {mode === 'global' && <th>Aciertos totales</th>}
@@ -453,7 +450,7 @@ function Ranking() {
                             })}
                             {paginatedData.length === 0 && (
                                 <tr>
-                                    <td colSpan={mode === 'global' ? "7" : "5"} style={{ padding: '40px', color: '#666' }}>
+                                    <td colSpan={mode === 'global' ? "7" : "5"} className="ranking-empty-state">
                                         No se encontraron usuarios
                                     </td>
                                 </tr>

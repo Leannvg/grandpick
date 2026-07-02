@@ -278,7 +278,7 @@ const Home = () => {
                             {!loading && podiumOrder.map((user) => (
                                 <div key={user._id} className={`podium__item podium__item--pos${user.globalRank}`}>
                                     <div className="d-flex justify-content-center">
-                                        <span className="emoji-flag podium__flag" style={{ display: 'block', fontSize: '1.6rem' }}>
+                                        <span className="emoji-flag podium__flag d-block fs-16rem">
                                             {getFlagEmoji(user.country)}
                                         </span>
                                     </div>
@@ -302,9 +302,9 @@ const Home = () => {
                                     <thead>
                                         <tr>
                                             <th>Pos.</th>
-                                            <th style={{ width: '50px' }}>País</th>
+                                            <th className="w-50px">País</th>
                                             <th className="text-start col-user">Nombre</th>
-                                            <th style={{ width: '120px' }}>Puntos totales</th>
+                                            <th className="w-120px">Puntos totales</th>
                                             <th>Predicciones jugadas</th>
                                             <th>Aciertos totales</th>
                                         </tr>
