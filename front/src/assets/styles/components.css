@@ -689,6 +689,31 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     color: #888;
 }
 
+/* iOS Safari empty date/time fix */
+input[type="date"].form-control,
+input[type="time"].form-control {
+    min-height: 44px;
+}
+
+.is-empty-date::-webkit-datetime-edit,
+.is-empty-time::-webkit-datetime-edit {
+    color: transparent;
+}
+
+.is-empty-date::before {
+    content: 'dd/mm/aaaa';
+    color: #888;
+    position: absolute;
+    pointer-events: none;
+}
+
+.is-empty-time::before {
+    content: '--:--';
+    color: #888;
+    position: absolute;
+    pointer-events: none;
+}
+
 .gp-password-toggle {
     border: none;
     background: transparent;

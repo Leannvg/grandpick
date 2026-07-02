@@ -498,7 +498,7 @@ function RaceForm({
               <div className={`gp-input-group ${errorsForm.date_gp_start ? "is-invalid" : ""}`}>
                 <span className="gp-input-label">Inicio</span>
                 <input
-                  className="form-control"
+                  className={`form-control ${!dateStart ? 'is-empty-date' : ''}`}
                   type="date"
                   min={yearStart}
                   max={yearEnd}
@@ -515,7 +515,7 @@ function RaceForm({
               <div className={`gp-input-group ${errorsForm.date_gp_end ? "is-invalid" : ""}`}>
                 <span className="gp-input-label">Fin</span>
                 <input
-                  className="form-control"
+                  className={`form-control ${!dateFinish ? 'is-empty-date' : ''}`}
                   type="date"
                   min={yearStart}
                   max={yearEnd}
@@ -583,7 +583,7 @@ function RaceForm({
                         Fecha
                       </span>
                       <input
-                        className="form-control gp-datetime-input"
+                        className={`form-control gp-datetime-input ${!pointData[p._id]?.fecha ? 'is-empty-date' : ''}`}
                         type="date"
                         min={dateStart || yearStart}
                         max={dateFinish || yearEnd}
@@ -610,7 +610,7 @@ function RaceForm({
                         Hora
                       </span>
                       <input
-                        className="form-control gp-datetime-input"
+                        className={`form-control gp-datetime-input ${!pointData[p._id]?.hora ? 'is-empty-time' : ''}`}
                         type="time"
                         disabled={!isEnabled}
                         value={pointData[p._id]?.hora || ""}
