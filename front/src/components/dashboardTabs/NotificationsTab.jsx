@@ -89,69 +89,115 @@ function NotificationsTab({ users = [] }) {
       {loading ? (
         <LoaderSpinner />
       ) : (
-        <form onSubmit={handleSubmit} className="p-4 rounded shadow-lg" style={{ backgroundColor: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
-          <div className="mb-3">
-            <label htmlFor="userId" className="form-label text-white">Destinatario</label>
-            <select
-              id="userId"
-              name="userId"
-              value={formData.userId}
-              onChange={handleChange}
-              className="form-control"
-              style={{ backgroundColor: "#f8fafc", cursor: "pointer" }}
-            >
-              <option value="all">Todos los usuarios</option>
-              {users.map((user) => (
-                <option key={user._id} value={user._id}>
-                  {user.name} {user.last_name} ({user.email})
-                </option>
-              ))}
-            </select>
+        <form onSubmit={handleSubmit} className="text-start">
+          <div className="row mb-3">
+            <div className="col-12">
+              <div className="gp-input-group-container">
+                <div className="gp-input-group">
+                  <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Destinatario</span>
+                  <select
+                    id="userId"
+                    name="userId"
+                    value={formData.userId}
+                    onChange={handleChange}
+                    className="form-control bg-white m-0"
+                    style={{ border: "none", cursor: "pointer" }}
+                  >
+                    <option value="all">Todos los usuarios</option>
+                    {users.map((user) => (
+                      <option key={user._id} value={user._id}>
+                        {user.name} {user.last_name} ({user.email})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="title" className="form-label text-white">Título del comunicado</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              placeholder="Ej: Mantenimiento programado"
-              value={formData.title}
-              onChange={handleChange}
-              className="form-control"
-              style={{ backgroundColor: "#f8fafc" }}
-            />
+          <div className="row mb-3">
+            <div className="col-12">
+              <div className="gp-input-group-container">
+                <div className="gp-input-group">
+                  <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Título del comunicado</span>
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="Ej: Mantenimiento programado"
+                    value={formData.title}
+                    onChange={handleChange}
+                    className="form-control bg-white m-0"
+                    style={{ border: "none" }}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="message" className="form-label text-white">Mensaje</label>
-            <textarea
-              id="message"
-              name="message"
-              rows="4"
-              placeholder="Escribe el mensaje aquí..."
-              value={formData.message}
-              onChange={handleChange}
-              className="form-control"
-              style={{ resize: "vertical", backgroundColor: "#f8fafc" }}
-            ></textarea>
+          <div className="row mb-3">
+            <div className="col-12">
+              <div className="gp-input-group-container">
+                <div
+                  className="gp-input-group"
+                  style={{ flexDirection: "column", alignItems: "stretch" }}
+                >
+                  <span
+                    className="gp-input-label"
+                    style={{
+                      width: "100%",
+                      minWidth: "100%",
+                      borderRadius: "8px 8px 0px 0px",
+                      height: "38px",
+                      justifyContent: "start",
+                      paddingLeft: "20px"
+                    }}
+                  >
+                    Mensaje
+                  </span>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="4"
+                    placeholder="Escribe el mensaje aquí..."
+                    value={formData.message}
+                    onChange={handleChange}
+                    className="form-control text-start bg-white m-0"
+                    style={{
+                      border: "none",
+                      borderRadius: "0px 0px 8px 8px",
+                      padding: "15px",
+                      minHeight: "120px",
+                      resize: "vertical",
+                      color: "#222"
+                    }}
+                  ></textarea>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="link" className="form-label text-white">Link adjunto (opcional)</label>
-            <input
-              type="text"
-              id="link"
-              name="link"
-              placeholder="Ej: /predictions"
-              value={formData.link}
-              onChange={handleChange}
-              className="form-control"
-              style={{ backgroundColor: "#f8fafc" }}
-            />
+          <div className="row mb-4">
+            <div className="col-12">
+              <div className="gp-input-group-container">
+                <div className="gp-input-group">
+                  <span className="gp-input-label" style={{ width: "200px", minWidth: "200px" }}>Link adjunto (opcional)</span>
+                  <input
+                    type="text"
+                    id="link"
+                    name="link"
+                    placeholder="Ej: /predictions"
+                    value={formData.link}
+                    onChange={handleChange}
+                    className="form-control bg-white m-0"
+                    style={{ border: "none" }}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="d-flex justify-content-end mt-2">
+          <div className="d-flex justify-content-center mt-4">
             <button type="submit" className="btn-admin-add" style={{ padding: "10px 24px" }}>
               <i className="bi bi-send"></i> Revisar Comunicado
             </button>
