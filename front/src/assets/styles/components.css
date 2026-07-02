@@ -693,6 +693,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 input[type="date"].form-control,
 input[type="time"].form-control {
     min-height: 44px;
+    position: relative;
 }
 
 .is-empty-date::-webkit-datetime-edit,
@@ -705,6 +706,9 @@ input[type="time"].form-control {
     color: #888;
     position: absolute;
     pointer-events: none;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .is-empty-time::before {
@@ -712,6 +716,9 @@ input[type="time"].form-control {
     color: #888;
     position: absolute;
     pointer-events: none;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .gp-password-toggle {

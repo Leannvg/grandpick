@@ -561,11 +561,11 @@ function RaceForm({
                           }
                         }}
                       >
-                        {isEnabled ? (
-                          <span className="gp-checkbox-icon">✓</span>
-                        ) : (
-                          <div className="gp-checkbox-empty" />
-                        )}
+                        <div className={`gp-custom-checkbox ${isEnabled ? "checked" : ""}`}>
+                          <svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.6667 3.5L5.25001 9.91667L2.33334 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
