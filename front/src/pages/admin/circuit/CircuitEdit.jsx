@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CircuitsServices from "./../../../services/circuits.services.js";
-import CircuitForm from "./../../../components/dashboardForms/CircuitForm.jsx";
+import CircuitForm from "../../../components/dashboardForms/CircuitForm";
+import BackButton from "../../../components/BackButton";
 import * as helpers from "./../../../utils/helpers.js";
 import { useRedirectToTab } from "./../../../hooks/useRedirectToTab.js";
 import { useAlert } from "../../../context/AlertContext.jsx";
@@ -59,6 +60,7 @@ function CircuitEdit() {
     <main>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
+          <BackButton to="/admin/dashboard" text="Volver al Dashboard" />
           <header className="page-header">
             <p className="section-label">Modificá los datos del trazado</p>
             <h1 className="section-title">EDITAR CIRCUITO</h1>

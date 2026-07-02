@@ -1,6 +1,7 @@
 import { useState } from "react";
 import TeamsServices from "./../../../services/teams.services.js";
-import TeamForm from "./../../../components/dashboardForms/TeamForm.jsx";
+import TeamForm from "../../../components/dashboardForms/TeamForm";
+import BackButton from "../../../components/BackButton.jsx";
 import * as helpers from "./../../../utils/helpers.js";
 import { useRedirectToTab } from "../../../hooks/useRedirectToTab.js";
 import { useAlert } from "../../../context/AlertContext.jsx";
@@ -58,6 +59,7 @@ function TeamCreate() {
     <main>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
+          <BackButton to="/admin/dashboard" text="Volver al Dashboard" />
           <header className="page-header">
             <p className="section-label">Sumá un nuevo equipo al campeonato</p>
             <h1 className="section-title">NUEVA ESCUDERÍA</h1>

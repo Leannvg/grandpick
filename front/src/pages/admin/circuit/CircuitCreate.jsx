@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CircuitsServices from "./../../../services/circuits.services.js";
 import CircuitForm from "./../../../components/dashboardForms/CircuitForm.jsx";
+import BackButton from "../../../components/BackButton";
 import * as helpers from "./../../../utils/helpers.js";
 import { useRedirectToTab } from "../../../hooks/useRedirectToTab.js";
 import { useAlert } from "../../../context/AlertContext.jsx";
@@ -53,6 +54,7 @@ function CircuitCreate() {
     <main>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
+          <BackButton to="/admin/dashboard" text="Volver al Dashboard" />
           <header className="page-header">
             <p className="section-label">Añadí un nuevo trazado al sistema</p>
             <h1 className="section-title">NUEVO CIRCUITO</h1>

@@ -1,5 +1,6 @@
 import RacesServices from "../../../services/races.services.js";
 import RaceForm from "../../../components/dashboardForms/RaceForm.jsx";
+import BackButton from "../../../components/BackButton.jsx";
 import { useNavigate } from "react-router-dom";
 
 
@@ -12,6 +13,7 @@ function RaceCreate({ action }) {
     <main>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
+          <BackButton to="/admin/dashboard" text="Volver al Dashboard" />
           <header className="page-header">
             <p className="section-label">Carga una nueva carrera</p>
             <h1 className="section-title">NUEVA CARRERA</h1>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import TeamsServices from "./../../../services/teams.services.js";
 import TeamForm from "./../../../components/dashboardForms/TeamForm.jsx";
+import BackButton from "../../../components/BackButton.jsx";
 import * as helpers from "./../../../utils/helpers.js";
 import { useRedirectToTab } from "../../../hooks/useRedirectToTab.js";
 import { useAlert } from "../../../context/AlertContext.jsx";
@@ -68,6 +69,7 @@ function TeamEdit() {
     <main>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
+          <BackButton to="/admin/dashboard" text="Volver al Dashboard" />
           <header className="page-header">
             <p className="section-label">Modificá los datos del equipo</p>
             <h1 className="section-title">EDITAR ESCUDERÍA</h1>

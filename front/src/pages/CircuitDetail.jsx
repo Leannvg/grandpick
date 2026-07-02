@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import circuitsServices from "../services/circuits.services";
 import racesServices from "../services/races.services";
 import { useLoader } from "../context/LoaderContext";
+import CountdownTimer from '../components/CountdownTimer';
+import BackButton from '../components/BackButton';
 import CountryDisplay from "../components/CountryDisplay.jsx";
 import "../assets/styles/globals.css";
 import { getImageUrl } from "../utils/cloudinary";
@@ -50,14 +52,7 @@ function CircuitDetail() {
             <section className="circuits-section page-section container text-center">
                 <article className="circuit-detail">
                     {/* BREADCRUMB */}
-                    <div className="text-start breadcrumb-wrapper">
-                        <Link to="/circuits" className="breadcrumb-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                            </svg>
-                            Volver a circuitos
-                        </Link>
-                    </div>
+                    <BackButton to="/circuits" text="Volver a circuitos" />
 
                     {/* HEADER */}
                     <header className="page-header">

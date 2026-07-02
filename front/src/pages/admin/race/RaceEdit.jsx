@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import RacesServices from "../../../services/races.services.js";
 import RaceForm from "../../../components/dashboardForms/RaceForm.jsx";
+import BackButton from "../../../components/BackButton.jsx";
 import * as helpers from "../../../utils/helpers.js";
 import { DateTime } from "luxon";
 
@@ -28,6 +29,7 @@ function RaceEdit({ action }) {
     <main>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
+          <BackButton to="/admin/dashboard" text="Volver al Dashboard" />
           <header className="page-header">
             <p className="section-label">Modificá los datos existentes</p>
             <h1 className="section-title">EDITAR CARRERA</h1>

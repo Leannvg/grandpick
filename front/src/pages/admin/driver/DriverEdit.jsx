@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import DriversServices from "../../../services/drivers.services.js";
 import DriverForm from "./../../../components/dashboardForms/DriverForm.jsx";
+import BackButton from "../../../components/BackButton.jsx";
 import * as helpers from "../../../utils/helpers.js";
 import { useRedirectToTab } from "../../../hooks/useRedirectToTab.js";
 import { useAlert } from "../../../context/AlertContext.jsx";
@@ -66,6 +67,7 @@ function DriverEdit() {
     <main>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
+          <BackButton to="/admin/dashboard" text="Volver al Dashboard" />
           <header className="page-header">
             <p className="section-label">Modificá los datos del piloto</p>
             <h1 className="section-title">EDITAR PILOTO</h1>
