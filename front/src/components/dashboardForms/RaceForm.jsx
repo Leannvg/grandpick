@@ -563,7 +563,7 @@ function RaceForm({
                       >
                         <div className={`gp-custom-checkbox ${isEnabled ? "checked" : ""}`}>
                           <svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M11.6667 3.5L5.25001 9.91667L2.33334 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M11.6667 3.5L5.25001 9.91667L2.33334 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         </div>
                       </div>
@@ -630,7 +630,7 @@ function RaceForm({
 
       {/* GRUPO 3: Resultados */}
       {(action == "edit") && (
-        <div className="row mb-5 align-items-start">
+        <div className="row align-items-start">
           <div className="col-12 col-md-3 mb-3 mb-md-0">
             <div className="d-flex justify-content-center align-items-center rounded-3 p-2 text-white text-center gp-section-title">
               Resultados
@@ -688,7 +688,7 @@ function RaceForm({
         </div>
       )}
 
-      <div className="d-flex justify-content-center mt-5">
+      <div className="d-flex justify-content-center mb-5">
         <SubmitButton ariaLabel={submitText} />
       </div>
     </form>
