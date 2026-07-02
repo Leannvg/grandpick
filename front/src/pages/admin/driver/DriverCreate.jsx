@@ -54,7 +54,7 @@ function DriverCreate() {
     <main>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
-          <BackButton to="/admin/dashboard" text="Volver al Dashboard" />
+          <BackButton to="/admin/dashboard?tab=Pilotos" text="Volver a pilotos" />
           <header className="page-header">
             <p className="section-label">Añadí un nuevo piloto al sistema</p>
             <h1 className="section-title">NUEVO PILOTO</h1>

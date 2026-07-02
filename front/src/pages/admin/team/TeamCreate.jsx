@@ -59,7 +59,7 @@ function TeamCreate() {
     <main>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
-          <BackButton to="/admin/dashboard" text="Volver al Dashboard" />
+          <BackButton to="/admin/dashboard?tab=Escuderias" text="Volver a escuderías" />
           <header className="page-header">
             <p className="section-label">Sumá un nuevo equipo al campeonato</p>
             <h1 className="section-title">NUEVA ESCUDERÍA</h1>

@@ -60,7 +60,7 @@ function CircuitEdit() {
     <main>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
-          <BackButton to="/admin/dashboard" text="Volver al Dashboard" />
+          <BackButton to="/admin/dashboard?tab=Circuitos" text="Volver a circuitos" />
           <header className="page-header">
             <p className="section-label">Modificá los datos del trazado</p>
             <h1 className="section-title">EDITAR CIRCUITO</h1>

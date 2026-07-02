@@ -29,7 +29,7 @@ function RaceEdit({ action }) {
     <main>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
-          <BackButton to="/admin/dashboard" text="Volver al Dashboard" />
+          <BackButton to="/admin/dashboard?tab=Carreras" text="Volver a carreras" />
           <header className="page-header">
             <p className="section-label">Modificá los datos existentes</p>
             <h1 className="section-title">EDITAR CARRERA</h1>

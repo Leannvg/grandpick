@@ -67,7 +67,7 @@ function DriverEdit() {
     <main>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
-          <BackButton to="/admin/dashboard" text="Volver al Dashboard" />
+          <BackButton to="/admin/dashboard?tab=Pilotos" text="Volver a pilotos" />
           <header className="page-header">
             <p className="section-label">Modificá los datos del piloto</p>
             <h1 className="section-title">EDITAR PILOTO</h1>
