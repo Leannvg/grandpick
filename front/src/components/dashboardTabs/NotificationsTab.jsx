@@ -100,7 +100,7 @@ function NotificationsTab({ users = [] }) {
       {loading ? (
         <LoaderSpinner />
       ) : (
-        <form onSubmit={handleSubmit} className="text-start">
+        <form onSubmit={handleSubmit} className="text-start notifications-form">
           <div className="row">
             {/* Columna Izquierda */}
             <div className="col-lg-6 col-12 d-flex flex-column">

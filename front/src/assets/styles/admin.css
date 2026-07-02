@@ -552,6 +552,22 @@
   padding: 10px 24px;
 }
 
+@media (max-width: 767px) {
+  .notifications-form .gp-input-group {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  
+  .notifications-form .gp-input-label-fixed {
+    width: 100% !important;
+    min-width: 100% !important;
+    border-radius: 8px 8px 0 0 !important;
+    justify-content: flex-start !important;
+    padding-left: 20px !important;
+    height: 38px !important;
+  }
+}
+
 /* Dashboard Forms Specific Styles */
 .gp-input-label-sm {
   width: 140px;

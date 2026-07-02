@@ -689,21 +689,6 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     color: #888;
 }
 
-@media (max-width: 767px) {
-    .gp-input-group {
-        flex-direction: column !important;
-        align-items: stretch !important;
-    }
-    
-    .gp-input-label {
-        width: 100% !important;
-        min-width: 100% !important;
-        border-radius: 8px 8px 0 0 !important;
-        justify-content: flex-start !important;
-        padding-left: 20px !important;
-    }
-}
-
 .gp-password-toggle {
     border: none;
     background: transparent;
