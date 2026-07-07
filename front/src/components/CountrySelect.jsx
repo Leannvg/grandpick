@@ -8,6 +8,7 @@ function CountrySelect({
   isInvalid = false,
   error,
   hideLabel = false,
+  inputId,
 }) {
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(defaultValue);
@@ -40,6 +41,7 @@ function CountrySelect({
         onChange={handleChange}
         placeholder="Selecciona un país"
         isInvalid={isInvalid}
+        inputId={inputId}
       />
 
       {error && <div className="invalid-feedback d-block">{error}</div>}

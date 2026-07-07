@@ -58,12 +58,15 @@ function FloatingChangeEmail({ show, onClose, usuario, onUpdated }) {
         >
           <motion.div
             className="gp-modal-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="dialog-title-email"
             initial={{ scale: 0.8, opacity: 0, y: -30 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: -30 }}
             transition={{ type: "spring", duration: 0.35 }}
           >
-            <h2 className="gp-modal-title">Cambiar Email</h2>
+            <h2 id="dialog-title-email" className="gp-modal-title">Cambiar Email</h2>
             <p className="gp-modal-subtitle">Introduce tu nueva dirección de correo</p>
 
             <div className="gp-form-grid">

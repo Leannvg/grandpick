@@ -7,6 +7,7 @@ function PasswordInput({
   error,
   placeholder = "",
   disabled = false,
+  id,
   ...props
 }) {
   const [show, setShow] = useState(false);
@@ -14,9 +15,10 @@ function PasswordInput({
   return (
     <div className="gp-input-group-container">
       <div className={`gp-input-group ${error ? "is-invalid" : ""}`}>
-        {label && <label className="gp-input-label">{label}</label>}
+        {label && <label className="gp-input-label" htmlFor={id}>{label}</label>}
 
         <input
+          id={id}
           type={show ? "text" : "password"}
           className="form-control"
           value={value}

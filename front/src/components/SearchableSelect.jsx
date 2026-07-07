@@ -117,6 +117,7 @@ function SearchableSelect({
   value,
   onChange,
   isInvalid = false,
+  inputId,
   isDisabled = false,
   isDriver = false,
   placeholder = "Seleccionar...",
@@ -151,6 +152,7 @@ function SearchableSelect({
       blurInputOnSelect={true}
       openMenuOnFocus={true}
       components={{ Option: CustomOption, SingleValue: CustomSingleValue }}
+      inputId={inputId}
       filterOption={(option, inputValue) => {
         const label = option.label.toLowerCase();
         const team = (option.data.teamName || "").toLowerCase();

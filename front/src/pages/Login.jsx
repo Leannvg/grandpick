@@ -57,8 +57,9 @@ function Login({ onLogin }) {
           <form className="auth-form" onSubmit={onSubmit}>
             <div className="gp-input-group-container">
               <div className={`gp-input-group ${errorsForm.email ? "is-invalid" : ""}`}>
-                <span className="gp-input-label">Email</span>
+                <label className="gp-input-label" htmlFor="login-email">Email</label>
                 <input
+                  id="login-email"
                   className="form-control"
                   type="email"
                   placeholder="juan@perez"
@@ -75,6 +76,7 @@ function Login({ onLogin }) {
             </div>
 
             <PasswordInput
+              id="login-password"
               label="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

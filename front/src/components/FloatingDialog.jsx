@@ -24,11 +24,14 @@ function FloatingDialog({
 
             <motion.div
               className="gp-modal-card"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="dialog-title"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
             >
-              <h2 className="gp-modal-title">{title}</h2>
+              <h2 id="dialog-title" className="gp-modal-title">{title}</h2>
               {message && <p className="gp-modal-subtitle">{message}</p>}
 
               <div className="gp-modal-actions">

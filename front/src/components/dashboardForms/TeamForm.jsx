@@ -129,11 +129,11 @@ function TeamForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.logo ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Logo</span>
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-logo-0">Logo</label>
               <label 
                 className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control gp-file-upload-label"
               >
-                <input
+                <input id="field-logo-0"
                   type="file"
                   accept="image/*"
                   onChange={handleLogoChange}
@@ -153,11 +153,11 @@ function TeamForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.isologo ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Isologo</span>
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-isologo-1">Isologo</label>
               <label 
                 className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control gp-file-upload-label"
               >
-                <input
+                <input id="field-isologo-1"
                   type="file"
                   accept="image/*"
                   onChange={handleIsologoChange}
@@ -180,8 +180,8 @@ function TeamForm({
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.full_team_name ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Nombre completo</span>
-              <input
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-nombrecompleto-2">Nombre completo</label>
+              <input id="field-nombrecompleto-2"
                 type="text"
                 className="form-control bg-white"
                 value={full_team_name}
@@ -198,8 +198,8 @@ function TeamForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.world_championships ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Campeonatos</span>
-              <input
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-campeonatos-3">Campeonatos</label>
+              <input id="field-campeonatos-3"
                 type="number"
                 className="form-control bg-white"
                 value={world_championships}
@@ -219,8 +219,8 @@ function TeamForm({
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.name ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Nombre corto</span>
-              <input
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-nombrecorto-4">Nombre corto</label>
+              <input id="field-nombrecorto-4"
                 type="text"
                 className="form-control bg-white"
                 value={name}
@@ -237,8 +237,8 @@ function TeamForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.chief ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Director</span>
-              <input
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-director-5">Director</label>
+              <input id="field-director-5"
                 type="text"
                 className="form-control bg-white"
                 value={chief}
@@ -258,9 +258,9 @@ function TeamForm({
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group overflow-visible ${errorsForm.country ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">País</span>
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-pas-6">País</label>
               <div className="flex-fill">
-                <CountrySelect
+                <CountrySelect inputId="field-pas-6"
                   countryFunction={setCountry}
                   defaultValue={country}
                   isInvalid={!!errorsForm.country}
@@ -278,7 +278,7 @@ function TeamForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group overflow-visible ${errorsForm.city ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Ciudad/Estado</span>
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-ciudadestado-7">Ciudad/Estado</label>
               <div className="flex-fill">
                 <CitySelect
                   cityFunction={setCity}
@@ -302,8 +302,8 @@ function TeamForm({
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.power_unit ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Unidad potencia</span>
-              <input
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-unidadpotencia-8">Unidad potencia</label>
+              <input id="field-unidadpotencia-8"
                 type="text"
                 className="form-control bg-white"
                 value={power_unit}
@@ -320,9 +320,9 @@ function TeamForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.color ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Color</span>
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-color-9">Color</label>
               <div className="d-flex align-items-center bg-white px-3 flex-fill">
-                <input
+                <input id="field-color-9"
                   type="color"
                   className="form-control form-control-color m-0 p-0 border-0 gp-color-picker"
                   value={color || "#ffffff"}

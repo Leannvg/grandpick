@@ -74,8 +74,9 @@ function Register() {
             {/* NOMBRE */}
             <div className="gp-input-group-container">
               <div className={`gp-input-group ${errorsForm.name ? "is-invalid" : ""}`}>
-                <span className="gp-input-label">Nombre</span>
+                <label className="gp-input-label" htmlFor="register-name">Nombre</label>
                 <input
+                  id="register-name"
                   className="form-control"
                   type="text"
                   placeholder="Juan"
@@ -93,8 +94,9 @@ function Register() {
             {/* APELLIDO */}
             <div className="gp-input-group-container">
               <div className={`gp-input-group ${errorsForm.last_name ? "is-invalid" : ""}`}>
-                <span className="gp-input-label">Apellido</span>
+                <label className="gp-input-label" htmlFor="register-lastname">Apellido</label>
                 <input
+                  id="register-lastname"
                   className="form-control"
                   type="text"
                   placeholder="Perez"
@@ -112,9 +114,10 @@ function Register() {
             {/* PAIS */}
             <div className="gp-input-group-container">
               <div className={`gp-input-group overflow-visible ${errorsForm.country ? "is-invalid" : ""}`}>
-                <span className="gp-input-label">País</span>
+                <label className="gp-input-label" htmlFor="register-country">País</label>
                 <div className="flex-fill">
                   <CountrySelect
+                    inputId="register-country"
                     countryFunction={setPais}
                     isInvalid={!!errorsForm.country}
                     hideLabel={true}
@@ -131,8 +134,9 @@ function Register() {
             {/* EMAIL */}
             <div className="gp-input-group-container">
               <div className={`gp-input-group ${errorsForm.email ? "is-invalid" : ""}`}>
-                <span className="gp-input-label">Email</span>
+                <label className="gp-input-label" htmlFor="register-email">Email</label>
                 <input
+                  id="register-email"
                   className="form-control"
                   type="email"
                   placeholder="juan@perez.com"

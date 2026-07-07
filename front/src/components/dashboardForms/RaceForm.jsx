@@ -456,7 +456,7 @@ function RaceForm({
         <div className="col-12 col-md-9">
           <div className="gp-input-group-container">
             <div className="gp-input-group">
-              <span className="gp-input-label">Año</span>
+              <label className="gp-input-label" htmlFor="field-ao-0">Año</label>
               <select
                 className="form-control"
                 value={year}
@@ -475,9 +475,9 @@ function RaceForm({
 
           <div className="gp-input-group-container">
             <div className={`gp-input-group overflow-visible ${errorsForm.id_circuit ? "is-invalid" : ""}`}>
-              <span className="gp-input-label">Circuito</span>
+              <label className="gp-input-label" htmlFor="field-circuito-1">Circuito</label>
               <div className="flex-fill">
-                <SearchableSelect
+                <SearchableSelect inputId="field-circuito-1"
                   options={circuitsAll}
                   value={circuit}
                   onChange={handleCircuit}
@@ -496,8 +496,8 @@ function RaceForm({
           <div className="d-flex flex-column flex-md-row gap-0 gap-md-3">
             <div className="gp-input-group-container mb-md-0">
               <div className={`gp-input-group ${errorsForm.date_gp_start ? "is-invalid" : ""}`}>
-                <span className="gp-input-label">Inicio</span>
-                <input
+                <label className="gp-input-label" htmlFor="field-inicio-2">Inicio</label>
+                <input id="field-inicio-2"
                   className={`form-control ${!dateStart ? 'is-empty-date' : ''}`}
                   type="date"
                   min={yearStart}
@@ -513,8 +513,8 @@ function RaceForm({
 
             <div className="gp-input-group-container mb-md-0">
               <div className={`gp-input-group ${errorsForm.date_gp_end ? "is-invalid" : ""}`}>
-                <span className="gp-input-label">Fin</span>
-                <input
+                <label className="gp-input-label" htmlFor="field-fin-3">Fin</label>
+                <input id="field-fin-3"
                   className={`form-control ${!dateFinish ? 'is-empty-date' : ''}`}
                   type="date"
                   min={yearStart}
@@ -547,11 +547,9 @@ function RaceForm({
                 <div className="col-12 col-md-4">
                   <div className="gp-input-group-container mb-0">
                     <div className="gp-input-group">
-                      <span
-                        className="gp-input-label flex-fill text-center gp-race-type-label"
-                      >
+                      <label className="gp-input-label flex-fill text-center gp-race-type-label" htmlFor="field-ptype-4">
                         {p.type}
-                      </span>
+                      </label>
                       <div
                         className={`d-flex align-items-center justify-content-center bg-white px-3 gp-race-type-checkbox-container ${isEnabled && Object.values(enabledPoints).filter(Boolean).length === 1 ? "cursor-not-allowed" : "cursor-pointer"}`}
                         onClick={() => {
@@ -582,7 +580,7 @@ function RaceForm({
                       >
                         Fecha
                       </span>
-                      <input
+                      <input id="field-ptype-4"
                         className={`form-control gp-datetime-input ${!pointData[p._id]?.fecha ? 'is-empty-date' : ''}`}
                         type="date"
                         min={dateStart || yearStart}

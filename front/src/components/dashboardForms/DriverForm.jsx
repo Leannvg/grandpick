@@ -90,11 +90,11 @@ function DriverForm({
         <div className="col-12">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.img ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Imagen</span>
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-imagen-0">Imagen</label>
               <label
                 className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control gp-file-upload-label"
               >
-                <input
+                <input id="field-imagen-0"
                   type="file"
                   accept="image/*"
                   onChange={handleFileChange}
@@ -117,8 +117,8 @@ function DriverForm({
         <div className="col-12">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.full_name ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Nombre completo</span>
-              <input
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-nombrecompleto-1">Nombre completo</label>
+              <input id="field-nombrecompleto-1"
                 type="text"
                 className="form-control bg-white"
                 value={full_name}
@@ -138,8 +138,8 @@ function DriverForm({
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.trigram ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Trigrama</span>
-              <input
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-trigrama-2">Trigrama</label>
+              <input id="field-trigrama-2"
                 type="text"
                 className="form-control bg-white"
                 value={trigram}
@@ -157,8 +157,8 @@ function DriverForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.number ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Número</span>
-              <input
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-nmero-3">Número</label>
+              <input id="field-nmero-3"
                 type="number"
                 className="form-control bg-white"
                 value={number}
@@ -178,9 +178,9 @@ function DriverForm({
         <div className="col-12 col-md-6 mb-md-0">
           <div className="gp-input-group-container">
             <div className={`gp-input-group overflow-visible ${errorsForm.country ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">País</span>
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-pas-4">País</label>
               <div className="flex-fill">
-                <CountrySelect
+                <CountrySelect inputId="field-pas-4"
                   countryFunction={setCountry}
                   defaultValue={country}
                   isInvalid={!!errorsForm.country}
@@ -199,9 +199,9 @@ function DriverForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group overflow-visible ${errorsForm.team ? "is-invalid" : ""}`}>
-              <span className="gp-input-label gp-input-label-sm">Escudería</span>
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-escudera-5">Escudería</label>
               <div className="flex-fill">
-                <SearchableSelect
+                <SearchableSelect inputId="field-escudera-5"
                   options={allTeams}
                   value={team}
                   onChange={(opt) => setTeam(opt ? opt.value : "")}

@@ -257,17 +257,17 @@ function PredictionHistory() {
                                                                 </>
                                                             ) : status === 'upcoming' ? (
                                                                 <>
-                                                                    <img src={cronometroIcon} alt="Icon" className="status-icon" />
+                                                                    <img src={cronometroIcon} alt="" className="status-icon" />
                                                                     <span className="status-lbl">{statusLabel}</span>
                                                                 </>
                                                             ) : status === 'pending_results' ? (
                                                                 <>
-                                                                    <img src={cronometroIcon} alt="Icon" className="status-icon pending-results" />
+                                                                    <img src={cronometroIcon} alt="" className="status-icon pending-results" />
                                                                     <span className="status-lbl">{statusLabel}</span>
                                                                 </>
                                                             ) : (
                                                                 <>
-                                                                    <img src={cruzIcon} alt="Icon" className="status-icon" />
+                                                                    <img src={cruzIcon} alt="" className="status-icon" />
                                                                     <span className="status-lbl">{statusLabel}</span>
                                                                 </>
                                                             )}
@@ -378,17 +378,17 @@ function PredictionHistory() {
                                                         </>
                                                     ) : status === 'upcoming' ? (
                                                         <>
-                                                            <img src={cronometroIcon} alt="Icon" className="status-icon" />
+                                                            <img src={cronometroIcon} alt="" className="status-icon" />
                                                             <span className="status-lbl">{statusLabel}</span>
                                                         </>
                                                     ) : status === 'pending_results' ? (
                                                         <>
-                                                            <img src={cronometroIcon} alt="Icon" className="status-icon pending-results" />
+                                                            <img src={cronometroIcon} alt="" className="status-icon pending-results" />
                                                             <span className="status-lbl">{statusLabel}</span>
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <img src={cruzIcon} alt="Icon" className="status-icon" />
+                                                            <img src={cruzIcon} alt="" className="status-icon" />
                                                             <span className="status-lbl">{statusLabel}</span>
                                                         </>
                                                     )}
