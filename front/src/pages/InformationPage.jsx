@@ -57,7 +57,7 @@ const InformationPage = ({ data, eyebrow, title, subtitle, modes }) => {
                 {subtitle && <p className="section-subtitle">{subtitle}</p>}
             </header>
 
-            <main className="info-page__container">
+            <div className="info-page__container">
                 <aside className="info-page__sidebar">
                     {modes && isMobile && (
                         <div className="info-page__modes-toggle info-page__modes-toggle--mobile">
@@ -116,7 +116,7 @@ const InformationPage = ({ data, eyebrow, title, subtitle, modes }) => {
                         </div>
                     )}
                 </div>
-            </main>
+            </div>
 
             <AnimatePresence>
                 {isDrawerOpen && isMobile && activeSection && (

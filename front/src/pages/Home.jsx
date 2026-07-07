@@ -53,7 +53,7 @@ const Home = () => {
     return (
         <div className="home-container">
 
-            <main>
+            <>
                 <section className="home-hero">
                     {/* Imagen de fondo */}
                     <picture className="hero-bg">
@@ -72,8 +72,8 @@ const Home = () => {
                     {/* Contenido */}
                     <div className="home-hero__content">
                         <div className="container">
-                            <h2 className="home-hero__eyebrow">UN JUEGO DE PREDICCIÓN PARA LA F1</h2>
-                            <h3 className="home-hero__title">CONVERTÍ TU PASIÓN EN PUNTOS.</h3>
+                            <p className="home-hero__eyebrow">UN JUEGO DE PREDICCIÓN PARA LA F1</p>
+                            <h1 className="home-hero__title">CONVERTÍ TU PASIÓN EN PUNTOS.</h1>
                         </div>
                     </div>
 
@@ -408,7 +408,7 @@ const Home = () => {
                         <img src={getImageUrl("tutoriales.webp", 1200)} alt="Tutoriales GRANDPICK" />
                     </div>
                 </section>
-            </main>
+            </>
         </div>
     );
 };

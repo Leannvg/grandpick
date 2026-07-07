@@ -47,7 +47,7 @@ function CircuitDetail() {
     if (!circuit) return null;
 
     return (
-        <main>
+        <>
             <section className="circuits-section page-section container text-center">
                 <article className="circuit-detail">
                     {/* BREADCRUMB */}
@@ -101,7 +101,7 @@ function CircuitDetail() {
                     </section>
                 </article>
             </section>
-        </main>
+        </>
     );
 }
 

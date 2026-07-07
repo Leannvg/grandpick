@@ -157,7 +157,7 @@ function App() {
         <Nav onLogout={onLogout} autenticado={estaAutenticado} esAdmin={esAdmin}></Nav>
         <NextRaceCTA />
         {estaAutenticado && <Glossary />}
-        <div className={`main-content ${isHome ? 'home-content' : ''} ${(loading || cargando) ? 'is-loading' : ''}`}>
+        <main className={`main-content ${isHome ? 'home-content' : ''} ${(loading || cargando) ? 'is-loading' : ''}`}>
           {(loading || cargando) && <LoaderCar message={cargando ? "Iniciando..." : "Cargando..."} />}
           {!cargando && (
             <Routes>
@@ -222,7 +222,7 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           )}
-        </div>
+        </main>
         <Footer></Footer>
       </NotificationsProvider>
     </div>

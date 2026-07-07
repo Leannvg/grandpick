@@ -59,7 +59,7 @@ function Register() {
   }
 
   return (
-    <main>
+    <>
       <section className="auth-section page-section container text-center">
         <div className="auth-container">
           <header className="page-header">
@@ -183,7 +183,7 @@ function Register() {
           </div>
         </div>
       </section>
-    </main>
+    </>
   );
 }
 

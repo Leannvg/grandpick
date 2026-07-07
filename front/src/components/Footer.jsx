@@ -10,7 +10,7 @@ function Footer() {
             <div className="container">
                 <div className="footer-grid">
                     <div className="footer-column">
-                        <h5>F1 ACTUAL</h5>
+                        <h2>F1 ACTUAL</h2>
                         <ul className="footer-nav">
                             <li><Link to="/drivers">Pilotos</Link></li>
                             <li><Link to="/circuits">Circuitos</Link></li>
@@ -19,7 +19,7 @@ function Footer() {
                     </div>
 
                     <div className="footer-column">
-                        <h5>TUTORIALES</h5>
+                        <h2>TUTORIALES</h2>
                         <ul className="footer-nav">
                             <li><Link to="/how-to-play">Cómo jugar</Link></li>
                             <li><Link to="/f1-guide">Guía de F1</Link></li>
@@ -28,7 +28,7 @@ function Footer() {
                     </div>
 
                     <div className="footer-column">
-                        <h5>PREDECIR</h5>
+                        <h2>PREDECIR</h2>
                         <ul className="footer-nav">
                             <li><Link to="/predictions">Jugar</Link></li>
                             <li><Link to="/ranking">Ranking Global</Link></li>
@@ -36,7 +36,7 @@ function Footer() {
                     </div>
 
                     <div className="footer-column">
-                        <h5>CALENDARIO</h5>
+                        <h2>CALENDARIO</h2>
                         <ul className="footer-nav">
                             <li><Link to="/calendar">Ver fechas</Link></li>
                         </ul>

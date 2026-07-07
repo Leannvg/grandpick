@@ -12,7 +12,7 @@ const NotFound = () => {
     }, []);
 
     return (
-        <main className="notfound-container">
+        <div className="notfound-container">
             <div className="notfound-content">
 
                 
@@ -28,7 +28,7 @@ const NotFound = () => {
                     VOLVER A BOXES <span className="chevron">❯❯</span>
                 </Link>
             </div>
-        </main>
+        </div>
     );
 };
 

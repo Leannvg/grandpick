@@ -75,7 +75,7 @@ function Profile() {
   };
 
   return (
-    <main className="profile-section container">
+    <div className="profile-section container">
       <header className="page-header">
         <p className="section-label">Tu garaje digital</p>
         <h1 className="section-title">TU FICHA DE PILOTO</h1>
@@ -185,7 +185,7 @@ function Profile() {
         usuario={usuario}
         onUpdated={fetchUsuario}
       />
-    </main>
+    </div>
   );
 }
 

@@ -64,7 +64,7 @@ function DriverEdit() {
   }
 
   return (
-    <main>
+    <>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
           <BackButton to="/admin/dashboard?tab=Pilotos" text="Volver a pilotos" />
@@ -89,7 +89,7 @@ function DriverEdit() {
           )}
         </div>
       </section>
-    </main>
+    </>
   );
 }
 

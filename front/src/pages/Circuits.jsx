@@ -66,7 +66,7 @@ function Circuits() {
                                 </div>
                             </div>
                             <div className="track-card-body">
-                                <h3 className="track-card-title">{circuit.gp_name || circuit.circuit_name}</h3>
+                                <h2 className="track-card-title">{circuit.gp_name || circuit.circuit_name}</h2>
                                 <p className="track-card-subtitle">{circuit.circuit_name}</p>
                             </div>
                         </article>

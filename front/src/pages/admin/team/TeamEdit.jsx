@@ -66,7 +66,7 @@ function TeamEdit() {
 
 
   return (
-    <main>
+    <>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
           <BackButton to="/admin/dashboard?tab=Escuderias" text="Volver a escuderías" />
@@ -91,7 +91,7 @@ function TeamEdit() {
           )}
         </div>
       </section>
-    </main>
+    </>
   );
 }
 

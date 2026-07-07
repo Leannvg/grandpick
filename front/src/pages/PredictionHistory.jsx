@@ -336,7 +336,7 @@ function PredictionHistory() {
 
                 {/* Desktop Detail View (non-mobile) */}
                 {!isDrawerOpen && isDesktop && (
-                    <main className="history-detail">
+                    <div className="history-detail">
                         {currentCircuit ? (
                             <>
                                 <div className="session-tabs">
@@ -454,7 +454,7 @@ function PredictionHistory() {
                                 Selecciona un circuito para ver tu historial
                             </div>
                         )}
-                    </main>
+                    </div>
                 )}
             </div>
         </section>

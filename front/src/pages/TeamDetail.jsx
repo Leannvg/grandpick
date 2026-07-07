@@ -33,7 +33,7 @@ function TeamDetail() {
     if (!team) return null;
 
     return (
-        <main>
+        <>
             <section className="teams-section text-center page-section container">
                 {/* BREADCRUMB */}
                 <BackButton to="/teams" text="Volver a escuderías" />
@@ -90,7 +90,7 @@ function TeamDetail() {
                     </div>
                 </section>
             </section>
-        </main>
+        </>
     );
 }
 

@@ -63,7 +63,7 @@ function FloatingChangeEmail({ show, onClose, usuario, onUpdated }) {
             exit={{ scale: 0.8, opacity: 0, y: -30 }}
             transition={{ type: "spring", duration: 0.35 }}
           >
-            <h3 className="gp-modal-title">Cambiar Email</h3>
+            <h2 className="gp-modal-title">Cambiar Email</h2>
             <p className="gp-modal-subtitle">Introduce tu nueva dirección de correo</p>
 
             <div className="gp-form-grid">

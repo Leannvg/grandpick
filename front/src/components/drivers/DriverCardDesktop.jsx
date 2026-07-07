@@ -13,10 +13,10 @@ const DriverCardDesktop = ({ driver }) => {
         <article className="driver-card-horizontal">
             <div className="driver-info-horizontal">
                 <span className="driver-number-horizontal">{number}</span>
-                <h3 className="driver-name-horizontal">
+                <h2 className="driver-name-horizontal">
                     <span className="driver-firstname-horizontal">{firstName}</span>
                     <span className="driver-lastname-horizontal"> {lastName}</span>
-                </h3>
+                </h2>
                 <div className="driver-tags-horizontal">
                     <CountryDisplay iso2={country} showName={false} className="tag-horizontal" />
                     <span className="tag-horizontal team-tag-horizontal">

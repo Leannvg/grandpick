@@ -28,7 +28,7 @@ function FloatingDialog({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
             >
-              <h5 className="gp-modal-title">{title}</h5>
+              <h2 className="gp-modal-title">{title}</h2>
               {message && <p className="gp-modal-subtitle">{message}</p>}
 
               <div className="gp-modal-actions">

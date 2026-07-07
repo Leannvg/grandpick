@@ -26,7 +26,7 @@ function RaceEdit({ action }) {
   if (!initialData) return <p>Cargando...</p>;
 
   return (
-    <main>
+    <>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
           <BackButton to="/admin/dashboard?tab=Carreras" text="Volver a carreras" />
@@ -51,7 +51,7 @@ function RaceEdit({ action }) {
           />
         </div>
       </section>
-    </main>
+    </>
   );
 }
 

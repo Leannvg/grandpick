@@ -106,7 +106,7 @@ function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
             transition={{ type: "spring", duration: 0.35 }}
           >
 
-            <h3 className="gp-modal-title">Editar Perfil</h3>
+            <h2 className="gp-modal-title">Editar Perfil</h2>
             <p className="gp-modal-subtitle">Mantén tus datos actualizados</p>
 
             {/* Imagen */}

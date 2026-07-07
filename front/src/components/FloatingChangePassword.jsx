@@ -98,7 +98,7 @@ function ChangePasswordModal({ show, onClose, usuario }) {
             transition={{ type: "spring", duration: 0.35 }}
           >
 
-            <h3 className="gp-modal-title">Cambiar contraseña</h3>
+            <h2 className="gp-modal-title">Cambiar contraseña</h2>
             <p className="gp-modal-subtitle">Actualiza tus credenciales de acceso</p>
 
             <div className="gp-form-grid">

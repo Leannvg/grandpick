@@ -51,7 +51,7 @@ function CircuitCreate() {
   }
 
   return (
-    <main>
+    <>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
           <BackButton to="/admin/dashboard?tab=Circuitos" text="Volver a circuitos" />
@@ -66,7 +66,7 @@ function CircuitCreate() {
           <CircuitForm onSubmit={handleCreate} submitLabel="Crear" errorsForm={errorsForm} />
         </div>
       </section>
-    </main>
+    </>
   );
 }
 

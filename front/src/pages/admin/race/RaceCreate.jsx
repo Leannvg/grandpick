@@ -10,7 +10,7 @@ function RaceCreate({ action }) {
   };
 
   return (
-    <main>
+    <>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
           <BackButton to="/admin/dashboard?tab=Carreras" text="Volver a carreras" />
@@ -29,7 +29,7 @@ function RaceCreate({ action }) {
           <RaceForm onSave={handleSave} submitText="Cargar carrera" action={action} />
         </div>
       </section>
-    </main>
+    </>
   );
 }
 

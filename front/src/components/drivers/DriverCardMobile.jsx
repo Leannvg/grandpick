@@ -43,10 +43,10 @@ const DriverCardMobile = ({ driver, teamLogo }) => {
 
                 {/* Bottom Overlay: Name */}
                 <div className="driver-bottom-overlay-vertical">
-                    <h3 className="driver-name-vertical">
+                    <h2 className="driver-name-vertical">
                         <span className="driver-firstname-vertical">{firstName.toUpperCase()}</span><br />
                         <span className="driver-lastname-vertical">{lastName.toUpperCase()}</span>
-                    </h3>
+                    </h2>
                 </div>
             </div>
         </article>

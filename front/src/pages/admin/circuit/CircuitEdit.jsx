@@ -57,7 +57,7 @@ function CircuitEdit() {
   }
 
   return (
-    <main>
+    <>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
           <BackButton to="/admin/dashboard?tab=Circuitos" text="Volver a circuitos" />
@@ -82,7 +82,7 @@ function CircuitEdit() {
           )}
         </div>
       </section>
-    </main>
+    </>
   );
 }
 
