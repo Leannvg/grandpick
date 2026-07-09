@@ -12,7 +12,8 @@ const NotFound = () => {
     }, []);
 
     return (
-        <div className="notfound-container">
+        <div className="notfound-page page-wrapper">
+            <section className="page-section container text-center">
             <div className="notfound-content">
 
                 
@@ -28,6 +29,7 @@ const NotFound = () => {
                     VOLVER A BOXES <span className="chevron">❯❯</span>
                 </Link>
             </div>
+            </section>
         </div>
     );
 };

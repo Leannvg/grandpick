@@ -241,7 +241,8 @@ function Predictions() {
   }
 
   return (
-    <section className="predictions-page page-section container text-center">
+    <div className="predictions-page page-wrapper">
+      <section className="page-section container text-center">
       {race && (
         <header className="page-header">
           {race.raceCountry && (
@@ -364,7 +365,8 @@ function Predictions() {
           ⚠️ Las predicciones están cerradas para esta sesión.
         </div>
       )}
-    </section>
+      </section>
+    </div>
   );
 }
 

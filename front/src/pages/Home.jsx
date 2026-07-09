@@ -51,8 +51,7 @@ const Home = () => {
     ].filter(Boolean);
 
     return (
-        <div className="home-container">
-
+        <div className="home-page page-wrapper">
             <>
                 <section className="home-hero">
                     {/* Imagen de fondo */}

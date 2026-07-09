@@ -43,7 +43,7 @@ function Login({ onLogin }) {
   }
 
   return (
-    <>
+    <div className="login-page page-wrapper">
       <section className="auth-section page-section container text-center">
         <div className="auth-container">
           <header className="page-header">
@@ -117,7 +117,7 @@ function Login({ onLogin }) {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
 

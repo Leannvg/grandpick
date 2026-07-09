@@ -185,8 +185,8 @@ function Calendar() {
     };
 
     return (
-        <>
-            <section className="calendar-section page-section container text-center">
+        <div className="calendar-page page-wrapper">
+            <section className="page-section container text-center">
                 <header className="page-header">
                     <p className="section-label">¡Un año a pura velocidad!</p>
                     <h1 className="section-title">CALENDARIO</h1>
@@ -273,7 +273,7 @@ function Calendar() {
                     </div>
                 </div>
             </section>
-        </>
+        </div>
     );
 }
 

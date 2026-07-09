@@ -50,7 +50,8 @@ const InformationPage = ({ data, eyebrow, title, subtitle, modes }) => {
     };
 
     return (
-        <section className="info-page page-section container">
+        <div className="info-page page-wrapper">
+            <section className="page-section container">
             <header className="page-header text-center">
                 {eyebrow && <p className="section-label">{eyebrow}</p>}
                 <h1 className="section-title">{title}</h1>
@@ -156,7 +157,8 @@ const InformationPage = ({ data, eyebrow, title, subtitle, modes }) => {
                     </>
                 )}
             </AnimatePresence>
-        </section>
+            </section>
+        </div>
     );
 };
 

@@ -182,7 +182,8 @@ function Ranking() {
     } = usePagination(filteredStats, 20);
 
     return (
-        <section className="ranking-page page-section container-fluid px-3 px-md-5 text-center container">
+        <div className="ranking-page page-wrapper">
+            <section className="page-section container-fluid px-3 px-md-5 text-center container">
             <header className="page-header">
                 <p className="section-label">Todos quieren subirse al podio</p>
                 <h1 className="section-title">{mode === 'global' ? 'PUNTUACIÓN GLOBAL' : 'PUNTUACIÓN POR GRAN PREMIO'}</h1>
@@ -479,7 +480,8 @@ function Ranking() {
                     </div>
                 </div>
             </div>
-        </section>
+            </section>
+        </div>
     );
 }
 

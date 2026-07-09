@@ -41,7 +41,8 @@ function Circuits() {
     }, []);
 
     return (
-        <section className="circuits-section page-section container text-center">
+        <div className="circuits-page page-wrapper">
+            <section className="page-section container text-center">
             <header className="page-header">
                 <p className="section-label">Los templos de la velocidad</p>
                 <h1 className="section-title">CIRCUITOS</h1>
@@ -73,7 +74,8 @@ function Circuits() {
                     </Link>
                 ))}
             </div>
-        </section>
+            </section>
+        </div>
     );
 }
 

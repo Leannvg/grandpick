@@ -47,8 +47,8 @@ function CircuitDetail() {
     if (!circuit) return null;
 
     return (
-        <>
-            <section className="circuits-section page-section container text-center">
+        <div className="circuit-detail-page page-wrapper">
+            <section className="page-section container text-center">
                 <article className="circuit-detail">
                     {/* BREADCRUMB */}
                     <BackButton to="/circuits" text="Volver a circuitos" />
@@ -101,7 +101,7 @@ function CircuitDetail() {
                     </section>
                 </article>
             </section>
-        </>
+        </div>
     );
 }
 

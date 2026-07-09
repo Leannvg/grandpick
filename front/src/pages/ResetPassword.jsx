@@ -47,26 +47,40 @@ function ResetPassword() {
   }
 
   return (
-    <div className="container mt-5">
-      <h1>Restablecer contraseña</h1>
+    <div className="reset-password-page page-wrapper">
+      <section className="auth-section page-section container text-center">
+        <div className="auth-container">
+          <header className="page-header">
+            <h1 className="section-title">RESTABLECER CONTRASEÑA</h1>
+            <p className="section-subtitle">Ingresa tu nueva contraseña</p>
+          </header>
 
-      <form onSubmit={onSubmit}>
-        <PasswordInput
-          label="Nueva contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <form onSubmit={onSubmit} className="auth-form mt-4">
+            <PasswordInput
+              label="Nueva contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-        <PasswordInput
-          label="Confirmar contraseña"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+            <PasswordInput
+              label="Confirmar contraseña"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
 
-        <button className="btn btn-success" disabled={loading}>
-          {loading ? "Guardando..." : "Cambiar contraseña"}
-        </button>
-      </form>
+            <button className="gp-btn-submit w-100 mt-4" disabled={loading}>
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Actualizando...
+                </>
+              ) : (
+                "Actualizar contraseña"
+              )}
+            </button>
+          </form>
+        </div>
+      </section>
     </div>
   );
 }

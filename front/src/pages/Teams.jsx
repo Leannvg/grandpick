@@ -27,8 +27,8 @@ function Teams() {
     }, []);
 
     return (
-        <>
-            <section className="teams-list-section page-section container text-center">
+        <div className="teams-page page-wrapper">
+            <section className="page-section container text-center">
                 <header className="page-header">
                     <p className="section-label">Donde la magia sucede</p>
                     <h1 className="section-title">ESCUDERÍAS</h1>
@@ -70,7 +70,7 @@ function Teams() {
                     ))}
                 </section>
             </section>
-        </>
+        </div>
     );
 }
 

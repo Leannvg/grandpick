@@ -45,8 +45,8 @@ function Drivers() {
 
 
   return (
-    <div>
-      <section className="drivers-section text-center page-section container">
+    <div className="drivers-page page-wrapper">
+      <section className="page-section container text-center">
         <header className="page-header">
           <p className="section-label">Temporada actual</p>
           <h1 className="section-title">PILOTOS</h1>
