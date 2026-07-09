@@ -2285,3 +2285,40 @@ input[type="time"].form-control {
 .global-alert.alert-warning .global-alert__close {
     border-color: rgba(0, 0, 0, 0.3);
 }
+
+/* Search Bar (Ranking/Admin) */
+.ranking-search {
+    display: flex;
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 300px;
+    height: 44px;
+}
+
+.ranking-search__input {
+    flex: 1;
+    border: none;
+    padding: 0 16px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    height: 100%;
+}
+
+.ranking-search__button {
+    background: #4a90e2;
+    color: #fff;
+    border: none;
+    padding: 0 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    height: 100%;
+    transition: background-color 0.3s;
+}
+
+.ranking-search__button:hover {
+    background-color: #357abd;
+}

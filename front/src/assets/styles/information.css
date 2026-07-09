@@ -281,10 +281,6 @@
     padding: 14px; */
 }
 
-/* Scroll Lock (ensure it exists in global or add here) */
-.body-scroll-lock {
-    overflow: hidden !important;
-}
 
 /* Inner Tabs Styles (e.g. for F1 TV) */
 .info-section__inner-tabs-container {

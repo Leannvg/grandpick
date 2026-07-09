@@ -85,37 +85,6 @@
     outline: none;
 }
 
-.ranking-search {
-    display: flex;
-    background: #fff;
-    border-radius: 4px;
-    overflow: hidden;
-    width: 100%;
-    max-width: 300px;
-    height: 44px;
-}
-
-.ranking-search__input {
-    flex: 1;
-    border: none;
-    padding: 0 16px;
-    font-size: 14px;
-    color: #333;
-    outline: none;
-    height: 100%;
-}
-
-.ranking-search__button {
-    background: #4a90e2;
-    color: #fff;
-    border: none;
-    padding: 0 20px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    height: 100%;
-}
-
 /* TABLE CARD */
 .ranking-card {
     max-width: 100%;
@@ -430,25 +399,25 @@
 }
 
 /* Disabled options color */
-.react-select__option--is-disabled,
-.react-select__option--is-disabled * {
+.ranking-input-group .react-select__option--is-disabled,
+.ranking-input-group .react-select__option--is-disabled * {
     color: #ffffff !important;
 }
-.react-select__option--is-disabled {
+.ranking-input-group .react-select__option--is-disabled {
     background-color: #a0a0a0 !important;
     font-style: italic;
     cursor: not-allowed;
 }
 
 /* Selected option color */
-.react-select__option--is-selected,
-.react-select__option--is-selected * {
+.ranking-input-group .react-select__option--is-selected,
+.ranking-input-group .react-select__option--is-selected * {
     background-color: #4a90e2 !important;
     color: #ffffff !important;
 }
 
 /* Focused option color */
-.react-select__option--is-focused:not(.react-select__option--is-selected) {
+.ranking-input-group .react-select__option--is-focused:not(.react-select__option--is-selected) {
     background-color: rgba(74, 144, 226, 0.1) !important;
 }
 
