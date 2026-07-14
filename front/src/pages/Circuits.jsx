@@ -16,7 +16,7 @@ function Circuits() {
             try {
                 const data = await circuitsServices.findAll();
 
-                // Fetch country names using global map
+                // Obtener nombres de países usando el mapa global
                 let countriesMap = {};
                 try {
                     const countriesList = await countriesServices.getCountries();

@@ -63,7 +63,7 @@ function Ranking() {
                 circuitsData.sort((a, b) => new Date(a.date_gp_start) - new Date(b.date_gp_start));
                 setRacesList(circuitsData);
 
-                // Autoselect the last enabled circuit if none is selected or if the selected one is not in the list
+                // Autoseleccionar el último circuito habilitado si no hay ninguno seleccionado o si el seleccionado no está en la lista
                 const enabledCircuits = circuitsData.filter(c => c.enabled);
                 if (enabledCircuits.length > 0 && (!selectedCircuitId || !circuitsData.find(c => c.id === selectedCircuitId))) {
                     setSelectedCircuitId(enabledCircuits[enabledCircuits.length - 1].id);
@@ -430,7 +430,7 @@ function Ranking() {
                                                     if (sessionMatch) {
                                                         sessionTag = sessionMatch[1];
                                                         restPart = restPart.replace(sessionMatch[0], "");
-                                                        // Ensure spaces are replaced with dashes if needed, and lowercase
+                                                        // Asegurar que los espacios sean reemplazados por guiones si es necesario, y en minúsculas
                                                         const safeClass = sessionTag.toLowerCase().replace(/\s+/g, '-');
                                                         sessionClass = `gap-session-${safeClass}`;
                                                     }

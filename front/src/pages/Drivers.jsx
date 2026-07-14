@@ -14,15 +14,15 @@ function Drivers() {
     showLoader();
     TeamsServices.findAllTeams()
       .then((teams) => {
-        // Flatten drivers from teams and filter by active: true
+        // Aplanar pilotos desde las escuderías y filtrar por active: true
         const activeDriversOrdered = teams.flatMap(team =>
           (team.drivers || [])
             .filter(driver => driver.active === true)
             .map(driver => ({
               ...driver,
-              // Ensure team_id is present if needed by cards, although it might be 'team' in this context
+              // Asegurar que team_id esté presente si lo necesitan las tarjetas, aunque podría ser 'team' en este contexto
               team_id: driver.team_id || driver.team || team._id,
-              team_info: team // Pass the whole team object as team_info
+              team_info: team // Pasar todo el objeto de la escudería como team_info
             }))
         );
 

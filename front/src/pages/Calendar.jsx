@@ -17,7 +17,7 @@ function Calendar() {
             const currentYear = new Date().getFullYear();
             const data = await racesServices.findAllByYear(currentYear);
 
-            // Group races by circuit and weekend
+            // Agrupar carreras por circuito y fin de semana
             const groupedMap = new Map();
             data.forEach(race => {
                 const circuitId = race.id_circuit?._id || race.id_circuit || (race.circuit?._id);
@@ -138,9 +138,9 @@ function Calendar() {
         return `${startMonth}-${endMonth}`;
     }
 
-    // Removed formatSessionTypes as per user request to only show sprint tag
+    // Se quitó formatSessionTypes a pedido del usuario para mostrar solo la etiqueta de sprint
 
-    // Split races into two columns for the grid
+    // Dividir carreras en dos columnas para la grilla
     const midPoint = Math.ceil(races.length / 2);
     const leftRaces = races.slice(0, midPoint);
     const rightRaces = races.slice(midPoint);

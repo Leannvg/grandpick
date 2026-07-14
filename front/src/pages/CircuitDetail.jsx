@@ -23,7 +23,7 @@ function CircuitDetail() {
                 const circuitData = await circuitsServices.findOne(id);
                 setCircuit(circuitData);
 
-                // Try to find a race for this circuit to get the date
+                // Intentar encontrar una carrera para este circuito para obtener la fecha
                 try {
                     const allRaces = await racesServices.findAll();
                     const circuitRace = allRaces.find(r => r.id_circuit === id || r.circuit?._id === id);

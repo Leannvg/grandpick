@@ -57,7 +57,7 @@ function PredictionHistory() {
                 setHistory(historyData);
                 if (historyData.length > 0) {
                     setSelectedCircuitId(historyData[0].circuit._id);
-                    // Find first available session with results or prediction
+                    // Encontrar la primera sesión disponible con resultados o predicción
                     const firstCircuit = historyData[0];
                     const firstSession = firstCircuit.sessions.find(s => s.results?.length > 0 || s.prediction) || firstCircuit.sessions[0];
                     setSelectedSessionType(firstSession?.type || "race");
@@ -91,11 +91,11 @@ function PredictionHistory() {
         setSelectedCircuitId(circuitId);
         const circuit = history.find(h => h.circuit._id === circuitId);
         if (circuit) {
-            // Pick a reasonable default session for the selected circuit
+            // Elegir una sesión por defecto razonable para el circuito seleccionado
             const bestSession = circuit.sessions.find(s => s.results?.length > 0 || s.prediction) || circuit.sessions[0];
             setSelectedSessionType(bestSession?.type || "race");
         }
-        // Open drawer on mobile
+        // Abrir drawer en celular
         if (window.innerWidth < 1200) {
             setIsDrawerOpen(true);
         }
@@ -114,7 +114,7 @@ function PredictionHistory() {
         return "none";
     };
 
-    // Swipe to close functionality
+    // Funcionalidad de deslizar para cerrar
     const handleDragEnd = (_, info) => {
         if (info.offset.y > 100) {
             setIsDrawerOpen(false);

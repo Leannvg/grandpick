@@ -256,7 +256,7 @@ export async function getUserPredictionHistory(userId, year) {
         const startOfYear = new Date(`${year}-01-01T00:00:00.000Z`);
         const endOfYear = new Date(`${year}-12-31T23:59:59.999Z`);
 
-        // 1. Get all Races for the year
+        // 1. Obtener todas las carreras del año
         const races = await db.collection("Races").aggregate([
             {
                 $match: {
@@ -308,7 +308,7 @@ export async function getUserPredictionHistory(userId, year) {
             }
         ]).toArray();
 
-        // 2. Fetch all unique driver IDs from predictions and results to enrich them
+        // 2. Obtener todos los IDs de pilotos únicos de las predicciones y resultados para enriquecerlos
         const driverIds = new Set();
         races.forEach(r => {
             if (r.results) r.results.forEach(res => driverIds.add(res.driver.toString()));
@@ -318,7 +318,7 @@ export async function getUserPredictionHistory(userId, year) {
         const drivers = await db.collection("Drivers").find({ _id: { $in: Array.from(driverIds).map(id => new ObjectId(id)) } }).toArray();
         const driverMap = new Map(drivers.map(d => [d._id.toString(), d]));
 
-        // Lookup teams for drivers
+        // Buscar escuderías para los pilotos
         const teamIds = new Set(drivers.map(d => d.team?.toString()).filter(Boolean));
         const teams = await db.collection("Teams").find({ _id: { $in: Array.from(teamIds).map(id => new ObjectId(id)) } }).toArray();
         const teamMap = new Map(teams.map(t => [t._id.toString(), t]));
@@ -493,7 +493,7 @@ export async function getGrandPrixRanking(circuitId, year) {
             pointsCounts[entry.points] = (pointsCounts[entry.points] || 0) + 1;
         });
 
-        // Calculate Rank and Gap
+        // Calcular ranking y diferencia
         let currentRank = 1;
         let currentTiedGroupLeaderDate = null;
         let currentTiedGroupPoints = -1;
@@ -508,11 +508,11 @@ export async function getGrandPrixRanking(circuitId, year) {
                 entry.gap = "-";
             } else {
                 if (entry.points !== currentTiedGroupPoints) {
-                    // First person of this new tie group
+                    // Primera persona de este nuevo grupo de desempate
                     currentTiedGroupPoints = entry.points;
                     currentTiedGroupLeaderDate = new Date(entry.date_prediction);
                     
-                    // Format exact time in Argentina Timezone
+                    // Formatear hora exacta en zona horaria de Argentina
                     const timeStr = currentTiedGroupLeaderDate.toLocaleString("es-AR", { 
                         timeZone: "America/Argentina/Buenos_Aires", 
                         hour: '2-digit', 
@@ -528,7 +528,7 @@ export async function getGrandPrixRanking(circuitId, year) {
                     });
                     entry.gap = `${dateStr} - ${timeStr} (${tiebreakerSessionName})`;
                 } else {
-                    // Subsequent person in the tie group
+                    // Persona subsiguiente en el grupo de desempate
                     const entryDate = new Date(entry.date_prediction);
                     const timeDiff = entryDate - currentTiedGroupLeaderDate;
                     const dateStr = entryDate.toLocaleString("es-AR", { 

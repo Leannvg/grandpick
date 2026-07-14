@@ -10,7 +10,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   const [activeMenu, setActiveMenu] = useState(null); 
   const [isAnimatingOut, setIsAnimatingOut] = useState(false); 
   
-  // Ref to track if we are on mobile to skip some delays
+  // Referencia para saber si estamos en celular y saltar algunos retrasos
   const isMobile = useRef(window.innerWidth < 992);
 
   useEffect(() => {
@@ -46,8 +46,8 @@ function Nav({ onLogout, autenticado, esAdmin }) {
         return;
     }
 
-    // On mobile, we want a tiny delay so the browser paints the component in the DOM
-    // before applying the 'show-active' class, ensuring the animation triggers.
+    // En celulares, queremos un pequeño retraso para que el navegador pinte el componente en el DOM
+    // antes de aplicar la clase 'show-active', asegurando que la animación se dispare.
     if (isMobile.current && hoveredMenu && !activeMenu) {
         const timer = setTimeout(() => {
           setActiveMenu(hoveredMenu);
@@ -133,7 +133,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
   const renderMegaMenu = (menu, type) => {
     const isActive = activeMenu === menu && !isAnimatingOut;
     
-    // Safety check: only keep in DOM if this specific menu is active or hovered
+    // Control de seguridad: solo mantener en el DOM si este menú específico está activo o con hover
     if (activeMenu !== menu && hoveredMenu !== menu) return null;
 
     const items = menu === 'info' ? [

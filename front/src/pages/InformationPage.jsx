@@ -23,7 +23,7 @@ const InformationPage = ({ data, eyebrow, title, subtitle, modes }) => {
     }, [activeTabIndex]);
 
     useEffect(() => {
-        // Scroll to top when page changes
+        // Scrollear hacia arriba cuando cambia la página
         window.scrollTo(0, 0);
     }, [title]);
 

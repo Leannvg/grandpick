@@ -5,11 +5,11 @@ import {autenticado, admin} from '../../middleware/auth.middleware.js';
 
 const route = express.Router();
 
-// Upload remains the same, expects just the entity folder (e.g., 'drivers')
+// Upload se mantiene igual, solo espera la carpeta de la entidad (ej. 'drivers')
 route.route("/api/upload/:folder")
     .post(multerControl.single("image"), UploadApiController.upload)
 
-// Replace and Delete will now receive ?filePath=grandpick/folder/file
+// Replace y Delete ahora recibirán ?filePath=grandpick/folder/file
 route.route("/api/upload/manage")
     .put([autenticado, admin, multerControl.single("image")], UploadApiController.replaceUpload)
     .delete([autenticado, admin], UploadApiController.deleteUpload);

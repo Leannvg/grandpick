@@ -304,16 +304,16 @@ async function addFcmToken(req, res) {
 
 async function removeFcmToken(req, res) {
   try {
-    // If the token is sent in body
+    // Si el token se envía en el body
     const { token } = req.body;
     if (!token) {
        return res.status(400).json({ message: "Token is required" });
     }
     
-    // We can use the token to remove it from ANY user in case they logged out
-    // or just the current logged in user.
-    // req.user or req.payload should have the ID if autenticado middleware is used.
-    // Since we added removeInvalidFcmToken, let's just use it to purge the token globally.
+    // Podemos usar el token para removerlo de CUALQUIER usuario en caso de que hayan cerrado sesión
+    // o solo del usuario logueado actualmente.
+    // req.user o req.payload deberían tener el ID si se usa el middleware autenticado.
+    // Como agregamos removeInvalidFcmToken, simplemente usémoslo para purgar el token globalmente.
     await UsersServices.removeInvalidFcmToken(token);
     res.status(200).json({ message: "Token FCM removido con éxito" });
   } catch (err) {
@@ -376,8 +376,8 @@ async function forceLogoutAll(req, res) {
     const { connectDB } = await import("../../services/db.services.js");
     const database = await connectDB();
     
-    // Only keep current admin token or delete all. To simplify, we'll delete all.
-    // The admin will also be logged out, which is safe.
+    // Solo mantener el token del admin actual o borrar todos. Para simplificar, borraremos todos.
+    // El admin también cerrará sesión, lo cual es seguro.
     await database.collection("Tokens").deleteMany({});
 
     // Emitir evento por socket para cerrar sesiones en tiempo real
