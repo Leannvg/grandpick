@@ -324,7 +324,7 @@ function TeamForm({
               <div className="d-flex align-items-center bg-white px-3 flex-fill">
                 <input id="field-color-9"
                   type="color"
-                  className="form-control form-control-color m-0 p-0 border-0 gp-color-picker"
+                  className="gp-color-picker"
                   value={color || "#ffffff"}
                   onChange={(e) => setColor(e.target.value)}
                 />

@@ -637,6 +637,9 @@
 }
 
 .gp-color-picker {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   width: 40px;
   height: 30px;
   cursor: pointer;
