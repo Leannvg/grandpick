@@ -260,21 +260,21 @@
 
 /* Past and upcoming races styles */
 .admin-table tr.row-past td {
-  opacity: 0.6;
-  background-color: #f0f4f8;
+  background-color: #e9ecef;
+  color: #495057;
 }
 
 .admin-table tr.row-past td.sticky-col {
-  background-color: #e5eaf0;
+  background-color: #dee2e6;
 }
 
 .admin-table tr.row-upcoming td {
-  background-color: #ffe8e4;
+  background-color: rgba(129, 46, 154, 0.08);
   font-weight: 600;
 }
 
 .admin-table tr.row-upcoming td.sticky-col {
-  background-color: #ffe0da;
+  background-color: #f3ebf6;
 }
 
 .admin-table tr.row-upcoming td:first-child {
@@ -288,7 +288,7 @@
   top: 0;
   bottom: 0;
   width: 4px;
-  background-color: #e1310c;
+  background-color: var(--color-soon, #812E9A);
 }
 
 /* Specific column widths */
