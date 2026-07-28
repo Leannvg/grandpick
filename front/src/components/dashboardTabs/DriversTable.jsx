@@ -23,7 +23,7 @@ export default function DriversTable({ drivers, onEdit, onDelete, onToggle, page
                 <th>Número</th>
                 <th>País</th>
                 <th>Escudería</th>
-                <th>Activo</th>
+                <th>Estado</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -40,9 +40,9 @@ export default function DriversTable({ drivers, onEdit, onDelete, onToggle, page
                   <td>{d.team_info?.name || "Sin escudería"}</td>
                   <td>
                     {d.active ? (
-                      <span className="badge bg-success">Habilitado</span>
+                      <span className="admin-status-pill pill-enabled">Habilitado</span>
                     ) : (
-                      <span className="badge bg-danger">Deshabilitado</span>
+                      <span className="admin-status-pill pill-disabled">Deshabilitado</span>
                     )}
                   </td>
 

@@ -75,7 +75,7 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
                         pillClass = "pill-upcoming";
                       }
 
-                      return <span className={`race-status-pill ${pillClass}`}>{estado}</span>;
+                      return <span className={`admin-status-pill ${pillClass}`}>{estado}</span>;
                     })()}
                   </td>
                   <td className="admin-actions">

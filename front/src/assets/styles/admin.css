@@ -285,7 +285,7 @@
 }
 
 /* Status Pills */
-.race-status-pill {
+.admin-status-pill {
   display: inline-block;
   padding: 4px 12px;
   border-radius: 12px;
@@ -293,6 +293,30 @@
   font-weight: 600;
   text-align: center;
   width: 120px; /* Fixed width */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+.pill-driver {
+  width: 140px;
+  background-color: #f1f3f5;
+  color: #343a40;
+  border: 1px solid #ced4da;
+  margin-bottom: 4px;
+}
+
+.pill-enabled {
+  background-color: #e6f4ea;
+  color: #137333;
+  border: 1px solid #137333;
+}
+
+.pill-disabled {
+  background-color: #fce8e6;
+  color: #c5221f;
+  border: 1px solid #c5221f;
 }
 
 .pill-past {

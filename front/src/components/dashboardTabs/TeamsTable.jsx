@@ -41,13 +41,13 @@ export default function TeamsTable({ teams, onEdit, onDelete, pageSize }) {
                         .map((driver) => (
                           <span
                             key={driver._id || driver}
-                            className="badge bg-secondary me-1"
+                            className="admin-status-pill pill-driver me-1"
                           >
                             {driver.full_name || driver}
                           </span>
                         ))
                     ) : (
-                      <span className="badge bg-secondary me-1">Sin pilotos</span>
+                      <span className="admin-status-pill pill-driver me-1">Sin pilotos</span>
                     )}
                   </td>
 
