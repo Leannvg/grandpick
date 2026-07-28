@@ -56,9 +56,9 @@ export async function updateCircuit(circuitId, newCircuit) {
         );
 
         if (result.upsertedCount > 0) {
-            return "Circuito creada exitosamente.";
+            return "Circuito creado exitosamente.";
         } else if (result.modifiedCount > 0) {
-            return "Circuito actualizada exitosamente.";
+            return "Circuito actualizado exitosamente.";
         } else {
             return "No se realizaron cambios.";
         }

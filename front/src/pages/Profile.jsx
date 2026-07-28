@@ -119,7 +119,7 @@ function Profile() {
       {/* Stats Section */}
       <section className="stats-section">
         <div className="stats-title">
-          <span>MIS ESTADISTICAS</span>
+          <span>MIS ESTADÍSTICAS</span>
           <div className="stats-legend">
             <div className="legend-item">
               <span className="dot bg-qualy"></span>

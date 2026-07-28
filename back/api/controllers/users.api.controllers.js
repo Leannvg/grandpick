@@ -135,7 +135,7 @@ function editOne(req,res){
             if(user){
                 res.status(200).json({message: "User editado con éxito"})
             } else {
-                res.status(404).json({message: "User no encontrado"})
+                res.status(404).json({message: "Usuario no encontrado"})
             }
         })
 } */
@@ -187,7 +187,7 @@ function deleteOne(req, res) {
       if (user) {
         res.status(200).json({ message: "User eliminado con éxito" })
       } else {
-        res.status(404).json({ message: "User no encontrado" })
+        res.status(404).json({ message: "Usuario no encontrado" })
       }
     })
 }

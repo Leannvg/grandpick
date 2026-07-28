@@ -145,7 +145,7 @@ function CircuitForm({
         <div className="col-12 col-md-6">
           <div className="gp-input-group-container">
             <div className={`gp-input-group ${errorsForm.laps ? "is-invalid" : ""}`}>
-              <label className="gp-input-label gp-input-label-sm" htmlFor="field-numerodevueltas-2">Numero de vueltas</label>
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-numerodevueltas-2">Número de vueltas</label>
               <input id="field-numerodevueltas-2"
                 type="number"
                 className="form-control bg-white"

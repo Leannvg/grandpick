@@ -70,7 +70,7 @@ function admin(req, res, next) {
         next();
     } catch (err){
         console.log("NO SOS ADMIN")
-        return res.status(401).json({ message: 'Token invalido' });
+        return res.status(401).json({ message: 'Token inválido' });
     }
 } */
 

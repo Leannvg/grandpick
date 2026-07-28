@@ -447,7 +447,7 @@ function Dashboard() {
         <header className="page-header admin-header">
           <p className="section-label">¡Bienvenido/a administrador/a!</p>
           <h1 className="section-title">TABLERO</h1>
-          <p className="section-subtitle">Acá podes ver todas las opciones que tenes para hacer</p>
+          <p className="section-subtitle">Acá podés ver todas las opciones que tenés para hacer</p>
         </header>
 
         <div className="admin-controls-bar">

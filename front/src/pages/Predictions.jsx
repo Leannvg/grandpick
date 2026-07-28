@@ -280,7 +280,7 @@ function Predictions() {
             <div className="prediction-status-container">
               {currentPrediction ? (
                 <div className="prediction-status-banner status-saved">
-                  <span>✅ Tu predicción ya está guardada, pero podes editarla antes de que el contador llegue a 0.</span>
+                  <span>✅ Tu predicción ya está guardada, pero podés editarla antes de que el contador llegue a 0.</span>
                 </div>
               ) : (
                 <div className="prediction-status-banner status-missing">

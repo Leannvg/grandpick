@@ -182,7 +182,7 @@ function Register() {
           <div className="auth-teaser mt-4">
             <p className="text-white opacity-75 mb-1 auth-teaser-text">¿Ya tenés una cuenta?</p>
             <Link to="/login" className="auth-link-bold">
-              Inicia sesión acá
+              Iniciá sesión acá
             </Link>
           </div>
         </div>
