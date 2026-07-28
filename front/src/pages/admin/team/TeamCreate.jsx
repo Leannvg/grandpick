@@ -47,7 +47,7 @@ function TeamCreate() {
 
       await TeamsServices.createTeam(formData);
 
-      redirectToTab("Escuderias");
+      redirectToTab("Escuderías");
       showAlert(`Escudería ${teamData.name} creada con éxito`, "success");
     } catch (error) {
       if (!error) return;
@@ -64,7 +64,7 @@ function TeamCreate() {
     <>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
-          <BackButton to="/admin/dashboard?tab=Escuderias" text="Volver a escuderías" />
+          <BackButton to="/admin/dashboard?tab=Escuderías" text="Volver a escuderías" />
           <header className="page-header">
             <p className="section-label">Sumá un nuevo equipo al campeonato</p>
             <h1 className="section-title">NUEVA ESCUDERÍA</h1>

@@ -56,7 +56,7 @@ function TeamEdit() {
 
       await TeamsServices.editTeam(id, formData);
 
-      redirectToTab("Escuderias");
+      redirectToTab("Escuderías");
       showAlert(`Escudería ${teamData.name} actualizada con éxito`, "success");
     } catch (error) {
       console.log(error);
@@ -74,7 +74,7 @@ function TeamEdit() {
     <>
       <section className="auth-section page-section container text-center">
         <div className="auth-container auth-container-admin">
-          <BackButton to="/admin/dashboard?tab=Escuderias" text="Volver a escuderías" />
+          <BackButton to="/admin/dashboard?tab=Escuderías" text="Volver a escuderías" />
           <header className="page-header">
             <p className="section-label">Modificá los datos del equipo</p>
             <h1 className="section-title">EDITAR ESCUDERÍA</h1>

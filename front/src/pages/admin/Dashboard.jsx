@@ -23,7 +23,7 @@ import "../../assets/styles/admin.css";
 const TABS = {
   RACES: "Carreras",
   CIRCUITS: "Circuitos",
-  TEAMS: "Escuderias",
+  TEAMS: "Escuderías",
   DRIVERS: "Pilotos",
   USERS: "Usuarios",
   ASSIGNMENTS: "Asignaciones",
