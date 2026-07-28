@@ -2193,6 +2193,28 @@ input[type="time"].form-control {
     color: #fff !important;
 }
 
+.react-select__option--is-selected .select-default-option,
+.react-select__option--is-selected .select-driver-info,
+.react-select__option--is-selected .select-driver-first,
+.react-select__option--is-selected .select-driver-last,
+.react-select__option--is-selected .select-driver-team {
+    color: #fff !important;
+}
+
+.react-select__option--is-disabled {
+    background-color: #f5f5f5 !important;
+    color: #a0a0a0 !important;
+    cursor: not-allowed !important;
+}
+
+.react-select__option--is-disabled .select-default-option,
+.react-select__option--is-disabled .select-driver-info,
+.react-select__option--is-disabled .select-driver-first,
+.react-select__option--is-disabled .select-driver-last,
+.react-select__option--is-disabled .select-driver-team {
+    color: #a0a0a0 !important;
+}
+
 /* -------------------------------------- */
 /* GLOBAL ALERTS (Sliding from Nav)      */
 /* -------------------------------------- */

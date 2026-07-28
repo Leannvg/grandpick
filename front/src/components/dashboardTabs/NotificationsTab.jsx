@@ -97,7 +97,7 @@ function NotificationsTab({ users = [] }) {
           Enviar Comunicado
         </h2>
         <p className="mt-3 mb-0 admin-tab-subtitle">
-          Envía un comunicado a todos los usuarios o a uno en específico. Esto enviará tanto una notificación interna en la aplicación como una notificación Push a quienes las tengan habilitadas.
+          Enviá un comunicado a todos los usuarios o a uno en específico. Esto enviará tanto una notificación interna en la aplicación como una notificación Push a quienes las tengan habilitadas.
         </p>
       </div>
 
