@@ -641,6 +641,18 @@
   height: 30px;
   cursor: pointer;
   background-color: transparent;
+  border: 1px solid #ced4da !important;
+  border-radius: 4px;
+  padding: 0;
+}
+
+.gp-color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.gp-color-picker::-webkit-color-swatch {
+  border: none;
+  border-radius: 3px;
 }
 
 .fs-sm {
