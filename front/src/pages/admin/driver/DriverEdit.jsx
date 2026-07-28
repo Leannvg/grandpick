@@ -7,6 +7,7 @@ import * as helpers from "../../../utils/helpers.js";
 import { useRedirectToTab } from "../../../hooks/useRedirectToTab.js";
 import { useAlert } from "../../../context/AlertContext.jsx";
 import { useDialog } from "../../../context/DialogContext.jsx";
+import { useLoader } from "../../../context/LoaderContext.jsx";
 
 function DriverEdit() {
   const { id } = useParams();
@@ -15,6 +16,7 @@ function DriverEdit() {
   const redirectToTab = useRedirectToTab();
   const { showAlert } = useAlert();
   const { confirmDialog } = useDialog();
+  const { showLoader, hideLoader } = useLoader();
 
   useEffect(() => {
     async function fetchDriver() {
@@ -37,6 +39,7 @@ function DriverEdit() {
       const confirmed = await confirmDialog(dialog);
       if (!confirmed) return;
 
+      showLoader("Cargando...");
       const formData = new FormData();
 
       Object.entries(driverData).forEach(([key, value]) => {
@@ -60,6 +63,8 @@ function DriverEdit() {
       const parsedErrors = helpers.parseErrorMessage(error);
       setErrors(parsedErrors);
       showAlert("Ups! parece que hay campos incompletos.", "danger", true);
+    } finally {
+      hideLoader();
     }
   }
 

@@ -6,12 +6,14 @@ import * as helpers from "../../../utils/helpers.js";
 import { useRedirectToTab } from "../../../hooks/useRedirectToTab.js";
 import { useAlert } from "../../../context/AlertContext.jsx";
 import { useDialog } from "../../../context/DialogContext.jsx";
+import { useLoader } from "../../../context/LoaderContext.jsx";
 
 function DriverCreate() {
   const [errorsForm, setErrors] = useState({});
   const redirectToTab = useRedirectToTab();
   const { showAlert } = useAlert();
   const { confirmDialog } = useDialog();
+  const { showLoader, hideLoader } = useLoader();
 
   async function handleCreate(driverData, imageFile) {
     try {
@@ -26,6 +28,7 @@ function DriverCreate() {
       const confirmed = await confirmDialog(dialog);
       if (!confirmed) return;
 
+      showLoader("Cargando...");
       const formData = new FormData();
       Object.entries(driverData).forEach(([key, value]) => {
         formData.append(key, value);
@@ -47,6 +50,8 @@ function DriverCreate() {
       const parsedErrors = helpers.parseErrorMessage(error);
       setErrors(parsedErrors);
       showAlert("Ups! parece que hay campos incompletos.", "danger", true);
+    } finally {
+      hideLoader();
     }
   }
 

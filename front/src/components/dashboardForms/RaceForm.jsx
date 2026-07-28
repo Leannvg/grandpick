@@ -250,8 +250,6 @@ function RaceForm({
         return;
       }
 
-      showLoader("Cargando...");
-
       const anyEnabled = Object.values(enabledPoints).some(Boolean);
       if (!anyEnabled) {
         showAlert("Debe haber al menos una carrera habilitada.", "danger", true);
@@ -302,6 +300,8 @@ function RaceForm({
 
       const confirmed = await confirmDialog(dialog);
       if (!confirmed) return;
+
+      showLoader("Cargando...");
 
       const existingByPoint = {};
       raceTypes.forEach(rt => {

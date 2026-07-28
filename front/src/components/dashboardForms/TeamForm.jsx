@@ -3,7 +3,6 @@ import CountrySelect from "./../../components/CountrySelect.jsx";
 import CitySelect from "./../../components/CitySelect.jsx";
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../../utils/cloudinary.js";
 import SubmitButton from "./../SubmitButton.jsx";
-import { useLoader } from "../../context/LoaderContext.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -14,7 +13,6 @@ function TeamForm({
   isEdit = false,
   errorsForm = {},
 }) {
-  const { showLoader, hideLoader } = useLoader();
   const [name, setName] = useState(initialData.name || "");
   const [full_team_name, setFullTeamName] = useState(initialData.full_team_name || "");
   const [chief, setChief] = useState(initialData.chief || "");
@@ -99,12 +97,7 @@ function TeamForm({
       isologo: currentIsologo,
     };
 
-    showLoader("Cargando...");
-    try {
-      await onSubmit(teamData, logoFile, isologoFile);
-    } finally {
-      hideLoader();
-    }
+    await onSubmit(teamData, logoFile, isologoFile);
   }
 
   return (

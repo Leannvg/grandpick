@@ -7,6 +7,7 @@ import * as helpers from "./../../../utils/helpers.js";
 import { useRedirectToTab } from "../../../hooks/useRedirectToTab.js";
 import { useAlert } from "../../../context/AlertContext.jsx";
 import { useDialog } from "../../../context/DialogContext.jsx";
+import { useLoader } from "../../../context/LoaderContext.jsx";
 
 function TeamEdit() {
   const { id } = useParams();
@@ -15,6 +16,7 @@ function TeamEdit() {
   const redirectToTab = useRedirectToTab();
   const { showAlert } = useAlert();
   const { confirmDialog } = useDialog();
+  const { showLoader, hideLoader } = useLoader();
 
   useEffect(() => {
     TeamsServices.findTeamById(id).then(setInitialData);
@@ -33,6 +35,7 @@ function TeamEdit() {
       const confirmed = await confirmDialog(dialog);
       if (!confirmed) return;
 
+      showLoader("Cargando...");
       const formData = new FormData();
 
       Object.entries(teamData).forEach(([key, value]) => {
@@ -61,6 +64,8 @@ function TeamEdit() {
       const parsedErrors = helpers.parseErrorMessage(error);
       setErrors(parsedErrors);
       showAlert("Ups! parece que hay campos incompletos.", "danger", true);
+    } finally {
+      hideLoader();
     }
   }
 
