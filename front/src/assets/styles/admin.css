@@ -258,38 +258,7 @@
   /* keep hover color */
 }
 
-/* Past and upcoming races styles */
-.admin-table tr.row-past td {
-  background-color: #e9ecef;
-  color: #495057;
-}
 
-.admin-table tr.row-past td.sticky-col {
-  background-color: #dee2e6;
-}
-
-.admin-table tr.row-upcoming td {
-  background-color: rgba(129, 46, 154, 0.08);
-  font-weight: 600;
-}
-
-.admin-table tr.row-upcoming td.sticky-col {
-  background-color: #f3ebf6;
-}
-
-.admin-table tr.row-upcoming td:first-child {
-  position: relative;
-}
-
-.admin-table tr.row-upcoming td:first-child::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background-color: var(--color-soon, #812E9A);
-}
 
 /* Status Pills */
 .race-status-pill {

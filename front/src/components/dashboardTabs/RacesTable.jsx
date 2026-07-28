@@ -48,11 +48,8 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
 
           <tbody>
             {paginatedData.map((r) => {
-              const isPast = new Date(r.dateEnd) < now;
-              const isUpcoming = upcomingIndex !== -1 && races[upcomingIndex].gpRaceId === r.gpRaceId;
-              
               return (
-                <tr key={r.gpRaceId} className={isPast ? 'row-past' : (isUpcoming ? 'row-upcoming' : '')}>
+                <tr key={r.gpRaceId}>
                   <td>{r.round}</td>
                   <td className="sticky-col"><CountryDisplay iso2={r.country} /></td>
                   <td>{r.gp_name}</td>
