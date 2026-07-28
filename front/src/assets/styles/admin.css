@@ -291,6 +291,35 @@
   background-color: var(--color-soon, #812E9A);
 }
 
+/* Status Pills */
+.race-status-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  width: 120px; /* Fixed width */
+}
+
+.pill-past {
+  background-color: #e9ecef;
+  color: #495057;
+  border: 1px solid #ced4da;
+}
+
+.pill-upcoming {
+  background-color: #ffe8e4;
+  color: #d40000;
+  border: 1px solid #d40000;
+}
+
+.pill-current {
+  background-color: #f3ebf6;
+  color: #812e9a;
+  border: 1px solid #812e9a;
+}
+
 /* Specific column widths */
 .admin-table .col-piloto {
   width: 145px;

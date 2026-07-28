@@ -41,7 +41,7 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
               <th>Nombre del circuito</th>
               <th>Fecha de inicio</th>
               <th>Fecha de finalización</th>
-              <th>Tipos de carreras</th>
+              <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -58,7 +58,27 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
                   <td>{r.gp_name}</td>
                   <td>{formatDateInTimezone(r.dateStart, r.timezone)}</td>
                   <td>{formatDateInTimezone(r.dateEnd, r.timezone)}</td>
-                  <td>{r.raceTypes}</td>
+                  <td>
+                    {(() => {
+                      const startDate = new Date(r.dateStart);
+                      const endDate = new Date(r.dateEnd);
+                      let estado = "";
+                      let pillClass = "";
+
+                      if (endDate < now) {
+                        estado = "Finalizado";
+                        pillClass = "pill-past";
+                      } else if (startDate <= now && endDate >= now) {
+                        estado = "En curso";
+                        pillClass = "pill-current";
+                      } else {
+                        estado = "Próximamente";
+                        pillClass = "pill-upcoming";
+                      }
+
+                      return <span className={`race-status-pill ${pillClass}`}>{estado}</span>;
+                    })()}
+                  </td>
                   <td className="admin-actions">
                     <button className="btn-admin-action btn-admin-edit" onClick={() => onEdit(r.circuitId, r.year)}>
                       <i className="bi bi-pencil-square"></i>
