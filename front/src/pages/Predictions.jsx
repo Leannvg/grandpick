@@ -210,6 +210,7 @@ function Predictions() {
     const confirmed = await confirmDialog(dialog);
     if (!confirmed) return;
 
+    showLoader("Cargando...");
     try {
       const predictionPayload = predictions.map((driverId, index) => ({
         position: index + 1,
@@ -237,6 +238,8 @@ function Predictions() {
         "danger",
         true
       );
+    } finally {
+      hideLoader();
     }
   }
 

@@ -4,6 +4,7 @@ import TeamsServices from "./../../services/teams.services.js";
 import SearchableSelect from "./../SearchableSelect.jsx";
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../../utils/cloudinary.js";
 import SubmitButton from "./../SubmitButton.jsx";
+import { useLoader } from "../../context/LoaderContext.jsx";
 
 function DriverForm({
   initialData = {},
@@ -12,6 +13,7 @@ function DriverForm({
   isEdit = false,
   errorsForm = {},
 }) {
+  const { showLoader, hideLoader } = useLoader();
   const [full_name, setFullName] = useState(initialData.full_name || "");
   const [trigram, setTrigram] = useState(initialData.trigram || "");
   const [country, setCountry] = useState(initialData.country || "");
@@ -67,7 +69,12 @@ function DriverForm({
       img: currentImage,
     };
 
-    await onSubmit(driverData, imageFile, isEdit, currentImage);
+    showLoader("Cargando...");
+    try {
+      await onSubmit(driverData, imageFile, isEdit, currentImage);
+    } finally {
+      hideLoader();
+    }
   }
 
   return (

@@ -6,6 +6,7 @@ import CountrySelect from "./../../components/CountrySelect.jsx";
 import CitySelect from "./../../components/CitySelect.jsx";
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../../utils/cloudinary.js";
 import SubmitButton from "./../SubmitButton.jsx";
+import { useLoader } from "../../context/LoaderContext.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -16,6 +17,7 @@ function CircuitForm({
   isEdit = false,
   errorsForm = {},
 }) {
+  const { showLoader, hideLoader } = useLoader();
   const [circuit_name, setCircuitName] = useState(initialData.circuit_name || "");
   const [gp_name, setGpName] = useState(initialData.gp_name || "");
   const [length, setLength] = useState(initialData.length || "");
@@ -77,7 +79,12 @@ function CircuitForm({
       img: currentImage,
     };
 
-    await onSubmit(circuitData, imageFile, isEdit, currentImage);
+    showLoader("Cargando...");
+    try {
+      await onSubmit(circuitData, imageFile, isEdit, currentImage);
+    } finally {
+      hideLoader();
+    }
   }
 
   return (

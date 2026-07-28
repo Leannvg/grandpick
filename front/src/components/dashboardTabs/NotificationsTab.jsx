@@ -4,11 +4,13 @@ import { useAlert } from "../../context/AlertContext";
 import { useDialog } from "../../context/DialogContext";
 import LoaderSpinner from "../LoaderSpinner";
 import SearchableSelect from "../SearchableSelect";
+import { useLoader } from "../../context/LoaderContext";
 
 function NotificationsTab({ users = [] }) {
   const [loading, setLoading] = useState(false);
   const { showAlert } = useAlert();
   const { confirmDialog } = useDialog();
+  const { showLoader, hideLoader } = useLoader();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -60,6 +62,7 @@ function NotificationsTab({ users = [] }) {
     }
 
     setLoading(true);
+    showLoader("Enviando...");
     try {
       const response = await NotificationsServices.sendAdminNotification(formData);
       showAlert(`${response.message} (Internas: ${response.inAppCount}, Externas push: ${response.pushCount})`, "success");
@@ -75,6 +78,7 @@ function NotificationsTab({ users = [] }) {
       showAlert("❌ Error al enviar la notificación.", "danger", true);
     } finally {
       setLoading(false);
+      hideLoader();
     }
   };
 

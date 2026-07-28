@@ -8,6 +8,7 @@ import { useRedirectToTab } from "../../hooks/useRedirectToTab.js";
 import { DateTime } from "luxon";
 import { useAlert } from "../../context/AlertContext.jsx";
 import { useDialog } from "../../context/DialogContext.jsx";
+import { useLoader } from "../../context/LoaderContext.jsx";
 import SearchableSelect from "../SearchableSelect.jsx";
 import SubmitButton from "../SubmitButton.jsx";
 
@@ -38,6 +39,7 @@ function RaceForm({
   const [activeTab, setActiveTab] = useState("");
   const redirectToTab = useRedirectToTab();
   const { showAlert } = useAlert();
+  const { showLoader, hideLoader } = useLoader();
   const { confirmDialog } = useDialog();
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -248,6 +250,8 @@ function RaceForm({
         return;
       }
 
+      showLoader("Cargando...");
+
       const anyEnabled = Object.values(enabledPoints).some(Boolean);
       if (!anyEnabled) {
         showAlert("Debe haber al menos una carrera habilitada.", "danger", true);
@@ -436,6 +440,8 @@ function RaceForm({
         perPoint: perPointErrors,
       });
       showAlert("Ups! parece que hay campos incompletos.", "danger", true);
+    } finally {
+      hideLoader();
     }
   };
 
