@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from "react";
 import { usePagination } from "./../../hooks/usePagination.js";
 import { formatDateInTimezone } from "../../utils/helpers.js";
 import CountryDisplay from "../CountryDisplay.jsx";
@@ -11,6 +12,22 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
     totalPages,
     paginatedData
   } = usePagination(races, pageSize || 10);
+
+  const now = new Date();
+  const upcomingIndex = useMemo(() => {
+    if (!races || races.length === 0) return -1;
+    // Asumiendo que vienen ordenadas. Si no, se podría ordenar o buscar el más cercano.
+    return races.findIndex(r => new Date(r.dateEnd) >= now);
+  }, [races]);
+
+  // Ir automáticamente a la página de la carrera actual
+  useEffect(() => {
+    if (races && races.length > 0 && upcomingIndex !== -1) {
+      const targetPage = Math.floor(upcomingIndex / (pageSize || 10)) + 1;
+      // Solo actualizamos la página inicial para evitar loops o bugs si el usuario navega a otra.
+      setPage(targetPage);
+    }
+  }, [races, pageSize, upcomingIndex, setPage]);
 
   return (
     <>
@@ -30,24 +47,29 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
           </thead>
 
           <tbody>
-            {paginatedData.map((r) => (
-              <tr key={r.gpRaceId}>
-                <td>{r.round}</td>
-                <td className="sticky-col"><CountryDisplay iso2={r.country} /></td>
-                <td>{r.gp_name}</td>
-                <td>{formatDateInTimezone(r.dateStart, r.timezone)}</td>
-                <td>{formatDateInTimezone(r.dateEnd, r.timezone)}</td>
-                <td>{r.raceTypes}</td>
-                <td className="admin-actions">
-                  <button className="btn-admin-action btn-admin-edit" onClick={() => onEdit(r.circuitId, r.year)}>
-                    <i className="bi bi-pencil-square"></i>
-                  </button>
-                  <button className="btn-admin-action btn-admin-delete" onClick={() => onDelete(r.gpRaceId, r.gp_name)}>
-                    <i className="bi bi-trash-fill"></i>
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {paginatedData.map((r) => {
+              const isPast = new Date(r.dateEnd) < now;
+              const isUpcoming = upcomingIndex !== -1 && races[upcomingIndex].gpRaceId === r.gpRaceId;
+              
+              return (
+                <tr key={r.gpRaceId} className={isPast ? 'row-past' : (isUpcoming ? 'row-upcoming' : '')}>
+                  <td>{r.round}</td>
+                  <td className="sticky-col"><CountryDisplay iso2={r.country} /></td>
+                  <td>{r.gp_name}</td>
+                  <td>{formatDateInTimezone(r.dateStart, r.timezone)}</td>
+                  <td>{formatDateInTimezone(r.dateEnd, r.timezone)}</td>
+                  <td>{r.raceTypes}</td>
+                  <td className="admin-actions">
+                    <button className="btn-admin-action btn-admin-edit" onClick={() => onEdit(r.circuitId, r.year)}>
+                      <i className="bi bi-pencil-square"></i>
+                    </button>
+                    <button className="btn-admin-action btn-admin-delete" onClick={() => onDelete(r.gpRaceId, r.gp_name)}>
+                      <i className="bi bi-trash-fill"></i>
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

@@ -258,6 +258,39 @@
   /* keep hover color */
 }
 
+/* Past and upcoming races styles */
+.admin-table tr.row-past td {
+  opacity: 0.6;
+  background-color: #f0f4f8;
+}
+
+.admin-table tr.row-past td.sticky-col {
+  background-color: #e5eaf0;
+}
+
+.admin-table tr.row-upcoming td {
+  background-color: #ffe8e4;
+  font-weight: 600;
+}
+
+.admin-table tr.row-upcoming td.sticky-col {
+  background-color: #ffe0da;
+}
+
+.admin-table tr.row-upcoming td:first-child {
+  position: relative;
+}
+
+.admin-table tr.row-upcoming td:first-child::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #e1310c;
+}
+
 /* Specific column widths */
 .admin-table .col-piloto {
   width: 145px;
