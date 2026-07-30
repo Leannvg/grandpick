@@ -1,11 +1,5 @@
 import { useCountry } from "../hooks/useCountry";
 
-/**
- * Component to display a country's flag emoji and name.
- * @param {string} iso2 - The ISO2 country code.
- * @param {boolean} showName - Whether to show the country name (default: true).
- * @param {string} className - Optional CSS class for the container.
- */
 const CountryDisplay = ({ iso2, showName = true, className = "" }) => {
     const { name, emoji, loading } = useCountry(iso2);
 

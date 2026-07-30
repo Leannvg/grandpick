@@ -6,11 +6,10 @@ import { getImageUrl, CLOUDINARY_DEFAULTS } from "../utils/cloudinary.js";
 function Nav({ onLogout, autenticado, esAdmin }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
-  const [hoveredMenu, setHoveredMenu] = useState(null); 
-  const [activeMenu, setActiveMenu] = useState(null); 
-  const [isAnimatingOut, setIsAnimatingOut] = useState(false); 
-  
-  // Referencia para saber si estamos en celular y saltar algunos retrasos
+  const [hoveredMenu, setHoveredMenu] = useState(null);
+  const [activeMenu, setActiveMenu] = useState(null);
+  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
+
   const isMobile = useRef(window.innerWidth < 992);
 
   useEffect(() => {
@@ -18,12 +17,12 @@ function Nav({ onLogout, autenticado, esAdmin }) {
       isMobile.current = window.innerWidth < 992;
     };
     window.addEventListener("resize", handleResize);
-    
+
     const handleScroll = () => {
       setIsAtTop(window.scrollY === 0);
     };
     window.addEventListener("scroll", handleScroll);
-    
+
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", handleScroll);
@@ -39,41 +38,35 @@ function Nav({ onLogout, autenticado, esAdmin }) {
     return () => document.body.classList.remove("body-scroll-lock");
   }, [isMenuOpen]);
 
-  // Sequential animation logic
   useEffect(() => {
     if (hoveredMenu === activeMenu) {
-        setIsAnimatingOut(false);
-        return;
+      setIsAnimatingOut(false);
+      return;
     }
 
-    // En celulares, queremos un pequeño retraso para que el navegador pinte el componente en el DOM
-    // antes de aplicar la clase 'show-active', asegurando que la animación se dispare.
     if (isMobile.current && hoveredMenu && !activeMenu) {
-        const timer = setTimeout(() => {
-          setActiveMenu(hoveredMenu);
-          setIsAnimatingOut(false);
-        }, 30); 
-        return () => clearTimeout(timer);
+      const timer = setTimeout(() => {
+        setActiveMenu(hoveredMenu);
+        setIsAnimatingOut(false);
+      }, 30);
+      return () => clearTimeout(timer);
     }
 
     if (activeMenu && hoveredMenu) {
-      // Switching menus: Hide current first
       setIsAnimatingOut(true);
       const timer = setTimeout(() => {
         setActiveMenu(hoveredMenu);
         setIsAnimatingOut(false);
-      }, 400); // Safer unmount buffer
+      }, 400);
       return () => clearTimeout(timer);
     } else if (activeMenu && !hoveredMenu) {
-      // Closing all
       setIsAnimatingOut(true);
       const timer = setTimeout(() => {
         setActiveMenu(null);
         setIsAnimatingOut(false);
-      }, 400); 
+      }, 400);
       return () => clearTimeout(timer);
     } else {
-      // Direct opening
       setActiveMenu(hoveredMenu);
       setIsAnimatingOut(false);
     }
@@ -132,8 +125,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
 
   const renderMegaMenu = (menu, type) => {
     const isActive = activeMenu === menu && !isAnimatingOut;
-    
-    // Control de seguridad: solo mantener en el DOM si este menú específico está activo o con hover
+
     if (activeMenu !== menu && hoveredMenu !== menu) return null;
 
     const items = menu === 'info' ? [
@@ -147,7 +139,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
     ];
 
     return (
-      <div 
+      <div
         className={`gp-mega-menu ${isActive ? 'show-active' : ''} ${type === 'floating' ? 'is-floating' : 'is-push'}`}
         onMouseEnter={() => handleMouseEnter(menu)}
         onMouseLeave={handleMouseLeave}
@@ -178,7 +170,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
             </Link>
 
             <div className="d-flex align-items-center ms-auto d-lg-none nav-mobile">
-              {/* 🔔 NOTIFICACIONES MOBILE */}
+              {/* NOTIFICACIONES MOBILE */}
               {autenticado && (
                 <div className="nav-notifications d-lg-none me-2 dropdown">
                   <NotificationsBell onToggle={closeMenu} />
@@ -233,8 +225,8 @@ function Nav({ onLogout, autenticado, esAdmin }) {
 
                 {/* INFO */}
                 <li className={`nav-item gp-nav-dropdown ${hoveredMenu === 'info' ? 'is-active' : ''}`}
-                    onMouseEnter={() => handleMouseEnter('info')}
-                    onMouseLeave={handleMouseLeave}
+                  onMouseEnter={() => handleMouseEnter('info')}
+                  onMouseLeave={handleMouseLeave}
                 >
                   <button
                     className="nav-link gp-dropdown-toggle"
@@ -252,8 +244,8 @@ function Nav({ onLogout, autenticado, esAdmin }) {
 
                 {/* TUTORIALES */}
                 <li className={`nav-item gp-nav-dropdown ${hoveredMenu === 'tutorials' ? 'is-active' : ''}`}
-                    onMouseEnter={() => handleMouseEnter('tutorials')}
-                    onMouseLeave={handleMouseLeave}
+                  onMouseEnter={() => handleMouseEnter('tutorials')}
+                  onMouseLeave={handleMouseLeave}
                 >
                   <button
                     className="nav-link gp-dropdown-toggle"
@@ -269,17 +261,17 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                   {isMobile.current && renderMegaMenu('tutorials', 'push')}
                 </li>
 
-                {/* 🔔 NOTIFICACIONES DESKTOP */}
+                {/* NOTIFICACIONES DESKTOP */}
                 {autenticado && (
-                  <li 
+                  <li
                     className={`nav-item dropdown nav-notifications d-none d-lg-block ${activeMenu === 'notifications' ? 'is-active' : ''}`}
                     onMouseEnter={() => handleMouseEnter('notifications')}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <NotificationsBell 
-                      onToggle={closeMenu} 
-                      isDesktop={true} 
-                      forceOpen={activeMenu === 'notifications'} 
+                    <NotificationsBell
+                      onToggle={closeMenu}
+                      isDesktop={true}
+                      forceOpen={activeMenu === 'notifications'}
                     />
                   </li>
                 )}
@@ -326,13 +318,13 @@ function Nav({ onLogout, autenticado, esAdmin }) {
             </div>
           </div>
         </nav>
-        
-        {/* Absolute/Push container for desktop */}
+
+
         {!isMobile.current && (
-          <div 
+          <div
             className={`mega-menu-push-container d-none d-lg-block ${activeMenu ? 'is-active' : ''} ${!isAtTop ? 'is-floating-bar' : ''}`}
             onMouseEnter={() => {
-                if (activeMenu) setHoveredMenu(activeMenu);
+              if (activeMenu) setHoveredMenu(activeMenu);
             }}
             onMouseLeave={handleMouseLeave}
           >
@@ -345,8 +337,8 @@ function Nav({ onLogout, autenticado, esAdmin }) {
 
       {/* Overlay para cerrar el menú al hacer clic fuera */}
       {isMenuOpen && (
-        <div 
-          className="menu-overlay d-lg-none" 
+        <div
+          className="menu-overlay d-lg-none"
           onClick={closeMenu}
           style={{
             position: 'fixed',
@@ -355,7 +347,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
             width: '100vw',
             height: '100vh',
             backgroundColor: 'rgba(0,0,0,0.5)',
-            zIndex: 1020 // Below header (2030)
+            zIndex: 1020
           }}
         ></div>
       )}

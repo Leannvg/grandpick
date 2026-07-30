@@ -29,7 +29,6 @@ function ForgotPassword() {
           false
         );
 
-        // Redirigir al login
         navigate("/login");
       })
       .catch(() => {

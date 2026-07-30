@@ -3,8 +3,6 @@ import CountryDisplay from "../CountryDisplay.jsx";
 
 const DriverCardDesktop = ({ driver }) => {
     const { full_name, number, trigram, img, country } = driver;
-
-    // Split name: first words as firstname, last word as lastname
     const nameParts = full_name.split(" ");
     const lastName = nameParts.pop();
     const firstName = nameParts.join(" ");
@@ -20,7 +18,6 @@ const DriverCardDesktop = ({ driver }) => {
                 <div className="driver-tags-horizontal">
                     <CountryDisplay iso2={country} showName={false} className="tag-horizontal" />
                     <span className="tag-horizontal team-tag-horizontal">
-                        {/* Assuming team logo is available via team_id or similar. Using a generic path for now. */}
                         {driver.team_info?.isologo && (
                             <img
                                 src={getImageUrl(driver.team_info.isologo, 100)}

@@ -105,8 +105,6 @@ function App() {
     }
 
     const socket = connectSocket(userId);
-
-    // Escuchar cierre de sesión forzado desde el servidor
     socket.on("auth:force-logout", () => {
       console.log("⚠️ Sesión invalidada por el administrador.");
       onLogout();
@@ -137,7 +135,7 @@ function App() {
 
 
   async function onLogout() {
-    // Remove FCM token from backend before clearing local storage
+
     await removeTokenFromBackend();
 
     setAutenticado(false);

@@ -1,5 +1,5 @@
-import {ObjectId} from "mongodb"
-import {connectDB} from "./db.services.js"
+import { ObjectId } from "mongodb"
+import { connectDB } from "./db.services.js"
 
 export async function findAllPoints() {
     try {
@@ -39,8 +39,6 @@ export async function updatePointsAfterRace(raceId) {
 
         for (const prediccion of predicciones) {
             let puntos = 0;
-
-            // Determine points array, scaling old Qualy sessions by 1/3
             let pointsArray = sistemaPuntos;
             if (race.type?.toLowerCase().includes('qual') && new Date(race.date_race) < new Date('2026-05-21T00:00:00-03:00')) {
                 pointsArray = sistemaPuntos.map(p => p / 3);

@@ -1,32 +1,15 @@
 import admin from "firebase-admin";
 import { removeInvalidFcmToken } from "./users.services.js";
 
-// TODO: Descargar el JSON de la cuenta de servicio desde Firebase Console
-// Configuración -> Cuentas de servicio -> Generar nueva clave privada
-// import serviceAccount from "../config/firebase-service-account.json" assert { type: "json" };
-
-/**
- * Inicializa Firebase Admin
- * Se recomienda usar variables de entorno o un archivo JSON para la cuenta de servicio
- */
 export const initFirebase = () => {
     if (!admin.apps.length) {
         try {
-            // Opción A: Usando archivo JSON (más común para local/VPS)
-            /*
-            admin.initializeApp({
-              credential: admin.credential.cert(serviceAccount)
-            });
-            */
 
-            // Manejar las variables de entorno de forma segura, removiendo comillas si hosting como Railway las añadió
             let privateKey = process.env.FIREBASE_PRIVATE_KEY || "";
             if (privateKey) {
-                // Remover comillas del inicio y final (si existen) y formatear los enter literales a saltos de linea reales
                 privateKey = privateKey.replace(/^"|"$/g, '').replace(/\\n/g, '\n');
             }
 
-            // Opción B: Usando variables de entorno (más seguro para Heroku/Vercel)
             admin.initializeApp({
                 credential: admin.credential.cert({
                     projectId: process.env.FIREBASE_PROJECT_ID,
@@ -56,7 +39,7 @@ export const sendPushNotification = async (token, notification, data = {}) => {
                 icon: 'https://grandpick.vercel.app/icons/GP-192x192.png'
             }
         },
-        data: data, // Datos extra (ej: { link: '/races/123' })
+        data: data,
         token: token
     };
 
@@ -66,7 +49,6 @@ export const sendPushNotification = async (token, notification, data = {}) => {
         return response;
     } catch (error) {
         console.error("Error al enviar notificación:", error);
-        // Si el error es 'registration-token-not-registered', deberíamos borrar el token de la DB
         if (error.code === 'messaging/registration-token-not-registered' || error.code === 'messaging/invalid-registration-token') {
             console.warn(`Token inválido detectado. Removiendo de la BD: ${token}`);
             removeInvalidFcmToken(token).catch(e => console.error("Error al remover token", e));
@@ -92,7 +74,7 @@ export const sendPushToMultipleTokens = async (tokens, notification, data = {}) 
             }
         },
         data: data,
-        tokens: tokens // Firebase soporta enviar a múltiples tokens
+        tokens: tokens
     };
 
     try {
@@ -109,7 +91,7 @@ export const sendPushToMultipleTokens = async (tokens, notification, data = {}) 
                     }
                 }
             });
-            
+
             if (failedTokens.length > 0) {
                 console.warn(`Removiendo ${failedTokens.length} tokens inválidos de la BD...`);
                 Promise.all(failedTokens.map(t => removeInvalidFcmToken(t)))

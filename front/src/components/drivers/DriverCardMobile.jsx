@@ -4,8 +4,6 @@ import CountryDisplay from "../CountryDisplay.jsx";
 
 const DriverCardMobile = ({ driver, teamLogo }) => {
     const { full_name, number, trigram, img, country } = driver;
-
-    // Split name: first words as firstname, last word as lastname
     const nameParts = full_name.split(" ");
     const lastName = nameParts.pop();
     const firstName = nameParts.join(" ");
@@ -20,7 +18,6 @@ const DriverCardMobile = ({ driver, teamLogo }) => {
                     onError={(e) => { e.target.src = "https://via.placeholder.com/300x400?text=Driver"; }}
                 />
 
-                {/* Top Overlay: Number and Tags */}
                 <div className="driver-top-overlay-vertical">
                     <span className="driver-number-vertical">{number}</span>
                     <div className="driver-tags-vertical">
@@ -41,7 +38,7 @@ const DriverCardMobile = ({ driver, teamLogo }) => {
                     </div>
                 </div>
 
-                {/* Bottom Overlay: Name */}
+
                 <div className="driver-bottom-overlay-vertical">
                     <h2 className="driver-name-vertical">
                         <span className="driver-firstname-vertical">{firstName.toUpperCase()}</span><br />

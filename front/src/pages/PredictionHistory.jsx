@@ -335,7 +335,7 @@ function PredictionHistory() {
                     )}
                 </AnimatePresence>
 
-                {/* Desktop Detail View (non-mobile) */}
+
                 {!isDrawerOpen && isDesktop && (
                     <div className="history-detail">
                         {currentCircuit ? (

@@ -13,7 +13,6 @@ const InformationPage = ({ data, eyebrow, title, subtitle, modes }) => {
         const handleResize = () => {
             const mobile = window.innerWidth < 992;
             setIsMobile(mobile);
-            // Si pasamos de mobile a desktop y no hay nada seleccionado, seleccionar el primero
             if (!mobile && activeTabIndex === null) {
                 setActiveTabIndex(0);
             }
@@ -23,7 +22,6 @@ const InformationPage = ({ data, eyebrow, title, subtitle, modes }) => {
     }, [activeTabIndex]);
 
     useEffect(() => {
-        // Scrollear hacia arriba cuando cambia la página
         window.scrollTo(0, 0);
     }, [title]);
 
@@ -52,111 +50,111 @@ const InformationPage = ({ data, eyebrow, title, subtitle, modes }) => {
     return (
         <div className="info-page page-wrapper">
             <section className="page-section container">
-            <header className="page-header text-center">
-                {eyebrow && <p className="section-label">{eyebrow}</p>}
-                <h1 className="section-title">{title}</h1>
-                {subtitle && <p className="section-subtitle">{subtitle}</p>}
-            </header>
+                <header className="page-header text-center">
+                    {eyebrow && <p className="section-label">{eyebrow}</p>}
+                    <h1 className="section-title">{title}</h1>
+                    {subtitle && <p className="section-subtitle">{subtitle}</p>}
+                </header>
 
-            <div className="info-page__container">
-                <aside className="info-page__sidebar">
-                    {modes && isMobile && (
-                        <div className="info-page__modes-toggle info-page__modes-toggle--mobile">
-                            {modes.map((mode, idx) => (
-                                <button 
-                                    key={mode.id}
-                                    className={`info-page__mode-btn ${activeModeIndex === idx ? 'is-active' : ''}`}
-                                    onClick={() => {
-                                        setActiveModeIndex(idx);
-                                        setActiveTabIndex(null);
-                                    }}
-                                >
-                                    {mode.label}
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                    <div className="info-page__tabs">
-                        {currentData.map((section, index) => (
-                            <button
-                                key={index}
-                                className={`info-page__tab ${activeTabIndex === index ? 'is-active' : ''}`}
-                                onClick={() => handleTabClick(index)}
-                            >
-                                {section.title}
-                            </button>
-                        ))}
-                    </div>
-                </aside>
-
-                <div className="info-page__content">
-                    {modes && !isMobile && (
-                        <div className="info-page__modes-toggle info-page__modes-toggle--desktop">
-                            {modes.map((mode, idx) => (
-                                <button 
-                                    key={mode.id}
-                                    className={`info-page__mode-btn ${activeModeIndex === idx ? 'is-active' : ''}`}
-                                    onClick={() => {
-                                        setActiveModeIndex(idx);
-                                        setActiveTabIndex(isMobile ? null : 0);
-                                    }}
-                                >
-                                    {mode.label}
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                    {activeSection && (
-                        <div className="info-page__content-card">
-                            <h2 className="info-page__section-title">{activeSection.title}</h2>
-                            <InfoSection 
-                                body={activeSection.body}
-                                images={activeSection.images}
-                                tabs={activeSection.tabs}
-                            />
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            <AnimatePresence>
-                {isDrawerOpen && isMobile && activeSection && (
-                    <>
-                        <motion.div 
-                            className="info-drawer-overlay"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={() => setIsDrawerOpen(false)}
-                        />
-                        <motion.div 
-                            className="info-drawer"
-                            initial={{ y: "100%" }}
-                            animate={{ y: 0 }}
-                            exit={{ y: "100%" }}
-                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                            drag="y"
-                            dragConstraints={{ top: 0 }}
-                            dragElastic={0.2}
-                            onDragEnd={(_, info) => {
-                                if (info.offset.y > 100) setIsDrawerOpen(false);
-                            }}
-                        >
-                            <div className="info-drawer__header">
-                                <div className="info-drawer__handle" />
-                                <h2 className="info-drawer__title">{activeSection.title}</h2>
+                <div className="info-page__container">
+                    <aside className="info-page__sidebar">
+                        {modes && isMobile && (
+                            <div className="info-page__modes-toggle info-page__modes-toggle--mobile">
+                                {modes.map((mode, idx) => (
+                                    <button
+                                        key={mode.id}
+                                        className={`info-page__mode-btn ${activeModeIndex === idx ? 'is-active' : ''}`}
+                                        onClick={() => {
+                                            setActiveModeIndex(idx);
+                                            setActiveTabIndex(null);
+                                        }}
+                                    >
+                                        {mode.label}
+                                    </button>
+                                ))}
                             </div>
-                            <div className="info-drawer__content">
-                                <InfoSection 
+                        )}
+                        <div className="info-page__tabs">
+                            {currentData.map((section, index) => (
+                                <button
+                                    key={index}
+                                    className={`info-page__tab ${activeTabIndex === index ? 'is-active' : ''}`}
+                                    onClick={() => handleTabClick(index)}
+                                >
+                                    {section.title}
+                                </button>
+                            ))}
+                        </div>
+                    </aside>
+
+                    <div className="info-page__content">
+                        {modes && !isMobile && (
+                            <div className="info-page__modes-toggle info-page__modes-toggle--desktop">
+                                {modes.map((mode, idx) => (
+                                    <button
+                                        key={mode.id}
+                                        className={`info-page__mode-btn ${activeModeIndex === idx ? 'is-active' : ''}`}
+                                        onClick={() => {
+                                            setActiveModeIndex(idx);
+                                            setActiveTabIndex(isMobile ? null : 0);
+                                        }}
+                                    >
+                                        {mode.label}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                        {activeSection && (
+                            <div className="info-page__content-card">
+                                <h2 className="info-page__section-title">{activeSection.title}</h2>
+                                <InfoSection
                                     body={activeSection.body}
                                     images={activeSection.images}
                                     tabs={activeSection.tabs}
                                 />
                             </div>
-                        </motion.div>
-                    </>
-                )}
-            </AnimatePresence>
+                        )}
+                    </div>
+                </div>
+
+                <AnimatePresence>
+                    {isDrawerOpen && isMobile && activeSection && (
+                        <>
+                            <motion.div
+                                className="info-drawer-overlay"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onClick={() => setIsDrawerOpen(false)}
+                            />
+                            <motion.div
+                                className="info-drawer"
+                                initial={{ y: "100%" }}
+                                animate={{ y: 0 }}
+                                exit={{ y: "100%" }}
+                                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                                drag="y"
+                                dragConstraints={{ top: 0 }}
+                                dragElastic={0.2}
+                                onDragEnd={(_, info) => {
+                                    if (info.offset.y > 100) setIsDrawerOpen(false);
+                                }}
+                            >
+                                <div className="info-drawer__header">
+                                    <div className="info-drawer__handle" />
+                                    <h2 className="info-drawer__title">{activeSection.title}</h2>
+                                </div>
+                                <div className="info-drawer__content">
+                                    <InfoSection
+                                        body={activeSection.body}
+                                        images={activeSection.images}
+                                        tabs={activeSection.tabs}
+                                    />
+                                </div>
+                            </motion.div>
+                        </>
+                    )}
+                </AnimatePresence>
             </section>
         </div>
     );

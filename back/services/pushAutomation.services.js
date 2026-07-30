@@ -29,7 +29,6 @@ export const notifyAllUsers = async (notification, data = {}) => {
     const allTokens = usersWithTokens.flatMap(u => u.fcmTokens);
 
     if (allTokens.length > 0) {
-        // Firebase Admin sendMulticast soporta hasta 500 tokens por llamada
         return sendPushToMultipleTokens(allTokens, notification, data);
     }
 };
@@ -40,13 +39,13 @@ export const notifyAllUsers = async (notification, data = {}) => {
  */
 const hasUnfinishedEarlierSessions = async (db, raceIdCircuit, raceDate) => {
     const now = new Date();
-    const limitDate = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000); // ignorar carreras más antiguas a 14 días
+    const limitDate = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
     const unfinished = await db.collection("Races").find({
         id_circuit: raceIdCircuit,
         date_race: { $lt: raceDate, $gte: limitDate },
         state: { $ne: "Finalizado" }
     }).toArray();
-    
+
     return unfinished.length > 0;
 };
 
@@ -57,8 +56,6 @@ export const checkAndTriggerPushNotifications = async () => {
     try {
         const db = await connectDB();
         const now = new Date();
-
-        // 1. Notificación 30 min antes de que cierre el envío de predicciones
         const thirtyMinFromNow = new Date(now.getTime() + 30 * 60 * 1000);
 
         const closingSoon = await db.collection("Races").aggregate([
@@ -102,17 +99,15 @@ export const checkAndTriggerPushNotifications = async () => {
             await notifyAllUsers({
                 title: `${titlePrefix}⏳ ¡Últimos 30 minutos!`,
                 body: `Faltan 30 minutos para que cierren las predicciones de ${typeName} en ${circuitName}.`
-            }, { link: `/predictions` }); // Redirige a predicciones
+            }, { link: `/predictions` });
 
             await db.collection("Races").updateOne({ _id: race._id }, { $set: { predictions_closing_notified: true } });
         }
-
-        // 2. Notificación cuando empieza la sesión
         const sessionsStarting = await db.collection("Races").aggregate([
             {
                 $match: {
                     date_race: { $lte: now },
-                    state: { $ne: "Finalizado" }, // Solo si no está finalizado (en curso)
+                    state: { $ne: "Finalizado" },
                     session_started_notified: { $ne: true }
                 }
             },
@@ -146,11 +141,7 @@ export const checkAndTriggerPushNotifications = async () => {
             await db.collection("Races").updateOne({ _id: race._id }, { $set: { session_started_notified: true } });
         }
 
-        // 3. Notificación cuando se abren predicciones para la próxima sesión
-        // Calculamos la proxima sesion. Si abrió (now >= date_race de la sesion ANTERIOR), y es "Pendiente" y no notificada
-        // Pero es más fácil chequear si current_or_next race ya está en periodo de 24h previas a su inicio
         const twentyFourHoursFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-        
         const sessionsOpening = await db.collection("Races").aggregate([
             {
                 $match: {
@@ -180,18 +171,18 @@ export const checkAndTriggerPushNotifications = async () => {
         ]).toArray();
 
         for (const race of sessionsOpening) {
-             if (await hasUnfinishedEarlierSessions(db, race.id_circuit, race.date_race)) {
-                 console.log(`[pushAutomation] Retrasando notificación (Apertura) para circuito ${race.id_circuit} porque hay sesiones anteriores no finalizadas.`);
-                 continue;
-             }
+            if (await hasUnfinishedEarlierSessions(db, race.id_circuit, race.date_race)) {
+                console.log(`[pushAutomation] Retrasando notificación (Apertura) para circuito ${race.id_circuit} porque hay sesiones anteriores no finalizadas.`);
+                continue;
+            }
 
-             const typeName = race.points_system?.type || 'la carrera';
-             const gpName = race.circuit?.gp_name || '';
-             const circuitName = race.circuit?.circuit_name || gpName;
-             const flag = getFlagEmoji(race.circuit?.country);
-             const titlePrefix = race.circuit ? `${circuitName} ${flag} | ` : '';
-             
-             await notifyAllUsers({
+            const typeName = race.points_system?.type || 'la carrera';
+            const gpName = race.circuit?.gp_name || '';
+            const circuitName = race.circuit?.circuit_name || gpName;
+            const flag = getFlagEmoji(race.circuit?.country);
+            const titlePrefix = race.circuit ? `${circuitName} ${flag} | ` : '';
+
+            await notifyAllUsers({
                 title: `${titlePrefix}🔮 Predicciones habilitadas`,
                 body: `Ya podés hacer tus predicciones para la sesión de ${typeName}.`
             }, { link: `/predictions` });

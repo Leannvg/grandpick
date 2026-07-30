@@ -63,7 +63,6 @@ function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
       formData.append("last_name", lastName);
       formData.append("country", country);
 
-      // ⚠️ SOLO si hay imagen nueva
       if (imageFile) {
         formData.append("image", imageFile);
       }
@@ -114,7 +113,7 @@ function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
 
             {/* Imagen */}
             <div className="mb-4">
-            
+
               <div className="mb-3 text-center">
                 <img
                   src={imageUrl}
@@ -166,8 +165,8 @@ function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
                 <div className={`gp-input-group ${errorsForm.country ? "is-invalid" : ""}`} style={{ overflow: "visible" }}>
                   <label className="gp-input-label">País</label>
                   <div className="flex-fill">
-                    <CountrySelect 
-                      countryFunction={setCountry} 
+                    <CountrySelect
+                      countryFunction={setCountry}
                       isInvalid={!!errorsForm.country}
                       error={errorsForm.country}
                       defaultValue={country}

@@ -13,14 +13,6 @@ export async function findById(req, res) {
   res.status(200).json(team);
 }
 
-/* export async function create(req, res) {
-  const teamData = {
-    ...req.body,
-  };
-
-  const result = await teamsServices.createTeam(teamData);
-  res.status(201).json(result);
-} */
 
 export async function create(req, res, next) {
   try {
@@ -98,30 +90,6 @@ export async function editById(req, res, next) {
     next(err);
   }
 }
-
-
-/* export async function editById(req, res) {
-  try {
-    const teamId = req.params.teamId;
-    const newData = { ...req.body };
-
-    if (Array.isArray(req.body.drivers)) {
-      const validDriverIds = req.body.drivers.filter(
-        (id) => id && ObjectId.isValid(id)
-      );
-
-      newData.drivers = validDriverIds.map((id) => new ObjectId(id));
-    }
-
-    const result = await teamsServices.updateTeam(teamId, newData);
-    res.status(200).json(result);
-  } catch (err) {
-    console.error("Error al editar equipo:", err);
-    res
-      .status(500)
-      .json({ message: "Error al editar equipo", error: err.message });
-  }
-} */
 
 
 

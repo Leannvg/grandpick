@@ -12,6 +12,4 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
-
-// Public VAPID Key from Firebase Console -> Settings -> Cloud Messaging -> Web configuration
 export const VAPID_KEY = import.meta.env.VITE_FIREBASE_VAPID_KEY;

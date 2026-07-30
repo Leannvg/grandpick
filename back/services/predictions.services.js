@@ -384,7 +384,7 @@ function formatTimeGap(ms) {
     const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((ms % (1000 * 60)) / 1000);
     const milliseconds = ms % 1000;
-    
+
     if (hours > 0) return `+${hours}h ${minutes}m ${seconds}s`;
     if (minutes > 0) return `+${minutes}m ${seconds}s`;
     return `+${seconds}.${milliseconds.toString().padStart(3, '0')}s`;
@@ -403,7 +403,6 @@ export async function getGrandPrixRanking(circuitId, year) {
 
         if (races.length === 0) return [];
 
-        // Determinar qué sesión usar como referencia de desempate
         const sessionsWithResults = races.filter(r => r.results && r.results.length > 0);
         let tiebreakerSession = null;
         if (sessionsWithResults.length > 0) {
@@ -430,7 +429,7 @@ export async function getGrandPrixRanking(circuitId, year) {
             raceId: { $in: raceIds }
         }).toArray();
 
-        // Group by user
+
         const userStats = {};
         for (const pred of predictions) {
             const uid = pred.userId.toString();
@@ -445,7 +444,7 @@ export async function getGrandPrixRanking(circuitId, year) {
             }
             userStats[uid].totalPoints += (pred.previous_points || 0);
             userStats[uid].predictionsCount += 1;
-            
+
             if (tiebreakerSessionId && pred.raceId.toString() === tiebreakerSessionId) {
                 userStats[uid].tiebreakerDate = pred.date_prediction;
             } else if (new Date(pred.date_prediction) < new Date(userStats[uid].earliestDate)) {
@@ -459,10 +458,9 @@ export async function getGrandPrixRanking(circuitId, year) {
 
         let ranking = Object.values(userStats).map(stat => {
             const user = userMap.get(stat.userId.toString());
-            // Usamos tiebreakerDate preferentemente
             const datePrediction = stat.tiebreakerDate || stat.earliestDate;
             const hasTiebreaker = !!stat.tiebreakerDate;
-            
+
             return {
                 _id: stat.userId.toString(),
                 name: user?.name || "Desconocido",
@@ -476,18 +474,17 @@ export async function getGrandPrixRanking(circuitId, year) {
             };
         });
 
-        // Sort: Points DESC, Has Tiebreaker Prediction, Date ASC
         ranking.sort((a, b) => {
             if (b.points !== a.points) return b.points - a.points;
-            
+
             if (a.hasTiebreaker !== b.hasTiebreaker) {
-                return a.hasTiebreaker ? -1 : 1; // Priorizar al que tiene la predicción de desempate
+                return a.hasTiebreaker ? -1 : 1;
             }
-            
+
             return new Date(a.date_prediction) - new Date(b.date_prediction);
         });
 
-        // First pass: identify tie groups
+
         const pointsCounts = {};
         ranking.forEach(entry => {
             pointsCounts[entry.points] = (pointsCounts[entry.points] || 0) + 1;
@@ -497,11 +494,11 @@ export async function getGrandPrixRanking(circuitId, year) {
         let currentRank = 1;
         let currentTiedGroupLeaderDate = null;
         let currentTiedGroupPoints = -1;
-        
+
         ranking.forEach((entry) => {
             entry.globalRank = currentRank;
             currentRank++;
-            
+
             const isTiedWithSomeone = pointsCounts[entry.points] > 1;
 
             if (!isTiedWithSomeone) {
@@ -511,18 +508,18 @@ export async function getGrandPrixRanking(circuitId, year) {
                     // Primera persona de este nuevo grupo de desempate
                     currentTiedGroupPoints = entry.points;
                     currentTiedGroupLeaderDate = new Date(entry.date_prediction);
-                    
+
                     // Formatear hora exacta en zona horaria de Argentina
-                    const timeStr = currentTiedGroupLeaderDate.toLocaleString("es-AR", { 
-                        timeZone: "America/Argentina/Buenos_Aires", 
-                        hour: '2-digit', 
-                        minute: '2-digit', 
+                    const timeStr = currentTiedGroupLeaderDate.toLocaleString("es-AR", {
+                        timeZone: "America/Argentina/Buenos_Aires",
+                        hour: '2-digit',
+                        minute: '2-digit',
                         second: '2-digit',
                         hour12: false
                     });
-                    const dateStr = currentTiedGroupLeaderDate.toLocaleString("es-AR", { 
-                        timeZone: "America/Argentina/Buenos_Aires", 
-                        day: '2-digit', 
+                    const dateStr = currentTiedGroupLeaderDate.toLocaleString("es-AR", {
+                        timeZone: "America/Argentina/Buenos_Aires",
+                        day: '2-digit',
                         month: '2-digit',
                         year: '2-digit'
                     });
@@ -531,9 +528,9 @@ export async function getGrandPrixRanking(circuitId, year) {
                     // Persona subsiguiente en el grupo de desempate
                     const entryDate = new Date(entry.date_prediction);
                     const timeDiff = entryDate - currentTiedGroupLeaderDate;
-                    const dateStr = entryDate.toLocaleString("es-AR", { 
-                        timeZone: "America/Argentina/Buenos_Aires", 
-                        day: '2-digit', 
+                    const dateStr = entryDate.toLocaleString("es-AR", {
+                        timeZone: "America/Argentina/Buenos_Aires",
+                        day: '2-digit',
                         month: '2-digit',
                         year: '2-digit'
                     });

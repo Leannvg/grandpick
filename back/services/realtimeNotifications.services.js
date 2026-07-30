@@ -1,5 +1,5 @@
 import * as usersServices from './users.services.js'
-import { createGlobalNotification, assignNotificationToUsers} from "./notifications.services.js";
+import { createGlobalNotification, assignNotificationToUsers } from "./notifications.services.js";
 
 export async function sendGlobalNotification(app, {
   title,
@@ -33,7 +33,6 @@ export async function sendGlobalNotification(app, {
     if (io) io.to(`user:${user._id.toString()}`).emit("notifications:new");
   }
 
-  // ALSO send Push notification
   try {
     const { sendPushToMultipleTokens } = await import("./fcm.services.js");
     const allTokens = users.flatMap(u => u.fcmTokens || []);
@@ -43,7 +42,7 @@ export async function sendGlobalNotification(app, {
         body: message,
       }, link ? { link } : {});
     }
-  } catch(e) {
+  } catch (e) {
     console.warn("⚠️ Push no se pudo enviar globalmente", e.message);
   }
 }

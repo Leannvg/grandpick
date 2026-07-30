@@ -7,7 +7,6 @@ function CountdownToRace({ raceDate, totalDuration, onExpire, onStartRace }) {
   const start = new Date(raceDate).getTime();
   const [now, setNow] = useState(Date.now());
 
-  // Tick cada segundo
   useEffect(() => {
     const interval = setInterval(() => {
       setNow(Date.now());
@@ -16,11 +15,11 @@ function CountdownToRace({ raceDate, totalDuration, onExpire, onStartRace }) {
     return () => clearInterval(interval);
   }, []);
 
-  const runTime = totalDuration || 5400000; // 1.5 horas por defecto (ms)
+  const runTime = totalDuration || 5400000;
   const timeToStart = start - now;
   const timeToEnd = start + runTime - now;
 
-  // Inicio de carrera (una sola vez)
+
   useEffect(() => {
     if (timeToStart <= 0 && timeToEnd > 0 && !startHandledRef.current) {
       startHandledRef.current = true;
@@ -28,13 +27,6 @@ function CountdownToRace({ raceDate, totalDuration, onExpire, onStartRace }) {
     }
   }, [timeToStart, timeToEnd, onStartRace]);
 
-  // Fin de ventana ya no aplica, quitamos onExpire porque depende de Finalizado
-  // useEffect(() => {
-  //   if (timeToEnd <= 0 && !expireHandledRef.current) {
-  //     expireHandledRef.current = true;
-  //     onExpire();
-  //   }
-  // }, [timeToEnd, onExpire]);
 
   function formatDHMS(ms) {
     const totalSeconds = Math.floor(ms / 1000);

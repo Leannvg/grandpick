@@ -53,7 +53,7 @@ function Teams() {
 
                                 {team.drivers && team.drivers.map((driver) => (
                                     <div className="team-driver" key={driver._id}>
-                                        {/* Using a placeholder if helmet icon is missing */}
+
                                         <img src={helmet} alt="Helmet" className="helmet-icon" /> {driver.full_name}
                                     </div>
                                 ))}

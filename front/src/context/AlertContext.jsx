@@ -18,13 +18,12 @@ export function AlertProvider({ children }) {
 
 
   useEffect(() => {
-    // Si la alerta es persistente → debe ocultarse al cambiar la URL
-    // Si NO es persistente → NO tocarla
+
     setAlert((prev) => {
       if (prev.persistent) {
         return { ...prev, show: false };
       }
-      return prev; // ⬅ No hacer nada si no es persistente
+      return prev;
     });
 
     if (alert.persistent && timeoutRef.current) {
@@ -34,22 +33,17 @@ export function AlertProvider({ children }) {
   }, [location.pathname]);
 
 
- 
+
 
   const showAlert = useCallback((arg1, arg2, arg3) => {
     let config = {};
-
-    // ----- Sintaxis antigua -----
-    // showAlert("mensaje", "danger", true)
     if (typeof arg1 === "string") {
       config.message = arg1;
       config.type = arg2 || "success";
-      config.persistent = Boolean(arg3);   // 👈 TERCER PARÁMETRO COMO PERSISTENTE
+      config.persistent = Boolean(arg3);
       config.duration = config.persistent ? null : 8000;
     }
 
-    // ----- Sintaxis nueva -----
-    // showAlert({ message, type, duration, persistent })
     else if (typeof arg1 === "object") {
       config = {
         message: arg1.message,
@@ -61,7 +55,6 @@ export function AlertProvider({ children }) {
       return;
     }
 
-    // Limpiar timeout previo
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
@@ -74,7 +67,6 @@ export function AlertProvider({ children }) {
       persistent: config.persistent,
     });
 
-    // Si NO es persistente, iniciar timeout
     if (!config.persistent && config.duration) {
       timeoutRef.current = setTimeout(() => {
         setAlert((prev) => ({ ...prev, show: false }));

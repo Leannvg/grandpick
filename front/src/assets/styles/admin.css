@@ -6,7 +6,6 @@
   text-align: center;
 }
 
-/* Controls Bar */
 .admin-controls-bar {
   display: flex;
   flex-direction: column;
@@ -14,7 +13,6 @@
   margin-bottom: 30px;
 }
 
-/* Filters Bar */
 .admin-filters-bar {
   display: flex;
   align-items: center;
@@ -37,7 +35,6 @@
   max-width: 300px;
 }
 
-/* Custom Input Groups for Admin Filters */
 .admin-input-group {
   display: flex;
   align-items: center;
@@ -78,7 +75,6 @@
   outline: none;
 }
 
-/* Disabled State */
 .admin-input-group.disabled {
   background-color: rgba(255, 255, 255, 0.15);
 }
@@ -94,7 +90,6 @@
   cursor: not-allowed;
 }
 
-/* Agregar Button */
 .btn-admin-add {
   background-color: #2e7d32;
   color: #fff;
@@ -118,7 +113,6 @@
   cursor: not-allowed;
 }
 
-/* Tab Buttons */
 .admin-tabs {
   display: flex;
   gap: 8px;
@@ -151,7 +145,6 @@
   background-color: #2c3e50;
 }
 
-/* Table Styles */
 .admin-tab-content {
   position: relative;
   min-height: 400px;
@@ -174,7 +167,6 @@
   width: 100%;
 }
 
-/* Custom Scrollbar for responsive tables */
 .table-responsive::-webkit-scrollbar {
   height: 6px;
 }
@@ -200,10 +192,8 @@
   border-spacing: 0;
   color: #333;
   min-width: 1060px;
-  /* Evita el amontonamiento de columnas en dispositivos móviles */
 }
 
-/* Reducir el ancho mínimo para la tabla de asignaciones que tiene menos columnas */
 .admin-table-assignments {
   min-width: 600px;
 }
@@ -234,13 +224,11 @@
   background-color: #f8faff;
 }
 
-/* Sticky Columns for Horizontal Scroll */
 .admin-table th.sticky-col {
   position: sticky;
   left: 0;
   z-index: 2;
   background-color: #5c85b5;
-  /* keep th color */
   box-shadow: 0px 0 6px -1px rgba(0, 0, 0, 0.15);
 }
 
@@ -249,18 +237,13 @@
   left: 0;
   z-index: 1;
   background-color: #fff;
-  /* keep td color */
   box-shadow: 0px 0 6px -1px rgba(0, 0, 0, 0.15);
 }
 
 .admin-table tr:hover td.sticky-col {
   background-color: #f8faff;
-  /* keep hover color */
 }
 
-
-
-/* Upcoming race row styles */
 .admin-table tr.row-upcoming td {
   background-color: #ffe8e4;
   font-weight: 600;
@@ -284,7 +267,6 @@
   background-color: #e1310c;
 }
 
-/* Status Pills */
 .admin-status-pill {
   display: inline-block;
   padding: 4px 12px;
@@ -292,7 +274,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   text-align: center;
-  width: 120px; /* Fixed width */
+  width: 120px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -337,15 +319,12 @@
   border: 1px solid #812e9a;
 }
 
-/* Specific column widths */
 .admin-table .col-piloto {
   width: 145px;
   min-width: 145px;
   white-space: nowrap;
 }
 
-
-/* Pagination Outside */
 .admin-pagination {
   display: flex;
   justify-content: flex-end;
@@ -386,7 +365,6 @@
   cursor: not-allowed;
 }
 
-/* Action Buttons */
 .admin-actions {
   white-space: nowrap;
 }
@@ -432,7 +410,6 @@
   color: #fff;
 }
 
-/* Responsive */
 @media (max-width: 992px) {
   .admin-scroll-warning {
     display: flex !important;
@@ -470,7 +447,6 @@
     font-size: 13px;
   }
 
-  /* Make filters shrink on small screens */
   .admin-filters-left {
     flex-wrap: nowrap;
     width: 100%;
@@ -509,7 +485,6 @@
   }
 }
 
-/* Custom styling for react-select inside admin tables (Assignments) */
 .admin-table .react-select-container {
   max-width: 220px;
   width: 100%;
@@ -554,7 +529,6 @@
   font-size: 0.9rem !important;
 }
 
-/* Notifications Tab Custom Styles */
 .admin-tab-title {
   color: #000;
   text-transform: uppercase;
@@ -601,7 +575,7 @@
     flex-direction: column !important;
     align-items: stretch !important;
   }
-  
+
   .notifications-form .gp-input-label-fixed {
     width: 100% !important;
     min-width: 100% !important;
@@ -612,7 +586,6 @@
   }
 }
 
-/* Dashboard Forms Specific Styles */
 .gp-input-label-sm {
   width: 140px;
   min-width: 140px;
@@ -708,7 +681,6 @@
   font-weight: 500;
 }
 
-/* Race Form Specific Styles */
 .gp-section-title {
   background-color: #111d2a;
   min-height: 48px;
@@ -772,9 +744,11 @@
   align-items: center;
   justify-content: center;
 }
+
 .gp-datetime-label.enabled {
   background-color: #4a76a8;
 }
+
 .gp-datetime-label.disabled {
   background-color: #b0b0b0;
 }
@@ -800,6 +774,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .gp-race-tab-btn.active {
   background-color: #2e7d32;
 }
@@ -812,6 +787,7 @@
     height: 36px;
     padding: 0;
   }
+
   .gp-datetime-input {
     text-align: center;
   }
@@ -825,6 +801,7 @@
     height: auto;
     padding: 10px 15px;
   }
+
   .gp-datetime-input {
     text-align: left;
   }

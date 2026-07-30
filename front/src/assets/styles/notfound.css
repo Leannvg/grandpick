@@ -1,99 +1,1 @@
-.main-content.is-not-found {
-    margin: 0 !important;
-}
-
-.notfound-container {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 2rem;
-    text-align: center;
-    /* We keep the specific gradient from the image but let it flow in the layout */
-    background: radial-gradient(circle at top, #1e3c5a 0%, #101e2e 100%);
-    width: 100%;
-}
-
-.notfound-content {
-    max-width: 600px;
-    width: 100%;
-    animation: fadeIn 0.8s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.notfound-code {
-    font-size: 10rem;
-    font-weight: 800;
-    line-height: 1;
-    margin-bottom: 2rem;
-    color: #ffffff;
-    font-family: 'Akshar', sans-serif;
-    letter-spacing: -2px;
-}
-
-.notfound-title {
-    font-size: 3rem;
-    font-weight: 800;
-    margin-bottom: 2rem;
-    color: #ffffff;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-.notfound-text {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 3.5rem;
-    line-height: 1.6;
-    font-weight: 400;
-}
-
-.notfound-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    background: #8db2e3;
-    color: #ffffff;
-    padding: 1.2rem 3rem;
-    border-radius: 50px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    border: none;
-    text-decoration: none;
-    font-size: 1.1rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.notfound-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-    background: #a5c3eb;
-}
-
-.notfound-btn .chevron {
-    font-size: 1.4rem;
-    line-height: 1;
-}
-
-@media (max-width: 768px) {
-    .notfound-code {
-        font-size: 7rem;
-    }
-    .notfound-title {
-        font-size: 2rem;
-    }
-    .notfound-text {
-        font-size: 1rem;
-        padding: 0 1rem;
-    }
-    .notfound-btn {
-        padding: 1rem 2rem;
-        font-size: 1rem;
-    }
-}
+.main-content.is-not-found {    margin: 0 !important;}.notfound-container {    min-height: 80vh;    display: flex;    align-items: center;    justify-content: center;    padding: 4rem 2rem;    text-align: center;    background: radial-gradient(circle at top, #1e3c5a 0%, #101e2e 100%);    width: 100%;}.notfound-content {    max-width: 600px;    width: 100%;    animation: fadeIn 0.8s ease-out;}@keyframes fadeIn {    from { opacity: 0; transform: translateY(20px); }    to { opacity: 1; transform: translateY(0); }}.notfound-code {    font-size: 10rem;    font-weight: 800;    line-height: 1;    margin-bottom: 2rem;    color: #ffffff;    font-family: 'Akshar', sans-serif;    letter-spacing: -2px;}.notfound-title {    font-size: 3rem;    font-weight: 800;    margin-bottom: 2rem;    color: #ffffff;    text-transform: uppercase;    letter-spacing: 2px;}.notfound-text {    font-size: 1.1rem;    color: rgba(255, 255, 255, 0.7);    margin-bottom: 3.5rem;    line-height: 1.6;    font-weight: 400;}.notfound-btn {    display: inline-flex;    align-items: center;    gap: 1rem;    background: #8db2e3;    color: #ffffff;    padding: 1.2rem 3rem;    border-radius: 50px;    font-weight: 700;    text-transform: uppercase;    letter-spacing: 1px;    transition: all 0.3s ease;    border: none;    text-decoration: none;    font-size: 1.1rem;    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);}.notfound-btn:hover {    transform: translateY(-3px);    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);    background: #a5c3eb;}.notfound-btn .chevron {    font-size: 1.4rem;    line-height: 1;}@media (max-width: 768px) {    .notfound-code {        font-size: 7rem;    }    .notfound-title {        font-size: 2rem;    }    .notfound-text {        font-size: 1rem;        padding: 0 1rem;    }    .notfound-btn {        padding: 1rem 2rem;        font-size: 1rem;    }}

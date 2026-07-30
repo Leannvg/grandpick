@@ -17,7 +17,6 @@ function Calendar() {
             const currentYear = new Date().getFullYear();
             const data = await racesServices.findAllByYear(currentYear);
 
-            // Agrupar carreras por circuito y fin de semana
             const groupedMap = new Map();
             data.forEach(race => {
                 const circuitId = race.id_circuit?._id || race.id_circuit || (race.circuit?._id);
@@ -75,7 +74,6 @@ function Calendar() {
             const now = DateTime.now().toMillis();
             const index = sortedData.findIndex(race => {
                 const isFinished = race.state === "Finalizado";
-                // Consideramos que no ha terminado si el día de fin aún no termina (en la zona del circuito)
                 const tz = race.circuit?.timezone || "local";
                 const endTime = DateTime.fromISO(race.date_gp_end).setZone(tz).endOf('day').toMillis();
 
@@ -110,7 +108,7 @@ function Calendar() {
     }, [loadRaces]);
 
     function getStatusClass(index) {
-        if (currentIndex === -1) return "race-finished"; // Todas terminaron o lista vacía
+        if (currentIndex === -1) return "race-finished";
         if (index < currentIndex) return "race-finished";
         if (index === currentIndex) return "race-current";
         return "race-upcoming";
@@ -138,9 +136,6 @@ function Calendar() {
         return `${startMonth}-${endMonth}`;
     }
 
-    // Se quitó formatSessionTypes a pedido del usuario para mostrar solo la etiqueta de sprint
-
-    // Dividir carreras en dos columnas para la grilla
     const midPoint = Math.ceil(races.length / 2);
     const leftRaces = races.slice(0, midPoint);
     const rightRaces = races.slice(midPoint);

@@ -10,7 +10,7 @@ router.route('/api/predictions')
         predictionsApiControllers.findAll
     )
     .post(
-        autenticado, // crear predicción → usuario logueado
+        autenticado,
         predictionsApiControllers.create
     );
 

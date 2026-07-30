@@ -1,9 +1,8 @@
 import { authHeaders } from "../utils/helpers.js";
 import API_URL from "./api.js";
 
-// 🔹 SUBIR IMAGEN
+// SUBIR IMAGEN
 async function cargarImagen(formData, folder) {
-    // Ya no hace falta append a formData si pasamos por param, pero Cloudinary lo toma de multer en el back
     const res = await fetch(`${API_URL}/api/upload/${folder}`, {
         method: "POST",
         headers: authHeaders(),
@@ -20,7 +19,7 @@ async function cargarImagen(formData, folder) {
 }
 
 
-// 🔹 REEMPLAZAR IMAGEN
+// REEMPLAZAR IMAGEN
 async function reemplazarImagen(filePath, formData) {
     const res = await fetch(`${API_URL}/api/upload/manage?filePath=${encodeURIComponent(filePath)}`, {
         method: "PUT",
@@ -34,11 +33,11 @@ async function reemplazarImagen(filePath, formData) {
     }
 
     const data = await res.json();
-    return data.file;  // <-- devolver public_id final
+    return data.file;
 }
 
 
-// 🔹 ELIMINAR IMAGEN
+// ELIMINAR IMAGEN
 async function eliminarImagen(filePath) {
     const res = await fetch(`${API_URL}/api/upload/manage?filePath=${encodeURIComponent(filePath)}`, {
         method: "DELETE",

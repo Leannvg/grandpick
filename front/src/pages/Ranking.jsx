@@ -184,302 +184,297 @@ function Ranking() {
     return (
         <div className="ranking-page page-wrapper">
             <section className="page-section container-fluid px-3 px-md-5 text-center container">
-            <header className="page-header">
-                <p className="section-label">Todos quieren subirse al podio</p>
-                <h1 className="section-title">{mode === 'global' ? 'PUNTUACIÓN GLOBAL' : 'PUNTUACIÓN POR GRAN PREMIO'}</h1>
-                <p className="section-subtitle">Campeonato de predicciones</p>
-            </header>
+                <header className="page-header">
+                    <p className="section-label">Todos quieren subirse al podio</p>
+                    <h1 className="section-title">{mode === 'global' ? 'PUNTUACIÓN GLOBAL' : 'PUNTUACIÓN POR GRAN PREMIO'}</h1>
+                    <p className="section-subtitle">Campeonato de predicciones</p>
+                </header>
 
-            <div className="ranking-filters">
-                {/* Row 1: Filters & Mode Buttons */}
-                <div className="row w-100 m-0 g-2 justify-content-between align-items-center">
+                <div className="ranking-filters">
 
-                    {/* Mobile Bottom / Desktop Left: Mostrar & Año */}
-                    <div className="col-12 col-md-auto order-2 order-md-1 px-0 m-0">
-                        <div className="row g-2 m-0 w-100">
-                            <div className="col-6 col-md-auto px-1 px-md-0 me-md-2">
-                                <div className="ranking-input-group w-100 h-38px">
-                                    <span className="ranking-input-group-text">Mostrar</span>
-                                    <select
-                                        value={pageSize}
-                                        onChange={(e) => setPageSize(Number(e.target.value))}
-                                        className="w-100"
-                                    >
-                                        <option value={2}>2</option>
-                                        <option value={5}>5</option>
-                                        <option value={10}>10</option>
-                                        <option value={20}>20</option>
-                                        <option value={50}>50</option>
-                                        <option value={filteredStats.length}>Todos</option>
-                                    </select>
+                    <div className="row w-100 m-0 g-2 justify-content-between align-items-center">
+
+                        <div className="col-12 col-md-auto order-2 order-md-1 px-0 m-0">
+                            <div className="row g-2 m-0 w-100">
+                                <div className="col-6 col-md-auto px-1 px-md-0 me-md-2">
+                                    <div className="ranking-input-group w-100 h-38px">
+                                        <span className="ranking-input-group-text">Mostrar</span>
+                                        <select
+                                            value={pageSize}
+                                            onChange={(e) => setPageSize(Number(e.target.value))}
+                                            className="w-100"
+                                        >
+                                            <option value={2}>2</option>
+                                            <option value={5}>5</option>
+                                            <option value={10}>10</option>
+                                            <option value={20}>20</option>
+                                            <option value={50}>50</option>
+                                            <option value={filteredStats.length}>Todos</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="col-6 col-md-auto px-1 px-md-0">
-                                <div className="ranking-input-group w-100 h-38px">
-                                    <span className="ranking-input-group-text">Año</span>
-                                    <select
-                                        value={selectedYear}
-                                        onChange={(e) => {
-                                            setSelectedYear(Number(e.target.value));
-                                            setPage(1);
-                                        }}
-                                        className="w-100"
-                                    >
-                                        {Array.from({ length: new Date().getFullYear() - 2024 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
-                                            <option key={year} value={year}>{year}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Mobile Top / Desktop Right: Mode Buttons */}
-                    <div className="col-12 col-md-auto order-1 order-md-2 px-0 m-0">
-                        <div className="row g-2 m-0 w-100 justify-content-end h-100">
-                            <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex">
-                                <button
-                                    className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'global' ? 'is-active' : ''}`}
-                                    onClick={() => setMode('global')}
-                                >
-                                    Global
-                                </button>
-                            </div>
-                            <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex d-md-none">
-                                <button
-                                    className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'grand_prix' ? 'is-active' : ''}`}
-                                    onClick={() => {
-                                        setMode('grand_prix');
-                                        setPage(1);
-                                    }}
-                                >
-                                    GP
-                                </button>
-                            </div>
-                            <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-none d-md-flex">
-                                <button
-                                    className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'grand_prix' ? 'is-active' : ''}`}
-                                    onClick={() => {
-                                        setMode('grand_prix');
-                                        setPage(1);
-                                    }}
-                                >
-                                    Por Gran Premio
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Row 2: Secondary Row (Circuito, TU PUESTO, Buscador) */}
-                <div className="d-flex flex-column flex-md-row w-100 gap-2 mb-3">
-
-                    {/* Circuito (Only in GP Mode) */}
-                    {mode === 'grand_prix' && (
-                        <div className="order-3 order-md-1 flex-md-fill min-w-200">
-                            <div className="ranking-input-group w-100 m-0 h-44px">
-                                <span className="ranking-input-group-text">Circuito</span>
-                                <div className="flex-grow-1 h-100">
-                                    <SearchableSelect
-                                        options={racesList}
-                                        value={selectedCircuitId}
-                                        onChange={(selected) => {
-                                            setSelectedCircuitId(selected.value);
-                                            setPage(1);
-                                        }}
-                                        getOptionDisabled={(opt) => !opt.enabled}
-                                        placeholder="Seleccionar Gran Premio"
-                                    />
+                                <div className="col-6 col-md-auto px-1 px-md-0">
+                                    <div className="ranking-input-group w-100 h-38px">
+                                        <span className="ranking-input-group-text">Año</span>
+                                        <select
+                                            value={selectedYear}
+                                            onChange={(e) => {
+                                                setSelectedYear(Number(e.target.value));
+                                                setPage(1);
+                                            }}
+                                            className="w-100"
+                                        >
+                                            {Array.from({ length: new Date().getFullYear() - 2024 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                                                <option key={year} value={year}>{year}</option>
+                                            ))}
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    )}
 
-                    {/* TU PUESTO */}
-                    {currentUserStat && !searchTerm && (
-                        <div className="order-2 order-md-2 flex-md-fill min-w-250">
-                            <div className="ranking-user-status w-100 m-0 h-100 min-h-44px">
-                                <div className="ranking-user-status__content">
-                                    <div className="status-item status-item--rank">
-                                        <span className="status-label">TU PUESTO</span>
-                                        <span className="status-value">#{currentUserStat.globalRank}</span>
-                                    </div>
-
-                                    <div className="status-item status-item--user">
-                                        <span className="status-label">USUARIO</span>
-                                        <span className="status-value">{currentUserStat.name} {currentUserStat.last_name}</span>
-                                    </div>
-
-                                    <div className="status-item status-item--points">
-                                        <span className="status-label">PUNTOS</span>
-                                        <span className="status-value">{mode === 'global' ? (currentUserStat.stats?.points?.total || 0) : currentUserStat.points}</span>
-                                    </div>
-
+                        <div className="col-12 col-md-auto order-1 order-md-2 px-0 m-0">
+                            <div className="row g-2 m-0 w-100 justify-content-end h-100">
+                                <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex">
                                     <button
-                                        className="btn-jump-to-me"
-                                        title="Ir a mi posición"
+                                        className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'global' ? 'is-active' : ''}`}
+                                        onClick={() => setMode('global')}
+                                    >
+                                        Global
+                                    </button>
+                                </div>
+                                <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex d-md-none">
+                                    <button
+                                        className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'grand_prix' ? 'is-active' : ''}`}
                                         onClick={() => {
-                                            if (!currentUserStat) return;
-
-                                            const userIndex = filteredStats.findIndex(u => u._id === currentUserStat._id);
-                                            if (userIndex === -1) return;
-
-                                            const targetPage = Math.floor(userIndex / pageSize) + 1;
-
-                                            if (page !== targetPage) {
-                                                setPage(targetPage);
-                                            }
-
-                                            setTimeout(() => {
-                                                const element = document.getElementById(`user-row-${currentUserStat._id}`);
-                                                if (element) {
-                                                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                                    element.classList.add('row-highlight-pulse');
-                                                    setTimeout(() => {
-                                                        element.classList.remove('row-highlight-pulse');
-                                                    }, 3000);
-                                                }
-                                            }, page !== targetPage ? 300 : 50);
+                                            setMode('grand_prix');
+                                            setPage(1);
                                         }}
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-14px">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 11.25l-3-3m0 0l-3 3m3-3v7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
+                                        GP
+                                    </button>
+                                </div>
+                                <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-none d-md-flex">
+                                    <button
+                                        className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                                        onClick={() => {
+                                            setMode('grand_prix');
+                                            setPage(1);
+                                        }}
+                                    >
+                                        Por Gran Premio
                                     </button>
                                 </div>
                             </div>
                         </div>
-                    )}
+                    </div>
 
-                    {/* BUSCADOR */}
-                    <div className="order-1 order-md-3 flex-md-fill min-w-200">
-                        <div className="ranking-search w-100 m-0 h-44px max-w-none">
-                            <input
-                                type="text"
-                                placeholder="Buscador"
-                                className="ranking-search__input w-100"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                            <button className="ranking-search__button">Buscar</button>
+                    <div className="d-flex flex-column flex-md-row w-100 gap-2 mb-3">
+                        {mode === 'grand_prix' && (
+                            <div className="order-3 order-md-1 flex-md-fill min-w-200">
+                                <div className="ranking-input-group w-100 m-0 h-44px">
+                                    <span className="ranking-input-group-text">Circuito</span>
+                                    <div className="flex-grow-1 h-100">
+                                        <SearchableSelect
+                                            options={racesList}
+                                            value={selectedCircuitId}
+                                            onChange={(selected) => {
+                                                setSelectedCircuitId(selected.value);
+                                                setPage(1);
+                                            }}
+                                            getOptionDisabled={(opt) => !opt.enabled}
+                                            placeholder="Seleccionar Gran Premio"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* TU PUESTO */}
+                        {currentUserStat && !searchTerm && (
+                            <div className="order-2 order-md-2 flex-md-fill min-w-250">
+                                <div className="ranking-user-status w-100 m-0 h-100 min-h-44px">
+                                    <div className="ranking-user-status__content">
+                                        <div className="status-item status-item--rank">
+                                            <span className="status-label">TU PUESTO</span>
+                                            <span className="status-value">#{currentUserStat.globalRank}</span>
+                                        </div>
+
+                                        <div className="status-item status-item--user">
+                                            <span className="status-label">USUARIO</span>
+                                            <span className="status-value">{currentUserStat.name} {currentUserStat.last_name}</span>
+                                        </div>
+
+                                        <div className="status-item status-item--points">
+                                            <span className="status-label">PUNTOS</span>
+                                            <span className="status-value">{mode === 'global' ? (currentUserStat.stats?.points?.total || 0) : currentUserStat.points}</span>
+                                        </div>
+
+                                        <button
+                                            className="btn-jump-to-me"
+                                            title="Ir a mi posición"
+                                            onClick={() => {
+                                                if (!currentUserStat) return;
+
+                                                const userIndex = filteredStats.findIndex(u => u._id === currentUserStat._id);
+                                                if (userIndex === -1) return;
+
+                                                const targetPage = Math.floor(userIndex / pageSize) + 1;
+
+                                                if (page !== targetPage) {
+                                                    setPage(targetPage);
+                                                }
+
+                                                setTimeout(() => {
+                                                    const element = document.getElementById(`user-row-${currentUserStat._id}`);
+                                                    if (element) {
+                                                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                                        element.classList.add('row-highlight-pulse');
+                                                        setTimeout(() => {
+                                                            element.classList.remove('row-highlight-pulse');
+                                                        }, 3000);
+                                                    }
+                                                }, page !== targetPage ? 300 : 50);
+                                            }}
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-14px">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 11.25l-3-3m0 0l-3 3m3-3v7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* BUSCADOR */}
+                        <div className="order-1 order-md-3 flex-md-fill min-w-200">
+                            <div className="ranking-search w-100 m-0 h-44px max-w-none">
+                                <input
+                                    type="text"
+                                    placeholder="Buscador"
+                                    className="ranking-search__input w-100"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                                <button className="ranking-search__button">Buscar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="ranking-card">
-                <div className="ranking-table-container table-responsive">
-                    <table className="ranking-table">
-                        <thead>
-                            <tr>
-                                <th>Pos.</th>
-                                <th className="w-50px">País</th>
-                                <th className="text-start col-user">Usuario</th>
-                                <th className="w-120px">Puntos totales</th>
-                                {mode === 'global' && <th>Predicciones jugadas</th>}
-                                {mode === 'global' && <th>Promedio por predicción</th>}
-                                {mode === 'global' && <th>Aciertos totales</th>}
-                                {mode === 'grand_prix' && <th className="text-start">Intervalo de Desempate (Gap)</th>}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {paginatedData.map((item) => {
-                                const pos = item.globalRank;
-                                const isTop3 = pos <= 3;
-                                const posClass = isTop3 ? `pos-${pos}` : "";
-
-                                const totalPoints = mode === 'global' ? (item.stats?.points?.total || 0) : item.points;
-                                const totalPredictions = mode === 'global' ? (item.stats?.predictions?.total || 0) : item.predictionsCount;
-                                const totalSuccesses = mode === 'global' ? (item.stats?.successes?.total || 0) : 0;
-                                const avgPoints = totalPredictions > 0 ? (totalPoints / totalPredictions).toFixed(1) : "0.0";
-
-                                return (
-                                    <tr
-                                        key={item._id || pos}
-                                        id={item._id ? `user-row-${item._id}` : undefined}
-                                        className={currentUserStat?._id === item._id ? 'is-current-user' : ''}
-                                    >
-                                        <td className={`pos-cell ${posClass}`}>{pos}</td>
-                                        <td>
-                                            <span className="emoji-flag" title={countriesMap[item.country] || item.country}>
-                                                {getFlagEmoji(item.country)}
-                                            </span>
-                                        </td>
-                                        <td className="text-start col-user">
-                                            <div className="user-info">
-                                                <span className="user-name">{item.name}</span>
-                                                <span className="user-lastname">{item.last_name}</span>
-                                            </div>
-                                        </td>
-                                        <td><strong>{totalPoints}</strong></td>
-                                        {mode === 'global' && <td>{totalPredictions}</td>}
-                                        {mode === 'global' && <td>{avgPoints}</td>}
-                                        {mode === 'global' && <td>{totalSuccesses}</td>}
-                                        {mode === 'grand_prix' && <td className="text-start">
-                                            {(() => {
-                                                if (!item.gap || item.gap === "-") return "-";
-                                                const parts = item.gap.split(" - ");
-                                                if (parts.length >= 2) {
-                                                    const datePart = parts[0];
-                                                    let restPart = parts.slice(1).join(" - ");
-                                                    let sessionTag = null;
-                                                    let sessionClass = "";
-                                                    
-                                                    const sessionMatch = restPart.match(/\s*\(([^)]+)\)$/);
-                                                    if (sessionMatch) {
-                                                        sessionTag = sessionMatch[1];
-                                                        restPart = restPart.replace(sessionMatch[0], "");
-                                                        // Asegurar que los espacios sean reemplazados por guiones si es necesario, y en minúsculas
-                                                        const safeClass = sessionTag.toLowerCase().replace(/\s+/g, '-');
-                                                        sessionClass = `gap-session-${safeClass}`;
-                                                    }
-
-                                                    return (
-                                                        <div className="gap-info d-flex flex-row align-items-center gap-2">
-                                                            <span className="gap-date">{datePart}</span>
-                                                            <span className="gap-value">{restPart}</span>
-                                                            {sessionTag && <span className={`gap-session-tag ${sessionClass}`}>{sessionTag}</span>}
-                                                        </div>
-                                                    );
-                                                }
-                                                return item.gap;
-                                            })()}
-                                        </td>}
-                                    </tr>
-                                );
-                            })}
-                            {paginatedData.length === 0 && (
+                <div className="ranking-card">
+                    <div className="ranking-table-container table-responsive">
+                        <table className="ranking-table">
+                            <thead>
                                 <tr>
-                                    <td colSpan={mode === 'global' ? "7" : "5"} className="ranking-empty-state">
-                                        No se encontraron usuarios
-                                    </td>
+                                    <th>Pos.</th>
+                                    <th className="w-50px">País</th>
+                                    <th className="text-start col-user">Usuario</th>
+                                    <th className="w-120px">Puntos totales</th>
+                                    {mode === 'global' && <th>Predicciones jugadas</th>}
+                                    {mode === 'global' && <th>Promedio por predicción</th>}
+                                    {mode === 'global' && <th>Aciertos totales</th>}
+                                    {mode === 'grand_prix' && <th className="text-start">Intervalo de Desempate (Gap)</th>}
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                {paginatedData.map((item) => {
+                                    const pos = item.globalRank;
+                                    const isTop3 = pos <= 3;
+                                    const posClass = isTop3 ? `pos-${pos}` : "";
 
-                <div className="d-flex justify-content-end align-items-center mt-3 p-3">
-                    <div className="pagination-controls d-flex gap-2 align-items-center">
-                        <button
-                            className="btn btn-sm btn-outline-light"
-                            disabled={page === 1}
-                            onClick={() => setPage(page - 1)}
-                        >
-                            <i className="bi bi-chevron-left"></i> Anterior
-                        </button>
-                        <span className="text-light small">{page} / {totalPages || 1}</span>
-                        <button
-                            className="btn btn-sm btn-outline-light"
-                            disabled={page === totalPages || totalPages === 0}
-                            onClick={() => setPage(page + 1)}
-                        >
-                            Siguiente <i className="bi bi-chevron-right"></i>
-                        </button>
+                                    const totalPoints = mode === 'global' ? (item.stats?.points?.total || 0) : item.points;
+                                    const totalPredictions = mode === 'global' ? (item.stats?.predictions?.total || 0) : item.predictionsCount;
+                                    const totalSuccesses = mode === 'global' ? (item.stats?.successes?.total || 0) : 0;
+                                    const avgPoints = totalPredictions > 0 ? (totalPoints / totalPredictions).toFixed(1) : "0.0";
+
+                                    return (
+                                        <tr
+                                            key={item._id || pos}
+                                            id={item._id ? `user-row-${item._id}` : undefined}
+                                            className={currentUserStat?._id === item._id ? 'is-current-user' : ''}
+                                        >
+                                            <td className={`pos-cell ${posClass}`}>{pos}</td>
+                                            <td>
+                                                <span className="emoji-flag" title={countriesMap[item.country] || item.country}>
+                                                    {getFlagEmoji(item.country)}
+                                                </span>
+                                            </td>
+                                            <td className="text-start col-user">
+                                                <div className="user-info">
+                                                    <span className="user-name">{item.name}</span>
+                                                    <span className="user-lastname">{item.last_name}</span>
+                                                </div>
+                                            </td>
+                                            <td><strong>{totalPoints}</strong></td>
+                                            {mode === 'global' && <td>{totalPredictions}</td>}
+                                            {mode === 'global' && <td>{avgPoints}</td>}
+                                            {mode === 'global' && <td>{totalSuccesses}</td>}
+                                            {mode === 'grand_prix' && <td className="text-start">
+                                                {(() => {
+                                                    if (!item.gap || item.gap === "-") return "-";
+                                                    const parts = item.gap.split(" - ");
+                                                    if (parts.length >= 2) {
+                                                        const datePart = parts[0];
+                                                        let restPart = parts.slice(1).join(" - ");
+                                                        let sessionTag = null;
+                                                        let sessionClass = "";
+
+                                                        const sessionMatch = restPart.match(/\s*\(([^)]+)\)$/);
+                                                        if (sessionMatch) {
+                                                            sessionTag = sessionMatch[1];
+                                                            restPart = restPart.replace(sessionMatch[0], "");
+
+                                                            const safeClass = sessionTag.toLowerCase().replace(/\s+/g, '-');
+                                                            sessionClass = `gap-session-${safeClass}`;
+                                                        }
+
+                                                        return (
+                                                            <div className="gap-info d-flex flex-row align-items-center gap-2">
+                                                                <span className="gap-date">{datePart}</span>
+                                                                <span className="gap-value">{restPart}</span>
+                                                                {sessionTag && <span className={`gap-session-tag ${sessionClass}`}>{sessionTag}</span>}
+                                                            </div>
+                                                        );
+                                                    }
+                                                    return item.gap;
+                                                })()}
+                                            </td>}
+                                        </tr>
+                                    );
+                                })}
+                                {paginatedData.length === 0 && (
+                                    <tr>
+                                        <td colSpan={mode === 'global' ? "7" : "5"} className="ranking-empty-state">
+                                            No se encontraron usuarios
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div className="d-flex justify-content-end align-items-center mt-3 p-3">
+                        <div className="pagination-controls d-flex gap-2 align-items-center">
+                            <button
+                                className="btn btn-sm btn-outline-light"
+                                disabled={page === 1}
+                                onClick={() => setPage(page - 1)}
+                            >
+                                <i className="bi bi-chevron-left"></i> Anterior
+                            </button>
+                            <span className="text-light small">{page} / {totalPages || 1}</span>
+                            <button
+                                className="btn btn-sm btn-outline-light"
+                                disabled={page === totalPages || totalPages === 0}
+                                onClick={() => setPage(page + 1)}
+                            >
+                                Siguiente <i className="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
             </section>
         </div>
     );

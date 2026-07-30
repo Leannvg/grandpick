@@ -7,13 +7,6 @@ import * as MailService from '../../services/mail.services.js'
 
 function getAll(req, res) {
 
-  /* const token = req.headers['auth-token']
-
-  if(!token) {
-      res.status(401).json({ message: 'No se envió un token' })
-      return;
-  } */
-
   UsersServices.getUsers()
     .then(function (users) {
       res.status(200).json(users)
@@ -110,35 +103,6 @@ async function editOne(req, res, next) {
   }
 }
 
-/* 
-function editOne(req,res){
-    const id = req.params.id;
-
-
-    const finalImage = resolveImage({
-        file: req.file,
-        currentImage: existingDriver.img,
-        folder: "drivers",
-        defaultImage: "general/profile_default.png",
-    });
-
-    const user = {
-        name: req.body.name,
-        last_name: req.body.last_name,
-        email: req.body.email,
-        country: req.body.country,
-        img_user: req.body.img_user,
-    };
-
-    UsersServices.editUser(id, user)
-        .then(function(user){
-            if(user){
-                res.status(200).json({message: "User editado con éxito"})
-            } else {
-                res.status(404).json({message: "Usuario no encontrado"})
-            }
-        })
-} */
 
 async function updateSecurity(req, res) {
   try {
@@ -304,16 +268,10 @@ async function addFcmToken(req, res) {
 
 async function removeFcmToken(req, res) {
   try {
-    // Si el token se envía en el body
     const { token } = req.body;
     if (!token) {
-       return res.status(400).json({ message: "Token is required" });
+      return res.status(400).json({ message: "Token is required" });
     }
-    
-    // Podemos usar el token para removerlo de CUALQUIER usuario en caso de que hayan cerrado sesión
-    // o solo del usuario logueado actualmente.
-    // req.user o req.payload deberían tener el ID si se usa el middleware autenticado.
-    // Como agregamos removeInvalidFcmToken, simplemente usémoslo para purgar el token globalmente.
     await UsersServices.removeInvalidFcmToken(token);
     res.status(200).json({ message: "Token FCM removido con éxito" });
   } catch (err) {
@@ -347,26 +305,26 @@ async function sendTestPush(req, res) {
 async function sendBroadcastPush(req, res) {
   try {
     const { title, body } = req.body;
-    
+
     const users = await UsersServices.getUsers();
     const { sendPushNotification } = await import("../../services/fcm.services.js");
-    
+
     let envios = 0;
-    
+
     for (const u of users) {
       if (u.fcmTokens && u.fcmTokens.length > 0) {
         try {
-            const promesas = u.fcmTokens.map(token => sendPushNotification(token, { title, body }));
-            await Promise.allSettled(promesas);
-            envios++;
+          const promesas = u.fcmTokens.map(token => sendPushNotification(token, { title, body }));
+          await Promise.allSettled(promesas);
+          envios++;
         } catch (e) {
-            console.error("Fallo al enviar push a usuario " + u._id, e);
+          console.error("Fallo al enviar push a usuario " + u._id, e);
         }
       }
     }
-    
+
     res.status(200).json({ message: `Push masivo enviado, le llegó aprox a ${envios} usuarios activos` });
-  } catch(err) {
+  } catch (err) {
     res.status(500).json({ message: err.message });
   }
 }
@@ -375,19 +333,16 @@ async function forceLogoutAll(req, res) {
   try {
     const { connectDB } = await import("../../services/db.services.js");
     const database = await connectDB();
-    
-    // Solo mantener el token del admin actual o borrar todos. Para simplificar, borraremos todos.
-    // El admin también cerrará sesión, lo cual es seguro.
+
     await database.collection("Tokens").deleteMany({});
 
-    // Emitir evento por socket para cerrar sesiones en tiempo real
     const io = req.app.get("io");
     if (io) {
       io.emit("auth:force-logout");
     }
-    
+
     res.status(200).json({ message: "Se han cerrado todas las sesiones de todos los usuarios." });
-  } catch(err) {
+  } catch (err) {
     res.status(500).json({ message: err.message });
   }
 }

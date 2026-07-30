@@ -16,15 +16,12 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
   const now = new Date();
   const upcomingIndex = useMemo(() => {
     if (!races || races.length === 0) return -1;
-    // Asumiendo que vienen ordenadas. Si no, se podría ordenar o buscar el más cercano.
     return races.findIndex(r => new Date(r.dateEnd) >= now);
   }, [races]);
 
-  // Ir automáticamente a la página de la carrera actual
   useEffect(() => {
     if (races && races.length > 0 && upcomingIndex !== -1) {
       const targetPage = Math.floor(upcomingIndex / (pageSize || 10)) + 1;
-      // Solo actualizamos la página inicial para evitar loops o bugs si el usuario navega a otra.
       setPage(targetPage);
     }
   }, [races, pageSize, upcomingIndex, setPage]);
@@ -34,65 +31,65 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
       <div className="admin-table-container">
         <div className="table-responsive">
           <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Ronda</th>
-              <th className="sticky-col">País</th>
-              <th>Nombre del circuito</th>
-              <th>Fecha de inicio</th>
-              <th>Fecha de finalización</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
+            <thead>
+              <tr>
+                <th>Ronda</th>
+                <th className="sticky-col">País</th>
+                <th>Nombre del circuito</th>
+                <th>Fecha de inicio</th>
+                <th>Fecha de finalización</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            {paginatedData.map((r) => {
-              const isUpcoming = upcomingIndex !== -1 && races[upcomingIndex].gpRaceId === r.gpRaceId;
-              
-              return (
-                <tr key={r.gpRaceId} className={isUpcoming ? 'row-upcoming' : ''}>
-                  <td>{r.round}</td>
-                  <td className="sticky-col"><CountryDisplay iso2={r.country} /></td>
-                  <td>{r.gp_name}</td>
-                  <td>{formatDateInTimezone(r.dateStart, r.timezone)}</td>
-                  <td>{formatDateInTimezone(r.dateEnd, r.timezone)}</td>
-                  <td>
-                    {(() => {
-                      const startDate = new Date(r.dateStart);
-                      const endDate = new Date(r.dateEnd);
-                      let estado = "";
-                      let pillClass = "";
+            <tbody>
+              {paginatedData.map((r) => {
+                const isUpcoming = upcomingIndex !== -1 && races[upcomingIndex].gpRaceId === r.gpRaceId;
 
-                      if (endDate < now) {
-                        estado = "Finalizado";
-                        pillClass = "pill-past";
-                      } else if (startDate <= now && endDate >= now) {
-                        estado = "En curso";
-                        pillClass = "pill-current";
-                      } else {
-                        estado = "Próximamente";
-                        pillClass = "pill-upcoming";
-                      }
+                return (
+                  <tr key={r.gpRaceId} className={isUpcoming ? 'row-upcoming' : ''}>
+                    <td>{r.round}</td>
+                    <td className="sticky-col"><CountryDisplay iso2={r.country} /></td>
+                    <td>{r.gp_name}</td>
+                    <td>{formatDateInTimezone(r.dateStart, r.timezone)}</td>
+                    <td>{formatDateInTimezone(r.dateEnd, r.timezone)}</td>
+                    <td>
+                      {(() => {
+                        const startDate = new Date(r.dateStart);
+                        const endDate = new Date(r.dateEnd);
+                        let estado = "";
+                        let pillClass = "";
 
-                      return <span className={`admin-status-pill ${pillClass}`}>{estado}</span>;
-                    })()}
-                  </td>
-                  <td className="admin-actions">
-                    <button className="btn-admin-action btn-admin-edit" onClick={() => onEdit(r.circuitId, r.year)}>
-                      <i className="bi bi-pencil-square"></i>
-                    </button>
-                    <button className="btn-admin-action btn-admin-delete" onClick={() => onDelete(r.gpRaceId, r.gp_name)}>
-                      <i className="bi bi-trash-fill"></i>
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                        if (endDate < now) {
+                          estado = "Finalizado";
+                          pillClass = "pill-past";
+                        } else if (startDate <= now && endDate >= now) {
+                          estado = "En curso";
+                          pillClass = "pill-current";
+                        } else {
+                          estado = "Próximamente";
+                          pillClass = "pill-upcoming";
+                        }
+
+                        return <span className={`admin-status-pill ${pillClass}`}>{estado}</span>;
+                      })()}
+                    </td>
+                    <td className="admin-actions">
+                      <button className="btn-admin-action btn-admin-edit" onClick={() => onEdit(r.circuitId, r.year)}>
+                        <i className="bi bi-pencil-square"></i>
+                      </button>
+                      <button className="btn-admin-action btn-admin-delete" onClick={() => onDelete(r.gpRaceId, r.gp_name)}>
+                        <i className="bi bi-trash-fill"></i>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
 
       {/* PAGINACIÓN EXTERNA */}
       <div className="admin-pagination">

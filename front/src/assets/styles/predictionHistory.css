@@ -1,588 +1,1 @@
-/* Prediction History Page Styles */
-.prediction-history-page {
-    color: #fff;
-    min-height: 100vh;
-    min-height: 100dvh;
-}
-
-/* Scroll Lock will be global */
-
-.history-label {
-    font-size: 1.2rem;
-    font-weight: 300;
-    letter-spacing: 2px;
-    opacity: 0.8;
-}
-
-.history-title {
-    font-size: 5rem;
-    font-weight: 800;
-    margin: 0;
-    line-height: 1;
-    letter-spacing: -2px;
-}
-
-.history-subtitle {
-    font-size: 1.1rem;
-    opacity: 0.7;
-    margin-top: 10px;
-}
-
-/* Filters */
-.history-filters {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0;
-}
-
-.year-selector {
-    background: #0d1b2a;
-    padding: 10px 20px;
-    border-radius: 8px 0 0 8px;
-    font-weight: 700;
-}
-
-.search-bar {
-    display: flex;
-    background: #fff;
-    border-radius: 0 8px 8px 0;
-    overflow: hidden;
-    width: 100%;
-}
-
-.search-bar input {
-    border: none;
-    padding: 10px 15px;
-    flex: 1;
-    outline: none;
-    color: #1b263b;
-}
-
-.btn-search {
-    width: 30%;
-    background: #4a90e2;
-    color: #fff;
-    border: none;
-    padding: 0 20px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.btn-search:hover {
-    background: #357abd;
-}
-
-/* Layout */
-.history-content {
-    display: grid;
-    grid-template-columns: .5fr 1fr;
-    gap: 30px;
-    margin-top: 40px;
-    align-items: flex-start;
-}
-
-.history-sidebar-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-/* Sidebar */
-.history-sidebar {
-    display: flex;
-    flex-direction: column;
-    max-height: 70vh;
-    overflow-y: auto;
-    padding-right: 10px;
-}
-
-.history-sidebar::-webkit-scrollbar {
-    width: 4px;
-}
-
-.history-sidebar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-}
-
-/* History Circuit Card (Unique classes to avoid collision) */
-.history-circuit-card {
-    background: #F3F3F3;
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    overflow: hidden;
-    margin-bottom: 10px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-    min-height: 70px;
-}
-
-.history-circuit-card:hover {
-    transform: translateX(5px);
-}
-
-.history-circuit-card.is-selected {
-    border: 1px solid #4a90e2;
-    background: #fff;
-    box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);
-}
-
-.history-card-info {
-    width: 100%;
-    padding: 10px 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.history-card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.history-card-location {
-    display: flex;
-    align-items: center;
-}
-
-.history-gp-name {
-    color: black;
-    font-weight: 500;
-    font-size: 18px;
-}
-
-.history-card-circuit {
-    font-size: 1rem;
-    font-weight: 300;
-    text-align: left;
-    color: #555;
-    margin: 0;
-}
-
-.history-card-date {
-    width: 30%;
-    padding: 10px 0;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-}
-
-.history-card-day {
-    font-size: 24px;
-}
-
-.history-card-month {
-    font-size: 14px;
-    margin-top: -4px;
-    opacity: 0.9;
-}
-
-.history-desc {
-    font-weight: 400;
-}
-
-/* Status Colors for Circuit Cards */
-.history-card-date.h-status-points {
-    background-color: var(--color-add) !important;
-}
-
-.history-card-date.h-status-upcoming {
-    background-color: var(--color-next) !important;
-}
-
-.history-card-date.h-status-na {
-    background-color: var(--color-disabled) !important;
-}
-
-/* Session Selection Tabs (Desktop) */
-.session-tabs {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.history-session-tab {
-    flex: 1;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    background: #fff;
-    height: 70px;
-    display: flex;
-    overflow: hidden;
-    border-radius: 8px;
-}
-
-.session-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    color: #000;
-}
-
-.session-type-name {
-    font-weight: 800;
-    font-size: 1.4rem;
-    line-height: 1;
-}
-
-.session-date {
-    font-size: 0.85rem;
-    opacity: 0.7;
-    margin-top: 4px;
-}
-
-.session-status-block {
-    width: 90px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #ffffff !important;
-    padding: 10px;
-}
-
-.history-session-tab.status-finished .session-status-block {
-    background-color: var(--color-add);
-}
-
-.history-session-tab.status-upcoming .session-status-block {
-    background-color: var(--color-soon);
-}
-
-.history-session-tab.status-pending_results .session-status-block {
-    background-color: var(--color-soon);
-}
-
-.history-session-tab.status-none .session-status-block {
-    background-color: var(--color-disabled);
-}
-
-.status-val {
-    font-size: 1.5rem;
-    font-weight: 800;
-    line-height: 1;
-}
-
-.status-lbl {
-    font-size: 0.75rem;
-    margin-top: 2px;
-}
-
-.status-icon {
-    width: 20px;
-    filter: brightness(0) invert(1);
-    margin-bottom: 4px;
-}
-
-.history-session-tab:disabled {
-    cursor: default;
-}
-
-.history-session-tab.is-selected {
-    box-shadow: 0 0 15px rgba(74, 144, 226, 0.3);
-    border: 1px solid #4a90e2;
-}
-
-/* Comparison Table */
-.prediction-comparison-table {
-    background: #ffffff;
-    border-radius: 8px;
-    overflow: hidden;
-    color: #1b263b;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.table-header {
-    display: grid;
-    grid-template-columns: 80px 1fr 1fr 120px;
-    background: #4a90e2;
-    color: #fff;
-    font-weight: 700;
-    padding: 12px 0;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-}
-
-.table-row {
-    display: grid;
-    grid-template-columns: 80px 1fr 1fr 120px;
-    align-items: center;
-}
-
-.table-row:nth-child(even) {
-    background: rgba(0, 0, 0, 0.03);
-}
-
-.table-row.no-match {
-    background: rgba(220, 53, 69, 0.12);
-}
-
-.col-pos,
-.col-pred,
-.col-real {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 20px;
-}
-
-.col-points {
-    text-align: center;
-    font-weight: 800;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.driver-color-bar {
-    width: 6px;
-    height: 32px;
-    border-radius: 3px;
-}
-
-.driver-name {
-    font-size: 1.05rem;
-    color: #1b263b;
-}
-
-.driver-name strong {
-    text-transform: uppercase;
-    font-weight: 800;
-}
-
-.col-points.match {
-    background: #2d6a4f;
-    color: #fff;
-}
-
-.col-points.mismatch {
-    background: #c94c4c;
-    color: #fff;
-}
-
-.no-selection-message {
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    border: 2px dashed rgba(255, 255, 255, 0.1);
-    font-size: 1.5rem;
-    opacity: 0.5;
-}
-
-/* Mobile Drawer Styles */
-.history-drawer-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 1000;
-}
-
-.drawer-handle {
-    display: none;
-    /* Hide on desktop */
-    width: 60px;
-    height: 5px;
-    background: #ccc;
-    border-radius: 10px;
-    margin: 10px auto 15px;
-    cursor: pointer;
-}
-
-.drawer-header-mobile {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 20px 15px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    margin-bottom: 15px;
-}
-
-.history-gp-title {
-    color: black;
-    font-weight: 600;
-    font-size: 1.35rem;
-    text-align: center;
-}
-
-@media (max-width: 1200px) {
-    .prediction-history-page {
-        padding-top: 20px;
-    }
-
-
-
-    .history-title {
-        font-size: 3rem;
-    }
-
-    .history-content {
-        display: block;
-    }
-
-    .history-filters {
-        flex-direction: row;
-        width: 100%;
-        margin: 20px 0;
-        justify-content: center;
-    }
-
-    .history-sidebar {
-        max-height: none;
-        padding-right: 0;
-        gap: 0;
-        /* No gap for mobile items */
-    }
-
-    .history-detail {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        top: 150px;
-        height: auto;
-        max-height: calc(100% - 150px);
-        background: #F3F3F3;
-        z-index: 2050;
-        border-radius: 30px 30px 0 0;
-        display: flex;
-        flex-direction: column;
-        padding: 0;
-        overflow: hidden;
-        overscroll-behavior: contain;
-    }
-
-    .drawer-handle {
-        display: block;
-    }
-
-    .drawer-header-mobile {
-        display: flex;
-    }
-
-    .prediction-comparison-table {
-        flex: 1;
-        overflow-y: auto;
-        border-radius: 20px 20px 0 0;
-        margin: 10px;
-    }
-
-    .session-tabs {
-        flex-direction: row;
-        background: transparent;
-        margin: 0 10px 10px;
-        padding: 0;
-        gap: 8px;
-    }
-
-    .history-session-tab {
-        height: 80px;
-        flex-direction: column;
-        border-radius: 10px !important;
-        background: #fff !important;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .session-main {
-        order: -1;
-        width: 100%;
-        height: 40px;
-        padding: 0;
-    }
-
-    .session-status-block {
-        width: 100% !important;
-        height: 40px;
-        color: #ffffff !important;
-        padding: 0;
-        display: flex;
-        flex-direction: row;
-        /* Horizontal text in mobile drawer */
-        justify-content: center;
-        gap: 8px;
-    }
-
-    .status-lbl {
-        font-size: 1rem !important;
-        margin: 0;
-    }
-
-    .status-val {
-        font-size: 1rem !important;
-        margin: 0;
-    }
-
-    .status-icon {
-        display: none;
-    }
-
-    .session-date {
-        display: none;
-    }
-
-    .session-type-name {
-        font-size: 1rem !important;
-    }
-
-    .table-header,
-    .table-row {
-        grid-template-columns: 50px 1.2fr 1.2fr 60px;
-    }
-
-    .col-pos,
-    .col-pred,
-    .col-real,
-    .col-points {
-        padding: 8px 10px;
-        font-size: 0.85rem;
-    }
-
-    .driver-name {
-        font-size: 0.85rem;
-    }
-
-    .driver-color-bar {
-        width: 4px;
-        height: 24px;
-    }
-
-    .no-selection-message {
-        display: none;
-    }
-
-    .history-session-tab.is-selected {
-        border: 2px solid #4a90e2 !important;
-    }
-
-    .history-card-info {
-        padding: 10px 12px;
-    }
-
-    .history-gp-name {
-        font-size: 16px;
-    }
-
-    .history-card-circuit {
-        font-size: 0.9rem;
-    }
-}
+.prediction-history-page {    color: #fff;    min-height: 100vh;    min-height: 100dvh;}.history-label {    font-size: 1.2rem;    font-weight: 300;    letter-spacing: 2px;    opacity: 0.8;}.history-title {    font-size: 5rem;    font-weight: 800;    margin: 0;    line-height: 1;    letter-spacing: -2px;}.history-subtitle {    font-size: 1.1rem;    opacity: 0.7;    margin-top: 10px;}.history-filters {    display: flex;    justify-content: center;    align-items: center;    gap: 0;}.year-selector {    background: #0d1b2a;    padding: 10px 20px;    border-radius: 8px 0 0 8px;    font-weight: 700;}.search-bar {    display: flex;    background: #fff;    border-radius: 0 8px 8px 0;    overflow: hidden;    width: 100%;}.search-bar input {    border: none;    padding: 10px 15px;    flex: 1;    outline: none;    color: #1b263b;}.btn-search {    width: 30%;    background: #4a90e2;    color: #fff;    border: none;    padding: 0 20px;    font-weight: 700;    cursor: pointer;    transition: background 0.2s;}.btn-search:hover {    background: #357abd;}.history-content {    display: grid;    grid-template-columns: .5fr 1fr;    gap: 30px;    margin-top: 40px;    align-items: flex-start;}.history-sidebar-wrapper {    display: flex;    flex-direction: column;    gap: 20px;}.history-sidebar {    display: flex;    flex-direction: column;    max-height: 70vh;    overflow-y: auto;    padding-right: 10px;}.history-sidebar::-webkit-scrollbar {    width: 4px;}.history-sidebar::-webkit-scrollbar-thumb {    background: rgba(255, 255, 255, 0.2);    border-radius: 2px;}.history-circuit-card {    background: #F3F3F3;    border-radius: 10px;    display: flex;    justify-content: space-between;    align-items: stretch;    overflow: hidden;    margin-bottom: 10px;    transition: transform 0.2s ease, box-shadow 0.2s ease;    cursor: pointer;    min-height: 70px;}.history-circuit-card:hover {    transform: translateX(5px);}.history-circuit-card.is-selected {    border: 1px solid #4a90e2;    background: #fff;    box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);}.history-card-info {    width: 100%;    padding: 10px 16px;    display: flex;    flex-direction: column;    justify-content: center;}.history-card-top {    display: flex;    justify-content: space-between;    align-items: center;    width: 100%;}.history-card-location {    display: flex;    align-items: center;}.history-gp-name {    color: black;    font-weight: 500;    font-size: 18px;}.history-card-circuit {    font-size: 1rem;    font-weight: 300;    text-align: left;    color: #555;    margin: 0;}.history-card-date {    width: 30%;    padding: 10px 0;    color: white;    display: flex;    flex-direction: column;    align-items: center;    justify-content: center;    font-weight: 700;}.history-card-day {    font-size: 24px;}.history-card-month {    font-size: 14px;    margin-top: -4px;    opacity: 0.9;}.history-desc {    font-weight: 400;}.history-card-date.h-status-points {    background-color: var(--color-add) !important;}.history-card-date.h-status-upcoming {    background-color: var(--color-next) !important;}.history-card-date.h-status-na {    background-color: var(--color-disabled) !important;}.session-tabs {    display: flex;    gap: 15px;    margin-bottom: 20px;}.history-session-tab {    flex: 1;    border: none;    padding: 0;    cursor: pointer;    background: #fff;    height: 70px;    display: flex;    overflow: hidden;    border-radius: 8px;}.session-main {    flex: 1;    display: flex;    flex-direction: column;    justify-content: center;    align-items: center;    padding: 10px;    color: #000;}.session-type-name {    font-weight: 800;    font-size: 1.4rem;    line-height: 1;}.session-date {    font-size: 0.85rem;    opacity: 0.7;    margin-top: 4px;}.session-status-block {    width: 90px;    display: flex;    flex-direction: column;    justify-content: center;    align-items: center;    color: #ffffff !important;    padding: 10px;}.history-session-tab.status-finished .session-status-block {    background-color: var(--color-add);}.history-session-tab.status-upcoming .session-status-block {    background-color: var(--color-soon);}.history-session-tab.status-pending_results .session-status-block {    background-color: var(--color-soon);}.history-session-tab.status-none .session-status-block {    background-color: var(--color-disabled);}.status-val {    font-size: 1.5rem;    font-weight: 800;    line-height: 1;}.status-lbl {    font-size: 0.75rem;    margin-top: 2px;}.status-icon {    width: 20px;    filter: brightness(0) invert(1);    margin-bottom: 4px;}.history-session-tab:disabled {    cursor: default;}.history-session-tab.is-selected {    box-shadow: 0 0 15px rgba(74, 144, 226, 0.3);    border: 1px solid #4a90e2;}.prediction-comparison-table {    background: #ffffff;    border-radius: 8px;    overflow: hidden;    color: #1b263b;    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);}.table-header {    display: grid;    grid-template-columns: 80px 1fr 1fr 120px;    background: #4a90e2;    color: #fff;    font-weight: 700;    padding: 12px 0;    text-transform: uppercase;    font-size: 0.9rem;    letter-spacing: 1px;}.table-row {    display: grid;    grid-template-columns: 80px 1fr 1fr 120px;    align-items: center;}.table-row:nth-child(even) {    background: rgba(0, 0, 0, 0.03);}.table-row.no-match {    background: rgba(220, 53, 69, 0.12);}.col-pos,.col-pred,.col-real {    display: flex;    align-items: center;    gap: 10px;    padding: 8px 20px;}.col-points {    text-align: center;    font-weight: 800;    height: 100%;    display: flex;    align-items: center;    justify-content: center;}.driver-color-bar {    width: 6px;    height: 32px;    border-radius: 3px;}.driver-name {    font-size: 1.05rem;    color: #1b263b;}.driver-name strong {    text-transform: uppercase;    font-weight: 800;}.col-points.match {    background: #2d6a4f;    color: #fff;}.col-points.mismatch {    background: #c94c4c;    color: #fff;}.no-selection-message {    height: 300px;    display: flex;    align-items: center;    justify-content: center;    background: rgba(255, 255, 255, 0.05);    border-radius: 8px;    border: 2px dashed rgba(255, 255, 255, 0.1);    font-size: 1.5rem;    opacity: 0.5;}.history-drawer-overlay {    position: fixed;    top: 0;    left: 0;    width: 100%;    height: 100%;    background: rgba(0, 0, 0, 0.6);    z-index: 1000;}.drawer-handle {    display: none;    width: 60px;    height: 5px;    background: #ccc;    border-radius: 10px;    margin: 10px auto 15px;    cursor: pointer;}.drawer-header-mobile {    display: none;    flex-direction: column;    align-items: center;    padding: 10px 20px 15px;    border-bottom: 1px solid rgba(0, 0, 0, 0.05);    margin-bottom: 15px;}.history-gp-title {    color: black;    font-weight: 600;    font-size: 1.35rem;    text-align: center;}@media (max-width: 1200px) {    .prediction-history-page {        padding-top: 20px;    }    .history-title {        font-size: 3rem;    }    .history-content {        display: block;    }    .history-filters {        flex-direction: row;        width: 100%;        margin: 20px 0;        justify-content: center;    }    .history-sidebar {        max-height: none;        padding-right: 0;        gap: 0;    }    .history-detail {        position: fixed;        bottom: 0;        left: 0;        width: 100%;        top: 150px;        height: auto;        max-height: calc(100% - 150px);        background: #F3F3F3;        z-index: 2050;        border-radius: 30px 30px 0 0;        display: flex;        flex-direction: column;        padding: 0;        overflow: hidden;        overscroll-behavior: contain;    }    .drawer-handle {        display: block;    }    .drawer-header-mobile {        display: flex;    }    .prediction-comparison-table {        flex: 1;        overflow-y: auto;        border-radius: 20px 20px 0 0;        margin: 10px;    }    .session-tabs {        flex-direction: row;        background: transparent;        margin: 0 10px 10px;        padding: 0;        gap: 8px;    }    .history-session-tab {        height: 80px;        flex-direction: column;        border-radius: 10px !important;        background: #fff !important;        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;    }    .session-main {        order: -1;        width: 100%;        height: 40px;        padding: 0;    }    .session-status-block {        width: 100% !important;        height: 40px;        color: #ffffff !important;        padding: 0;        display: flex;        flex-direction: row;        justify-content: center;        gap: 8px;    }    .status-lbl {        font-size: 1rem !important;        margin: 0;    }    .status-val {        font-size: 1rem !important;        margin: 0;    }    .status-icon {        display: none;    }    .session-date {        display: none;    }    .session-type-name {        font-size: 1rem !important;    }    .table-header,    .table-row {        grid-template-columns: 50px 1.2fr 1.2fr 60px;    }    .col-pos,    .col-pred,    .col-real,    .col-points {        padding: 8px 10px;        font-size: 0.85rem;    }    .driver-name {        font-size: 0.85rem;    }    .driver-color-bar {        width: 4px;        height: 24px;    }    .no-selection-message {        display: none;    }    .history-session-tab.is-selected {        border: 2px solid #4a90e2 !important;    }    .history-card-info {        padding: 10px 12px;    }    .history-gp-name {        font-size: 16px;    }    .history-card-circuit {        font-size: 0.9rem;    }}
