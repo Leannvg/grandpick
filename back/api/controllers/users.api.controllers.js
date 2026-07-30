@@ -114,7 +114,6 @@ async function updateSecurity(req, res) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
-    // Si cambia la contraseña → validar contraseña actual
     if (newPassword) {
       const valid = await bcrypt.compare(oldPassword, user.password);
       if (!valid) {

@@ -256,7 +256,6 @@ export async function getUserPredictionHistory(userId, year) {
         const startOfYear = new Date(`${year}-01-01T00:00:00.000Z`);
         const endOfYear = new Date(`${year}-12-31T23:59:59.999Z`);
 
-        // 1. Obtener todas las carreras del año
         const races = await db.collection("Races").aggregate([
             {
                 $match: {
@@ -308,7 +307,6 @@ export async function getUserPredictionHistory(userId, year) {
             }
         ]).toArray();
 
-        // 2. Obtener todos los IDs de pilotos únicos de las predicciones y resultados para enriquecerlos
         const driverIds = new Set();
         races.forEach(r => {
             if (r.results) r.results.forEach(res => driverIds.add(res.driver.toString()));
@@ -318,12 +316,10 @@ export async function getUserPredictionHistory(userId, year) {
         const drivers = await db.collection("Drivers").find({ _id: { $in: Array.from(driverIds).map(id => new ObjectId(id)) } }).toArray();
         const driverMap = new Map(drivers.map(d => [d._id.toString(), d]));
 
-        // Buscar escuderías para los pilotos
         const teamIds = new Set(drivers.map(d => d.team?.toString()).filter(Boolean));
         const teams = await db.collection("Teams").find({ _id: { $in: Array.from(teamIds).map(id => new ObjectId(id)) } }).toArray();
         const teamMap = new Map(teams.map(t => [t._id.toString(), t]));
 
-        // Enrich races
         const enrichedRaces = races.map(r => {
             const enrich = (list) => list?.map(item => ({
                 ...item,
@@ -344,7 +340,6 @@ export async function getUserPredictionHistory(userId, year) {
             };
         });
 
-        // 3. Group by Circuit
         const groupedByCircuit = enrichedRaces.reduce((acc, race) => {
             const circuitId = race.id_circuit.toString();
             if (!acc[circuitId]) {

@@ -74,7 +74,6 @@ export async function editById(req, res, next) {
       isologo,
     };
 
-    // drivers (lógica que ya tenías)
     if (Array.isArray(req.body.drivers)) {
       const validDriverIds = req.body.drivers.filter(
         (id) => id && ObjectId.isValid(id)

@@ -14,10 +14,8 @@ const io = new Server(server, {
   }
 });
 
-// Hacemos disponible io para los controllers
 app.set("io", io);
 
-// 🔑 hacer app accesible para cron jobs
 global.app = app;
 
 io.on("connection", (socket) => {
@@ -34,11 +32,9 @@ io.on("connection", (socket) => {
   });
 });
 
-// 🔥 UN SOLO LISTEN
 server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 
-  // 👇 iniciar jobs recién cuando el server está listo
   import("./jobs/predictionsOpenNotification.job.js");
   import("./jobs/pushNotifications.job.js");
 });

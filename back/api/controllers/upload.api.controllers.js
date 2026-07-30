@@ -1,13 +1,12 @@
 import { v2 as cloudinary } from 'cloudinary';
 
 // La configuración tomará automáticamente las credenciales de CLOUDINARY_URL.
-// Solo inyectamos manualmente si las variables individuales existen.
 if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
-  cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME.trim(),
-    api_key: process.env.CLOUDINARY_API_KEY.trim(),
-    api_secret: process.env.CLOUDINARY_API_SECRET.trim()
-  });
+    cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME.trim(),
+        api_key: process.env.CLOUDINARY_API_KEY.trim(),
+        api_secret: process.env.CLOUDINARY_API_SECRET.trim()
+    });
 }
 
 const uploadToCloudinary = (buffer, publicId, folder) => {
@@ -16,7 +15,7 @@ const uploadToCloudinary = (buffer, publicId, folder) => {
             {
                 folder: folder,
                 public_id: publicId,
-                format: 'webp' // We can force a format or just let Cloudinary handle it via f_auto later
+                format: 'webp'
             },
             (error, result) => {
                 if (error) return reject(error);
@@ -34,8 +33,6 @@ function upload(req, res) {
         return res.status(400).json({ message: "No se cargó ningún archivo." });
     }
 
-    // Como publicId usamos timestamp + un identificador base
-    // Ya que si no usamos el base id que pidió el usuario
     const uniqueId = `${Date.now()}-${req.file.originalname.split('.')[0].replace(/\s+/g, '-')}`;
     const cloudFolder = `grandpick/${folder}`;
 
@@ -43,7 +40,6 @@ function upload(req, res) {
         .then(result => {
             return res.status(200).json({
                 message: "Imagen cargada correctamente en Cloudinary",
-                // Retornamos el public_id que será la ruta que guardaremos en la DB (ej. grandpick/drivers/171239857-avatar)
                 file: result.public_id,
             });
         })
@@ -54,7 +50,7 @@ function upload(req, res) {
 }
 
 function replaceUpload(req, res) {
-    const { filePath } = req.query; // ej: grandpick/drivers/123456-foto
+    const { filePath } = req.query;
 
     if (!filePath) {
         return res.status(400).json({ message: "Se requiere un filePath para reemplazar." });
