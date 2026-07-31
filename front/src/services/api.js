@@ -36,6 +36,13 @@ export async function apiFetch(endpoint, options = {}) {
         } catch {
             errorData = { message: errorText };
         }
+
+        if (response.status === 403 && errorData?.message?.includes("bloqueada")) {
+            localStorage.removeItem("auth-token");
+            window.dispatchEvent(new CustomEvent("auth:logout", { detail: { message: errorData.message } }));
+            throw new Error(errorData.message);
+        }
+
         const error = new Error(errorData.message || 'Error en la petición');
         error.response = { status: response.status, data: errorData };
         throw error;

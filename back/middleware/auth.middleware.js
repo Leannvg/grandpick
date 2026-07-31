@@ -20,12 +20,23 @@ function autenticado(req, res, next) {
 
         usersServices.getUserById(payload.id)
           .then(usuario => {
+            if (!usuario) {
+              return res.status(401).json({ message: 'Usuario no encontrado' });
+            }
+
+            if (usuario.blocked) {
+              return res.status(403).json({ message: 'Tu cuenta se encuentra bloqueada por razones de seguridad.' });
+            }
+
             req.usuario = {
               id: usuario._id,
               rol: usuario.rol,
               email: usuario.email
             };
             next();
+          })
+          .catch(err => {
+            return res.status(500).json({ message: 'Error interno del servidor' });
           });
       });
 

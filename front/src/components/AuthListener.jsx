@@ -8,9 +8,10 @@ export default function AuthListener() {
 
   useEffect(() => {
 
-    const handler = () => {
+    const handler = (e) => {
+      const message = e?.detail?.message || "Tenés que iniciar sesión para acceder a esta página.";
       showAlert(
-        "Tenés que iniciar sesión para acceder a esta página.",
+        message,
         "warning",
         false
       );
