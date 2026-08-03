@@ -63,14 +63,13 @@ function ForgotPassword() {
               </div>
             </div>
 
-            <button className="gp-btn-submit w-100 mt-4" disabled={loading}>
+            <button className="submit-btn" type="submit" aria-label="Enviar Link" disabled={loading}>
               {loading ? (
-                <>
-                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  Enviando...
-                </>
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
               ) : (
-                "Enviar Link"
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="icon-submit">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                </svg>
               )}
             </button>
           </form>
