@@ -2095,7 +2095,7 @@ input[type="time"].form-control {
 }
 
 .global-alert {
-    position: fixed;
+    position: sticky;
     top: 55px;
     left: 0;
     width: 100%;

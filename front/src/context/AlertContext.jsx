@@ -80,17 +80,8 @@ export function AlertProvider({ children }) {
   }, []);
 
   return (
-    <AlertContext.Provider value={{ showAlert, closeAlert }}>
+    <AlertContext.Provider value={{ showAlert, closeAlert, alert }}>
       {children}
-
-      <FloatingAlert
-        show={alert.show}
-        message={alert.message}
-        type={alert.type}
-        position="top-center"
-        autoClose={null}
-        onClose={closeAlert}
-      />
     </AlertContext.Provider>
   );
 }

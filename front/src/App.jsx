@@ -47,6 +47,8 @@ import { useAlert } from "./context/AlertContext";
 import { Routes, Route, useNavigate, Navigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
+import FloatingAlert from "./components/FloatingAlert";
+
 import UsersServices from "./services/users.services.js";
 import { requestNotificationPermission, onForegroundMessage, removeTokenFromBackend } from "./services/pushNotifications.services.js";
 
@@ -59,7 +61,7 @@ function App() {
   const [estaAutenticado, setAutenticado] = useState(false);
   const [esAdmin, setAdmin] = useState(false);
   const [cargando, setCargando] = useState(true);
-  const { showAlert } = useAlert();
+  const { showAlert, closeAlert, alert } = useAlert();
   const { loading } = useLoader();
 
   const isHome = location.pathname === "/";
@@ -153,6 +155,14 @@ function App() {
       <NotificationsProvider userId={estaAutenticado ? userId : null}>
         <AuthListener />
         <Nav onLogout={onLogout} autenticado={estaAutenticado} esAdmin={esAdmin}></Nav>
+        <FloatingAlert
+          show={alert?.show}
+          message={alert?.message}
+          type={alert?.type}
+          position="top-center"
+          autoClose={null}
+          onClose={closeAlert}
+        />
         <NextRaceCTA />
         {estaAutenticado && <Glossary />}
         <main className={`main-content ${isHome ? 'home-content' : ''} ${(loading || cargando) ? 'is-loading' : ''}`}>
