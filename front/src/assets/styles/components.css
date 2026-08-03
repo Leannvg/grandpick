@@ -625,7 +625,7 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     margin-bottom: 0 !important;
     flex-shrink: 0;
     font-weight: 500;
-    border-radius: 8px 0px 0px 8px;
+    border-radius: 0;
 }
 
 .gp-input-group input.form-control,
@@ -642,14 +642,14 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 }
 
 .gp-input-group.is-invalid {
-    border: 3px solid #dc3545 !important;
+    border: 3px solid #9d1422 !important;
     border-radius: 8px 8px 0 0 !important;
     border-bottom: none !important;
 }
 
 .gp-input-group-container .invalid-feedback {
     display: block;
-    background-color: #dc3545;
+    background-color: #9d1422;
     color: #fff;
     text-align: left;
     padding: 8px 16px;
