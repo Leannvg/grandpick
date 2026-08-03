@@ -236,7 +236,7 @@ function Dashboard() {
         const races = await RacesServices.findAll();
         const hasRace = races.some((r) => r.id_circuit === id);
         if (hasRace) {
-          showAlert(`❌ No puedes eliminar el circuito "${name}" porque tiene carreras asignadas.`, "danger", true);
+          showAlert(`No podés eliminar el circuito "${name}" porque tiene carreras asignadas.`, "danger", true);
           return;
         }
       }
@@ -254,12 +254,12 @@ function Dashboard() {
         const hasStarted = new Date(raceToDelete.date_gp_start) < new Date();
 
         if (hasResults) {
-          showAlert(`❌ No puedes eliminar la carrera "${name}" porque ya tiene resultados cargados.`, "danger", true);
+          showAlert(`No podés eliminar la carrera "${name}" porque ya tiene resultados cargados.`, "danger", true);
           return;
         }
 
         if (hasStarted) {
-          showAlert(`❌ No puedes eliminar la carrera "${name}" porque la fecha de inicio ya ha pasado.`, "danger", true);
+          showAlert(`No podés eliminar la carrera "${name}" porque la fecha de inicio ya ha pasado.`, "danger", true);
           return;
         }
       }
@@ -268,7 +268,7 @@ function Dashboard() {
       if (activeTab === TABS.TEAMS) {
         const team = teams.find((t) => t._id === id);
         if (team?.drivers?.length > 0) {
-          showAlert(`❌ No puedes eliminar la escudería "${name}" porque tiene pilotos asignados.`, "danger", true);
+          showAlert(`No podés eliminar la escudería "${name}" porque tiene pilotos asignados.`, "danger", true);
           return;
         }
       }
@@ -278,14 +278,14 @@ function Dashboard() {
         const driver = drivers.find((d) => d._id === id);
 
         if (driver.team_info && driver.team_info._id) {
-          showAlert(`❌ No puedes eliminar el piloto "${name}" porque pertenece a una escudería. Se recomienda deshabilitarlo en su lugar.`, "danger", true);
+          showAlert(`No podés eliminar el piloto "${name}" porque pertenece a una escudería. Se recomienda deshabilitarlo en su lugar.`, "danger", true);
           return;
         }
 
         const driverUsed = await DriversServices.checkDriverUsedInRaces(id);
         console.log("Driver used in races:", driverUsed.used)
         if (driverUsed.used) {
-          showAlert(`❌ No puedes eliminar el piloto "${name}" porque ya fue utilizado en alguna carrera. Se recomienda deshabilitarlo en su lugar.`, "danger", true);
+          showAlert(`No podés eliminar el piloto "${name}" porque ya fue utilizado en alguna carrera. Se recomienda deshabilitarlo en su lugar.`, "danger", true);
           return;
         }
       }
@@ -378,7 +378,7 @@ function Dashboard() {
         );
 
         if (activeDriversInTeam.length >= 2) {
-          showAlert(`❌ No puedes habilitar a "${driver.full_name}" porque el equipo "${driver.team_info.name}" ya tiene 2 pilotos activos.`, "danger", true);
+          showAlert(`No podés habilitar a "${driver.full_name}" porque el equipo "${driver.team_info.name}" ya tiene 2 pilotos activos.`, "danger", true);
           return;
         }
       }
