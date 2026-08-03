@@ -23,6 +23,9 @@ const InformationPage = ({ data, eyebrow, title, subtitle, modes }) => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        setActiveTabIndex(window.innerWidth < 992 ? null : 0);
+        setActiveModeIndex(0);
+        setIsDrawerOpen(false);
     }, [title]);
 
     useEffect(() => {
