@@ -213,15 +213,13 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                       <Link className="nav-link" to="/prediction-history" onClick={closeMenu}>
                         MI HISTORIAL
                       </Link>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/ranking" onClick={closeMenu}>
+                        RANKING
+                      </Link>
                     </li>
                   </>
                 )}
-
-                <li className="nav-item">
-                  <Link className="nav-link" to="/ranking" onClick={closeMenu}>
-                    RANKING
-                  </Link>
-                </li>
 
                 {/* INFO */}
                 <li className={`nav-item gp-nav-dropdown ${hoveredMenu === 'info' ? 'is-active' : ''}`}
