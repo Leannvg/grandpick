@@ -11,13 +11,14 @@ function FloatingAlert({
   return (
     <AnimatePresence>
       {show && (
-        <motion.div
-           className={`global-alert alert-${type}`}
-           initial={{ y: "-100%" }}
-           animate={{ y: 0 }}
-           exit={{ y: "-100%" }}
-           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        >
+        <div className="global-alert-wrapper">
+          <motion.div
+             className={`global-alert alert-${type}`}
+             initial={{ y: "-100%" }}
+             animate={{ y: 0 }}
+             exit={{ y: "-100%" }}
+             transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          >
           <div className="global-alert__container container">
             <div className="global-alert__icon" style={{ display: 'flex', alignItems: 'center' }}>
                {type === "success" && "✅"}
@@ -41,7 +42,8 @@ function FloatingAlert({
               </button>
             )}
           </div>
-        </motion.div>
+          </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );

@@ -2094,12 +2094,20 @@ input[type="time"].form-control {
     color: #a0a0a0 !important;
 }
 
-.global-alert {
+.global-alert-wrapper {
     position: sticky;
     top: 55px;
     left: 0;
     width: 100%;
     z-index: 2028;
+    height: 0;
+}
+
+.global-alert {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     min-height: 68px;
     display: flex;
     align-items: center;
@@ -2109,7 +2117,6 @@ input[type="time"].form-control {
 
 @media (min-width: 768px) {
     .global-alert {
-        top: 55px;
         min-height: 92px;
     }
 }
