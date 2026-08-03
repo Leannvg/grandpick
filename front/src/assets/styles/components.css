@@ -642,7 +642,8 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 }
 
 .gp-input-group.is-invalid {
-    border: 2px solid #dc3545 !important;
+    border: 3px solid #dc3545 !important;
+    border-radius: 12px;
 }
 
 .gp-input-group input.form-control::placeholder {
