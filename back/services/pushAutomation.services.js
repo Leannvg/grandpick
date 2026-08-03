@@ -134,7 +134,7 @@ export const checkAndTriggerPushNotifications = async () => {
             const titlePrefix = race.circuit ? `${circuitName} ${flag} | ` : '';
 
             await notifyAllUsers({
-                title: `${titlePrefix}🚦 ¡Empieza ${typeName}!`,
+                title: `${titlePrefix}🚦 ¡Empieza la sesión de ${typeName}!`,
                 body: `El contador llegó a cero y la sesión de ${typeName} acaba de comenzar. ¡Mucha suerte a todos!`
             }, { link: `/predictions` });
 
