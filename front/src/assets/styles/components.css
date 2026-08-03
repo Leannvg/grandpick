@@ -643,7 +643,20 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 
 .gp-input-group.is-invalid {
     border: 3px solid #dc3545 !important;
-    border-radius: 12px;
+    border-radius: 8px 8px 0 0 !important;
+    border-bottom: none !important;
+}
+
+.gp-input-group-container .invalid-feedback {
+    display: block;
+    background-color: #dc3545;
+    color: #fff;
+    text-align: left;
+    padding: 8px 16px;
+    margin-top: 0 !important;
+    border-radius: 0 0 8px 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
 }
 
 .gp-input-group input.form-control::placeholder {
