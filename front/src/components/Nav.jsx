@@ -213,6 +213,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                       <Link className="nav-link" to="/prediction-history" onClick={closeMenu}>
                         MI HISTORIAL
                       </Link>
+                    </li>
                     <li className="nav-item">
                       <Link className="nav-link" to="/ranking" onClick={closeMenu}>
                         RANKING
