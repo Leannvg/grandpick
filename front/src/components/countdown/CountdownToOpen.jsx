@@ -24,9 +24,9 @@ function CountdownToOpen({ timeToOpen, onOpen }) {
   const seconds = totalSeconds % 60;
 
   return (
-    <strong>
-      {days} DÍAS {hours} HS. {minutes} MIN. {seconds} SEG.
-    </strong>
+    <span>
+      <strong>{days}</strong> DÍAS <strong>{hours}</strong> HS. <strong>{minutes}</strong> MIN. <strong>{seconds}</strong> SEG.
+    </span>
   );
 }
 
