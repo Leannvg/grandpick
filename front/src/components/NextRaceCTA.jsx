@@ -135,17 +135,17 @@ function NextRaceCTA() {
 
                     <div className="nr-cta__time">
                         <span className="nr-cta__time-value">{timeLeft.hours}</span>
-                        <span className="nr-cta__time-label">HS</span>
+                        <span className="nr-cta__time-label">HS.</span>
                     </div>
 
                     <div className="nr-cta__time">
                         <span className="nr-cta__time-value">{timeLeft.minutes}</span>
-                        <span className="nr-cta__time-label">MIN</span>
+                        <span className="nr-cta__time-label">MIN.</span>
                     </div>
 
                     <div className="nr-cta__time">
                         <span className="nr-cta__time-value">{timeLeft.seconds}</span>
-                        <span className="nr-cta__time-label">SEG</span>
+                        <span className="nr-cta__time-label">SEG.</span>
                     </div>
                 </div>
             </div>

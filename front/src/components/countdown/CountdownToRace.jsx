@@ -35,7 +35,7 @@ function CountdownToRace({ raceDate, totalDuration, onExpire, onStartRace }) {
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
 
-    return `${days}D: ${hours}HS: ${minutes}MIN: ${seconds} SEG`;
+    return `${days} DÍAS ${hours} HS. ${minutes} MIN. ${seconds} SEG.`;
   }
 
   // Carrera aún no empezó

@@ -25,7 +25,7 @@ function CountdownToOpen({ timeToOpen, onOpen }) {
 
   return (
     <strong>
-      {days}d {hours}h {minutes}m {seconds}s
+      {days} DÍAS {hours} HS. {minutes} MIN. {seconds} SEG.
     </strong>
   );
 }
