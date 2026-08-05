@@ -138,7 +138,7 @@ function App() {
 
   async function onLogout() {
 
-    await removeTokenFromBackend();
+    removeTokenFromBackend().catch(err => console.error("Error al remover token:", err));
 
     setAutenticado(false);
     setUserId(null);

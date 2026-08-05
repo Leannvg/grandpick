@@ -62,7 +62,11 @@ export const removeTokenFromBackend = async () => {
         const authToken = localStorage.getItem("auth-token");
         if (!authToken) return;
         
-        const registration = await navigator.serviceWorker.ready;
+        if (!('serviceWorker' in navigator)) return;
+        
+        const registration = await navigator.serviceWorker.getRegistration();
+        if (!registration) return;
+
         const token = await getToken(messaging, {
             vapidKey: VAPID_KEY,
             serviceWorkerRegistration: registration
