@@ -22,6 +22,16 @@ export const notifyAllUsers = async (notification, data = {}) => {
 
     if (users.length > 0) {
         await assignNotificationToUsers(notificationId, users);
+        
+        // Emitir evento por Socket.io para actualizar la campana en tiempo real
+        if (global.app) {
+            const io = global.app.get("io");
+            if (io) {
+                for (const user of users) {
+                    io.to(`user:${user._id.toString()}`).emit("notifications:new");
+                }
+            }
+        }
     }
 
     // 2. Enviar notificaciones Push
