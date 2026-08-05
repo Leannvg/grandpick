@@ -39,20 +39,25 @@ const groupRacesByCircuitAndYear = (races) => {
     const year = new Date(race.date_gp_start).getUTCFullYear();
     const key = `${circuitId}_${year}`;
 
-    if (!grouped[key]) {
-      grouped[key] = {
-        gp_name: race.circuit?.gp_name || "N/A",
-        circuitId,
-        circuitName: race.circuit?.circuit_name || "N/A",
-        country: race.circuit?.country || "N/A",
-        dateStart: race.date_gp_start,
-        dateEnd: race.date_gp_end,
-        timezone: race.circuit?.timezone || "UTC",
-        raceTypes: new Set(),
-        gpRaceId: race._id,
-        year,
-      };
-    }
+      if (!grouped[key]) {
+        grouped[key] = {
+          gp_name: race.circuit?.gp_name || "N/A",
+          circuitId,
+          circuitName: race.circuit?.circuit_name || "N/A",
+          country: race.circuit?.country || "N/A",
+          dateStart: race.date_gp_start,
+          dateEnd: race.date_gp_end,
+          timezone: race.circuit?.timezone || "UTC",
+          raceTypes: new Set(),
+          gpRaceId: race._id,
+          year,
+          allFinished: true,
+        };
+      }
+
+      if (race.state !== "Finalizado") {
+        grouped[key].allFinished = false;
+      }
 
     const type = race.points_system?.type;
     if (type) grouped[key].raceTypes.add(type);

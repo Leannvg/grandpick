@@ -16,7 +16,7 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
   const now = new Date();
   const upcomingIndex = useMemo(() => {
     if (!races || races.length === 0) return -1;
-    return races.findIndex(r => new Date(r.dateEnd) >= now);
+    return races.findIndex(r => !r.allFinished);
   }, [races]);
 
   useEffect(() => {
@@ -57,14 +57,13 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
                     <td>
                       {(() => {
                         const startDate = new Date(r.dateStart);
-                        const endDate = new Date(r.dateEnd);
                         let estado = "";
                         let pillClass = "";
 
-                        if (endDate < now) {
+                        if (r.allFinished) {
                           estado = "Finalizado";
                           pillClass = "pill-past";
-                        } else if (startDate <= now && endDate >= now) {
+                        } else if (startDate <= now) {
                           estado = "En curso";
                           pillClass = "pill-current";
                         } else {
