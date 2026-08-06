@@ -21,12 +21,6 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Mensaje recibido en segundo plano: ', payload);
-  
-  const notificationTitle = payload.notification?.title || 'Nueva notificación';
-  const notificationOptions = {
-    body: payload.notification?.body || '',
-    icon: '/favicon.ico' // Puedes cambiar esto por el ícono de tu app
-  };
-
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  // Firebase SDK muestra automáticamente una notificación si el payload contiene un objeto "notification".
+  // Ya no necesitamos llamar a self.registration.showNotification() manualmente aquí para evitar duplicados.
 });
