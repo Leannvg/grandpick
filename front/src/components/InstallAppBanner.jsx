@@ -18,14 +18,14 @@ const InstallAppBanner = () => {
     useEffect(() => {
         // Verificar si la app está en modo standalone
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-        
+
         if (isStandalone) {
             setIsVisible(false);
             return;
         }
 
         // Detectar iOS, ya que no dispara el evento beforeinstallprompt
-        const isIOS = 
+        const isIOS =
             (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) ||
             (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
@@ -41,15 +41,15 @@ const InstallAppBanner = () => {
             if (e && typeof e.preventDefault === 'function') {
                 e.preventDefault();
             }
-            
+
             const promptToUse = e || globalDeferredPrompt;
             if (!promptToUse) return;
 
             // Guardar el evento para dispararlo luego
             setDeferredPrompt(promptToUse);
-            
+
             const wasInstalled = localStorage.getItem('grandpick_app_installed') === 'true';
-            
+
             if (wasInstalled) {
                 // Si teníamos guardado que estaba instalada pero el navegador nos dispara este evento,
                 // significa que la app fue desinstalada. Borramos la marca y volvemos a mostrar el banner.
@@ -69,7 +69,7 @@ const InstallAppBanner = () => {
         // Escuchar cuando se dispare a nivel global mientras el componente está montado
         const onGlobalPrompt = () => handleBeforeInstallPrompt(globalDeferredPrompt);
         window.addEventListener('pwa_installable', onGlobalPrompt);
-        
+
         // Mantener el listener original por si acaso
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
@@ -80,7 +80,7 @@ const InstallAppBanner = () => {
             setShowInstructions(false);
             localStorage.setItem('grandpick_app_installed', 'true');
         };
-        
+
         window.addEventListener('appinstalled', handleAppInstalled);
 
         return () => {
@@ -93,13 +93,13 @@ const InstallAppBanner = () => {
     const handleInstallClick = async () => {
         if (deferredPrompt) {
             deferredPrompt.prompt();
-            
+
             const { outcome } = await deferredPrompt.userChoice;
             if (outcome === 'accepted') {
                 setIsVisible(false);
                 localStorage.setItem('grandpick_app_installed', 'true');
             }
-            
+
             setDeferredPrompt(null);
         } else {
             // Si el navegador bloqueó el prompt (ej: lo desinstaló antes) o es iOS, mostramos instrucciones
@@ -115,7 +115,7 @@ const InstallAppBanner = () => {
                 {!showInstructions ? (
                     <div className="install-banner__content">
                         <div className="install-banner__text">
-                            <h3 className="install-banner__title">Llevá GRANDPICK con vos</h3>
+                            <h2 className="install-banner__title">Llevá GRANDPICK con vos</h2>
                             <p className="install-banner__desc">Instalá la aplicación para recibir notificaciones de las carreras y acceder más rápido.</p>
                         </div>
                         <button onClick={handleInstallClick} className="btn-install">
@@ -139,12 +139,12 @@ const InstallAppBanner = () => {
                             <button onClick={() => setShowInstructions(false)} className="btn-install" style={{ backgroundColor: 'transparent', border: '1px solid rgba(255,255,255,0.5)', boxShadow: 'none' }}>
                                 Volver
                             </button>
-                            <button 
+                            <button
                                 onClick={() => {
                                     setIsVisible(false);
                                     localStorage.setItem('grandpick_app_installed', 'true');
-                                }} 
-                                className="btn-install" 
+                                }}
+                                className="btn-install"
                                 style={{ backgroundColor: 'transparent', border: 'none', boxShadow: 'none', fontSize: '0.85rem', opacity: 0.8, padding: '8px' }}
                             >
                                 Ya la instalé
