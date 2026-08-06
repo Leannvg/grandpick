@@ -243,14 +243,14 @@ function PredictionHistory() {
                                                         }}
                                                         disabled={status !== 'finished'}
                                                     >
-                                                        <div className="session-main">
+                                                        <span className="session-main">
                                                             <span className="session-type-name">{sessionDef.label}</span>
                                                             <span className="session-date">
                                                                 {session ? new Date(session.date_race).toLocaleDateString('es-AR') : '-'}
                                                             </span>
-                                                        </div>
+                                                        </span>
 
-                                                        <div className="session-status-block">
+                                                        <span className="session-status-block">
                                                             {status === 'finished' ? (
                                                                 <>
                                                                     <span className="status-val">{statusValue}</span>
@@ -272,7 +272,7 @@ function PredictionHistory() {
                                                                     <span className="status-lbl">{statusLabel}</span>
                                                                 </>
                                                             )}
-                                                        </div>
+                                                        </span>
                                                     </button>
                                                 );
                                             })}
@@ -364,14 +364,14 @@ function PredictionHistory() {
                                                 }}
                                                 disabled={status !== 'finished'}
                                             >
-                                                <div className="session-main">
+                                                <span className="session-main">
                                                     <span className="session-type-name">{sessionDef.label}</span>
                                                     <span className="session-date">
                                                         {session ? new Date(session.date_race).toLocaleDateString('es-AR') : '-'}
                                                     </span>
-                                                </div>
+                                                </span>
 
-                                                <div className="session-status-block">
+                                                <span className="session-status-block">
                                                     {status === 'finished' ? (
                                                         <>
                                                             <span className="status-val">{statusValue}</span>
@@ -393,7 +393,7 @@ function PredictionHistory() {
                                                             <span className="status-lbl">{statusLabel}</span>
                                                         </>
                                                     )}
-                                                </div>
+                                                </span>
                                             </button>
                                         );
                                     })}
