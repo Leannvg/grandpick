@@ -46,6 +46,14 @@ async function disableDriver(id) {
     });
 }
 
+async function editDashboardDriver(id, driver){
+    return apiFetch(`/api/dashboard/drivers/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(driver),
+        headers: { "Content-type": "application/json" }
+    });
+}
+
 export default {
     findAll,
     find: findAll,
@@ -59,5 +67,6 @@ export default {
     remove: deleteDriver,
     checkDriverUsedInRaces,
     enableDriver,
-    disableDriver
+    disableDriver,
+    editDashboardDriver
 }

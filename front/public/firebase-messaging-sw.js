@@ -15,12 +15,4 @@ const firebaseConfig = {
 
 // Inicializamos Firebase en el Service Worker
 firebase.initializeApp(firebaseConfig);
-
-// Obtenemos la instancia de Messaging para manejar los mensajes en segundo plano
 const messaging = firebase.messaging();
-
-messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] Mensaje recibido en segundo plano: ', payload);
-  // Firebase SDK muestra automáticamente una notificación si el payload contiene un objeto "notification".
-  // Ya no necesitamos llamar a self.registration.showNotification() manualmente aquí para evitar duplicados.
-});
