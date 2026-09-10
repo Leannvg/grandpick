@@ -20,6 +20,9 @@ router.route('/api/drivers')
         driversApiControllers.create
     );
 
+router.route('/api/standings/drivers')
+    .get(driversApiControllers.driversStandings);
+
 router.route('/api/drivers/:driverId')
     .get(driversApiControllers.findById)
     .delete(

@@ -131,7 +131,8 @@ function Nav({ onLogout, autenticado, esAdmin }) {
     const items = menu === 'info' ? [
       { to: "/teams", label: "ESCUDERÍAS" },
       { to: "/drivers", label: "PILOTOS" },
-      { to: "/circuits", label: "CIRCUITOS" }
+      { to: "/circuits", label: "CIRCUITOS" },
+      { to: "/standings", label: "CLASIFICACIÓN" }
     ] : [
       { to: "/how-to-play", label: "CÓMO JUGAR" },
       { to: "/f1-guide", label: "GUÍA DE F1" },
@@ -147,7 +148,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
         <div className="container">
           <ul className="row justify-content-center text-center list-unstyled m-0">
             {items.map((item, idx) => (
-              <li key={idx} className="col-12 col-md-4">
+              <li key={idx} className={`col-12 ${items.length === 4 ? 'col-md-3' : 'col-md-4'}`}>
                 <Link to={item.to} className="mega-link" onClick={closeMenu}>
                   {item.label}
                 </Link>

@@ -1,0 +1,76 @@
+/* =====================================================
+   CLASIFICACIÓN DE PILOTOS
+   Reutiliza el diseño de tablas de ranking.css para
+   mantener la armonía visual del proyecto.
+===================================================== */
+
+.standings-page {
+    color: #fff;
+}
+
+.standings-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.standings-search__input {
+    border: none;
+    outline: none;
+    height: 38px;
+    padding: 0 12px;
+    font-size: 0.9rem;
+    color: #2d3748;
+    min-width: 200px;
+}
+
+/* Celda de piloto */
+.standings-table .driver-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+}
+
+.standings-table .driver-name {
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #333;
+}
+
+.standings-table .driver-number {
+    font-weight: 700;
+    color: #94a3b8;
+    font-size: 12px;
+    min-width: 22px;
+}
+
+/* Celda de equipo con color de escudería */
+.standings-table .team-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+.standings-table .team-color-dot {
+    width: 4px;
+    height: 18px;
+    border-radius: 2px;
+    background-color: var(--team-color, #5c8ab3);
+    flex-shrink: 0;
+}
+
+.standings-table .points-cell {
+    font-weight: 700;
+    color: #111;
+}
+
+@media (max-width: 767px) {
+    .standings-table {
+        min-width: 560px;
+    }
+}

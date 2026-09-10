@@ -13,6 +13,16 @@ export async function findById(req, res) {
   res.status(200).json(driver)
 }
 
+export async function driversStandings(req, res, next) {
+  try {
+    const year = req.query.year || new Date().getFullYear();
+    const standings = await driversServices.findDriversStandings(year);
+    res.status(200).json(standings);
+  } catch (err) {
+    next(err);
+  }
+}
+
 export async function editById(req, res, next) {
   try {
     const driverId = req.params.driverId;

@@ -8,6 +8,11 @@ async function findDriverById(id){
     return apiFetch(`/api/drivers/${id}`);
 }
 
+async function findDriversStandings(year){
+    const query = year ? `?year=${year}` : "";
+    return apiFetch(`/api/standings/drivers${query}`);
+}
+
 async function createDriver(driver){
     return apiFetch("/api/drivers", {
         method: 'POST',
@@ -59,6 +64,8 @@ export default {
     find: findAll,
     findDriverById,
     findById: findDriverById,
+    findDriversStandings,
+    findStandings: findDriversStandings,
     createDriver,
     create: createDriver,
     editDriver,
