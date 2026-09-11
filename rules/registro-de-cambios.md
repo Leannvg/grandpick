@@ -2,6 +2,13 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-10 · Catálogo de componentes
+
+- Nuevo `rules/componentes.md`: inventario de todos los componentes, contexts y
+  hooks del front con sus props y notas de reuso.
+- Convención agregada al `CLAUDE.md` y a `rules/README.md`: revisar el catálogo
+  antes de crear un componente y sumar los nuevos al mismo.
+
 ## 2026-09-10 · Clasificación de pilotos
 
 - **Backend**: nuevo endpoint público `GET /api/standings/drivers?year=` que arma

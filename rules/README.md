@@ -13,6 +13,7 @@ negocio y el historial de cambios.
 |---|---|
 | [estructura.md](./estructura.md) | Organización de carpetas de `back/` y `front/`, capas y convenciones. |
 | [diseno.md](./diseno.md) | Sistema de diseño: tokens CSS, patrón de tablas, navegación. |
+| [componentes.md](./componentes.md) | Catálogo de componentes, contexts y hooks del front, con props y notas de reuso. |
 | [logica.md](./logica.md) | Modelo de datos (MongoDB) y reglas de negocio (puntos, carreras, etc.). |
 | [registro-de-cambios.md](./registro-de-cambios.md) | Changelog cronológico de features y ajustes. |
 | [features/](./features/) | Un documento por feature con el detalle de implementación. |
@@ -26,3 +27,5 @@ negocio y el historial de cambios.
 - **Git**: se usa la cuenta vinculada a esta carpeta (`Leandro Vedia`). Todos los
   cambios se pushean a `main` para desplegar.
 - **Cada cambio** que se haga se documenta acá antes o junto con el commit.
+- **Al crear un componente / hook / context nuevo**, agregar su fila en
+  [componentes.md](./componentes.md) para que pueda reutilizarse después.
