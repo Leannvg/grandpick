@@ -38,6 +38,16 @@ function Standings() {
         });
     }, [standings, searchTerm]);
 
+    const splitName = (fullName = "") => {
+        const parts = fullName.trim().split(/\s+/);
+        if (parts.length === 0) return { first: "", last: "" };
+        const [first, ...rest] = parts;
+        const capitalized = first
+            ? first.charAt(0).toUpperCase() + first.slice(1).toLowerCase()
+            : "";
+        return { first: capitalized, last: rest.join(" ") };
+    };
+
     const years = Array.from(
         { length: new Date().getFullYear() - 2024 + 1 },
         (_, i) => new Date().getFullYear() - i
@@ -87,9 +97,9 @@ function Standings() {
                             <thead>
                                 <tr>
                                     <th className="w-50px">Pos.</th>
-                                    <th className="text-start">Nombre</th>
-                                    <th>Nacionalidad</th>
-                                    <th>Equipo Actual</th>
+                                    <th className="text-start">Piloto</th>
+                                    <th className="text-start">Nacionalidad</th>
+                                    <th className="text-start">Equipo Actual</th>
                                     <th className="w-120px">Puntos</th>
                                 </tr>
                             </thead>
@@ -97,26 +107,21 @@ function Standings() {
                                 {filteredStandings.map((driver) => {
                                     const pos = driver.position;
                                     const posClass = pos <= 3 ? `pos-${pos}` : "";
+                                    const { first, last } = splitName(driver.full_name);
 
                                     return (
                                         <tr key={driver._id}>
                                             <td className={`pos-cell ${posClass}`}>{pos}</td>
                                             <td className="text-start">
                                                 <div className="driver-cell">
-                                                    {driver.number && (
-                                                        <span className="driver-number">
-                                                            {driver.number}
-                                                        </span>
-                                                    )}
-                                                    <span className="driver-name">
-                                                        {driver.full_name}
-                                                    </span>
+                                                    <span className="driver-firstname">{first}</span>
+                                                    <span className="driver-lastname">{last}</span>
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td className="text-start">
                                                 <CountryDisplay iso2={driver.country} />
                                             </td>
-                                            <td>
+                                            <td className="text-start">
                                                 <div
                                                     className="team-cell"
                                                     style={{ "--team-color": driver.team?.color || "#5c8ab3" }}

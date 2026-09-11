@@ -30,22 +30,20 @@
 /* Celda de piloto */
 .standings-table .driver-cell {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: baseline;
+    gap: 6px;
     text-align: left;
 }
 
-.standings-table .driver-name {
-    font-weight: 700;
-    text-transform: uppercase;
+.standings-table .driver-firstname {
+    font-weight: 400;
     color: #333;
 }
 
-.standings-table .driver-number {
+.standings-table .driver-lastname {
     font-weight: 700;
-    color: #94a3b8;
-    font-size: 12px;
-    min-width: 22px;
+    text-transform: uppercase;
+    color: #333;
 }
 
 /* Celda de equipo con color de escudería */
@@ -53,7 +51,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .standings-table .team-color-dot {

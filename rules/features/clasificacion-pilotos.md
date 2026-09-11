@@ -48,6 +48,13 @@ Respuesta (`200`):
 | `App.jsx` | + import `Standings` y ruta pública `/standings`. |
 | `components/Nav.jsx` | + ítem `{ to: "/standings", label: "CLASIFICACIÓN" }` en el mega menú `info`. Las columnas del mega menú pasan a `col-md-3` cuando hay 4 ítems. |
 
+## Ajustes posteriores (2026-09-10)
+
+- La columna se llama **"Piloto"** (antes "Nombre").
+- El nombre se divide: nombre de pila en minúscula con inicial mayúscula +
+  apellido en **MAYÚSCULA y negrita**. Se quitó el número de piloto.
+- Columnas **Nacionalidad** y **Equipo Actual** alineadas a la izquierda.
+
 ## Notas / posibles mejoras futuras
 
 - Desempate real estilo F1 (cantidad de P1, P2, ... ) si se necesita precisión.
