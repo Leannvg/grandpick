@@ -5,6 +5,7 @@ import SessionTabs from "./predictions/SessionTabs";
 import PredictionComparisonTable from "./predictions/PredictionComparisonTable";
 import LoaderSpinner from "./LoaderSpinner";
 import { useEscapeKey } from "../hooks/useEscapeKey";
+import { getFlagEmoji, formatRaceDate } from "../utils/helpers";
 import "../assets/styles/predictionHistory.css";
 
 /**
@@ -89,7 +90,11 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
     );
 
     const hasNoData = !loading && !error && (!myCircuitData || !otherCircuitData);
-    const circuitName = myCircuitData?.circuit?.gp_name || otherCircuitData?.circuit?.gp_name || null;
+    const circuitData = myCircuitData || otherCircuitData;
+    const circuit = circuitData?.circuit || null;
+    const circuitDateLabel = circuitData
+        ? formatRaceDate(circuitData.date_gp_start, circuitData.date_gp_end)
+        : null;
 
     // Funcionalidad de deslizar para cerrar (mismo patrón que PredictionHistory)
     const handleDragEnd = (_, info) => {
@@ -104,6 +109,19 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
             <span className="gp-compare-vs">VS</span>
             <span className="gp-compare-name gp-compare-name--other">{otherLabel}</span>
         </h2>
+    );
+
+    const compareSubtitle = circuit && (
+        <p className="gp-modal-subtitle gp-compare-subtitle">
+            <span className="emoji-flag">{getFlagEmoji(circuit.country)}</span>
+            <span className="gp-compare-subtitle-name">{circuit.gp_name}</span>
+            {circuitDateLabel && (
+                <>
+                    <span className="gp-compare-subtitle-sep">·</span>
+                    <span className="gp-compare-subtitle-date">{circuitDateLabel}</span>
+                </>
+            )}
+        </p>
     );
 
     const body = (
@@ -170,9 +188,7 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
 
                             <div className="gp-compare-drawer-header">
                                 {compareTitle}
-                                {circuitName && (
-                                    <p className="gp-modal-subtitle gp-compare-subtitle">{circuitName}</p>
-                                )}
+                                {compareSubtitle}
                             </div>
 
                             <div className="gp-compare-drawer-body">
@@ -204,9 +220,7 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
                         exit={{ scale: 0.9, opacity: 0 }}
                     >
                         {compareTitle}
-                        {circuitName && (
-                            <p className="gp-modal-subtitle gp-compare-subtitle">{circuitName}</p>
-                        )}
+                        {compareSubtitle}
 
                         {body}
 

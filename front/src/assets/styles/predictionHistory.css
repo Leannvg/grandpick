@@ -3,7 +3,22 @@
    Pos | Resultado real | Tu predicción | Puntos | Predicción del otro | Puntos.
    Cada predicción errada se marca en rojo de forma individual (.cell-wrong),
    nunca la fila completa, para no confundir cuando un usuario acierta y el
-   otro no en la misma posición. */
+   otro no en la misma posición.
+
+   La tabla necesita 6 columnas con nombres de piloto legibles: en vez de
+   achicarla hasta romperse en pantallas angostas (mobile), se le da un
+   ancho mínimo y el contenedor scrollea horizontalmente (mismo criterio que
+   `.ranking-table-container`/`table-responsive` en el resto del proyecto). */
+.prediction-comparison-table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.prediction-comparison-table--compare {
+    min-width: 640px;
+}
+
 .prediction-comparison-table--compare .table-header,
 .prediction-comparison-table--compare .table-row {
     grid-template-columns: 50px 1fr 1fr 70px 1fr 70px;
@@ -22,21 +37,16 @@
 }
 
 @media (max-width: 700px) {
-    .prediction-comparison-table--compare .table-header,
-    .prediction-comparison-table--compare .table-row {
-        grid-template-columns: 36px 1fr 1fr 50px 1fr 50px;
-    }
-
     .prediction-comparison-table--compare .col-pos,
     .prediction-comparison-table--compare .col-pred,
     .prediction-comparison-table--compare .col-real,
     .prediction-comparison-table--compare .col-other-pred {
-        padding: 8px 8px;
-        font-size: 0.8rem;
+        padding: 8px 12px;
+        font-size: 0.85rem;
     }
 
     .prediction-comparison-table--compare .col-points {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
 }
 
@@ -72,7 +82,7 @@
 .history-summary-label {
     font-size: 12px;
     font-weight: 300;
-    color: var(--color-red);
+    color: rgba(255, 255, 255, 0.65);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -155,6 +165,6 @@
     margin: 0 10px 10px;
 }
 
-.gp-compare-drawer-body .prediction-comparison-table {
+.gp-compare-drawer-body .prediction-comparison-table-scroll {
     margin: 0 10px;
 }

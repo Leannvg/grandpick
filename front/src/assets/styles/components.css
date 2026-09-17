@@ -630,19 +630,38 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     background: var(--color-red);
     color: #fff;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 0.5px;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 4px 14px rgba(225, 6, 0, 0.5);
 }
 
 .gp-compare-subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
     text-align: center;
     margin-bottom: 20px;
+}
+
+.gp-compare-subtitle-name {
+    font-weight: 600;
+}
+
+.gp-compare-subtitle-date {
+    opacity: 0.75;
+}
+
+.gp-compare-subtitle-sep {
+    opacity: 0.5;
 }
 
 .gp-input-group-container {

@@ -115,3 +115,25 @@ pedía en `fetchStats`).
 - **`FloatingPredictionCompare` usa loading local** (no `useLoader()` global)
   para no tapar toda la pantalla con el loader de carrera mientras el modal
   hace su fetch — sigue el mismo patrón que `FloatingEditProfile`.
+
+## Ajustes posteriores (2026-09-17)
+
+- **`--color-red` sin definir rompía dos labels**: `.status-label`
+  (`Ranking.jsx` → panel "Tu puesto") y `.history-summary-label`
+  (`PredictionHistory.jsx`) usaban `color: var(--color-red)` confiando en
+  que, al no estar definida, el navegador cae al color heredado (blanco).
+  Al definir `--color-red` para el badge "VS" esas dos etiquetas pasaron a
+  verse en rojo sin que nadie lo hubiera diseñado así. Se cambian ambas a
+  `rgba(255,255,255,0.65)` explícito; `--color-red` se mantiene definida.
+- **Tabla de comparación rota en mobile**: la tabla de 6 columnas con
+  tracks `1fr` se achicaba hasta romperse en pantallas angostas. Se agrega
+  `.prediction-comparison-table-scroll` (wrapper con `overflow-x: auto`,
+  mismo criterio que `.ranking-table-container`) y `min-width: 640px` en
+  `.prediction-comparison-table--compare`, para que la tabla nunca se
+  aplaste — en mobile se desliza horizontalmente en vez de recortarse.
+- **Badge "VS" más grande y con borde/sombra** (36px → 46px,
+  `border`/`box-shadow` nuevos en `.gp-compare-vs`).
+- **Subtítulo del GP con bandera y fecha**: `.gp-compare-subtitle` pasa de
+  mostrar solo el nombre a `🏁 Nombre del GP · fecha` usando `getFlagEmoji`
+  y `formatRaceDate` (ambos ya existentes en `utils/helpers.js`), con la
+  bandera del circuito y el rango de fechas del fin de semana.

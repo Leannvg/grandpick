@@ -2,6 +2,32 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-17 · Fix: labels en rojo no deseado + tabla rota en mobile
+
+- **Fix de regresión**: al definir `--color-red` (commit anterior) dos
+  labels que dependían de que esa variable estuviera *sin definir* (y por
+  lo tanto heredaban el blanco del contenedor) pasaron a verse en rojo:
+  `.status-label` del panel "Tu puesto" en `Ranking.jsx` y
+  `.history-summary-label` del resumen de `PredictionHistory.jsx`. Se
+  cambian ambos a `rgba(255,255,255,0.65)` explícito — un blanco atenuado
+  pensado para captions sobre fondo oscuro, en vez de depender de que una
+  variable quede sin resolver. `--color-red` se mantiene definida (la sigue
+  usando el badge "VS" y `.auth-link-bold`, donde sí es el rojo buscado).
+- **Fix: tabla de comparación rota en mobile**: la tabla de 6 columnas se
+  achicaba con `1fr` hasta romperse en pantallas angostas (nombres
+  cortados, última columna de puntos recortada fuera de la tarjeta). Se
+  reemplaza por el mismo criterio que ya usa `ranking-table-container` en
+  el resto del proyecto: la tabla obtiene un `min-width: 640px` y su
+  contenedor (`.prediction-comparison-table-scroll`, nuevo wrapper en
+  `PredictionComparisonTable.jsx`) scrollea horizontalmente en vez de
+  achicar el contenido.
+- **Mejora de diseño**: el badge "VS" crece (36px → 46px), suma borde
+  blanco translúcido y sombra para destacar más. El subtítulo del GP
+  (`.gp-compare-subtitle`) deja de ser solo el nombre y ahora muestra
+  bandera del circuito + nombre + fecha del fin de semana (`getFlagEmoji` +
+  `formatRaceDate`, ya usados en el resto del proyecto).
+- Detalle: [features/ver-predicciones-otros-usuarios.md](./features/ver-predicciones-otros-usuarios.md).
+
 ## 2026-09-16 · Título rediseñado, cierre con Escape y bottom-sheet mobile en el comparador
 
 - **`FloatingPredictionCompare`**: el título plano (`<h2>Comparar

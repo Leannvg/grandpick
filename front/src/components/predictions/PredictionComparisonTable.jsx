@@ -52,6 +52,7 @@ function PredictionComparisonTable({ session, otherSession = null, otherLabel = 
 
     if (compareMode) {
         return (
+            <div className="prediction-comparison-table-scroll">
             <div className="prediction-comparison-table prediction-comparison-table--compare">
                 <div className="table-header">
                     <div className="col-pos">Pos</div>
@@ -92,6 +93,7 @@ function PredictionComparisonTable({ session, otherSession = null, otherLabel = 
                         );
                     })}
                 </div>
+            </div>
             </div>
         );
     }
