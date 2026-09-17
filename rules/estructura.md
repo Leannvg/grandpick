@@ -49,6 +49,21 @@ routes/  ->  middleware/  ->  controllers/  ->  services/  ->  MongoDB
 | `assets/styles/` | CSS por vista + `globals.css` (tokens y layout base). |
 | `utils/` | `helpers.js` (fechas, flags, parseo de errores), `cloudinary.js`. |
 
+## Agentes de Claude Code (nivel proyecto)
+
+En `.claude/agents/` hay dos subagentes especializados, checkeados en el repo
+(disponibles para cualquiera que abra el proyecto, no solo en esta máquina):
+
+| Agente | Alcance | Cuándo usarlo |
+|---|---|---|
+| `grandpick-backend` | `back/` | Endpoints, controllers, services, schemas (yup), middlewares, lógica de negocio (puntos, carreras, predicciones). |
+| `grandpick-frontend` | `front/` | Páginas, componentes, estilos, navegación, servicios de API del cliente, formularios del admin. |
+
+Ambos arrancan leyendo `CLAUDE.md` + los docs de `rules/` relevantes a su capa,
+y terminan actualizando `rules/` según corresponda (mismas reglas que la sesión
+principal). Invocarlos con el tool `Agent` pasando `subagent_type` con el
+nombre de arriba.
+
 ### Convenciones frontend
 
 - Rutas en `App.jsx`. Las privadas se envuelven en `<ProtectedRoute>`.

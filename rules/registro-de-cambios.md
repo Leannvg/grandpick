@@ -2,6 +2,14 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-16 · Agentes especializados de Claude Code
+
+- `.claude/agents/grandpick-backend.md` y `.claude/agents/grandpick-frontend.md`:
+  subagentes a nivel proyecto (quedan en el repo, no son de usuario) para
+  trabajar en `back/` y `front/` respectivamente, cada uno con su propia
+  arquitectura, convenciones y checklist de actualización de `rules/`.
+- Documentado en `rules/estructura.md`.
+
 ## 2026-09-10 · Catálogo de componentes
 
 - Nuevo `rules/componentes.md`: inventario de todos los componentes, contexts y
