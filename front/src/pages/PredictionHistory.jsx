@@ -64,9 +64,11 @@ function PredictionHistory() {
                 const historyData = await PredictionServices.findHistoryByUser(targetUserId, year);
                 setHistory(historyData);
 
-                UsersServices.getUserStats(targetUserId)
-                    .then(setUserStats)
-                    .catch(err => console.error("Error loading user stats:", err));
+                if (routeUserId) {
+                    UsersServices.getUserStats(targetUserId)
+                        .then(setUserStats)
+                        .catch(err => console.error("Error loading user stats:", err));
+                }
 
                 if (historyData.length > 0) {
                     setSelectedCircuitId(historyData[0].circuit._id);
@@ -125,12 +127,16 @@ function PredictionHistory() {
             <section className="page-section container">
                 {!isOwnHistory && <BackButton to="/ranking" text="Volver al ranking" />}
                 <header className="page-header text-center">
-                    <span className="section-label">{isOwnHistory ? "Mi Historial" : `Historial de ${otherUserName || "otro usuario"}`}</span>
+                    <span className="section-label">{isOwnHistory ? "Mi Historial" : "Historial"}</span>
                     <h1 className="section-title">PREDICCIONES</h1>
-                    <p className="section-subtitle">Esto fue lo que pensaste en los anteriores GP</p>
+                    <p className="section-subtitle">
+                        {isOwnHistory
+                            ? "Esto fue lo que pensaste en los anteriores GP"
+                            : `Así fueron las predicciones de ${otherUserName || "este usuario"} en los anteriores GP`}
+                    </p>
                 </header>
 
-                {userStats && (
+                {!isOwnHistory && userStats && (
                     <div className="history-user-summary">
                         <div className="history-summary-item">
                             <span className="history-summary-label">Usuario</span>

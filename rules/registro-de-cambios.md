@@ -4,12 +4,16 @@ Orden cronológico inverso (lo más nuevo arriba).
 
 ## 2026-09-16 · Resumen de usuario en el historial de predicciones
 
-- `PredictionHistory.jsx` ahora muestra un panel (`.history-user-summary`)
-  debajo del subtítulo, antes del buscador/tabs: Usuario, Predicciones
-  totales, Aciertos y Puntos totales — para el usuario propio o el ajeno que
-  se esté consultando. Usa `UsersServices.getUserStats(targetUserId)`
-  (`GET /api/users/:id/stats`, ya sin restricción de ownership) en paralelo
-  al historial, de forma best-effort.
+- `PredictionHistory.jsx` ahora muestra un panel (`.history-user-summary`,
+  ancho 100%) debajo del subtítulo, antes del buscador/tabs: Usuario,
+  Predicciones totales, Aciertos y Puntos totales — **solo al consultar el
+  historial de otro usuario**, nunca en "Mi Historial". Usa
+  `UsersServices.getUserStats(targetUserId)` (`GET /api/users/:id/stats`, ya
+  sin restricción de ownership), pedido únicamente cuando hay `routeUserId`.
+- Ajuste de copys: viendo a otro usuario, el label pasa de "Historial de
+  {nombre}" a "Historial", y el subtítulo cambia a "Así fueron las
+  predicciones de {nombre} en los anteriores GP" (antes usaba el mismo texto
+  que "Mi Historial" para ambos casos).
 - Estilos nuevos en `predictionHistory.css`: `.history-user-summary`,
   `.history-summary-item`, `.history-summary-label`, `.history-summary-value`.
 
