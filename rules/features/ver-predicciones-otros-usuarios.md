@@ -33,8 +33,8 @@ sigue igual, solo se le pasa el `userId` de otro usuario.
 |---|---|
 | `front/src/App.jsx` | + ruta `/prediction-history/:userId` (mismo componente `PredictionHistory`, mismo patrón que `/teams/:id`). |
 | `front/src/pages/PredictionHistory.jsx` | Lee `userId` de la URL (`useParams`) y `name`/`last_name` del `state` de navegación (`useLocation`) como fallback instantáneo. Si hay `routeUserId`, pide el historial de ese usuario (`targetUserId = routeUserId \|\| userData._id`), cambia el label a "Historial" (en vez de "Mi Historial") y el subtítulo a "Así fueron las predicciones de {nombre}...". Sin `routeUserId` el comportamiento es idéntico al original ("Mi Historial"). Solo cuando `routeUserId` está presente (viendo a otro usuario) pide además `UsersServices.getUserStats(targetUserId)` (`GET /api/users/:id/stats`, ya público para cualquier autenticado, sin restricción de ownership) y muestra un panel `.history-user-summary` (ancho 100%) debajo del subtítulo con Usuario / Predicciones totales / Aciertos / Puntos totales (`stats.predictions.total`, `stats.successes.total`, `stats.points.total` — los mismos totales ya visibles hoy en el Ranking Global). No se pide ni se muestra para "Mi Historial". El fetch de stats es best-effort (no bloquea ni rompe la carga del historial si falla). |
-| `front/src/pages/Ranking.jsx` | Modo `global`: dentro de `.user-info` de cada fila (salvo la del usuario logueado) se agrega `<button className="btn-view-history">` con ícono `bi-clock-history` que navega a `/prediction-history/:userId` pasando `{ name, last_name }` por `state`. |
-| `front/src/assets/styles/ranking.css` | + `.btn-view-history`, `.btn-compare`. |
+| `front/src/pages/Ranking.jsx` | Dentro de `.user-info` de cada fila (salvo la del usuario logueado) se agrega un ícono `.btn-row-action`: en modo `global` es `bi-clock-history` y navega a `/prediction-history/:userId` pasando `{ name, last_name }` por `state`; en modo `grand_prix` es `bi-arrow-left-right` y abre `FloatingPredictionCompare` (ver abajo). Un solo botón por fila, mismo lugar en ambos modos. |
+| `front/src/assets/styles/ranking.css` | + `.btn-row-action` (ícono compartido por ambos modos). |
 
 ### Ranking por GP → comparar predicciones (modal)
 
@@ -45,7 +45,7 @@ desktop). Se extrajo a dos componentes reutilizables:
 | Componente | Ruta | Props | Notas |
 |---|---|---|---|
 | `SessionTabs` | `front/src/components/predictions/SessionTabs.jsx` | `sessions`, `selectedSessionType`, `onSelect` | Exporta también `getSessionButtonStatus(session)` (antes vivía duplicada en `PredictionHistory.jsx`). |
-| `PredictionComparisonTable` | `front/src/components/predictions/PredictionComparisonTable.jsx` | `session`, `otherSession?`, `otherLabel?` | Sin `otherSession`: 4 columnas, igual al original. Con `otherSession`: 5 columnas (agrega "Predicción de {otherLabel}"), puntos de ambos lado a lado en la columna Puntos vía `.points-pill`. |
+| `PredictionComparisonTable` | `front/src/components/predictions/PredictionComparisonTable.jsx` | `session`, `otherSession?`, `otherLabel?` | Sin `otherSession`: 4 columnas, igual al original (Pos \| Tu predicción \| Resultado real \| Puntos). Con `otherSession`: 6 columnas, orden **Pos \| Resultado real \| Tu predicción \| Puntos \| Predicción de {otherLabel} \| Puntos** — el resultado real va primero (después de Pos) y los puntos de cada usuario quedan pegados a la derecha de su propia columna de predicción. Cada predicción errada se marca en rojo de forma **individual** (`.cell-wrong` en esa celda puntual), nunca la fila completa, para no confundir cuando un usuario acierta y el otro no en la misma posición. |
 
 `PredictionHistory.jsx` ahora usa `<SessionTabs />` + `<PredictionComparisonTable session={currentSession} />` en los dos lugares donde antes estaba duplicado el JSX (sin `otherSession`, por lo que el resultado es visualmente idéntico al anterior).
 
@@ -53,27 +53,32 @@ Nuevo modal:
 
 | Componente | Ruta | Props | Notas |
 |---|---|---|---|
-| `FloatingPredictionCompare` | `front/src/components/FloatingPredictionCompare.jsx` | `show`, `onClose`, `myUserId`, `myLabel`, `otherUserId`, `otherLabel`, `circuitId`, `year` | Mismo patrón visual que `FloatingDialog` (`gp-modal-overlay`/`gp-modal-card`), con `gp-modal-card--wide` (960px) para que entre la tabla de 5 columnas. Al abrir, pide en paralelo `PredictionServices.findHistoryByUser` de ambos usuarios, filtra cada uno por `circuitId` y renderiza `SessionTabs` (tabs según las sesiones del usuario propio) + `PredictionComparisonTable`. Maneja loading local (`LoaderSpinner`) y el caso sin predicciones para ese GP. |
+| `FloatingPredictionCompare` | `front/src/components/FloatingPredictionCompare.jsx` | `show`, `onClose`, `myUserId`, `myLabel`, `otherUserId`, `otherLabel`, `circuitId`, `year` | Mismo patrón visual que `FloatingDialog` (`gp-modal-overlay`/`gp-modal-card`), con `gp-modal-card--wide` (960px) para que entre la tabla de 6 columnas. Al abrir, pide en paralelo `PredictionServices.findHistoryByUser` de ambos usuarios, filtra cada uno por `circuitId` y renderiza `SessionTabs` (tabs según las sesiones del usuario propio) + `PredictionComparisonTable`. Maneja loading local (`LoaderSpinner`) y el caso sin predicciones para ese GP. |
 
-`front/src/pages/Ranking.jsx` (modo `grand_prix`): nueva columna de acciones
-(`<th className="w-50px">` sin texto + `<td>` con botón `.btn-compare`,
-oculto en la fila del propio usuario) que abre el modal via
-`compareTarget` (estado nuevo) y `profile` (estado nuevo, se guarda el
-perfil que ya se pedía en `fetchStats`). `colSpan` de la fila vacía en modo
-`grand_prix` pasó de `5` a `6` por la columna nueva.
+`front/src/pages/Ranking.jsx` (modo `grand_prix`): el ícono `.btn-row-action`
+(`bi-arrow-left-right`) vive junto al nombre del usuario dentro de
+`.user-info` (mismo lugar que el ícono de historial del modo `global`, no una
+columna aparte), oculto en la fila del propio usuario, y abre el modal vía
+`compareTarget` (estado) y `profile` (estado, se guarda el perfil que ya se
+pedía en `fetchStats`).
 
 ## Decisiones de diseño propias
 
-- **Puntos en la tabla de 5 columnas**: en vez de agregar columnas separadas
-  "Tus puntos"/"Sus puntos" (que harían 6 columnas), se mantiene una sola
-  columna "Puntos" con dos pills apiladas (`Vos: X` / `{otherLabel}: Y`),
-  cada una coloreada con las mismas reglas de acierto/error que ya existían
-  (`match`/`mismatch`), para no duplicar la lógica de columnas y mantener la
-  tabla compacta en mobile.
-- **Ubicación del botón "ver historial"** en el Ranking Global: dentro de
-  `.user-info` (al lado del nombre/apellido), no como columna nueva, para no
-  romper el layout de la tabla global (que ya tiene 7 columnas) y mantener el
-  ícono cerca del dato al que aplica.
+- **Orden de columnas en la tabla de comparación**: el resultado real se
+  muestra primero (columna fija de referencia), seguido de cada predicción
+  con sus puntos inmediatamente a la derecha, en vez de agrupar todos los
+  puntos al final — así cada par predicción→puntos se lee de corrido.
+- **Marca de error por celda, no por fila**: se eliminó la clase `no-match`
+  a nivel fila del modo comparación (y las pills combinadas `Vos: X` /
+  `{otro}: Y`); ahora cada celda de predicción (`.col-pred`/`.col-other-pred`)
+  se pinta de rojo (`.cell-wrong`) de forma independiente cuando esa
+  predicción puntual no acierta, y cada columna de puntos mantiene su propio
+  color de acierto/error (`.col-points.match`/`.mismatch`, ya existente).
+- **Ícono único por fila** en `Ranking.jsx`: en vez de una columna de
+  acciones aparte para "Comparar", se usa el mismo lugar y la misma clase
+  (`.btn-row-action`) que ya existía para "ver historial" en el Ranking
+  Global, cambiando solo el ícono (`bi-arrow-left-right`) y la acción según
+  el modo — mantiene el layout de ambas tablas sin columnas extra.
 - **`FloatingPredictionCompare` usa loading local** (no `useLoader()` global)
   para no tapar toda la pantalla con el loader de carrera mientras el modal
   hace su fetch — sigue el mismo patrón que `FloatingEditProfile`.

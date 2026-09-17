@@ -19,24 +19,88 @@ function calcPrediction(session, idx, pred, real) {
 }
 
 /**
+ * Piloto + barra de color de equipo (o "-" si no hay dato). Reutilizado en
+ * las columnas de predicción y resultado real.
+ */
+function DriverCell({ item }) {
+    if (!item) return '-';
+    return (
+        <>
+            <div className="driver-color-bar" style={{ backgroundColor: item.driver.team_info?.color || '#ccc' }}></div>
+            <span className="driver-name">{item.driver.full_name.split(' ')[0]} <strong>{item.driver.full_name.split(' ').slice(1).join(' ')}</strong></span>
+        </>
+    );
+}
+
+/**
  * Tabla de comparación predicción vs. resultado real, reutilizada en
  * PredictionHistory ("Mi Historial") y en el modal de comparación entre
  * dos usuarios (FloatingPredictionCompare).
  *
- * - Sin `otherSession`: 4 columnas (comportamiento original, sin cambios).
- * - Con `otherSession` + `otherLabel`: 5 columnas, agregando la predicción
- *   del otro usuario y mostrando los puntos de ambos lado a lado.
+ * - Sin `otherSession`: 4 columnas (comportamiento original, sin cambios):
+ *   Pos | Tu predicción | Resultado real | Puntos.
+ * - Con `otherSession` + `otherLabel`: 6 columnas, con el resultado real
+ *   primero (después de Pos) y los puntos de cada usuario pegados a la
+ *   derecha de su propia columna de predicción: Pos | Resultado real |
+ *   Tu predicción | Puntos | Predicción de {otherLabel} | Puntos. Cada
+ *   predicción errada se marca en rojo de forma independiente (no toda la
+ *   fila), para no confundir cuando un usuario acierta y el otro no.
  */
 function PredictionComparisonTable({ session, otherSession = null, otherLabel = null }) {
     const length = session?.points_system?.points?.length || 10;
     const compareMode = !!otherSession;
 
+    if (compareMode) {
+        return (
+            <div className="prediction-comparison-table prediction-comparison-table--compare">
+                <div className="table-header">
+                    <div className="col-pos">Pos</div>
+                    <div className="col-real">Resultado real</div>
+                    <div className="col-pred">Tu predicción</div>
+                    <div className="col-points">Puntos</div>
+                    <div className="col-other-pred">Predicción de {otherLabel}</div>
+                    <div className="col-points">Puntos</div>
+                </div>
+                <div className="table-body">
+                    {Array.from({ length }).map((_, idx) => {
+                        const pos = idx + 1;
+                        const real = session?.results?.find(r => r.position === pos);
+                        const pred = session?.prediction?.find(p => p.position === pos);
+                        const otherPred = otherSession?.prediction?.find(p => p.position === pos);
+                        const { isMatch, points } = calcPrediction(session, idx, pred, real);
+                        const otherCalc = calcPrediction(otherSession, idx, otherPred, real);
+                        const predWrong = !!(pred && real && !isMatch);
+                        const otherWrong = !!(otherPred && real && !otherCalc.isMatch);
+
+                        return (
+                            <div key={pos} className="table-row">
+                                <div className="col-pos">{pos}</div>
+                                <div className="col-real"><DriverCell item={real} /></div>
+                                <div className={`col-pred ${predWrong ? 'cell-wrong' : ''}`}>
+                                    <DriverCell item={pred} />
+                                </div>
+                                <div className={`col-points ${isMatch ? 'match' : (pred && real ? 'mismatch' : '')}`}>
+                                    {isMatch ? points : (pred && real ? 0 : '-')}
+                                </div>
+                                <div className={`col-other-pred ${otherWrong ? 'cell-wrong' : ''}`}>
+                                    <DriverCell item={otherPred} />
+                                </div>
+                                <div className={`col-points ${otherCalc.isMatch ? 'match' : (otherPred && real ? 'mismatch' : '')}`}>
+                                    {otherCalc.isMatch ? otherCalc.points : (otherPred && real ? 0 : '-')}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className={`prediction-comparison-table ${compareMode ? 'prediction-comparison-table--compare' : ''}`}>
+        <div className="prediction-comparison-table">
             <div className="table-header">
                 <div className="col-pos">Pos</div>
                 <div className="col-pred">Tu predicción</div>
-                {compareMode && <div className="col-other-pred">Predicción de {otherLabel}</div>}
                 <div className="col-real">Resultado real</div>
                 <div className="col-points">Puntos</div>
             </div>
@@ -47,59 +111,14 @@ function PredictionComparisonTable({ session, otherSession = null, otherLabel = 
                     const real = session?.results?.find(r => r.position === pos);
                     const { isMatch, points } = calcPrediction(session, idx, pred, real);
 
-                    let otherPred = null;
-                    let otherCalc = { isMatch: false, points: 0 };
-                    if (compareMode) {
-                        otherPred = otherSession?.prediction?.find(p => p.position === pos);
-                        otherCalc = calcPrediction(otherSession, idx, otherPred, real);
-                    }
-
                     return (
                         <div key={pos} className={`table-row ${pred && !isMatch && real ? 'no-match' : ''}`}>
                             <div className="col-pos">{pos}</div>
-                            <div className="col-pred">
-                                {pred ? (
-                                    <>
-                                        <div className="driver-color-bar" style={{ backgroundColor: pred.driver.team_info?.color || '#ccc' }}></div>
-                                        <span className="driver-name">{pred.driver.full_name.split(' ')[0]} <strong>{pred.driver.full_name.split(' ').slice(1).join(' ')}</strong></span>
-                                    </>
-                                ) : '-'}
+                            <div className="col-pred"><DriverCell item={pred} /></div>
+                            <div className="col-real"><DriverCell item={real} /></div>
+                            <div className={`col-points ${isMatch ? 'match' : (pred && real ? 'mismatch' : '')}`}>
+                                {isMatch ? points : (pred && real ? 0 : '-')}
                             </div>
-
-                            {compareMode && (
-                                <div className="col-other-pred">
-                                    {otherPred ? (
-                                        <>
-                                            <div className="driver-color-bar" style={{ backgroundColor: otherPred.driver.team_info?.color || '#ccc' }}></div>
-                                            <span className="driver-name">{otherPred.driver.full_name.split(' ')[0]} <strong>{otherPred.driver.full_name.split(' ').slice(1).join(' ')}</strong></span>
-                                        </>
-                                    ) : '-'}
-                                </div>
-                            )}
-
-                            <div className="col-real">
-                                {real ? (
-                                    <>
-                                        <div className="driver-color-bar" style={{ backgroundColor: real.driver.team_info?.color || '#ccc' }}></div>
-                                        <span className="driver-name">{real.driver.full_name.split(' ')[0]} <strong>{real.driver.full_name.split(' ').slice(1).join(' ')}</strong></span>
-                                    </>
-                                ) : '-'}
-                            </div>
-
-                            {compareMode ? (
-                                <div className="col-points col-points--compare">
-                                    <span className={`points-pill ${isMatch ? 'match' : (pred && real ? 'mismatch' : '')}`}>
-                                        Vos: {isMatch ? points : (pred && real ? 0 : '-')}
-                                    </span>
-                                    <span className={`points-pill ${otherCalc.isMatch ? 'match' : (otherPred && real ? 'mismatch' : '')}`}>
-                                        {otherLabel}: {otherCalc.isMatch ? otherCalc.points : (otherPred && real ? 0 : '-')}
-                                    </span>
-                                </div>
-                            ) : (
-                                <div className={`col-points ${isMatch ? 'match' : (pred && real ? 'mismatch' : '')}`}>
-                                    {isMatch ? points : (pred && real ? 0 : '-')}
-                                </div>
-                            )}
                         </div>
                     );
                 })}

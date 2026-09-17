@@ -2,6 +2,23 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-16 · Ajustes al comparador de predicciones
+
+- **Ranking por GP**: el botón "Comparar" deja de ser una columna aparte y
+  pasa a ser un ícono (`bi-arrow-left-right`, clase `.btn-row-action`) junto
+  al nombre del usuario, en el mismo lugar donde el Ranking Global ya
+  mostraba el ícono de "ver historial" (`bi-clock-history`) — ambos ahora
+  comparten la misma clase CSS.
+- **Tabla de comparación** (`PredictionComparisonTable`, modo con
+  `otherSession`): se reordenan las columnas a Pos → Resultado real → Tu
+  predicción → Puntos → Predicción del otro → Puntos (antes el resultado
+  real iba después de las dos predicciones y los puntos de ambos quedaban
+  agrupados al final). Se elimina el pintado en rojo de la fila completa
+  (`no-match`) y las pills combinadas de puntos; ahora cada predicción
+  errada se marca en rojo de forma individual por celda (`.cell-wrong`),
+  para no confundir cuando un usuario acierta y el otro no en la misma fila.
+- Detalle: [features/ver-predicciones-otros-usuarios.md](./features/ver-predicciones-otros-usuarios.md).
+
 ## 2026-09-16 · Resumen de usuario en el historial de predicciones
 
 - `PredictionHistory.jsx` ahora muestra un panel (`.history-user-summary`,

@@ -49,8 +49,7 @@ armonía. **No crear tablas nuevas desde cero**: reutilizar o extender.
 | `.ranking-empty-state` | Fila de "sin resultados" |
 | `.emoji-flag` | Banderas emoji (fuente Twemoji) |
 | `.w-50px`, `.w-120px`, `.h-38px` | Utilidades de tamaño ya definidas |
-| `.btn-view-history` | Ícono (dentro de `.user-info`) para ir al historial de otro usuario desde el Ranking Global |
-| `.btn-compare` | Botón "Comparar" en columna de acciones del Ranking por GP, abre `FloatingPredictionCompare` |
+| `.btn-row-action` | Ícono dentro de `.user-info` (junto al nombre): en modo `global` va al historial del usuario (`bi-clock-history`); en modo `grand_prix` abre `FloatingPredictionCompare` (`bi-arrow-left-right`) |
 
 ## Modales (`gp-modal-*`, definidos en `assets/styles/components.css`)
 

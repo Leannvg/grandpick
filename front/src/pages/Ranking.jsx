@@ -382,7 +382,6 @@ function Ranking() {
                                     {mode === 'global' && <th>Promedio por predicción</th>}
                                     {mode === 'global' && <th>Aciertos totales</th>}
                                     {mode === 'grand_prix' && <th className="text-start">Intervalo de Desempate (Gap)</th>}
-                                    {mode === 'grand_prix' && <th className="w-50px"></th>}
                                 </tr>
                             </thead>
                             <tbody>
@@ -412,14 +411,24 @@ function Ranking() {
                                                 <div className="user-info">
                                                     <span className="user-name">{item.name}</span>
                                                     <span className="user-lastname">{item.last_name}</span>
-                                                    {mode === 'global' && currentUserStat?._id !== item._id && (
-                                                        <button
-                                                            className="btn-view-history"
-                                                            title={`Ver historial de ${item.name}`}
-                                                            onClick={() => navigate(`/prediction-history/${item._id}`, { state: { name: item.name, last_name: item.last_name } })}
-                                                        >
-                                                            <i className="bi bi-clock-history"></i>
-                                                        </button>
+                                                    {currentUserStat?._id !== item._id && (
+                                                        mode === 'global' ? (
+                                                            <button
+                                                                className="btn-row-action"
+                                                                title={`Ver historial de ${item.name}`}
+                                                                onClick={() => navigate(`/prediction-history/${item._id}`, { state: { name: item.name, last_name: item.last_name } })}
+                                                            >
+                                                                <i className="bi bi-clock-history"></i>
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                className="btn-row-action"
+                                                                title={`Comparar con ${item.name}`}
+                                                                onClick={() => setCompareTarget(item)}
+                                                            >
+                                                                <i className="bi bi-arrow-left-right"></i>
+                                                            </button>
+                                                        )
                                                     )}
                                                 </div>
                                             </td>
@@ -457,21 +466,12 @@ function Ranking() {
                                                     return item.gap;
                                                 })()}
                                             </td>}
-                                            {mode === 'grand_prix' && (
-                                                <td>
-                                                    {currentUserStat?._id !== item._id && (
-                                                        <button className="btn-compare" onClick={() => setCompareTarget(item)}>
-                                                            Comparar
-                                                        </button>
-                                                    )}
-                                                </td>
-                                            )}
                                         </tr>
                                     );
                                 })}
                                 {paginatedData.length === 0 && (
                                     <tr>
-                                        <td colSpan={mode === 'global' ? "7" : "6"} className="ranking-empty-state">
+                                        <td colSpan={mode === 'global' ? "7" : "5"} className="ranking-empty-state">
                                             No se encontraron usuarios
                                         </td>
                                     </tr>
