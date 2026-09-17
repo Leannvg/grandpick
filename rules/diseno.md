@@ -50,7 +50,7 @@ armonía. **No crear tablas nuevas desde cero**: reutilizar o extender.
 | `.ranking-empty-state` | Fila de "sin resultados" |
 | `.emoji-flag` | Banderas emoji (fuente Twemoji) |
 | `.w-50px`, `.w-120px`, `.h-38px` | Utilidades de tamaño ya definidas |
-| `.btn-row-action` | Ícono dentro de `.user-info` (junto al nombre): en modo `global` va al historial del usuario (`bi-clock-history`); en modo `grand_prix` abre `FloatingPredictionCompare` (`bi-arrow-left-right`) |
+| `.btn-row-action` | Ícono dentro de `.user-info` (junto al nombre): en modo `global` va al historial del usuario (`bi-clock-history`); en modo `grand_prix` abre `FloatingPredictionCompare` (`bi-arrow-left-right`). Círculo sólido azul con ícono blanco (`#4c86b7`, hover `#357abd`) — mismo diseño que el botón circular de confirmar (`.submit-btn`/`SubmitButton`, usado en login/registro/predicciones). |
 
 ## Modales (`gp-modal-*`, definidos en `assets/styles/components.css`)
 

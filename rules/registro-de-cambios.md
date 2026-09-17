@@ -2,6 +2,14 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-17 · Botones de historial/comparar con el diseño del botón de confirmar
+
+- `.btn-row-action` (íconos "ver historial" y "comparar" del Ranking) pasa
+  de ícono fantasma (sin fondo) a círculo sólido azul con ícono blanco
+  (`#4c86b7`, hover `#357abd`) — el mismo diseño de color y fondo que
+  `.submit-btn`/`SubmitButton`, el botón circular de confirmar que ya se
+  usa en login, registro y predicciones.
+
 ## 2026-09-17 · Fix: labels en rojo no deseado + tabla rota en mobile
 
 - **Fix de regresión**: al definir `--color-red` (commit anterior) dos
