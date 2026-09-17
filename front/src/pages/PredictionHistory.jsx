@@ -1,15 +1,18 @@
 import { useEffect, useState, useMemo } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import PredictionServices from "../services/predictions.services";
 import UsersServices from "../services/users.services";
 import { useLoader } from "../context/LoaderContext";
 import { getFlagEmoji } from "../utils/helpers";
-import calendarioIcon from "../assets/icons/calendario.svg";
-import cronometroIcon from "../assets/icons/cronometro.svg";
-import cruzIcon from "../assets/icons/cruz.svg";
+import SessionTabs from "../components/predictions/SessionTabs";
+import PredictionComparisonTable from "../components/predictions/PredictionComparisonTable";
+import BackButton from "../components/BackButton";
 import "../assets/styles/predictionHistory.css";
 
 function PredictionHistory() {
+    const { userId: routeUserId } = useParams();
+    const location = useLocation();
     const [history, setHistory] = useState([]);
     const [selectedCircuitId, setSelectedCircuitId] = useState(null);
     const [selectedSessionType, setSelectedSessionType] = useState(null);
@@ -19,6 +22,9 @@ function PredictionHistory() {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1200);
     const { showLoader, hideLoader } = useLoader();
+
+    const otherUserName = location.state?.name ? `${location.state.name} ${location.state.last_name || ''}`.trim() : null;
+    const isOwnHistory = !routeUserId;
 
     useEffect(() => {
         const handleResize = () => setIsDesktop(window.innerWidth >= 1200);
@@ -50,7 +56,8 @@ function PredictionHistory() {
             try {
                 const userData = await UsersServices.getUserProfile();
                 setUser(userData);
-                const historyData = await PredictionServices.findHistoryByUser(userData._id, year);
+                const targetUserId = routeUserId || userData._id;
+                const historyData = await PredictionServices.findHistoryByUser(targetUserId, year);
                 setHistory(historyData);
                 if (historyData.length > 0) {
                     setSelectedCircuitId(historyData[0].circuit._id);
@@ -65,7 +72,7 @@ function PredictionHistory() {
             }
         }
         loadData();
-    }, [year]);
+    }, [year, routeUserId]);
 
     const filteredHistory = useMemo(() => {
         return history.filter(item =>
@@ -97,19 +104,6 @@ function PredictionHistory() {
         }
     };
 
-    const getSessionButtonStatus = (session) => {
-        if (!session) return "none";
-        if (session.state === "Finalizado" || (session.results && session.results.length > 0)) return "finished";
-
-        const now = new Date();
-        const raceStart = new Date(session.date_race);
-
-        if (session.state === "Pendiente" && now >= raceStart) return "pending_results";
-        if (session.state === "Pendiente") return "upcoming";
-
-        return "none";
-    };
-
     // Funcionalidad de deslizar para cerrar
     const handleDragEnd = (_, info) => {
         if (info.offset.y > 100) {
@@ -120,8 +114,9 @@ function PredictionHistory() {
     return (
         <div className="prediction-history-page page-wrapper">
             <section className="page-section container">
+                {!isOwnHistory && <BackButton to="/ranking" text="Volver al ranking" />}
                 <header className="page-header text-center">
-                    <span className="section-label">Mi Historial</span>
+                    <span className="section-label">{isOwnHistory ? "Mi Historial" : `Historial de ${otherUserName || "otro usuario"}`}</span>
                     <h1 className="section-title">PREDICCIONES</h1>
                     <p className="section-subtitle">Esto fue lo que pensaste en los anteriores GP</p>
                 </header>
@@ -214,116 +209,13 @@ function PredictionHistory() {
                                                 </div>
                                             </div>
 
-                                            <div className="session-tabs">
-                                                {[
-                                                    { id: 'sprint', label: 'SPRINT' },
-                                                    { id: 'qualifying', label: 'QUALY' },
-                                                    { id: 'race', label: 'RACE' }
-                                                ].map(sessionDef => {
-                                                    const type = sessionDef.id;
-                                                    const session = currentCircuit.sessions.find(s =>
-                                                        s.type === type || (type === 'qualifying' && s.type === 'qualy')
-                                                    );
-                                                    const isSelected = selectedSessionType === type;
-                                                    const status = getSessionButtonStatus(session);
-                                                    const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' ? 'PRÓXIMAMENTE' : (status === 'pending_results' ? 'EN CURSO' : 'NO APLICA'));
-                                                    const statusValue = status === 'finished' ? session.points : '';
+                                            <SessionTabs
+                                                sessions={currentCircuit.sessions}
+                                                selectedSessionType={selectedSessionType}
+                                                onSelect={setSelectedSessionType}
+                                            />
 
-                                                    return (
-                                                        <button
-                                                            key={type}
-                                                            className={`history-session-tab status-${status} ${isSelected ? 'is-selected' : ''}`}
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                if (status === 'finished') setSelectedSessionType(type);
-                                                            }}
-                                                            disabled={status !== 'finished'}
-                                                        >
-                                                            <span className="session-main">
-                                                                <span className="session-type-name">{sessionDef.label}</span>
-                                                                <span className="session-date">
-                                                                    {session ? new Date(session.date_race).toLocaleDateString('es-AR') : '-'}
-                                                                </span>
-                                                            </span>
-
-                                                            <span className="session-status-block">
-                                                                {status === 'finished' ? (
-                                                                    <>
-                                                                        <span className="status-val">{statusValue}</span>
-                                                                        <span className="status-lbl">{statusLabel}</span>
-                                                                    </>
-                                                                ) : status === 'upcoming' ? (
-                                                                    <>
-                                                                        <img src={cronometroIcon} alt="" className="status-icon" />
-                                                                        <span className="status-lbl">{statusLabel}</span>
-                                                                    </>
-                                                                ) : status === 'pending_results' ? (
-                                                                    <>
-                                                                        <img src={cronometroIcon} alt="" className="status-icon pending-results" />
-                                                                        <span className="status-lbl">{statusLabel}</span>
-                                                                    </>
-                                                                ) : (
-                                                                    <>
-                                                                        <img src={cruzIcon} alt="" className="status-icon" />
-                                                                        <span className="status-lbl">{statusLabel}</span>
-                                                                    </>
-                                                                )}
-                                                            </span>
-                                                        </button>
-                                                    );
-                                                })}
-                                            </div>
-
-                                            <div className="prediction-comparison-table">
-                                                <div className="table-header">
-                                                    <div className="col-pos">Pos</div>
-                                                    <div className="col-pred">Tu predicción</div>
-                                                    <div className="col-real">Resultado real</div>
-                                                    <div className="col-points">Puntos</div>
-                                                </div>
-                                                <div className="table-body">
-                                                    {Array.from({ length: currentSession?.points_system?.points?.length || 10 }).map((_, idx) => {
-                                                        const pos = idx + 1;
-                                                        const pred = currentSession?.prediction?.find(p => p.position === pos);
-                                                        const real = currentSession?.results?.find(r => r.position === pos);
-                                                        const isMatch = pred && real && pred.driver._id === real.driver._id;
-                                                        let points = isMatch ? currentSession.points_system.points[idx] : 0;
-
-                                                        if (isMatch && currentSession?.type?.toLowerCase().includes('qual')) {
-                                                            const sessionDate = new Date(currentSession.date_race);
-                                                            const cutoffDate = new Date('2026-05-03T00:00:00Z');
-                                                            if (sessionDate < cutoffDate) {
-                                                                points = points / 3;
-                                                            }
-                                                        }
-
-                                                        return (
-                                                            <div key={pos} className={`table-row ${pred && !isMatch && real ? 'no-match' : ''}`}>
-                                                                <div className="col-pos">{pos}</div>
-                                                                <div className="col-pred">
-                                                                    {pred ? (
-                                                                        <>
-                                                                            <div className="driver-color-bar" style={{ backgroundColor: pred.driver.team_info?.color || '#ccc' }}></div>
-                                                                            <span className="driver-name">{pred.driver.full_name.split(' ')[0]} <strong>{pred.driver.full_name.split(' ').slice(1).join(' ')}</strong></span>
-                                                                        </>
-                                                                    ) : '-'}
-                                                                </div>
-                                                                <div className="col-real">
-                                                                    {real ? (
-                                                                        <>
-                                                                            <div className="driver-color-bar" style={{ backgroundColor: real.driver.team_info?.color || '#ccc' }}></div>
-                                                                            <span className="driver-name">{real.driver.full_name.split(' ')[0]} <strong>{real.driver.full_name.split(' ').slice(1).join(' ')}</strong></span>
-                                                                        </>
-                                                                    ) : '-'}
-                                                                </div>
-                                                                <div className={`col-points ${isMatch ? 'match' : (pred && real ? 'mismatch' : '')}`}>
-                                                                    {isMatch ? points : (pred && real ? 0 : '-')}
-                                                                </div>
-                                                            </div>
-                                                        );
-                                                    })}
-                                                </div>
-                                            </div>
+                                            <PredictionComparisonTable session={currentSession} />
                                         </>
                                     )}
                                 </motion.main>
@@ -336,115 +228,13 @@ function PredictionHistory() {
                         <div className="history-detail">
                             {currentCircuit ? (
                                 <>
-                                    <div className="session-tabs">
-                                        {[
-                                            { id: 'sprint', label: 'SPRINT' },
-                                            { id: 'qualifying', label: 'QUALY' },
-                                            { id: 'race', label: 'RACE' }
-                                        ].map(sessionDef => {
-                                            const type = sessionDef.id;
-                                            const session = currentCircuit.sessions.find(s =>
-                                                s.type === type || (type === 'qualifying' && s.type === 'qualy')
-                                            );
-                                            const isSelected = selectedSessionType === type;
-                                            const status = getSessionButtonStatus(session);
-                                            const statusLabel = status === 'finished' ? 'PUNTOS' : (status === 'upcoming' ? 'PRÓXIMAMENTE' : (status === 'pending_results' ? 'EN CURSO' : 'NO APLICA'));
-                                            const statusValue = status === 'finished' ? session.points : '';
+                                    <SessionTabs
+                                        sessions={currentCircuit.sessions}
+                                        selectedSessionType={selectedSessionType}
+                                        onSelect={setSelectedSessionType}
+                                    />
 
-                                            return (
-                                                <button
-                                                    key={type}
-                                                    className={`history-session-tab status-${status} ${isSelected ? 'is-selected' : ''}`}
-                                                    onClick={() => {
-                                                        if (status === 'finished') setSelectedSessionType(type);
-                                                    }}
-                                                    disabled={status !== 'finished'}
-                                                >
-                                                    <span className="session-main">
-                                                        <span className="session-type-name">{sessionDef.label}</span>
-                                                        <span className="session-date">
-                                                            {session ? new Date(session.date_race).toLocaleDateString('es-AR') : '-'}
-                                                        </span>
-                                                    </span>
-
-                                                    <span className="session-status-block">
-                                                        {status === 'finished' ? (
-                                                            <>
-                                                                <span className="status-val">{statusValue}</span>
-                                                                <span className="status-lbl">{statusLabel}</span>
-                                                            </>
-                                                        ) : status === 'upcoming' ? (
-                                                            <>
-                                                                <img src={cronometroIcon} alt="" className="status-icon" />
-                                                                <span className="status-lbl">{statusLabel}</span>
-                                                            </>
-                                                        ) : status === 'pending_results' ? (
-                                                            <>
-                                                                <img src={cronometroIcon} alt="" className="status-icon pending-results" />
-                                                                <span className="status-lbl">{statusLabel}</span>
-                                                            </>
-                                                        ) : (
-                                                            <>
-                                                                <img src={cruzIcon} alt="" className="status-icon" />
-                                                                <span className="status-lbl">{statusLabel}</span>
-                                                            </>
-                                                        )}
-                                                    </span>
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-
-                                    <div className="prediction-comparison-table">
-                                        <div className="table-header">
-                                            <div className="col-pos">Pos</div>
-                                            <div className="col-pred">Tu predicción</div>
-                                            <div className="col-real">Resultado real</div>
-                                            <div className="col-points">Puntos</div>
-                                        </div>
-                                        <div className="table-body">
-                                            {Array.from({ length: currentSession?.points_system?.points?.length || 10 }).map((_, idx) => {
-                                                const pos = idx + 1;
-                                                const pred = currentSession?.prediction?.find(p => p.position === pos);
-                                                const real = currentSession?.results?.find(r => r.position === pos);
-                                                const isMatch = pred && real && pred.driver._id === real.driver._id;
-                                                let points = isMatch ? currentSession.points_system.points[idx] : 0;
-
-                                                if (isMatch && currentSession?.type?.toLowerCase().includes('qual')) {
-                                                    const sessionDate = new Date(currentSession.date_race);
-                                                    const cutoffDate = new Date('2026-05-03T00:00:00Z');
-                                                    if (sessionDate < cutoffDate) {
-                                                        points = points / 3;
-                                                    }
-                                                }
-
-                                                return (
-                                                    <div key={pos} className={`table-row ${pred && !isMatch && real ? 'no-match' : ''}`}>
-                                                        <div className="col-pos">{pos}</div>
-                                                        <div className="col-pred">
-                                                            {pred ? (
-                                                                <>
-                                                                    <div className="driver-color-bar" style={{ backgroundColor: pred.driver.team_info?.color || '#ccc' }}></div>
-                                                                    <span className="driver-name">{pred.driver.full_name.split(' ')[0]} <strong>{pred.driver.full_name.split(' ').slice(1).join(' ')}</strong></span>
-                                                                </>
-                                                            ) : '-'}
-                                                        </div>
-                                                        <div className="col-real">
-                                                            {real ? (
-                                                                <>
-                                                                    <div className="driver-color-bar" style={{ backgroundColor: real.driver.team_info?.color || '#ccc' }}></div>
-                                                                    <span className="driver-name">{real.driver.full_name.split(' ')[0]} <strong>{real.driver.full_name.split(' ').slice(1).join(' ')}</strong></span>
-                                                                </>
-                                                            ) : '-'}
-                                                        </div>
-                                                        <div className={`col-points ${isMatch ? 'match' : (pred && real ? 'mismatch' : '')}`}>
-                                                            {isMatch ? points : (pred && real ? 0 : '-')}
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
+                                    <PredictionComparisonTable session={currentSession} />
                                 </>
                             ) : (
                                 <div className="no-selection-message">

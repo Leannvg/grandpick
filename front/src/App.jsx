@@ -178,6 +178,7 @@ function App() {
               <Route path="/predictions" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><Predictions /></ProtectedRoute>} />
               <Route path="/prediction" element={<Navigate to="/predictions" replace />} />
               <Route path="/prediction-history" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><PredictionHistory /></ProtectedRoute>} />
+              <Route path="/prediction-history/:userId" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin}><PredictionHistory /></ProtectedRoute>} />
 
 
               <Route path="/admin/dashboard" element={<ProtectedRoute isAuthenticated={estaAutenticado} isAdmin={esAdmin} adminOnly><Dashboard /></ProtectedRoute>} />

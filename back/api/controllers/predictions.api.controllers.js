@@ -49,7 +49,7 @@ export async function create(req, res) {
 export async function findByUserId(req, res) {
     const { UserId } = req.params;
     try {
-        const predictions = await predictionsServices.findPredictionsByUserId(UserId);
+        const predictions = await predictionsServices.findPredictionsByUserId(UserId, { id: req.usuario.id, isAdmin: req.usuario.rol === 'admin' });
         if (!predictions || predictions.length === 0) {
             return res.status(404).json({ message: "No se encontraron predicciones para este usuario" });
         }
@@ -75,7 +75,7 @@ export async function findByRaceId(req, res) {
 export async function findByUserAndRace(req, res) {
     const { UserId, RaceId } = req.params;
     try {
-        const prediction = await predictionsServices.findPredictionByUserAndRace(UserId, RaceId);
+        const prediction = await predictionsServices.findPredictionByUserAndRace(UserId, RaceId, { id: req.usuario.id, isAdmin: req.usuario.rol === 'admin' });
         if (!prediction) {
             return res.status(404).json({ message: "No existe predicción para este usuario y carrera" });
         }
@@ -89,7 +89,7 @@ export async function getHistoryByUserId(req, res) {
     const { UserId } = req.params;
     const { year } = req.query;
     try {
-        const history = await predictionsServices.getUserPredictionHistory(UserId, year || new Date().getFullYear());
+        const history = await predictionsServices.getUserPredictionHistory(UserId, year || new Date().getFullYear(), { id: req.usuario.id, isAdmin: req.usuario.rol === 'admin' });
         res.status(200).json(history);
     } catch (err) {
         res.status(500).json({ error: err.message });

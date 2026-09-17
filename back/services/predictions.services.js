@@ -213,11 +213,23 @@ export async function deletePrediction(userId, raceId) {
 }
 
 
-export async function findPredictionsByUserId(userId) {
+export async function findPredictionsByUserId(userId, viewer = {}) {
     try {
         const db = await connectDB();
         const predictions = await db.collection("Predictions").find({ userId: new ObjectId(userId) }).toArray();
-        return predictions;
+
+        const isOwnerOrAdmin = viewer?.isAdmin || (viewer?.id != null && String(viewer.id) === String(userId));
+        if (isOwnerOrAdmin || predictions.length === 0) return predictions;
+
+        const raceIds = predictions.map(p => p.raceId);
+        const races = await db.collection("Races").find({ _id: { $in: raceIds } }).toArray();
+        const closedRaceIds = new Set(
+            races
+                .filter(race => race.state === "Finalizado" || (race.results && race.results.length > 0))
+                .map(race => race._id.toString())
+        );
+
+        return predictions.filter(p => closedRaceIds.has(p.raceId.toString()));
     } catch (err) {
         console.error("Error al obtener predicciones por usuario:", err);
         throw err;
@@ -236,13 +248,22 @@ export async function findPredictionsByRaceId(raceId) {
     }
 }
 
-export async function findPredictionByUserAndRace(userId, raceId) {
+export async function findPredictionByUserAndRace(userId, raceId, viewer = {}) {
     try {
         const db = await connectDB();
-        const prediction = await db.collection("Predictions").findOne({
-            userId: new ObjectId(userId),
-            raceId: new ObjectId(raceId)
-        });
+        const [prediction, race] = await Promise.all([
+            db.collection("Predictions").findOne({
+                userId: new ObjectId(userId),
+                raceId: new ObjectId(raceId)
+            }),
+            db.collection("Races").findOne({ _id: new ObjectId(raceId) })
+        ]);
+
+        const isOwnerOrAdmin = viewer?.isAdmin || (viewer?.id != null && String(viewer.id) === String(userId));
+        const isSessionClosed = race?.state === "Finalizado" || (race?.results && race.results.length > 0);
+
+        if (!isOwnerOrAdmin && !isSessionClosed) return null;
+
         return prediction;
     } catch (err) {
         console.error("Error al obtener predicción por usuario y carrera:", err);
@@ -250,7 +271,7 @@ export async function findPredictionByUserAndRace(userId, raceId) {
     }
 }
 
-export async function getUserPredictionHistory(userId, year) {
+export async function getUserPredictionHistory(userId, year, viewer = {}) {
     try {
         const db = await connectDB();
         const startOfYear = new Date(`${year}-01-01T00:00:00.000Z`);
@@ -351,13 +372,16 @@ export async function getUserPredictionHistory(userId, year) {
                     sessions: []
                 };
             }
+            const isOwnerOrAdmin = viewer?.isAdmin || (viewer?.id != null && String(viewer.id) === String(userId));
+            const isSessionClosed = race.state === "Finalizado" || (race.results && race.results.length > 0);
+
             acc[circuitId].sessions.push({
                 _id: race._id,
                 type: race.points_system.type,
                 date_race: race.date_race,
                 state: race.state,
                 results: race.results,
-                prediction: race.userPrediction?.prediction || null,
+                prediction: (isOwnerOrAdmin || isSessionClosed) ? (race.userPrediction?.prediction || null) : null,
                 points: race.pointsEarned,
                 points_system: race.points_system
             });

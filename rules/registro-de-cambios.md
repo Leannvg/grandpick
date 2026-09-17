@@ -2,6 +2,45 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-16 · Ver predicciones de otros usuarios (Ranking → historial y comparación)
+
+- **Frontend**: dos entradas nuevas desde el Ranking para ver predicciones de
+  otros usuarios (complementa el control server-side de la entrada anterior).
+  - Ranking Global: ícono "ver historial" (`.btn-view-history`) en cada fila
+    que navega a la nueva ruta `/prediction-history/:userId`, reutilizando
+    `PredictionHistory.jsx` (ahora también soporta ver el historial de otro
+    usuario vía `useParams`/`useLocation`, sin cambios de comportamiento para
+    "Mi Historial").
+  - Ranking por GP: columna de acciones con botón "Comparar" que abre el
+    modal nuevo `FloatingPredictionCompare` (predicción propia vs. la del
+    usuario elegido, para ese circuito).
+  - Refactor: se extrajeron `SessionTabs` y `PredictionComparisonTable`
+    (`front/src/components/predictions/`) desde el bloque duplicado
+    (mobile/desktop) que tenía `PredictionHistory.jsx`, y se les sumó soporte
+    opcional de comparación (`otherSession`/`otherLabel`, tabla de 5
+    columnas) sin alterar el caso original de 4 columnas.
+- Detalle completo: [features/ver-predicciones-otros-usuarios.md](./features/ver-predicciones-otros-usuarios.md).
+- Componentes nuevos sumados a [componentes.md](./componentes.md):
+  `SessionTabs`, `PredictionComparisonTable`, `FloatingPredictionCompare`.
+- `npm run build` (front) compila sin errores.
+
+## 2026-09-16 · Control server-side de visibilidad de predicciones ajenas
+
+- **Backend**: hasta ahora el filtro de "sesión cerrada" para mostrar
+  predicciones de otros usuarios era solo visual (frontend). Se agrega el
+  control real en `back/services/predictions.services.js`:
+  - `getUserPredictionHistory(userId, year, viewer)`, `findPredictionByUserAndRace(userId, raceId, viewer)`
+    y `findPredictionsByUserId(userId, viewer)` ahora reciben un `viewer = { id, isAdmin }`
+    y redactan/filtran las predicciones ajenas de sesiones que todavía no están
+    cerradas (mismo criterio que `getSessionButtonStatus` del front).
+  - `back/api/controllers/predictions.api.controllers.js` arma `viewer` desde
+    `req.usuario` (`autenticado`) en `getHistoryByUserId`, `findByUserAndRace` y
+    `findByUserId`.
+- Detalle del criterio y las tres funciones: [logica.md](./logica.md#visibilidad-de-predicciones-ajenas-control-server-side).
+- Probado contra la base real insertando y borrando una predicción temporal
+  sobre una carrera sin resultados, confirmando redacción para viewers no
+  dueños/no admin y visibilidad normal para dueño/admin/sesiones cerradas.
+
 ## 2026-09-16 · Agentes especializados de Claude Code
 
 - `.claude/agents/grandpick-backend.md` y `.claude/agents/grandpick-frontend.md`:

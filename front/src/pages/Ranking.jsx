@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useLoader } from "../context/LoaderContext";
 import UsersServices from "../services/users.services";
 import PredictionsServices from "../services/predictions.services";
@@ -7,11 +8,14 @@ import { getFlagEmoji } from "../utils/helpers";
 import { usePagination } from "../hooks/usePagination";
 import { getCountries } from "../services/countries.services";
 import SearchableSelect from "../components/SearchableSelect";
+import FloatingPredictionCompare from "../components/FloatingPredictionCompare";
 import "../assets/styles/ranking.css";
 
 function Ranking() {
+    const navigate = useNavigate();
     const [stats, setStats] = useState([]);
     const [currentUserStat, setCurrentUserStat] = useState(null);
+    const [profile, setProfile] = useState(null);
     const { showLoader, hideLoader } = useLoader();
     const [searchTerm, setSearchTerm] = useState("");
     const [countriesMap, setCountriesMap] = useState({});
@@ -20,6 +24,7 @@ function Ranking() {
     const [racesList, setRacesList] = useState([]);
     const [selectedCircuitId, setSelectedCircuitId] = useState("");
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [compareTarget, setCompareTarget] = useState(null);
 
     useEffect(() => {
         const fetchRacesList = async () => {
@@ -82,6 +87,7 @@ function Ranking() {
             showLoader();
             try {
                 const profile = await UsersServices.getUserProfile();
+                setProfile(profile);
 
                 if (mode === "global") {
                     const data = await UsersServices.getAllUsersStats();
@@ -376,6 +382,7 @@ function Ranking() {
                                     {mode === 'global' && <th>Promedio por predicción</th>}
                                     {mode === 'global' && <th>Aciertos totales</th>}
                                     {mode === 'grand_prix' && <th className="text-start">Intervalo de Desempate (Gap)</th>}
+                                    {mode === 'grand_prix' && <th className="w-50px"></th>}
                                 </tr>
                             </thead>
                             <tbody>
@@ -405,6 +412,15 @@ function Ranking() {
                                                 <div className="user-info">
                                                     <span className="user-name">{item.name}</span>
                                                     <span className="user-lastname">{item.last_name}</span>
+                                                    {mode === 'global' && currentUserStat?._id !== item._id && (
+                                                        <button
+                                                            className="btn-view-history"
+                                                            title={`Ver historial de ${item.name}`}
+                                                            onClick={() => navigate(`/prediction-history/${item._id}`, { state: { name: item.name, last_name: item.last_name } })}
+                                                        >
+                                                            <i className="bi bi-clock-history"></i>
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </td>
                                             <td><strong>{totalPoints}</strong></td>
@@ -441,12 +457,21 @@ function Ranking() {
                                                     return item.gap;
                                                 })()}
                                             </td>}
+                                            {mode === 'grand_prix' && (
+                                                <td>
+                                                    {currentUserStat?._id !== item._id && (
+                                                        <button className="btn-compare" onClick={() => setCompareTarget(item)}>
+                                                            Comparar
+                                                        </button>
+                                                    )}
+                                                </td>
+                                            )}
                                         </tr>
                                     );
                                 })}
                                 {paginatedData.length === 0 && (
                                     <tr>
-                                        <td colSpan={mode === 'global' ? "7" : "5"} className="ranking-empty-state">
+                                        <td colSpan={mode === 'global' ? "7" : "6"} className="ranking-empty-state">
                                             No se encontraron usuarios
                                         </td>
                                     </tr>
@@ -476,6 +501,17 @@ function Ranking() {
                     </div>
                 </div>
             </section>
+
+            <FloatingPredictionCompare
+                show={!!compareTarget}
+                onClose={() => setCompareTarget(null)}
+                myUserId={profile?._id}
+                myLabel="Vos"
+                otherUserId={compareTarget?._id}
+                otherLabel={compareTarget ? `${compareTarget.name} ${compareTarget.last_name}` : ''}
+                circuitId={selectedCircuitId}
+                year={selectedYear}
+            />
         </div>
     );
 }

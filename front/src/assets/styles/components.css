@@ -539,6 +539,10 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     overflow-y: auto;
 }
 
+.gp-modal-card--wide {
+    max-width: 960px;
+}
+
 .gp-modal-title {
     font-size: 1.5rem;
     font-weight: 700;

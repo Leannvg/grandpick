@@ -32,6 +32,7 @@ correspondiente (ruta, props, para qué sirve, notas de reuso).
 | `DialogContext` | `context/DialogContext.jsx` | `useDialog()` → `confirmDialog({...})` (devuelve `Promise<boolean>`) | Confirmaciones tipo `confirm()` con estilo propio. |
 | `FloatingChangePassword` | `components/FloatingChangePassword.jsx` | `show`, `onClose`, `usuario` | Modal cambio de contraseña. |
 | `FloatingEditProfile` | `components/FloatingEditProfile.jsx` | `show`, `onClose`, `usuario`, `onUpdated` | Modal edición de perfil. |
+| `FloatingPredictionCompare` | `components/FloatingPredictionCompare.jsx` | `show`, `onClose`, `myUserId`, `myLabel`, `otherUserId`, `otherLabel`, `circuitId`, `year` | Modal (mismo patrón que `FloatingDialog`, con `gp-modal-card--wide`) que compara la predicción propia vs. la de otro usuario para un GP puntual. Trae en paralelo `PredictionServices.findHistoryByUser` de ambos usuarios, filtra por `circuitId` y renderiza `SessionTabs` + `PredictionComparisonTable` (con `otherSession`/`otherLabel`). Usado desde `Ranking.jsx` (modo `grand_prix`, botón "Comparar"). |
 
 ## Loaders
 
@@ -87,6 +88,13 @@ Todos comparten la firma: `initialData`, `onSubmit`, `submitLabel`, `isEdit`, `e
 |---|---|---|---|
 | `DriverCardDesktop` | `components/drivers/DriverCardDesktop.jsx` | `driver` | Card de piloto (grid desktop en `/drivers`). |
 | `DriverCardMobile` | `components/drivers/DriverCardMobile.jsx` | `driver`, `teamLogo` | Card de piloto (mobile). |
+
+## Predicciones (historial y comparación)
+
+| Componente | Ruta | Props | Para qué sirve |
+|---|---|---|---|
+| `SessionTabs` | `components/predictions/SessionTabs.jsx` | `sessions`, `selectedSessionType`, `onSelect` | Tabs de sesión (SPRINT/QUALY/RACE) con su estado (`finished`/`upcoming`/`pending_results`/`none`). Exporta también `getSessionButtonStatus(session)`. Usado en `PredictionHistory.jsx` (mobile y desktop) y en `FloatingPredictionCompare`. |
+| `PredictionComparisonTable` | `components/predictions/PredictionComparisonTable.jsx` | `session`, `otherSession` (opcional), `otherLabel` (opcional) | Tabla Pos/Predicción/Resultado/Puntos. Sin `otherSession`: 4 columnas (caso "Mi Historial", sin cambios visuales). Con `otherSession`+`otherLabel`: 5 columnas, agrega la predicción del otro usuario y muestra los puntos de ambos lado a lado (`.points-pill`) en la columna de Puntos. Reutiliza el cálculo de match/puntos (incluido el ajuste de qualy `/3` antes del 2026-05-03). |
 
 ## Countdowns
 

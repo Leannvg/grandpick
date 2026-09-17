@@ -49,6 +49,16 @@ armonía. **No crear tablas nuevas desde cero**: reutilizar o extender.
 | `.ranking-empty-state` | Fila de "sin resultados" |
 | `.emoji-flag` | Banderas emoji (fuente Twemoji) |
 | `.w-50px`, `.w-120px`, `.h-38px` | Utilidades de tamaño ya definidas |
+| `.btn-view-history` | Ícono (dentro de `.user-info`) para ir al historial de otro usuario desde el Ranking Global |
+| `.btn-compare` | Botón "Comparar" en columna de acciones del Ranking por GP, abre `FloatingPredictionCompare` |
+
+## Modales (`gp-modal-*`, definidos en `assets/styles/components.css`)
+
+Patrón base en `FloatingDialog.jsx` (overlay + card animados con `framer-motion`):
+`.gp-modal-overlay`, `.gp-modal-card` (max-width 500px), `.gp-modal-title`,
+`.gp-modal-subtitle`, `.gp-modal-actions`, `.gp-btn-cancel` / `.gp-btn-confirm`.
+Modificador `.gp-modal-card--wide` (max-width 960px) para modales con tablas
+anchas (ej. `FloatingPredictionCompare`).
 
 ### Tablas del panel admin
 

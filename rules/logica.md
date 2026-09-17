@@ -73,3 +73,27 @@ results: [ { position: Number, driver: ObjectId -> Drivers } ]
 `utils/helpers.js` → `computeRaceState()`: la ventana de predicción abre 24 h
 antes de `date_race`; antes de eso es "pre-window"; pasada la hora de inicio o con
 `state === "Finalizado"` queda cerrada.
+
+### Visibilidad de predicciones ajenas (control server-side)
+Criterio de "sesión cerrada" (único, usado también en el frontend por
+`getSessionButtonStatus` de `components/predictions/SessionTabs.jsx`):
+```js
+const isSessionClosed = race.state === "Finalizado" || (race.results && race.results.length > 0);
+```
+Se puede ver la predicción de **otro** usuario para una sesión solo si esa
+sesión está cerrada, o si quien consulta es el dueño de la predicción o un
+admin (`isOwnerOrAdmin = viewer.isAdmin || String(viewer.id) === String(userId)`).
+Antes este control era solo visual en el front; ahora se aplica también en
+`back/services/predictions.services.js`, recibiendo un `viewer = { id, isAdmin }`
+armado por los controllers a partir de `req.usuario` (middleware `autenticado`):
+
+- `getUserPredictionHistory(userId, year, viewer)` — cada sesión del historial
+  redacta `prediction` a `null` si no es dueño/admin y la sesión no está cerrada.
+- `findPredictionByUserAndRace(userId, raceId, viewer)` — devuelve `null` en vez
+  de la predicción real si no es dueño/admin y la carrera no está cerrada.
+- `findPredictionsByUserId(userId, viewer)` — si no es dueño/admin, filtra el
+  array dejando solo las predicciones cuya carrera esté cerrada (las abiertas
+  se excluyen directamente, no se redactan campos).
+
+Rutas afectadas (todas ya tenían `autenticado`): `GET /api/users/:UserId/predictions`,
+`GET /api/users/:UserId/predictions/:RaceId`, `GET /api/users/:UserId/predictions-history`.
