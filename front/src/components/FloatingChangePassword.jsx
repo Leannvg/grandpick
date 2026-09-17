@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import UsersServices from "../services/users.services";
 import { useAlert } from "./../context/AlertContext.jsx";
 import PasswordInput from "./PasswordInput.jsx";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 function ChangePasswordModal({ show, onClose, usuario }) {
   const [oldPass, setOldPass] = useState("");
@@ -14,6 +15,8 @@ function ChangePasswordModal({ show, onClose, usuario }) {
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const { showAlert } = useAlert();
+
+  useEscapeKey(show, onClose);
 
 
   useEffect(() => {

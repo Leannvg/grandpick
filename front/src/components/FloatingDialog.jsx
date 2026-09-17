@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 function FloatingDialog({
   show,
@@ -11,6 +12,8 @@ function FloatingDialog({
   confirmVariant = "primary", // (btn-primary, btn-danger, etc.)
   cancelVariant = "secondary",
 }) {
+  useEscapeKey(show, onCancel);
+
   return (
     <AnimatePresence>
       {show && (

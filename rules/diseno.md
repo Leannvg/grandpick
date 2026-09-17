@@ -10,7 +10,8 @@ Base visual: tema oscuro azulado, tipografía `Akshar`, Bootstrap 5 para grilla.
 | `--color-accent` | `#3975A2` | Acentos / links |
 | `--color-dark-blue` | `#081D2B` | Header, superficies oscuras |
 | `--color-container-bg` | `#0A2434` | Contenedores |
-| `--color-red` / `--color-next` | `#D40000` | Destacados, "próxima carrera", labels |
+| `--color-red` | `#E10600` | Acento rojo genérico (labels, checkbox admin, badge "VS") |
+| `--color-next` | `#D40000` | "Próxima carrera", chips de sesión Race |
 | `--color-login` | `#7AB3DE` | Botón login / circuitos |
 | `--color-logout` | `#E85F5F` | Botón logout |
 | `--color-pos1/2/3` | `#DDBF4A` / `#D8D8D8` / `#D89762` | Podio en tablas (oro/plata/bronce) |
@@ -58,6 +59,29 @@ Patrón base en `FloatingDialog.jsx` (overlay + card animados con `framer-motion
 `.gp-modal-subtitle`, `.gp-modal-actions`, `.gp-btn-cancel` / `.gp-btn-confirm`.
 Modificador `.gp-modal-card--wide` (max-width 960px) para modales con tablas
 anchas (ej. `FloatingPredictionCompare`).
+
+Los 4 modales `Floating*` (`FloatingDialog`, `FloatingEditProfile`,
+`FloatingChangePassword`, `FloatingPredictionCompare`) cierran con la tecla
+Escape en desktop vía el hook `useEscapeKey(isActive, onEscape)` (ver
+[componentes.md](./componentes.md#hooks)).
+
+**Título "rico" para modales de comparación** (`.gp-compare-title`, usado en
+`FloatingPredictionCompare`): en vez de `.gp-modal-title` plano, cuando el
+modal enfrenta a dos personas se arma `{nombre A}` — círculo "VS" (fondo
+`--color-red`) — `{nombre B}`, con el nombre del GP como subtítulo
+(`.gp-compare-subtitle`, mismo tratamiento que `.gp-modal-subtitle` pero
+centrado). No introduce colores nuevos: reutiliza `--color-red` (ya usado
+como acento/destacado) y `--color-login` para resaltar "Vos".
+
+**Bottom-sheet mobile** (`<1200px`): algunos modales con contenido tabular
+denso (ej. `FloatingPredictionCompare`) reemplazan el modal centrado por un
+panel que sube desde abajo, replicando el drawer de `PredictionHistory.jsx`
+(`.history-drawer-overlay` + `.drawer-handle` de `predictionHistory.css`,
+reutilizados tal cual, más `.gp-compare-drawer`/`.gp-compare-drawer-header`/
+`.gp-compare-drawer-body` para el contenedor y layout propios): overlay +
+tirador arriba + arrastre hacia abajo (`framer-motion`, `drag="y"`,
+`onDragEnd` con umbral de 100px) para cerrar. Se cierra por arrastre o
+tocando el overlay; sin botón "Cerrar" explícito.
 
 ### Tablas del panel admin
 

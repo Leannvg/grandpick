@@ -2,6 +2,45 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-16 · Título rediseñado, cierre con Escape y bottom-sheet mobile en el comparador
+
+- **`FloatingPredictionCompare`**: el título plano (`<h2>Comparar
+  predicciones: X vs. Y</h2>`) se reemplaza por un encabezado tipo "VS"
+  (`.gp-compare-title`: `{myLabel}` — círculo "VS" en `--color-red` —
+  `{otherLabel}`), con el nombre del GP como subtítulo (`.gp-compare-subtitle`)
+  una vez que se cargan los datos. Clases nuevas en
+  `assets/styles/components.css`, junto a la familia `gp-modal-*`.
+- **Cierre con Escape (desktop)**: nuevo hook `useEscapeKey(isActive,
+  onEscape)` (`hooks/useEscapeKey.js`), aplicado en los 4 modales
+  `Floating*` que comparten el patrón `gp-modal-overlay`/`gp-modal-card`:
+  `FloatingDialog` (con `onCancel`), `FloatingEditProfile`,
+  `FloatingChangePassword` y `FloatingPredictionCompare` (estos tres con
+  `onClose`).
+- **Bottom-sheet mobile en `FloatingPredictionCompare`**: por debajo de
+  1200px de ancho (`isDesktop = window.innerWidth >= 1200`, mismo
+  breakpoint/patrón que el drawer de `PredictionHistory.jsx`), el modal
+  centrado se reemplaza por un panel que sube desde abajo (`framer-motion`,
+  `drag="y"`, cierre por arrastre >100px u overlay). Reutiliza
+  `.history-drawer-overlay` y `.drawer-handle` de `predictionHistory.css`
+  (por eso ahora se importa ese CSS en el componente) y agrega clases
+  análogas propias (`.gp-compare-drawer`, `.gp-compare-drawer-header`,
+  `.gp-compare-drawer-body`) porque el contenido no es un `<aside>` de
+  circuitos sino `SessionTabs` + `PredictionComparisonTable`. En desktop no
+  cambia nada del flujo, solo el título.
+- **Bugfix de revisión**: `--color-red` se usaba en varios lugares del
+  proyecto (`globals.css` en `.status-label` del Ranking, y en
+  `.history-summary-label` agregado en el cambio anterior) pero **nunca
+  estaba definida** en `:root` — con el círculo "VS" nuevo (`background:
+  var(--color-red)`) el problema se volvía visible (círculo transparente en
+  vez de rojo). Se agrega `--color-red: #E10600` a `globals.css` (mismo
+  valor que ya se usaba como fallback en `admin.css`), lo que de paso
+  corrige el color de esos otros dos usos previos.
+- **Ajuste de revisión**: `.gp-compare-name--me` (el nombre propio en el
+  título "VS") usa `--color-login` (celeste claro, pensado para el modal
+  oscuro); en el bottom-sheet mobile (fondo claro) se sobreescribe a
+  `--color-confirm` para mantener contraste legible.
+- Detalle: [features/ver-predicciones-otros-usuarios.md](./features/ver-predicciones-otros-usuarios.md).
+
 ## 2026-09-16 · Ajustes al comparador de predicciones
 
 - **Ranking por GP**: el botón "Comparar" deja de ser una columna aparte y

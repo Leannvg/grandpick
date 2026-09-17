@@ -4,10 +4,18 @@ import PredictionServices from "../services/predictions.services";
 import SessionTabs from "./predictions/SessionTabs";
 import PredictionComparisonTable from "./predictions/PredictionComparisonTable";
 import LoaderSpinner from "./LoaderSpinner";
+import { useEscapeKey } from "../hooks/useEscapeKey";
+import "../assets/styles/predictionHistory.css";
 
 /**
  * Modal de comparación de predicciones entre el usuario logueado y otro
  * usuario, para un Gran Premio puntual (usado desde Ranking > Por Gran Premio).
+ *
+ * Desktop (>=1200px): modal centrado (`gp-modal-overlay`/`gp-modal-card--wide`)
+ * con encabezado "VOS vs. {otro}" (`.gp-compare-title`).
+ * Mobile (<1200px): bottom-sheet deslizable, mismo patrón que el drawer de
+ * `PredictionHistory.jsx` (overlay + tirador + gesto de arrastre), reusando
+ * `.history-drawer-overlay` / `.drawer-handle` de `predictionHistory.css`.
  */
 function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", otherUserId, otherLabel, circuitId, year }) {
     const [loading, setLoading] = useState(false);
@@ -15,6 +23,26 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
     const [otherCircuitData, setOtherCircuitData] = useState(null);
     const [selectedSessionType, setSelectedSessionType] = useState(null);
     const [error, setError] = useState(null);
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1200);
+
+    useEscapeKey(show, onClose);
+
+    useEffect(() => {
+        const handleResize = () => setIsDesktop(window.innerWidth >= 1200);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        if (show && !isDesktop) {
+            document.body.classList.add("body-scroll-lock");
+        } else {
+            document.body.classList.remove("body-scroll-lock");
+        }
+        return () => {
+            document.body.classList.remove("body-scroll-lock");
+        };
+    }, [show, isDesktop]);
 
     useEffect(() => {
         if (!show || !myUserId || !otherUserId || !circuitId) return;
@@ -61,6 +89,101 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
     );
 
     const hasNoData = !loading && !error && (!myCircuitData || !otherCircuitData);
+    const circuitName = myCircuitData?.circuit?.gp_name || otherCircuitData?.circuit?.gp_name || null;
+
+    // Funcionalidad de deslizar para cerrar (mismo patrón que PredictionHistory)
+    const handleDragEnd = (_, info) => {
+        if (info.offset.y > 100) {
+            onClose();
+        }
+    };
+
+    const compareTitle = (
+        <h2 id="dialog-title-compare" className="gp-compare-title">
+            <span className="gp-compare-name gp-compare-name--me">{myLabel}</span>
+            <span className="gp-compare-vs">VS</span>
+            <span className="gp-compare-name gp-compare-name--other">{otherLabel}</span>
+        </h2>
+    );
+
+    const body = (
+        <>
+            {loading && (
+                <div className="py-4">
+                    <LoaderSpinner />
+                </div>
+            )}
+
+            {!loading && error && (
+                <p className="gp-modal-subtitle">{error}</p>
+            )}
+
+            {hasNoData && (
+                <p className="gp-modal-subtitle">Sin predicciones para este Gran Premio.</p>
+            )}
+
+            {!loading && !error && myCircuitData && otherCircuitData && (
+                <>
+                    <SessionTabs
+                        sessions={myCircuitData.sessions}
+                        selectedSessionType={selectedSessionType}
+                        onSelect={setSelectedSessionType}
+                    />
+
+                    <PredictionComparisonTable
+                        session={mySession}
+                        otherSession={otherSession}
+                        otherLabel={otherLabel}
+                    />
+                </>
+            )}
+        </>
+    );
+
+    if (!isDesktop) {
+        return (
+            <AnimatePresence>
+                {show && (
+                    <>
+                        <motion.div
+                            className="history-drawer-overlay is-open"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={onClose}
+                        />
+                        <motion.div
+                            className="gp-compare-drawer"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="dialog-title-compare"
+                            initial={{ y: "100%" }}
+                            animate={{ y: 0 }}
+                            exit={{ y: "100%" }}
+                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                            drag="y"
+                            dragConstraints={{ top: 0 }}
+                            dragElastic={0.2}
+                            onDragEnd={handleDragEnd}
+                        >
+                            <div className="drawer-handle"></div>
+
+                            <div className="gp-compare-drawer-header">
+                                {compareTitle}
+                                {circuitName && (
+                                    <p className="gp-modal-subtitle gp-compare-subtitle">{circuitName}</p>
+                                )}
+                            </div>
+
+                            <div className="gp-compare-drawer-body">
+                                {body}
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+        );
+    }
 
     return (
         <AnimatePresence>
@@ -80,39 +203,12 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.9, opacity: 0 }}
                     >
-                        <h2 id="dialog-title-compare" className="gp-modal-title">
-                            Comparar predicciones: {myLabel} vs. {otherLabel}
-                        </h2>
-
-                        {loading && (
-                            <div className="py-4">
-                                <LoaderSpinner />
-                            </div>
+                        {compareTitle}
+                        {circuitName && (
+                            <p className="gp-modal-subtitle gp-compare-subtitle">{circuitName}</p>
                         )}
 
-                        {!loading && error && (
-                            <p className="gp-modal-subtitle">{error}</p>
-                        )}
-
-                        {hasNoData && (
-                            <p className="gp-modal-subtitle">Sin predicciones para este Gran Premio.</p>
-                        )}
-
-                        {!loading && !error && myCircuitData && otherCircuitData && (
-                            <>
-                                <SessionTabs
-                                    sessions={myCircuitData.sessions}
-                                    selectedSessionType={selectedSessionType}
-                                    onSelect={setSelectedSessionType}
-                                />
-
-                                <PredictionComparisonTable
-                                    session={mySession}
-                                    otherSession={otherSession}
-                                    otherLabel={otherLabel}
-                                />
-                            </>
-                        )}
+                        {body}
 
                         <div className="gp-modal-actions">
                             <button className="gp-btn-cancel" onClick={onClose}>

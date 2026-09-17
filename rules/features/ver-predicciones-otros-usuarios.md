@@ -53,7 +53,7 @@ Nuevo modal:
 
 | Componente | Ruta | Props | Notas |
 |---|---|---|---|
-| `FloatingPredictionCompare` | `front/src/components/FloatingPredictionCompare.jsx` | `show`, `onClose`, `myUserId`, `myLabel`, `otherUserId`, `otherLabel`, `circuitId`, `year` | Mismo patrón visual que `FloatingDialog` (`gp-modal-overlay`/`gp-modal-card`), con `gp-modal-card--wide` (960px) para que entre la tabla de 6 columnas. Al abrir, pide en paralelo `PredictionServices.findHistoryByUser` de ambos usuarios, filtra cada uno por `circuitId` y renderiza `SessionTabs` (tabs según las sesiones del usuario propio) + `PredictionComparisonTable`. Maneja loading local (`LoaderSpinner`) y el caso sin predicciones para ese GP. |
+| `FloatingPredictionCompare` | `front/src/components/FloatingPredictionCompare.jsx` | `show`, `onClose`, `myUserId`, `myLabel`, `otherUserId`, `otherLabel`, `circuitId`, `year` | Desktop (`isDesktop`, `window.innerWidth >= 1200`, con listener de `resize`): mismo patrón visual que `FloatingDialog` (`gp-modal-overlay`/`gp-modal-card`), con `gp-modal-card--wide` (960px) para que entre la tabla de 6 columnas, y cierre con Escape (`useEscapeKey`). Mobile: bottom-sheet deslizable (ver sección "Rediseño de título..." más abajo). Al abrir, pide en paralelo `PredictionServices.findHistoryByUser` de ambos usuarios, filtra cada uno por `circuitId` y renderiza `SessionTabs` (tabs según las sesiones del usuario propio) + `PredictionComparisonTable`. Maneja loading local (`LoaderSpinner`) y el caso sin predicciones para ese GP. |
 
 `front/src/pages/Ranking.jsx` (modo `grand_prix`): el ícono `.btn-row-action`
 (`bi-arrow-left-right`) vive junto al nombre del usuario dentro de
@@ -61,6 +61,39 @@ Nuevo modal:
 columna aparte), oculto en la fila del propio usuario, y abre el modal vía
 `compareTarget` (estado) y `profile` (estado, se guarda el perfil que ya se
 pedía en `fetchStats`).
+
+## Rediseño de título, cierre con Escape y bottom-sheet mobile (2026-09-16)
+
+- **Título del modal**: se reemplazó el `<h2 className="gp-modal-title">
+  Comparar predicciones: {myLabel} vs. {otherLabel}</h2>` plano por un
+  encabezado tipo "VS" (`.gp-compare-title`): `{myLabel}` (resaltado en
+  `--color-login`) — círculo "VS" (fondo `--color-red`) — `{otherLabel}` —
+  y, debajo, el nombre del GP como subtítulo (`.gp-compare-subtitle`,
+  `myCircuitData.circuit.gp_name` una vez que carga la data). Clases nuevas
+  en `assets/styles/components.css`, junto a la familia `gp-modal-*`. Ver
+  también la sección "Modales" en [diseno.md](../diseno.md).
+- **Cierre con Escape (desktop)**: se creó `useEscapeKey(isActive, onEscape)`
+  (`front/src/hooks/useEscapeKey.js`) y se aplicó en los 4 modales
+  `Floating*` del proyecto: `FloatingDialog` (`onCancel`),
+  `FloatingEditProfile`, `FloatingChangePassword` y
+  `FloatingPredictionCompare` (estos tres con `onClose`). Ver
+  [componentes.md](../componentes.md#hooks).
+- **Bottom-sheet mobile**: por debajo de 1200px de ancho,
+  `FloatingPredictionCompare` deja de mostrar el modal centrado y muestra un
+  panel que sube desde abajo, replicando exactamente el patrón del drawer de
+  `PredictionHistory.jsx` (mismo breakpoint `isDesktop`, mismo
+  `framer-motion` con `drag="y"`, `dragConstraints={{ top: 0 }}`,
+  `dragElastic={0.2}` y `onDragEnd` con umbral de 100px, mismo bloqueo de
+  scroll del body vía `.body-scroll-lock`). Reutiliza tal cual
+  `.history-drawer-overlay` y `.drawer-handle` de `predictionHistory.css`
+  (por eso el componente ahora importa ese CSS); como el contenido no es un
+  `<aside>` con lista de circuitos sino el título "VS" + `SessionTabs` +
+  `PredictionComparisonTable`, se agregaron clases análogas propias:
+  `.gp-compare-drawer` (contenedor del sheet), `.gp-compare-drawer-header`
+  (título + subtítulo, sin el borde/handle que ya pone `.drawer-handle`) y
+  `.gp-compare-drawer-body` (scroll interno de tabs + tabla). Se cierra
+  tocando el overlay o arrastrando hacia abajo, sin botón "Cerrar" explícito
+  (igual que el drawer de `PredictionHistory`).
 
 ## Decisiones de diseño propias
 

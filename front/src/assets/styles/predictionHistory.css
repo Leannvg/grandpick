@@ -97,3 +97,64 @@
         border-bottom: none;
     }
 }
+
+/* Bottom-sheet mobile de FloatingPredictionCompare: mismo patrón visual e
+   interacción que el drawer de "Mi Historial" (.history-detail en mobile),
+   pero con su propio contenido (título "VS" + SessionTabs + tabla), por eso
+   son clases análogas y no las mismas. El overlay y el tirador sí se
+   reutilizan tal cual (.history-drawer-overlay / .drawer-handle). */
+.gp-compare-drawer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    top: 12%;
+    height: auto;
+    max-height: 88%;
+    background: #F3F3F3;
+    z-index: 2050;
+    border-radius: 30px 30px 0 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    overscroll-behavior: contain;
+    color: #1b263b;
+}
+
+.gp-compare-drawer-header {
+    padding: 0 20px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 10px;
+}
+
+.gp-compare-drawer-header .gp-compare-title {
+    color: #1b263b;
+    font-size: 1.1rem;
+}
+
+.gp-compare-drawer-header .gp-compare-name--me {
+    /* --color-login es claro y pensado para fondos oscuros (modal desktop);
+       en el drawer mobile (fondo claro) usamos un azul más oscuro para
+       mantener contraste legible. */
+    color: var(--color-confirm);
+}
+
+.gp-compare-drawer-header .gp-compare-subtitle {
+    color: #555;
+    margin-bottom: 0;
+}
+
+.gp-compare-drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 10px 16px;
+}
+
+.gp-compare-drawer-body .session-tabs {
+    margin: 0 10px 10px;
+}
+
+.gp-compare-drawer-body .prediction-comparison-table {
+    margin: 0 10px;
+}
