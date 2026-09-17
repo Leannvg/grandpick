@@ -2,6 +2,17 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-16 · Resumen de usuario en el historial de predicciones
+
+- `PredictionHistory.jsx` ahora muestra un panel (`.history-user-summary`)
+  debajo del subtítulo, antes del buscador/tabs: Usuario, Predicciones
+  totales, Aciertos y Puntos totales — para el usuario propio o el ajeno que
+  se esté consultando. Usa `UsersServices.getUserStats(targetUserId)`
+  (`GET /api/users/:id/stats`, ya sin restricción de ownership) en paralelo
+  al historial, de forma best-effort.
+- Estilos nuevos en `predictionHistory.css`: `.history-user-summary`,
+  `.history-summary-item`, `.history-summary-label`, `.history-summary-value`.
+
 ## 2026-09-16 · Ver predicciones de otros usuarios (Ranking → historial y comparación)
 
 - **Frontend**: dos entradas nuevas desde el Ranking para ver predicciones de

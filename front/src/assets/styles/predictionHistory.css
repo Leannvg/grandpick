@@ -56,3 +56,61 @@
         padding: 2px 4px;
     }
 }
+
+/* Resumen del usuario cuyo historial se está viendo (propio o ajeno) */
+.history-user-summary {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 700px;
+    margin: 0 auto 40px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.history-summary-item {
+    flex: 1;
+    min-width: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 14px 16px;
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.history-summary-item:last-child {
+    border-right: none;
+}
+
+.history-summary-label {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--color-red);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.history-summary-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+}
+
+@media (max-width: 600px) {
+    .history-summary-item {
+        flex: 0 0 50%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .history-summary-item:nth-child(2n) {
+        border-right: none;
+    }
+
+    .history-summary-item:nth-last-child(-n+2) {
+        border-bottom: none;
+    }
+}

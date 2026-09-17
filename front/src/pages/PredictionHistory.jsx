@@ -19,12 +19,15 @@ function PredictionHistory() {
     const [year, setYear] = useState(new Date().getFullYear());
     const [searchTerm, setSearchTerm] = useState("");
     const [user, setUser] = useState(null);
+    const [userStats, setUserStats] = useState(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1200);
     const { showLoader, hideLoader } = useLoader();
 
-    const otherUserName = location.state?.name ? `${location.state.name} ${location.state.last_name || ''}`.trim() : null;
     const isOwnHistory = !routeUserId;
+    const otherUserName = userStats
+        ? `${userStats.name} ${userStats.last_name || ''}`.trim()
+        : (location.state?.name ? `${location.state.name} ${location.state.last_name || ''}`.trim() : null);
 
     useEffect(() => {
         const handleResize = () => setIsDesktop(window.innerWidth >= 1200);
@@ -53,12 +56,18 @@ function PredictionHistory() {
     useEffect(() => {
         async function loadData() {
             showLoader();
+            setUserStats(null);
             try {
                 const userData = await UsersServices.getUserProfile();
                 setUser(userData);
                 const targetUserId = routeUserId || userData._id;
                 const historyData = await PredictionServices.findHistoryByUser(targetUserId, year);
                 setHistory(historyData);
+
+                UsersServices.getUserStats(targetUserId)
+                    .then(setUserStats)
+                    .catch(err => console.error("Error loading user stats:", err));
+
                 if (historyData.length > 0) {
                     setSelectedCircuitId(historyData[0].circuit._id);
                     const firstCircuit = historyData[0];
@@ -120,6 +129,27 @@ function PredictionHistory() {
                     <h1 className="section-title">PREDICCIONES</h1>
                     <p className="section-subtitle">Esto fue lo que pensaste en los anteriores GP</p>
                 </header>
+
+                {userStats && (
+                    <div className="history-user-summary">
+                        <div className="history-summary-item">
+                            <span className="history-summary-label">Usuario</span>
+                            <span className="history-summary-value">{userStats.name} {userStats.last_name}</span>
+                        </div>
+                        <div className="history-summary-item">
+                            <span className="history-summary-label">Predicciones totales</span>
+                            <span className="history-summary-value">{userStats.stats?.predictions?.total || 0}</span>
+                        </div>
+                        <div className="history-summary-item">
+                            <span className="history-summary-label">Aciertos</span>
+                            <span className="history-summary-value">{userStats.stats?.successes?.total || 0}</span>
+                        </div>
+                        <div className="history-summary-item">
+                            <span className="history-summary-label">Puntos totales</span>
+                            <span className="history-summary-value">{userStats.stats?.points?.total || 0}</span>
+                        </div>
+                    </div>
+                )}
 
                 <div className="history-content">
                     <div className="history-sidebar-wrapper">
