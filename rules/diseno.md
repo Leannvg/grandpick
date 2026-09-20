@@ -58,7 +58,7 @@ Tarjetas estilo F1/F2 (referencia: podios oficiales de f1.com / fiaformula2.com)
 Cada `.podium__item` (`--pos1/2/3`) define `--podium-color` (`--color-pos1/2/3`)
 y `--podium-height`; fondo en degradé del color del puesto oscurecido con
 `--color-dark-blue`, más rayas diagonales de velocidad (`::before`). Contiene
-`.podium__photo` (foto de perfil a la derecha, fundida con `mask-image`) y
+`.podium__photo` (foto de perfil cuadrada con borde blanco y esquinas redondeadas, tamaño `--podium-photo`, a la derecha; evita pixelado por estirar) y
 `.podium__info`: `.podium__rank` (`1º`), `.podium__name` (nombre + **apellido**
 en un renglón, con elipsis), `.podium__flag` y `.podium__points` (abajo, grande).
 

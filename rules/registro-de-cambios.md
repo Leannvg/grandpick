@@ -8,9 +8,12 @@ Orden cronológico inverso (lo más nuevo arriba).
   tarjetas inspiradas en los podios oficiales de F1/F2: fondo en degradé del
   color del puesto (`--color-pos1/2/3`) con rayas diagonales, posición `1º`
   arriba, nombre y **apellido** en un renglón, bandera, puntos grandes abajo y
-  foto de perfil a la derecha fundida con el fondo.
+  foto de perfil a la derecha.
 - Mobile: tarjetas apiladas 1º · 2º · 3º. Desktop: 2º · 1º · 3º alineadas abajo,
   con el 1º más alto. Sin componentes nuevos.
+- Ajuste: la foto de perfil pasa a ser un cuadrado con borde blanco y esquinas
+  redondeadas (como en "Mi perfil") en vez de estirarse a todo el alto, para
+  que las imágenes chicas no se pixelen.
 
 ## 2026-09-20 · Podio del Home: escalones con luz de pista
 
