@@ -2,6 +2,14 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-20 · Fix: textos del podio pisados (mobile) y cortados (desktop)
+
+- Mobile: la altura fija de la tarjeta comprimía nombre y escudería hasta
+  taparlos cuando había subtítulo. Ahora `min-height` + `.podium__info` como
+  grilla (bandera y puntos en la misma fila), sin elementos que se achiquen.
+- Desktop: con tarjetas angostas el nombre se truncaba ("GEOR…"). El texto pasa
+  a ocupar todo el ancho debajo de la foto y las tarjetas son algo más altas.
+
 ## 2026-09-20 · Podio reutilizable en Ranking y Clasificación de pilotos
 
 - El podio del Home se extrae al componente `Podium` (`components/Podium.jsx`,
