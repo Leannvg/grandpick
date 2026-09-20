@@ -276,23 +276,22 @@ const Home = () => {
                         <div className="ranking__podium">
                             {!loading && podiumOrder.map((user) => (
                                 <div key={user._id} className={`podium__item podium__item--pos${user.globalRank}`}>
-                                    <div className="podium__avatar">
-                                        <img
-                                            src={getImageUrl(user.img_user || CLOUDINARY_DEFAULTS.PROFILE, 300)}
-                                            alt={`${user.name} ${user.last_name}`}
-                                        />
+                                    <img
+                                        className="podium__photo"
+                                        src={getImageUrl(user.img_user || CLOUDINARY_DEFAULTS.PROFILE, 400)}
+                                        alt={`${user.name} ${user.last_name}`}
+                                    />
+                                    <div className="podium__info">
+                                        <span className="podium__rank">{user.globalRank}<sup>º</sup></span>
+                                        <p className="podium__name">
+                                            {user.name} <strong>{user.last_name}</strong>
+                                        </p>
                                         <span className="emoji-flag podium__flag">
                                             {getFlagEmoji(user.country)}
                                         </span>
-                                    </div>
-                                    <p className="podium__name">
-                                        {user.name} <strong>{user.last_name}</strong>
-                                    </p>
-                                    <span className="podium__points">
-                                        <strong>{user.stats?.points?.total || 0}</strong> pts
-                                    </span>
-                                    <div className="podium__step">
-                                        <span className="podium__rank">{user.globalRank}</span>
+                                        <span className="podium__points">
+                                            <strong>{user.stats?.points?.total || 0}</strong> pts
+                                        </span>
                                     </div>
                                 </div>
                             ))}

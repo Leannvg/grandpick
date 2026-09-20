@@ -54,18 +54,17 @@ armonía. **No crear tablas nuevas desde cero**: reutilizar o extender.
 
 ## Podio del Home (`.ranking__podium`, en `assets/styles/home.css`)
 
-Grilla de 3 columnas a todo el ancho, orden 2º · 1º · 3º. Cada `.podium__item`
-define `--podium-color` (`--color-pos1/2/3`) y `--podium-step-height`; contiene
-`.podium__avatar` (circular, `.podium__flag` superpuesta), `.podium__name` y el
-pedestal `.podium__step` (`.podium__rank` + `.podium__points`). El 1º tiene
-pedestal más alto, avatar más grande y resplandor dorado.
+Tarjetas estilo F1/F2 (referencia: podios oficiales de f1.com / fiaformula2.com).
+Cada `.podium__item` (`--pos1/2/3`) define `--podium-color` (`--color-pos1/2/3`)
+y `--podium-height`; fondo en degradé del color del puesto oscurecido con
+`--color-dark-blue`, más rayas diagonales de velocidad (`::before`). Contiene
+`.podium__photo` (foto de perfil a la derecha, fundida con `mask-image`) y
+`.podium__info`: `.podium__rank` (`1º`), `.podium__name` (nombre + **apellido**
+en un renglón, con elipsis), `.podium__flag` y `.podium__points` (abajo, grande).
 
-Estilo "escalones + luz de pista": el `.podium__step` es un panel oscuro
-translúcido (degradado del `--podium-color` al azul oscuro) con una cara
-superior 3D (`::before`, trapecio con `clip-path`) y el número de posición en
-`--podium-color`. Nombre y apellido van en un solo renglón (`.podium__name`,
-con elipsis) y los puntos (`.podium__points`, en grande) debajo del nombre,
-por encima del escalón, que solo lleva la posición.
+- **Mobile**: tarjetas apiladas en columna, orden 1º · 2º · 3º (`order` CSS).
+- **Desktop (≥992px)**: grilla de 3 columnas en orden DOM 2º · 1º · 3º,
+  alineadas abajo; el 1º más alto (320px), 2º 260px, 3º 230px.
 
 ## Modales (`gp-modal-*`, definidos en `assets/styles/components.css`)
 

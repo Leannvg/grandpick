@@ -2,6 +2,16 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-20 · Podio del Home como tarjetas estilo F1/F2
+
+- El podio (`Home.jsx` + `home.css`) reemplaza escalones/pedestales por tres
+  tarjetas inspiradas en los podios oficiales de F1/F2: fondo en degradé del
+  color del puesto (`--color-pos1/2/3`) con rayas diagonales, posición `1º`
+  arriba, nombre y **apellido** en un renglón, bandera, puntos grandes abajo y
+  foto de perfil a la derecha fundida con el fondo.
+- Mobile: tarjetas apiladas 1º · 2º · 3º. Desktop: 2º · 1º · 3º alineadas abajo,
+  con el 1º más alto. Sin componentes nuevos.
+
 ## 2026-09-20 · Podio del Home: escalones con luz de pista
 
 - Nuevo look del podio (`home.css`, sin cambios en `Home.jsx`): los pedestales
