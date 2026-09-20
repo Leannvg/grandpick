@@ -162,3 +162,18 @@ export function getFlagEmoji(countryCode) {
     .map(char => 127397 + char.charCodeAt(0));
   return String.fromCodePoint(...codePoints);
 }
+/**
+ * Año de la temporada "vigente" para mostrar en pantallas de resumen.
+ * Es el año actual si ya arrancó su primer fin de semana de carrera
+ * (`date_gp_start` <= ahora); si no (p. ej. enero con el calendario nuevo ya
+ * cargado pero sin empezar), sigue siendo el año anterior.
+ * @param {Array} currentYearRaces carreras del año calendario actual
+ * @param {Date} [now]
+ */
+export function getSeasonYear(currentYearRaces = [], now = new Date()) {
+    const year = now.getFullYear();
+    const started = currentYearRaces.some(
+        (r) => r.date_gp_start && new Date(r.date_gp_start) <= now
+    );
+    return started ? year : year - 1;
+}

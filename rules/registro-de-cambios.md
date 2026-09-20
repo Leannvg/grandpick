@@ -2,6 +2,13 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-20 · Título del podio: "PUNTUACIÓN GLOBAL TEMPORADA {año}"
+
+- Reemplaza "TOP 10 - PUNTUACIÓN GLOBAL" en el Home. El año se calcula solo con
+  el nuevo helper `getSeasonYear` (`utils/helpers.js`): cambia al año nuevo recién
+  cuando empieza su primera carrera, no cuando se cargan las fechas.
+  Detalle en [logica.md](./logica.md).
+
 ## 2026-09-20 · Título del ranking del Home igual al de "¿Cómo funciona?"
 
 - `.ranking__title` pasa a 24px / peso 400 / sin `letter-spacing` (mismo

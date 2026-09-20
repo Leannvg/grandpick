@@ -69,6 +69,15 @@ results: [ { position: Number, driver: ObjectId -> Drivers } ]
 - Desempate del ranking global (estilo F1 / countback): puntos totales →
   aciertos → promedio por predicción → mejores fines de semana.
 
+### Temporada vigente (título del podio del Home)
+`utils/helpers.js` → `getSeasonYear(currentYearRaces, now)`: devuelve el año actual
+si ya empezó su primer fin de semana (`date_gp_start <= ahora`), y si no, el
+año anterior. Así, cuando en diciembre/enero se cargan las fechas del año
+siguiente, el título "PUNTUACIÓN GLOBAL TEMPORADA {año}" del Home sigue mostrando
+la temporada anterior hasta que arranca la primera carrera nueva. `Home.jsx` la
+calcula con `RacesServices.findAllByYear(añoActual)`. Es solo el rótulo: los
+puntos mostrados siguen siendo `stats.points.total` de los usuarios.
+
 ### Estados de carrera / ventana de predicción
 `utils/helpers.js` → `computeRaceState()`: la ventana de predicción abre 24 h
 antes de `date_race`; antes de eso es "pre-window"; pasada la hora de inicio o con

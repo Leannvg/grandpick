@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import UsersServices from "../services/users.services";
-import { getFlagEmoji } from "../utils/helpers";
+import RacesServices from "../services/races.services";
+import { getFlagEmoji, getSeasonYear } from "../utils/helpers";
 import API_URL from "../services/api";
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../utils/cloudinary.js";
 import InstallAppBanner from '../components/InstallAppBanner';
@@ -12,6 +13,7 @@ import '../assets/styles/home.css';
 const Home = () => {
     const [stats, setStats] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [seasonYear, setSeasonYear] = useState(null);
     const reduceMotion = useReducedMotion();
 
     useEffect(() => {
@@ -42,7 +44,17 @@ const Home = () => {
                 setLoading(false);
             }
         };
+        const fetchSeasonYear = async () => {
+            try {
+                const races = await RacesServices.findAllByYear(new Date().getFullYear());
+                setSeasonYear(getSeasonYear(races));
+            } catch (error) {
+                console.error("Error al calcular la temporada en Home:", error);
+                setSeasonYear(new Date().getFullYear());
+            }
+        };
         fetchStats();
+        fetchSeasonYear();
     }, []);
 
     const top3 = stats.slice(0, 3);
@@ -274,7 +286,7 @@ const Home = () => {
 
                 <section className="ranking">
                     <div className="container">
-                        <h2 className="ranking__title">TOP 10 - PUNTUACIÓN GLOBAL</h2>
+                        <h2 className="ranking__title">PUNTUACIÓN GLOBAL TEMPORADA {seasonYear}</h2>
 
                         <div className="ranking__podium">
                             {!loading && podiumOrder.map((user) => (
