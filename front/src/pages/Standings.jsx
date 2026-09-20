@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useLoader } from "../context/LoaderContext";
 import DriversServices from "../services/drivers.services";
+import Podium from "../components/Podium";
 import CountryDisplay from "../components/CountryDisplay";
 import "../assets/styles/ranking.css";
 import "../assets/styles/standings.css";
@@ -48,6 +49,20 @@ function Standings() {
         return { first: capitalized, last: rest.join(" ") };
     };
 
+    const podiumEntries = standings.slice(0, 3).map((d, i) => {
+        const { first, last } = splitName(d.full_name);
+        return {
+            id: d._id,
+            rank: i + 1,
+            firstName: first,
+            lastName: last,
+            country: d.country,
+            points: d.points,
+            img: d.img,
+            subtitle: d.team?.name,
+        };
+    });
+
     const years = Array.from(
         { length: new Date().getFullYear() - 2024 + 1 },
         (_, i) => new Date().getFullYear() - i
@@ -63,6 +78,8 @@ function Standings() {
                         Puntos sumados en el campeonato (Carrera + Sprint)
                     </p>
                 </header>
+
+                <Podium key={selectedYear} entries={podiumEntries} />
 
                 <div className="standings-filters">
                     <div className="ranking-input-group h-38px">

@@ -2,6 +2,16 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-20 · Podio reutilizable en Ranking y Clasificación de pilotos
+
+- El podio del Home se extrae al componente `Podium` (`components/Podium.jsx`,
+  estilos movidos de `home.css` a `assets/styles/podium.css`). Recibe `entries`
+  genéricas, así sirve para usuarios y pilotos.
+- Se agrega en: **Ranking** (modo Global y modo Por Gran Premio — cambia al
+  elegir circuito/año), y **Clasificación de pilotos** (top 3 de la temporada
+  elegida, con la escudería como subtítulo `.podium__subtitle`).
+- `Home.jsx` pasa a usar el componente (sin cambios visuales).
+
 ## 2026-09-20 · Título del podio: "PUNTUACIÓN GLOBAL TEMPORADA {año}"
 
 - Reemplaza "TOP 10 - PUNTUACIÓN GLOBAL" en el Home. El año se calcula solo con

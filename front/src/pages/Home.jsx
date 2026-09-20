@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion } from 'framer-motion';
 import UsersServices from "../services/users.services";
 import RacesServices from "../services/races.services";
 import { getFlagEmoji, getSeasonYear } from "../utils/helpers";
 import API_URL from "../services/api";
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../utils/cloudinary.js";
 import InstallAppBanner from '../components/InstallAppBanner';
-import Confetti from '../components/Confetti';
+import Podium from '../components/Podium';
 import '../assets/styles/home.css';
 
 const Home = () => {
     const [stats, setStats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [seasonYear, setSeasonYear] = useState(null);
-    const reduceMotion = useReducedMotion();
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -58,12 +56,6 @@ const Home = () => {
     }, []);
 
     const top3 = stats.slice(0, 3);
-    // Orden para el podio: [2do, 1er, 3er]
-    const podiumOrder = [
-        top3.find(u => u.globalRank === 2),
-        top3.find(u => u.globalRank === 1),
-        top3.find(u => u.globalRank === 3)
-    ].filter(Boolean);
 
     return (
         <div className="home-page page-wrapper">
@@ -288,69 +280,19 @@ const Home = () => {
                     <div className="container">
                         <h2 className="ranking__title">PUNTUACIÓN GLOBAL TEMPORADA {seasonYear}</h2>
 
-                        <div className="ranking__podium">
-                            {!loading && podiumOrder.map((user) => (
-                                <motion.div
-                                    key={user._id}
-                                    className={`podium__item podium__item--pos${user.globalRank}`}
-                                    initial={reduceMotion ? false : { opacity: 0, y: 48 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    whileHover={reduceMotion ? undefined : { y: -6, transition: { duration: 0.2, delay: 0 } }}
-                                    viewport={{ once: true, amount: 0.3 }}
-                                    transition={{ duration: 0.5, ease: 'easeOut', delay: (3 - user.globalRank) * 0.15 }}
-                                >
-                                    <img
-                                        className="podium__photo"
-                                        src={getImageUrl(user.img_user || CLOUDINARY_DEFAULTS.PROFILE, 400)}
-                                        alt={`${user.name} ${user.last_name}`}
-                                    />
-                                    {user.globalRank === 1 && <Confetti />}
-                                    {user.globalRank === 2 && (
-                                        <Confetti
-                                            count={12}
-                                            seed={2}
-                                            speed={0.7}
-                                            roundRatio={0.85}
-                                        />
-                                    )}
-                                    {user.globalRank === 3 && (
-                                        <Confetti
-                                            count={16}
-                                            seed={3}
-                                            speed={1.3}
-                                            roundRatio={0}
-                                        />
-                                    )}
-                                    {!reduceMotion && (
-                                        <motion.span
-                                            className="podium__shine"
-                                            aria-hidden="true"
-                                            initial={{ x: '-130%' }}
-                                            animate={{ x: '130%' }}
-                                            transition={{
-                                                duration: 1.4,
-                                                ease: 'easeInOut',
-                                                repeat: Infinity,
-                                                repeatDelay: 3.5,
-                                                delay: 1 + user.globalRank * 0.6,
-                                            }}
-                                        />
-                                    )}
-                                    <div className="podium__info">
-                                        <span className="podium__rank">{user.globalRank}<sup>º</sup></span>
-                                        <p className="podium__name">
-                                            {user.name} <strong>{user.last_name}</strong>
-                                        </p>
-                                        <span className="emoji-flag podium__flag">
-                                            {getFlagEmoji(user.country)}
-                                        </span>
-                                        <span className="podium__points">
-                                            <strong>{user.stats?.points?.total || 0}</strong> pts
-                                        </span>
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
+                        {!loading && (
+                            <Podium
+                                entries={top3.map((u) => ({
+                                    id: u._id,
+                                    rank: u.globalRank,
+                                    firstName: u.name,
+                                    lastName: u.last_name,
+                                    country: u.country,
+                                    points: u.stats?.points?.total || 0,
+                                    img: u.img_user,
+                                }))}
+                            />
+                        )}
 
                         <div className="ranking-card">
                             <div className="ranking-table-container table-responsive">

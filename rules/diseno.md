@@ -52,7 +52,9 @@ armonía. **No crear tablas nuevas desde cero**: reutilizar o extender.
 | `.w-50px`, `.w-120px`, `.h-38px` | Utilidades de tamaño ya definidas |
 | `.btn-row-action` | Ícono dentro de `.user-info` (junto al nombre): en modo `global` va al historial del usuario (`bi-clock-history`); en modo `grand_prix` abre `FloatingPredictionCompare` (`bi-arrow-left-right`). Círculo sólido azul con ícono blanco (`#4c86b7`, hover `#357abd`) — mismo diseño que el botón circular de confirmar (`.submit-btn`/`SubmitButton`, usado en login/registro/predicciones). |
 
-## Podio del Home (`.ranking__podium`, en `assets/styles/home.css`)
+## Podio (`Podium`, estilos en `assets/styles/podium.css`)
+
+Componente reutilizable `components/Podium.jsx` (ver [componentes.md](./componentes.md)); se usa en Home, Ranking (global y por GP) y Clasificación de pilotos. Clases `.ranking__podium`, `.podium__*`.
 
 Tarjetas estilo F1/F2 (referencia: podios oficiales de f1.com / fiaformula2.com).
 Cada `.podium__item` (`--pos1/2/3`) define `--podium-color` (`--color-pos1/2/3`)
@@ -60,7 +62,8 @@ y `--podium-height`; fondo en degradé del color del puesto oscurecido con
 `--color-dark-blue`, más rayas diagonales de velocidad (`::before`). Contiene
 `.podium__photo` (foto de perfil cuadrada con borde blanco y esquinas redondeadas, tamaño `--podium-photo`, arriba a la derecha, alineada con el padding de `.podium__info`; evita pixelado por estirar) y
 `.podium__info`: `.podium__rank` (`1º`), `.podium__name` (nombre + **apellido**
-en un renglón, con elipsis), `.podium__flag` y `.podium__points` (abajo, grande).
+en un renglón, con elipsis), `.podium__subtitle` (opcional, ej. escudería del
+piloto), `.podium__flag` y `.podium__points` (abajo, grande).
 
 - **Mobile**: tarjetas apiladas en columna, orden 1º · 2º · 3º (`order` CSS).
 - **Desktop (≥992px)**: grilla de 3 columnas en orden DOM 2º · 1º · 3º,

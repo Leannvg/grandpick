@@ -8,6 +8,7 @@ import { getFlagEmoji } from "../utils/helpers";
 import { usePagination } from "../hooks/usePagination";
 import { getCountries } from "../services/countries.services";
 import SearchableSelect from "../components/SearchableSelect";
+import Podium from "../components/Podium";
 import FloatingPredictionCompare from "../components/FloatingPredictionCompare";
 import "../assets/styles/ranking.css";
 
@@ -178,6 +179,20 @@ function Ranking() {
         });
     }, [stats, searchTerm]);
 
+    const podiumEntries = useMemo(
+        () =>
+            stats.slice(0, 3).map((u, i) => ({
+                id: u._id,
+                rank: i + 1,
+                firstName: u.name,
+                lastName: u.last_name,
+                country: u.country,
+                points: mode === "global" ? (u.stats?.points?.total || 0) : u.points,
+                img: u.img_user,
+            })),
+        [stats, mode]
+    );
+
     const {
         page,
         pageSize,
@@ -195,6 +210,8 @@ function Ranking() {
                     <h1 className="section-title">{mode === 'global' ? 'PUNTUACIÓN GLOBAL' : 'PUNTUACIÓN POR GRAN PREMIO'}</h1>
                     <p className="section-subtitle">Campeonato de predicciones</p>
                 </header>
+
+                <Podium key={`${mode}-${selectedCircuitId}-${selectedYear}`} entries={podiumEntries} />
 
                 <div className="ranking-filters">
 
