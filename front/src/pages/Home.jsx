@@ -293,6 +293,24 @@ const Home = () => {
                                         alt={`${user.name} ${user.last_name}`}
                                     />
                                     {user.globalRank === 1 && <Confetti />}
+                                    {user.globalRank === 2 && (
+                                        <Confetti
+                                            count={12}
+                                            seed={2}
+                                            speed={0.7}
+                                            roundRatio={0.85}
+                                            colors={['#FFFFFF', '#D8D8D8', '#7AB3DE']}
+                                        />
+                                    )}
+                                    {user.globalRank === 3 && (
+                                        <Confetti
+                                            count={16}
+                                            seed={3}
+                                            speed={1.3}
+                                            roundRatio={0}
+                                            colors={['#D89762', '#FFCD56', '#FFFFFF', '#E10600']}
+                                        />
+                                    )}
                                     {!reduceMotion && (
                                         <motion.span
                                             className="podium__shine"

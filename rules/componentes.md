@@ -38,7 +38,7 @@ correspondiente (ruta, props, para qué sirve, notas de reuso).
 
 | Componente | Ruta | Props | Para qué sirve |
 |---|---|---|---|
-| `Confetti` | `components/Confetti.jsx` | `count` (14), `colors` | Confeti que cae en loop (`framer-motion`, sin interacción) dentro del contenedor posicionado más cercano; clases `.confetti`/`.confetti__piece` en `home.css`. No renderiza con `prefers-reduced-motion`. Usado en la tarjeta del 1º del podio del Home. |
+| `Confetti` | `components/Confetti.jsx` | `count` (14), `colors`, `seed`, `speed`, `roundRatio` | Confeti que cae en loop (`framer-motion`, sin interacción) dentro del contenedor posicionado más cercano; clases `.confetti`/`.confetti__piece` en `home.css`. No renderiza con `prefers-reduced-motion`. `seed`/`speed`/`roundRatio` permiten variar cada instancia (distribución, velocidad, círculos vs. tiras). Usado en las 3 tarjetas del podio del Home. |
 
 ## Loaders
 

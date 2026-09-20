@@ -2,6 +2,12 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-20 · Confeti también en el 2º y 3º del podio
+
+- `Confetti` gana props `seed`, `speed` y `roundRatio` para variar cada
+  instancia. 1º: mixto dorado; 2º: círculos plateados/celestes, más lentos;
+  3º: tiras color cobre, más rápidas.
+
 ## 2026-09-20 · Podio del Home: animaciones constantes
 
 - Se quita el zoom de entrada de la foto de perfil.
