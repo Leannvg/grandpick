@@ -2,6 +2,26 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-20 · Podio del Home: escalones con luz de pista
+
+- Nuevo look del podio (`home.css`, sin cambios en `Home.jsx`): los pedestales
+  pasan de bloques de color sólido metalizado a paneles oscuros translúcidos
+  con cara superior 3D (trapecio) y número/puntos en el color del puesto.
+- El 1º suma un foco de luz cónico dorado por detrás. Mismos tokens
+  `--color-pos1/2/3`; sin componentes nuevos.
+
+## 2026-09-20 · Podio del Home a todo el ancho con pedestales
+
+- El podio de "TOP 10 - PUNTUACIÓN GLOBAL" (`Home.jsx`, estilos en `home.css`)
+  pasa de tres avatares sueltos y centrados a una grilla de 3 columnas que ocupa
+  todo el ancho del contenedor. Orden visual 2º · 1º · 3º.
+- Cada puesto tiene avatar circular (bandera superpuesta en la esquina), nombre
+  y un pedestal de distinta altura (1º más alto) con el número de posición
+  grande y los puntos totales. Color del pedestal/borde por posición con los
+  tokens existentes `--color-pos1/2/3`; el 1º suma un leve resplandor dorado.
+- Un solo set de reglas responsive (mobile base + ajuste de tamaños en
+  `min-width: 992px`); se eliminó la duplicación previa. Sin componentes nuevos.
+
 ## 2026-09-17 · Botones de historial/comparar con el diseño del botón de confirmar
 
 - `.btn-row-action` (íconos "ver historial" y "comparar" del Ranking) pasa

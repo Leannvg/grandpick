@@ -52,6 +52,21 @@ armonía. **No crear tablas nuevas desde cero**: reutilizar o extender.
 | `.w-50px`, `.w-120px`, `.h-38px` | Utilidades de tamaño ya definidas |
 | `.btn-row-action` | Ícono dentro de `.user-info` (junto al nombre): en modo `global` va al historial del usuario (`bi-clock-history`); en modo `grand_prix` abre `FloatingPredictionCompare` (`bi-arrow-left-right`). Círculo sólido azul con ícono blanco (`#4c86b7`, hover `#357abd`) — mismo diseño que el botón circular de confirmar (`.submit-btn`/`SubmitButton`, usado en login/registro/predicciones). |
 
+## Podio del Home (`.ranking__podium`, en `assets/styles/home.css`)
+
+Grilla de 3 columnas a todo el ancho, orden 2º · 1º · 3º. Cada `.podium__item`
+define `--podium-color` (`--color-pos1/2/3`) y `--podium-step-height`; contiene
+`.podium__avatar` (circular, `.podium__flag` superpuesta), `.podium__name` y el
+pedestal `.podium__step` (`.podium__rank` + `.podium__points`). El 1º tiene
+pedestal más alto, avatar más grande y resplandor dorado.
+
+Estilo "escalones + luz de pista": el `.podium__step` es un panel oscuro
+translúcido (degradado del `--podium-color` al azul oscuro) con una cara
+superior 3D (`::before`, trapecio con `clip-path`) y número/puntos en
+`--podium-color`/blanco. El 1º suma un foco de luz cónico
+(`.podium__item--pos1::before`, degradé dorado con `clip-path`, `z-index:-1`
+dentro de `isolation: isolate`). Solo CSS; `Home.jsx` no cambió.
+
 ## Modales (`gp-modal-*`, definidos en `assets/styles/components.css`)
 
 Patrón base en `FloatingDialog.jsx` (overlay + card animados con `framer-motion`):
