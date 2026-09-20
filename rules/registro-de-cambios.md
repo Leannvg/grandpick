@@ -2,6 +2,12 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-20 · Podio mobile: bandera a la izquierda del nombre
+
+- En mobile la bandera pasa de estar junto a los puntos a ir a la izquierda del
+  nombre (la escudería queda alineada con el nombre); los puntos van solos
+  abajo. Desktop sin cambios.
+
 ## 2026-09-20 · Podio mobile: foto centrada y puntos a la izquierda
 
 - En mobile los puntos quedaban "en el medio" de la tarjeta (alineados al borde
