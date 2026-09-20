@@ -288,11 +288,11 @@ const Home = () => {
                                     <p className="podium__name">
                                         {user.name} <strong>{user.last_name}</strong>
                                     </p>
+                                    <span className="podium__points">
+                                        <strong>{user.stats?.points?.total || 0}</strong> pts
+                                    </span>
                                     <div className="podium__step">
                                         <span className="podium__rank">{user.globalRank}</span>
-                                        <span className="podium__points">
-                                            <strong>{user.stats?.points?.total || 0}</strong> pts
-                                        </span>
                                     </div>
                                 </div>
                             ))}

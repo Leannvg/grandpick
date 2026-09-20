@@ -7,8 +7,10 @@ Orden cronológico inverso (lo más nuevo arriba).
 - Nuevo look del podio (`home.css`, sin cambios en `Home.jsx`): los pedestales
   pasan de bloques de color sólido metalizado a paneles oscuros translúcidos
   con cara superior 3D (trapecio) y número/puntos en el color del puesto.
-- El 1º suma un foco de luz cónico dorado por detrás. Mismos tokens
-  `--color-pos1/2/3`; sin componentes nuevos.
+- Mismos tokens `--color-pos1/2/3`; sin componentes nuevos.
+- Ajuste posterior: se quitó el foco de luz del 1º; nombre y apellido en un
+  solo renglón; los puntos pasan debajo del nombre (más grandes) y el escalón
+  queda solo con la posición (`Home.jsx` + `home.css`).
 
 ## 2026-09-20 · Podio del Home a todo el ancho con pedestales
 

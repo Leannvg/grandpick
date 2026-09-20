@@ -459,7 +459,6 @@
   --podium-color: var(--color-pos2);
   --podium-step-height: 96px;
   position: relative;
-  isolation: isolate;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -470,25 +469,6 @@
 .podium__item--pos1 {
   --podium-color: var(--color-pos1);
   --podium-step-height: 140px;
-}
-
-/* Foco de luz sobre el 1º */
-.podium__item--pos1::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  top: -24px;
-  bottom: 0;
-  left: 50%;
-  width: 200%;
-  transform: translateX(-50%);
-  background: linear-gradient(
-    to bottom,
-    rgba(221, 191, 74, 0.35),
-    rgba(221, 191, 74, 0) 90%
-  );
-  clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%);
-  pointer-events: none;
 }
 
 .podium__item--pos2 {
@@ -534,17 +514,11 @@
 
 .podium__name {
   width: 100%;
-  margin: 0 0 10px;
+  margin: 0 0 2px;
   font-size: 0.75rem;
   line-height: 1.2;
   color: #fff;
   text-transform: uppercase;
-  display: flex;
-  flex-direction: column;
-}
-
-.podium__name span,
-.podium__name strong {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -597,13 +571,15 @@
 }
 
 .podium__points {
-  font-size: 0.75rem;
+  margin-bottom: 16px;
+  color: #fff;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 .podium__points strong {
-  font-size: 0.95rem;
+  font-size: 1.3rem;
 }
 
 .split-section {
@@ -1006,7 +982,7 @@
 
   .podium__name {
     font-size: 1.2rem;
-    margin-bottom: 14px;
+    margin-bottom: 4px;
   }
 
   .podium__step {
@@ -1027,11 +1003,12 @@
   }
 
   .podium__points {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
+    margin-bottom: 22px;
   }
 
   .podium__points strong {
-    font-size: 1.3rem;
+    font-size: 1.9rem;
   }
 
   .ranking .cta {

@@ -62,10 +62,10 @@ pedestal más alto, avatar más grande y resplandor dorado.
 
 Estilo "escalones + luz de pista": el `.podium__step` es un panel oscuro
 translúcido (degradado del `--podium-color` al azul oscuro) con una cara
-superior 3D (`::before`, trapecio con `clip-path`) y número/puntos en
-`--podium-color`/blanco. El 1º suma un foco de luz cónico
-(`.podium__item--pos1::before`, degradé dorado con `clip-path`, `z-index:-1`
-dentro de `isolation: isolate`). Solo CSS; `Home.jsx` no cambió.
+superior 3D (`::before`, trapecio con `clip-path`) y el número de posición en
+`--podium-color`. Nombre y apellido van en un solo renglón (`.podium__name`,
+con elipsis) y los puntos (`.podium__points`, en grande) debajo del nombre,
+por encima del escalón, que solo lleva la posición.
 
 ## Modales (`gp-modal-*`, definidos en `assets/styles/components.css`)
 
