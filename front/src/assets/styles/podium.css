@@ -89,10 +89,11 @@
 
 .podium__photo {
   position: absolute;
-  top: 14px;
+  top: 50%;
   right: 16px;
   width: var(--podium-photo);
   height: var(--podium-photo);
+  transform: translateY(-50%);
   object-fit: cover;
   border: 2px solid #fff;
   border-radius: 8px;
@@ -103,7 +104,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto auto 1fr;
   grid-template-rows: auto 1fr auto auto auto;
   align-items: end;
   width: calc(100% - var(--podium-photo) - 32px);
@@ -157,15 +158,15 @@
 }
 
 .podium__flag {
-  grid-column: 1;
+  grid-column: 2;
   grid-row: 5;
-  margin-top: 8px;
+  margin: 8px 0 0 12px;
   font-size: 1.4rem;
   line-height: 1;
 }
 
 .podium__points {
-  grid-column: 2;
+  grid-column: 1;
   grid-row: 5;
   margin-top: 8px;
   font-size: 0.9rem;
@@ -207,6 +208,7 @@
   }
 
   .podium__info {
+    grid-template-columns: 1fr auto;
     width: 100%;
     padding: 20px 24px;
   }
@@ -214,6 +216,7 @@
   .podium__photo {
     top: 20px;
     right: 24px;
+    transform: none;
   }
 
   .podium__rank {
@@ -233,10 +236,13 @@
   }
 
   .podium__flag {
+    grid-column: 1;
+    margin: 8px 0 0;
     font-size: 1.8rem;
   }
 
   .podium__points {
+    grid-column: 2;
     font-size: 1.1rem;
   }
 

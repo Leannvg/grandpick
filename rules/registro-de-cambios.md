@@ -2,6 +2,12 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-20 · Podio mobile: foto centrada y puntos a la izquierda
+
+- En mobile los puntos quedaban "en el medio" de la tarjeta (alineados al borde
+  de la columna de texto). Ahora la foto se centra verticalmente y los puntos
+  van a la izquierda con la bandera al lado. Desktop sin cambios.
+
 ## 2026-09-20 · Fix: textos del podio pisados (mobile) y cortados (desktop)
 
 - Mobile: la altura fija de la tarjeta comprimía nombre y escudería hasta
