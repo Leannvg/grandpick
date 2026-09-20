@@ -508,11 +508,10 @@
 
 .podium__photo {
   position: absolute;
-  top: 50%;
+  top: 14px;
   right: 16px;
   width: var(--podium-photo);
   height: var(--podium-photo);
-  transform: translateY(-50%);
   object-fit: cover;
   border: 2px solid #fff;
   border-radius: 8px;
@@ -958,6 +957,11 @@
 
   .podium__info {
     padding: 20px 24px;
+  }
+
+  .podium__photo {
+    top: 20px;
+    right: 24px;
   }
 
   .podium__rank {

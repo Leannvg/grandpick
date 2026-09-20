@@ -13,7 +13,8 @@ Orden cronológico inverso (lo más nuevo arriba).
   con el 1º más alto. Sin componentes nuevos.
 - Ajuste: la foto de perfil pasa a ser un cuadrado con borde blanco y esquinas
   redondeadas (como en "Mi perfil") en vez de estirarse a todo el alto, para
-  que las imágenes chicas no se pixelen.
+  que las imágenes chicas no se pixelen. Queda anclada arriba a la derecha
+  (no centrada verticalmente).
 
 ## 2026-09-20 · Podio del Home: escalones con luz de pista
 
