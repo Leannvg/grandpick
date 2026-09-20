@@ -271,10 +271,9 @@
 }
 
 .ranking__title {
-  font-size: 28px;
-  font-weight: 500;
+  font-size: 24px;
+  font-weight: 400;
   margin-bottom: 40px;
-  letter-spacing: 0.05em;
 }
 
 .ranking__card {
@@ -1086,6 +1085,10 @@
 }
 
 @media (min-width: 768px) {
+  .ranking__title {
+    padding: 0 20px;
+  }
+
   .install-banner {
     padding: 40px 0;
   }

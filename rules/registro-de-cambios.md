@@ -2,6 +2,12 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-20 · Título del ranking del Home igual al de "¿Cómo funciona?"
+
+- `.ranking__title` pasa a 24px / peso 400 / sin `letter-spacing` (mismo
+  tratamiento que `.how-it-works__text h2`) y, desde 768px, `padding: 0 20px`
+  para alinear su borde izquierdo con el texto de "¿Cómo funciona?".
+
 ## 2026-09-20 · Confeti también en el 2º y 3º del podio
 
 - `Confetti` gana props `seed`, `speed` y `roundRatio` para variar cada
