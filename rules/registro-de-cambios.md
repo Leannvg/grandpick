@@ -2,6 +2,13 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-20 · Podio desktop: puntos en el renglón del nombre
+
+- Desktop: bandera · nombre · puntos comparten fila (puntos a la derecha) y la
+  escudería queda debajo del nombre. El nombre ahora puede partirse en dos
+  líneas (nombre / apellido) en tarjetas angostas; entre 992 y 1199px la
+  tipografía baja un poco.
+
 ## 2026-09-20 · Podio desktop: bandera a la izquierda del nombre
 
 - Desktop pasa a usar la misma disposición que mobile: bandera a la izquierda
