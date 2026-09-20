@@ -2,6 +2,14 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-20 · Animaciones en el podio del Home (regla: framer-motion)
+
+- Las tarjetas del podio (`Home.jsx`) pasan a `motion.div`: entrada escalonada
+  al entrar en pantalla (fade + subida, 3º → 2º → 1º), foto con `scale` y
+  elevación al hover. Respeta `prefers-reduced-motion` (`useReducedMotion`).
+- Nueva sección "Animaciones" en `rules/diseno.md`: `framer-motion` es el estándar
+  para animar UI en el proyecto.
+
 ## 2026-09-20 · Podio del Home como tarjetas estilo F1/F2
 
 - El podio (`Home.jsx` + `home.css`) reemplaza escalones/pedestales por tres

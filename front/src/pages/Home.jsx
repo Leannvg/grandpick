@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
 import UsersServices from "../services/users.services";
 import { getFlagEmoji } from "../utils/helpers";
 import API_URL from "../services/api";
@@ -10,6 +11,7 @@ import '../assets/styles/home.css';
 const Home = () => {
     const [stats, setStats] = useState([]);
     const [loading, setLoading] = useState(true);
+    const reduceMotion = useReducedMotion();
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -275,8 +277,20 @@ const Home = () => {
 
                         <div className="ranking__podium">
                             {!loading && podiumOrder.map((user) => (
-                                <div key={user._id} className={`podium__item podium__item--pos${user.globalRank}`}>
-                                    <img
+                                <motion.div
+                                    key={user._id}
+                                    className={`podium__item podium__item--pos${user.globalRank}`}
+                                    initial={reduceMotion ? false : { opacity: 0, y: 48 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    whileHover={reduceMotion ? undefined : { y: -6, transition: { duration: 0.2, delay: 0 } }}
+                                    viewport={{ once: true, amount: 0.3 }}
+                                    transition={{ duration: 0.5, ease: 'easeOut', delay: (3 - user.globalRank) * 0.15 }}
+                                >
+                                    <motion.img
+                                        initial={reduceMotion ? false : { opacity: 0, scale: 0.8 }}
+                                        whileInView={{ opacity: 1, scale: 1 }}
+                                        viewport={{ once: true, amount: 0.3 }}
+                                        transition={{ duration: 0.4, ease: 'easeOut', delay: (3 - user.globalRank) * 0.15 + 0.25 }}
                                         className="podium__photo"
                                         src={getImageUrl(user.img_user || CLOUDINARY_DEFAULTS.PROFILE, 400)}
                                         alt={`${user.name} ${user.last_name}`}
@@ -293,7 +307,7 @@ const Home = () => {
                                             <strong>{user.stats?.points?.total || 0}</strong> pts
                                         </span>
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
                         </div>
 

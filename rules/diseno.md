@@ -66,6 +66,20 @@ en un renglón, con elipsis), `.podium__flag` y `.podium__points` (abajo, grande
 - **Desktop (≥992px)**: grilla de 3 columnas en orden DOM 2º · 1º · 3º,
   alineadas abajo; el 1º más alto (320px), 2º 260px, 3º 230px.
 
+## Animaciones (regla del proyecto)
+
+Toda animación de UI se hace con **`framer-motion`** (`motion.*`, `AnimatePresence`,
+`whileInView`, `whileHover`, `drag`), no con keyframes/transiciones CSS nuevas
+(las ya existentes, como los skeletons o las flechas del hero, se mantienen).
+Pautas: duraciones cortas (0.2–0.5s), `ease: "easeOut"`, entradas con
+`opacity` + `y`/`scale`, `viewport={{ once: true }}` para animar al hacer scroll
+solo la primera vez, y respetar `useReducedMotion()` (con `initial={false}`).
+Los `whileHover` deben definir su propia `transition` para no heredar el `delay`
+de la entrada.
+
+Ejemplo: tarjetas del podio del Home — entrada escalonada (3º → 2º → 1º),
+la foto aparece con `scale` un instante después, y elevación de 6px al pasar el mouse.
+
 ## Modales (`gp-modal-*`, definidos en `assets/styles/components.css`)
 
 Patrón base en `FloatingDialog.jsx` (overlay + card animados con `framer-motion`):
