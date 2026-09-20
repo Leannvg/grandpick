@@ -79,7 +79,7 @@ de la entrada.
 
 Ejemplo: tarjetas del podio del Home — entrada escalonada (3º → 2º → 1º),
 elevación de 6px al hover y animaciones constantes: brillo que barre cada
-tarjeta en loop (`.podium__shine`) y confeti cayendo en las tres (`Confetti`), distinto en cada una: 1º dorado/mixto, 2º círculos plateados lentos, 3º tiras cobre rápidas.
+tarjeta en loop (`.podium__shine`) y confeti cayendo en las tres (`Confetti`), con la misma paleta en las tres (el podio se comparte) pero distinto ritmo y forma: 1º mixto, 2º círculos lentos, 3º tiras rápidas.
 
 ## Modales (`gp-modal-*`, definidos en `assets/styles/components.css`)
 

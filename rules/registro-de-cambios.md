@@ -5,8 +5,9 @@ Orden cronológico inverso (lo más nuevo arriba).
 ## 2026-09-20 · Confeti también en el 2º y 3º del podio
 
 - `Confetti` gana props `seed`, `speed` y `roundRatio` para variar cada
-  instancia. 1º: mixto dorado; 2º: círculos plateados/celestes, más lentos;
-  3º: tiras color cobre, más rápidas.
+  instancia. Misma paleta de colores en las tres tarjetas (el podio se
+  comparte; con colores propios por puesto el blanco/gris del 2º se perdía sobre
+  el fondo plateado). 1º: mixto; 2º: círculos, más lentos; 3º: tiras, más rápidas.
 
 ## 2026-09-20 · Podio del Home: animaciones constantes
 
