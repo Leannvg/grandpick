@@ -276,21 +276,24 @@ const Home = () => {
                         <div className="ranking__podium">
                             {!loading && podiumOrder.map((user) => (
                                 <div key={user._id} className={`podium__item podium__item--pos${user.globalRank}`}>
-                                    <div className="d-flex justify-content-center">
-                                        <span className="emoji-flag podium__flag d-block fs-16rem">
-                                            {getFlagEmoji(user.country)}
-                                        </span>
-                                    </div>
-
                                     <div className="podium__avatar">
                                         <img
                                             src={getImageUrl(user.img_user || CLOUDINARY_DEFAULTS.PROFILE, 300)}
                                             alt={`${user.name} ${user.last_name}`}
                                         />
+                                        <span className="emoji-flag podium__flag">
+                                            {getFlagEmoji(user.country)}
+                                        </span>
                                     </div>
                                     <p className="podium__name">
                                         {user.name} <strong>{user.last_name}</strong>
                                     </p>
+                                    <div className="podium__step">
+                                        <span className="podium__rank">{user.globalRank}</span>
+                                        <span className="podium__points">
+                                            <strong>{user.stats?.points?.total || 0}</strong> pts
+                                        </span>
+                                    </div>
                                 </div>
                             ))}
                         </div>
