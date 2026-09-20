@@ -506,6 +506,33 @@
   pointer-events: none;
 }
 
+/* Brillo que barre la tarjeta en loop (animado con framer-motion) */
+.podium__shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+/* Confeti (components/Confetti.jsx) */
+.confetti {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti__piece {
+  position: absolute;
+  top: -10%;
+}
+
 .podium__photo {
   position: absolute;
   top: 14px;

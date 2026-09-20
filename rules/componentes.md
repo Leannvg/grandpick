@@ -34,6 +34,12 @@ correspondiente (ruta, props, para qué sirve, notas de reuso).
 | `FloatingEditProfile` | `components/FloatingEditProfile.jsx` | `show`, `onClose`, `usuario`, `onUpdated` | Modal edición de perfil. |
 | `FloatingPredictionCompare` | `components/FloatingPredictionCompare.jsx` | `show`, `onClose`, `myUserId`, `myLabel`, `otherUserId`, `otherLabel`, `circuitId`, `year` | Modal que compara la predicción propia vs. la de otro usuario para un GP puntual. Trae en paralelo `PredictionServices.findHistoryByUser` de ambos usuarios, filtra por `circuitId` y renderiza `SessionTabs` + `PredictionComparisonTable` (con `otherSession`/`otherLabel`). Título propio tipo "VS" (`.gp-compare-title`/`.gp-compare-subtitle`, ver [diseno.md](./diseno.md)). Desktop (`isDesktop`, `window.innerWidth >= 1200`): mismo patrón que `FloatingDialog` (`gp-modal-overlay`/`gp-modal-card--wide`), cierra con Escape (`useEscapeKey`). Mobile: bottom-sheet deslizable (`.gp-compare-drawer`, mismo patrón que el drawer de `PredictionHistory.jsx`, `framer-motion` + arrastre). Usado desde `Ranking.jsx` (modo `grand_prix`, botón "Comparar"). |
 
+## Efectos visuales
+
+| Componente | Ruta | Props | Para qué sirve |
+|---|---|---|---|
+| `Confetti` | `components/Confetti.jsx` | `count` (14), `colors` | Confeti que cae en loop (`framer-motion`, sin interacción) dentro del contenedor posicionado más cercano; clases `.confetti`/`.confetti__piece` en `home.css`. No renderiza con `prefers-reduced-motion`. Usado en la tarjeta del 1º del podio del Home. |
+
 ## Loaders
 
 | Componente | Ruta | Props / API | Para qué sirve |

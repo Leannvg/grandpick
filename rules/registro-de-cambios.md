@@ -2,6 +2,14 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-20 · Podio del Home: animaciones constantes
+
+- Se quita el zoom de entrada de la foto de perfil.
+- Nuevo brillo que barre cada tarjeta en loop (`.podium__shine`, `framer-motion`,
+  desfasado por puesto) y confeti cayendo infinitamente en la tarjeta del 1º.
+- Nuevo componente `Confetti` (`components/Confetti.jsx`), documentado en
+  `componentes.md`. Ambos efectos se desactivan con `prefers-reduced-motion`.
+
 ## 2026-09-20 · Animaciones en el podio del Home (regla: framer-motion)
 
 - Las tarjetas del podio (`Home.jsx`) pasan a `motion.div`: entrada escalonada

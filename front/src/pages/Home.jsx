@@ -6,6 +6,7 @@ import { getFlagEmoji } from "../utils/helpers";
 import API_URL from "../services/api";
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../utils/cloudinary.js";
 import InstallAppBanner from '../components/InstallAppBanner';
+import Confetti from '../components/Confetti';
 import '../assets/styles/home.css';
 
 const Home = () => {
@@ -286,15 +287,27 @@ const Home = () => {
                                     viewport={{ once: true, amount: 0.3 }}
                                     transition={{ duration: 0.5, ease: 'easeOut', delay: (3 - user.globalRank) * 0.15 }}
                                 >
-                                    <motion.img
-                                        initial={reduceMotion ? false : { opacity: 0, scale: 0.8 }}
-                                        whileInView={{ opacity: 1, scale: 1 }}
-                                        viewport={{ once: true, amount: 0.3 }}
-                                        transition={{ duration: 0.4, ease: 'easeOut', delay: (3 - user.globalRank) * 0.15 + 0.25 }}
+                                    <img
                                         className="podium__photo"
                                         src={getImageUrl(user.img_user || CLOUDINARY_DEFAULTS.PROFILE, 400)}
                                         alt={`${user.name} ${user.last_name}`}
                                     />
+                                    {user.globalRank === 1 && <Confetti />}
+                                    {!reduceMotion && (
+                                        <motion.span
+                                            className="podium__shine"
+                                            aria-hidden="true"
+                                            initial={{ x: '-130%' }}
+                                            animate={{ x: '130%' }}
+                                            transition={{
+                                                duration: 1.4,
+                                                ease: 'easeInOut',
+                                                repeat: Infinity,
+                                                repeatDelay: 3.5,
+                                                delay: 1 + user.globalRank * 0.6,
+                                            }}
+                                        />
+                                    )}
                                     <div className="podium__info">
                                         <span className="podium__rank">{user.globalRank}<sup>º</sup></span>
                                         <p className="podium__name">

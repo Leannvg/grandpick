@@ -78,7 +78,8 @@ Los `whileHover` deben definir su propia `transition` para no heredar el `delay`
 de la entrada.
 
 Ejemplo: tarjetas del podio del Home — entrada escalonada (3º → 2º → 1º),
-la foto aparece con `scale` un instante después, y elevación de 6px al pasar el mouse.
+elevación de 6px al hover y animaciones constantes: brillo que barre cada
+tarjeta en loop (`.podium__shine`) y confeti cayendo en la del 1º (`Confetti`).
 
 ## Modales (`gp-modal-*`, definidos en `assets/styles/components.css`)
 
