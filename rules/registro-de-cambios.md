@@ -2,6 +2,12 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-20 · Podio desktop: bandera a la izquierda del nombre
+
+- Desktop pasa a usar la misma disposición que mobile: bandera a la izquierda
+  del nombre y escudería alineada con el nombre; los puntos siguen abajo a la
+  derecha. Bandera algo más chica (1.5rem) para no truncar el nombre.
+
 ## 2026-09-20 · Podio mobile: bandera a la izquierda del nombre
 
 - En mobile la bandera pasa de estar junto a los puntos a ir a la izquierda del

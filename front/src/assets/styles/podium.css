@@ -210,7 +210,6 @@
   }
 
   .podium__info {
-    grid-template-columns: 1fr auto;
     width: 100%;
     padding: 20px 24px;
   }
@@ -230,25 +229,20 @@
   }
 
   .podium__name {
-    grid-column: 1 / -1;
     font-size: 1.5rem;
   }
 
   .podium__subtitle {
-    grid-column: 1 / -1;
     font-size: 0.95rem;
   }
 
   .podium__flag {
-    grid-column: 1;
-    grid-row: 5;
-    align-self: end;
-    margin: 8px 0 0;
-    font-size: 1.8rem;
+    margin: 8px 10px 0 0;
+    font-size: 1.5rem;
   }
 
   .podium__points {
-    grid-column: 2;
+    justify-self: end;
     font-size: 1.1rem;
   }
 

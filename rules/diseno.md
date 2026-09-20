@@ -72,7 +72,7 @@ piloto), `.podium__flag` y `.podium__points` (abajo, grande).
   (nombre y escudería sin truncarse).
 - **Mobile**: la foto va centrada verticalmente y la bandera a la izquierda del
   nombre (escudería alineada con el nombre) y los puntos abajo a la izquierda
-  (en desktop: foto arriba, bandera abajo a la izquierda y puntos a la derecha).
+  (en desktop igual, pero con la foto arriba y los puntos a la derecha).
 - `.podium__info` es una grilla (posición · nombre · subtítulo · bandera + puntos);
   en mobile la tarjeta usa `min-height` y crece si hace falta, para que nada
   se superponga.
