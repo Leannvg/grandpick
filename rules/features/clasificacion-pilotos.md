@@ -7,7 +7,9 @@ temporada, calculada a partir de los resultados ya cargados en la base.
 ## Alcance
 
 - Nueva vista pública `/standings` con la tabla del campeonato de pilotos.
-- Nuevo ítem **CLASIFICACIÓN** en el mega menú **F1 ACTUAL**.
+- Nuevo ítem **CAMPEONATO** en el mega menú **F1 ACTUAL** (antes "CLASIFICACIÓN";
+  renombrado 2026-09-21, junto con los títulos "CAMPEONATO DE PILOTOS" /
+  "CAMPEONATO DE CONSTRUCTORES").
 - La tabla muestra: **Posición · Nombre · Nacionalidad · Equipo Actual · Puntos**.
 - Reutiliza el diseño de tablas `ranking-*` para mantener armonía visual.
 
@@ -46,7 +48,7 @@ Respuesta (`200`):
 | `pages/Standings.jsx` | Nueva vista. Header estándar + filtros (año, buscador) + tabla `ranking-table standings-table`. Usa `<CountryDisplay>` para nacionalidad y un punto de color con `--team-color` para la escudería. Top 3 con clases `pos-1/2/3`. |
 | `assets/styles/standings.css` | Estilos propios mínimos (celda de piloto, punto de color de equipo). El resto sale de `ranking.css`. |
 | `App.jsx` | + import `Standings` y ruta pública `/standings`. |
-| `components/Nav.jsx` | + ítem `{ to: "/standings", label: "CLASIFICACIÓN" }` en el mega menú `info`. Las columnas del mega menú pasan a `col-md-3` cuando hay 4 ítems. |
+| `components/Nav.jsx` | + ítem `{ to: "/standings", label: "CAMPEONATO" }` en el mega menú `info`. Las columnas del mega menú pasan a `col-md-3` cuando hay 4 ítems. |
 
 ## Ajustes posteriores (2026-09-10)
 

@@ -118,7 +118,7 @@ function Standings() {
                 <header className="page-header">
                     <p className="section-label">Temporada actual</p>
                     <h1 className="section-title">
-                        {mode === "drivers" ? "CLASIFICACIÓN DE PILOTOS" : "CLASIFICACIÓN DE CONSTRUCTORES"}
+                        {mode === "drivers" ? "CAMPEONATO DE PILOTOS" : "CAMPEONATO DE CONSTRUCTORES"}
                     </h1>
                     <p className="section-subtitle">
                         Puntos sumados en el campeonato (Carrera + Sprint)

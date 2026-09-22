@@ -2,6 +2,13 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-21 · Renombrar "Clasificación" a "Campeonato"
+
+- Ítem del mega menú `Nav.jsx`: "CLASIFICACIÓN" → "CAMPEONATO".
+- Títulos en `Standings.jsx`: "CLASIFICACIÓN DE PILOTOS" / "CLASIFICACIÓN DE
+  CONSTRUCTORES" → "CAMPEONATO DE PILOTOS" / "CAMPEONATO DE CONSTRUCTORES".
+  La ruta sigue siendo `/standings`.
+
 ## 2026-09-21 · Podio: sin borde en la foto y ajuste de alturas en desktop
 
 - Se quita el borde blanco de `.podium__photo`.

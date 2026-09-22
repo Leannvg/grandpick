@@ -132,7 +132,7 @@ function Nav({ onLogout, autenticado, esAdmin }) {
       { to: "/teams", label: "ESCUDERÍAS" },
       { to: "/drivers", label: "PILOTOS" },
       { to: "/circuits", label: "CIRCUITOS" },
-      { to: "/standings", label: "CLASIFICACIÓN" }
+      { to: "/standings", label: "CAMPEONATO" }
     ] : [
       { to: "/how-to-play", label: "CÓMO JUGAR" },
       { to: "/f1-guide", label: "GUÍA DE F1" },

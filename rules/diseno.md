@@ -137,7 +137,7 @@ la familia `ranking-*`.
   PREDECIR, MI HISTORIAL, RANKING.
 - **Mega menús** (`renderMegaMenu`): dos dropdowns con submenú a ancho completo:
   - `F1 ACTUAL` → ESCUDERÍAS (`/teams`), PILOTOS (`/drivers`), CIRCUITOS
-    (`/circuits`), CLASIFICACIÓN (`/standings`).
+    (`/circuits`), CAMPEONATO (`/standings`).
   - `TUTORIALES` → CÓMO JUGAR, GUÍA DE F1, F1 TV.
 - Cada ítem del mega menú es un `<li className="col-12 col-md-4">` (o `col-md-3`
   cuando el menú tiene 4 ítems) con `<Link className="mega-link">`.
