@@ -116,20 +116,7 @@ piloto (mismo cálculo que pilotos), ordenado de mayor a menor.
 | `front/src/components/PredictionsForm.jsx` (usado solo dentro de `RaceForm.jsx`, no en las predicciones de usuarios) | Cada fila de resultado suma un segundo `SearchableSelect` para la escudería (`.gp-result-team-select`), alimentado por `TeamsServices.findAll()`. Al elegir el piloto se sugiere su equipo actual (`driver.team_info`), pero queda editable. Callback renombrado `onDriverChange` → `onResultChange(pointId, position, driverId, teamId)`. |
 | `front/src/services/teams.services.js` | + `findConstructorsStandings(year)` → `GET /api/standings/constructors?year=`. |
 | `front/src/pages/Standings.jsx` | Toggle Pilotos/Constructores; tabla constructores (Pos · Escudería · Pilotos · Puntos, todas las escuderías aunque tengan 0 puntos); columna "Pilotos" con una pill por piloto del plantel actual (`.team-driver-pill`, mismo lenguaje visual que `.admin-status-pill.pill-driver` del admin) con sus puntos de la temporada al lado; aviso si `unresolvedResults > 0`; `Podium` reutilizado con `img: team.isologo` para el top 3. |
-| `front/src/assets/styles/standings.css` | + `.team-driver-pill` / `.team-driver-pill--empty`; `.standings-table--constructors` (min-width mayor en la tabla de constructores por la columna de pilotos); `.constructors-card*` (ver mobile abajo). |
-
-**Mobile (`<768px`) de la tabla de constructores**: en vez de la tabla de 4
-columnas (que en pantallas angostas dejaba "Puntos" fuera de la vista, atrás
-del scroll horizontal, y rompía la fila de pilotos), se renderiza un markup
-propio de tarjetas (`.constructors-cards`/`.constructors-card`, mostrado con
-`d-md-none`; la tabla de desktop usa `d-none d-md-table`): posición +
-escudería + puntos siempre visibles arriba, pilotos envolviendo debajo.
-Se probó primero forzar la `<table>` a `display:flex` por CSS en mobile,
-pero un `<table>` con la fila en `display:flex` tiene un bug de layout en
-Chromium (confirmado con `getBoundingClientRect()`, no con capturas — el
-screenshot de headless Chrome resultó no confiable acá) que hace desaparecer
-la última celda cuando el contenedor tiene ancho porcentual; por eso el
-mobile usa divs propios, sin ningún elemento de tabla.
+| `front/src/assets/styles/standings.css` | + `.team-driver-pill` / `.team-driver-pill--empty`; `.standings-table--constructors` (min-width mayor en la tabla de constructores por la columna de pilotos). |
 
 ### Backfill de las 33 carreras ya cargadas (hecho, 2026-09-21)
 

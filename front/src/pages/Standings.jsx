@@ -231,81 +231,25 @@ function Standings() {
                                     )}
                                 </tbody>
                             </table>
-                        ) : filteredConstructors.length === 0 ? (
-                            <table className="ranking-table standings-table">
-                                <tbody>
-                                    <tr>
-                                        <td className="ranking-empty-state">
-                                            No hay datos de clasificación para esta temporada
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         ) : (
-                            <>
-                                {/* Desktop: tabla. En mobile una tabla de 4 columnas rompía la fila
-                                    de pilotos y dejaba "Puntos" fuera de pantalla (scroll horizontal);
-                                    se reemplaza por tarjetas (ver .constructors-cards más abajo). */}
-                                <table className="ranking-table standings-table standings-table--constructors d-none d-md-table">
-                                    <thead>
-                                        <tr>
-                                            <th className="w-50px">Pos.</th>
-                                            <th className="text-start">Escudería</th>
-                                            <th className="text-start">Pilotos</th>
-                                            <th className="w-120px">Puntos</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {filteredConstructors.map((team) => {
-                                            const pos = team.position;
-                                            const posClass = pos <= 3 ? `pos-${pos}` : "";
-
-                                            return (
-                                                <tr key={team._id}>
-                                                    <td className={`pos-cell ${posClass}`}>{pos}</td>
-                                                    <td className="text-start">
-                                                        <div
-                                                            className="team-cell"
-                                                            style={{ "--team-color": team.color || "#5c8ab3" }}
-                                                        >
-                                                            <span className="team-color-dot" />
-                                                            <span>{team.name}</span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="text-start">
-                                                        {team.drivers && team.drivers.length > 0 ? (
-                                                            team.drivers.map((driver) => (
-                                                                <span key={driver._id} className="team-driver-pill">
-                                                                    {driver.full_name}
-                                                                    <strong>{driver.points}</strong>
-                                                                </span>
-                                                            ))
-                                                        ) : (
-                                                            <span className="team-driver-pill team-driver-pill--empty">
-                                                                Sin pilotos
-                                                            </span>
-                                                        )}
-                                                    </td>
-                                                    <td className="points-cell">
-                                                        <strong>{team.points}</strong>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-
-                                {/* Mobile: tarjetas (Pos + Escudería + Puntos siempre visibles arriba,
-                                    pilotos envolviendo debajo). */}
-                                <div className="constructors-cards d-md-none">
+                            <table className="ranking-table standings-table standings-table--constructors">
+                                <thead>
+                                    <tr>
+                                        <th className="w-50px">Pos.</th>
+                                        <th className="text-start">Escudería</th>
+                                        <th className="text-start">Pilotos</th>
+                                        <th className="w-120px">Puntos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                     {filteredConstructors.map((team) => {
                                         const pos = team.position;
                                         const posClass = pos <= 3 ? `pos-${pos}` : "";
 
                                         return (
-                                            <div className="constructors-card" key={team._id}>
-                                                <div className="constructors-card__top">
-                                                    <span className={`pos-cell ${posClass}`}>{pos}</span>
+                                            <tr key={team._id}>
+                                                <td className={`pos-cell ${posClass}`}>{pos}</td>
+                                                <td className="text-start">
                                                     <div
                                                         className="team-cell"
                                                         style={{ "--team-color": team.color || "#5c8ab3" }}
@@ -313,11 +257,8 @@ function Standings() {
                                                         <span className="team-color-dot" />
                                                         <span>{team.name}</span>
                                                     </div>
-                                                    <span className="constructors-card__points">
-                                                        <strong>{team.points}</strong>
-                                                    </span>
-                                                </div>
-                                                <div className="constructors-card__drivers">
+                                                </td>
+                                                <td className="text-start">
                                                     {team.drivers && team.drivers.length > 0 ? (
                                                         team.drivers.map((driver) => (
                                                             <span key={driver._id} className="team-driver-pill">
@@ -330,12 +271,22 @@ function Standings() {
                                                             Sin pilotos
                                                         </span>
                                                     )}
-                                                </div>
-                                            </div>
+                                                </td>
+                                                <td className="points-cell">
+                                                    <strong>{team.points}</strong>
+                                                </td>
+                                            </tr>
                                         );
                                     })}
-                                </div>
-                            </>
+                                    {filteredConstructors.length === 0 && (
+                                        <tr>
+                                            <td colSpan="4" className="ranking-empty-state">
+                                                No hay datos de clasificación para esta temporada
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
                         )}
                     </div>
                 </div>
