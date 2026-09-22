@@ -182,11 +182,11 @@ function Standings() {
                             <table className="ranking-table standings-table">
                                 <thead>
                                     <tr>
-                                        <th className="w-50px">Pos.</th>
+                                        <th className="w-50px">Posición</th>
                                         <th className="text-start">Piloto</th>
+                                        <th className="w-120px">Puntos totales</th>
                                         <th className="text-start">Nacionalidad</th>
                                         <th className="text-start">Equipo Actual</th>
-                                        <th className="w-120px">Puntos</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -204,6 +204,9 @@ function Standings() {
                                                         <span className="driver-lastname">{last}</span>
                                                     </div>
                                                 </td>
+                                                <td className="points-cell">
+                                                    <strong>{driver.points}</strong>
+                                                </td>
                                                 <td className="text-start">
                                                     <CountryDisplay iso2={driver.country} />
                                                 </td>
@@ -215,9 +218,6 @@ function Standings() {
                                                         <span className="team-color-dot" />
                                                         <span>{driver.team?.name || "Sin escudería"}</span>
                                                     </div>
-                                                </td>
-                                                <td className="points-cell">
-                                                    <strong>{driver.points}</strong>
                                                 </td>
                                             </tr>
                                         );
@@ -235,10 +235,10 @@ function Standings() {
                             <table className="ranking-table standings-table standings-table--constructors">
                                 <thead>
                                     <tr>
-                                        <th className="w-50px">Pos.</th>
+                                        <th className="w-50px">Posición</th>
                                         <th className="text-start">Escudería</th>
+                                        <th className="w-120px">Puntos totales</th>
                                         <th className="text-start">Pilotos</th>
-                                        <th className="w-120px">Puntos</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -258,6 +258,9 @@ function Standings() {
                                                         <span>{team.name}</span>
                                                     </div>
                                                 </td>
+                                                <td className="points-cell">
+                                                    <strong>{team.points}</strong>
+                                                </td>
                                                 <td className="text-start">
                                                     {team.drivers && team.drivers.length > 0 ? (
                                                         team.drivers.map((driver) => (
@@ -271,9 +274,6 @@ function Standings() {
                                                             Sin pilotos
                                                         </span>
                                                     )}
-                                                </td>
-                                                <td className="points-cell">
-                                                    <strong>{team.points}</strong>
                                                 </td>
                                             </tr>
                                         );

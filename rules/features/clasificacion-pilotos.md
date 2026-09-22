@@ -10,7 +10,9 @@ temporada, calculada a partir de los resultados ya cargados en la base.
 - Nuevo ítem **CAMPEONATO** en el mega menú **F1 ACTUAL** (antes "CLASIFICACIÓN";
   renombrado 2026-09-21, junto con los títulos "CAMPEONATO DE PILOTOS" /
   "CAMPEONATO DE CONSTRUCTORES").
-- La tabla muestra: **Posición · Nombre · Nacionalidad · Equipo Actual · Puntos**.
+- La tabla muestra: **Posición · Piloto · Puntos totales · Nacionalidad · Equipo Actual**
+  (mismo orden de las 3 primeras columnas — Posición, Piloto/Escudería, Puntos
+  totales — que la tabla de constructores, reordenado 2026-09-21).
 - Reutiliza el diseño de tablas `ranking-*` para mantener armonía visual.
 
 ## Regla de puntaje

@@ -2,6 +2,13 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-21 · Mismo orden de columnas en pilotos y constructores
+
+- Ambas tablas de `/standings` arrancan igual: Posición · Piloto/Escudería ·
+  Puntos totales, y después el resto de columnas propias de cada una
+  (Nacionalidad/Equipo Actual en pilotos; Pilotos en constructores). Antes
+  "Puntos" iba al final en las dos, y con nombres distintos ("Pos."/"Puntos").
+
 ## 2026-09-21 · Tabla de constructores: escuderías en 0 y columna de pilotos
 
 - `findConstructorsStandings` ya no filtra las escuderías con 0 puntos: se
