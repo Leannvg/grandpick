@@ -81,6 +81,7 @@ export async function create(req, res) {
             newRace.results = req.body.results.map(r => ({
                 position: r.position,
                 driver: r.driver ? new ObjectId(r.driver) : null,
+                team: r.team ? new ObjectId(r.team) : null,
             }));
             newRace.state = "Finalizado";
         }
@@ -125,7 +126,8 @@ export async function editById(req, res) {
             updates.results = hasAnyDriver
                 ? data.results.map(r => ({
                     position: r.position,
-                    driver: new ObjectId(r.driver)
+                    driver: new ObjectId(r.driver),
+                    team: r.team ? new ObjectId(r.team) : null
                 }))
                 : [];
         }

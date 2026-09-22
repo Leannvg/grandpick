@@ -16,6 +16,14 @@ export async function findAllRaces() {
             },
             {
                 $lookup: {
+                    from: "Teams",
+                    localField: "results.team",
+                    foreignField: "_id",
+                    as: "result_teams"
+                }
+            },
+            {
+                $lookup: {
                     from: "Circuits",
                     localField: "id_circuit",
                     foreignField: "_id",
@@ -51,13 +59,25 @@ export async function findAllRaces() {
                                         },
                                         0
                                     ]
+                                },
+                                team: {
+                                    $arrayElemAt: [
+                                        {
+                                            $filter: {
+                                                input: "$result_teams",
+                                                as: "t",
+                                                cond: { $eq: ["$$t._id", "$$res.team"] }
+                                            }
+                                        },
+                                        0
+                                    ]
                                 }
                             }
                         }
                     }
                 }
             },
-            { $project: { drivers: 0 } }
+            { $project: { drivers: 0, result_teams: 0 } }
         ]).toArray();
 
         return races;
@@ -90,6 +110,14 @@ export async function findAllRacesByYear(year) {
             },
             {
                 $lookup: {
+                    from: "Teams",
+                    localField: "results.team",
+                    foreignField: "_id",
+                    as: "result_teams"
+                }
+            },
+            {
+                $lookup: {
                     from: "Circuits",
                     localField: "id_circuit",
                     foreignField: "_id",
@@ -125,13 +153,25 @@ export async function findAllRacesByYear(year) {
                                         },
                                         0
                                     ]
+                                },
+                                team: {
+                                    $arrayElemAt: [
+                                        {
+                                            $filter: {
+                                                input: "$result_teams",
+                                                as: "t",
+                                                cond: { $eq: ["$$t._id", "$$res.team"] }
+                                            }
+                                        },
+                                        0
+                                    ]
                                 }
                             }
                         }
                     }
                 }
             },
-            { $project: { drivers: 0 } }
+            { $project: { drivers: 0, result_teams: 0 } }
         ]).toArray();
 
         return races;
@@ -248,6 +288,14 @@ export async function findRaceById(raceId) {
             },
             {
                 $lookup: {
+                    from: "Teams",
+                    localField: "results.team",
+                    foreignField: "_id",
+                    as: "result_teams"
+                }
+            },
+            {
+                $lookup: {
                     from: "Circuits",
                     localField: "id_circuit",
                     foreignField: "_id",
@@ -283,13 +331,25 @@ export async function findRaceById(raceId) {
                                         },
                                         0
                                     ]
+                                },
+                                team: {
+                                    $arrayElemAt: [
+                                        {
+                                            $filter: {
+                                                input: "$result_teams",
+                                                as: "t",
+                                                cond: { $eq: ["$$t._id", "$$res.team"] }
+                                            }
+                                        },
+                                        0
+                                    ]
                                 }
                             }
                         }
                     }
                 }
             },
-            { $project: { drivers: 0 } }
+            { $project: { drivers: 0, result_teams: 0 } }
         ]).toArray();
 
         if (result.length === 0) {

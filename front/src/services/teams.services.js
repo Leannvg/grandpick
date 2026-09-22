@@ -8,6 +8,10 @@ async function findTeamById(id){
     return apiFetch(`/api/teams/${id}`);
 }
 
+async function findConstructorsStandings(year){
+    return apiFetch(`/api/standings/constructors?year=${year}`);
+}
+
 async function createTeam(team){
     return apiFetch("/api/teams", {
         method: 'POST',
@@ -35,6 +39,7 @@ export default {
     findAll: findAllTeams,
     findTeamById,
     findById: findTeamById,
+    findConstructorsStandings,
     createTeam,
     create: createTeam,
     editTeam,

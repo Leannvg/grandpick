@@ -78,6 +78,90 @@ export async function deleteTeam(teamId) {
 }
 
 
+/**
+ * Arma la tabla de puntos (clasificación) de constructores de una temporada.
+ * Suma únicamente los resultados de sesiones que otorgan puntos al campeonato:
+ * Carrera y Sprint (la Qualy no otorga puntos, igual que en la F1 real).
+ *
+ * A diferencia de `findDriversStandings` (que muestra el equipo ACTUAL de
+ * cada piloto), acá se suma por `results[].team` — el equipo con el que ese
+ * piloto corrió esa carrera puntual — porque un piloto puede haber cambiado
+ * de escudería durante la temporada. Los resultados que todavía no tienen
+ * `team` cargado (carreras viejas, previas a este campo) no se cuentan y se
+ * informan aparte en `unresolvedResults`.
+ *
+ * @param {number|string} year - Año de la temporada. Por defecto el año actual.
+ * @returns {Promise<{ standings: Array, unresolvedResults: number }>}
+ */
+export async function findConstructorsStandings(year) {
+    try {
+        const db = await connectDB();
+
+        const season = Number(year) || new Date().getFullYear();
+        const start = new Date(`${season}-01-01T00:00:00.000Z`);
+        const end = new Date(`${season + 1}-01-01T00:00:00.000Z`);
+
+        const SCORING_TYPES = ["race", "sprint"];
+
+        const pointsSystems = await db.collection("Points_System").find().toArray();
+        const pointsSystemsMap = {};
+        pointsSystems.forEach((ps) => {
+            pointsSystemsMap[ps._id.toString()] = ps;
+        });
+
+        const races = await db.collection("Races").find({
+            date_gp_start: { $gte: start, $lt: end },
+            "results.0": { $exists: true }
+        }).toArray();
+
+        const pointsByTeam = {};
+        let unresolvedResults = 0;
+
+        for (const race of races) {
+            const ps = pointsSystemsMap[race.points_system?.toString()];
+            if (!ps || !Array.isArray(ps.points) || !SCORING_TYPES.includes(ps.type)) continue;
+
+            for (const result of race.results) {
+                if (!result?.driver) continue;
+                const earned = ps.points[result.position - 1] || 0;
+                if (!earned) continue;
+
+                if (!result.team) {
+                    unresolvedResults += 1;
+                    continue;
+                }
+                const teamId = result.team.toString();
+                pointsByTeam[teamId] = (pointsByTeam[teamId] || 0) + earned;
+            }
+        }
+
+        const teams = await db.collection("Teams").find().toArray();
+
+        const standings = teams
+            .map((t) => ({
+                _id: t._id,
+                name: t.name,
+                full_team_name: t.full_team_name,
+                color: t.color,
+                logo: t.logo,
+                isologo: t.isologo,
+                points: pointsByTeam[t._id.toString()] || 0
+            }))
+            .filter((t) => t.points > 0)
+            .sort((a, b) => b.points - a.points || a.name.localeCompare(b.name));
+
+        standings.forEach((t, index) => {
+            t.position = index + 1;
+        });
+
+        return { standings, unresolvedResults };
+    } catch (err) {
+        console.error("Error al armar la clasificación de constructores:", err);
+        throw err;
+    }
+}
+
+
 export async function findTeamWithDrivers(teamId) {
   const db = await connectDB();
 

@@ -733,6 +733,13 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     color: #888;
 }
 
+/* Select de escudería junto al de piloto, en la carga de resultados
+   (PredictionsForm.jsx dentro de RaceForm.jsx admin) */
+.gp-result-team-select {
+    border-left: 1px solid #d5d9e0;
+    min-width: 160px;
+}
+
 input[type="date"].form-control,
 input[type="time"].form-control {
     min-height: 44px;

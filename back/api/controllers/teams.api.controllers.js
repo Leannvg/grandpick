@@ -13,6 +13,16 @@ export async function findById(req, res) {
   res.status(200).json(team);
 }
 
+export async function constructorsStandings(req, res, next) {
+  try {
+    const year = req.query.year || new Date().getFullYear();
+    const result = await teamsServices.findConstructorsStandings(year);
+    res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+}
+
 
 export async function create(req, res, next) {
   try {

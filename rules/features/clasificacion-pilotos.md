@@ -58,5 +58,59 @@ Respuesta (`200`):
 ## Notas / posibles mejoras futuras
 
 - Desempate real estilo F1 (cantidad de P1, P2, ... ) si se necesita precisión.
-- Tabla de constructores (sumar por escudería) reutilizando el mismo cálculo.
 - Cachear el cálculo si el volumen de carreras crece.
+
+## Constructores (2026-09-21)
+
+Se agregó la tabla de constructores en la misma vista `/standings`, con un
+toggle **Pilotos / Constructores** (mismo patrón `.info-page__mode-btn` que
+Global/Por Gran Premio en `Ranking.jsx`).
+
+**No reutiliza el cálculo de pilotos tal cual**, a propósito: sumar por el
+equipo *actual* de cada piloto (como hace `findDriversStandings`) da mal en
+cuanto un piloto cambió de escudería a mitad de temporada, porque le
+atribuiría retroactivamente todos sus puntos viejos al equipo nuevo. Se
+detectó un caso real de esto en la base (un piloto que puntuó en carreras ya
+cargadas y hoy figura sin equipo/inactivo).
+
+En su lugar, `Races.results` suma un campo `team` por resultado (la
+escudería con la que ese piloto corrió *esa* carrera puntual — ver
+[logica.md](../logica.md)), y constructores suma por ese campo.
+
+### Backend
+
+| Archivo | Cambio |
+|---|---|
+| `back/api/controllers/races.api.controllers.js` (`create`, `editById`) | Persisten `results[].team` junto a `position`/`driver`. |
+| `back/services/races.services.js` | Los aggregates de lectura resuelven `results[].team` contra `Teams` (igual que ya hacían con `driver`). |
+| `back/services/teams.services.js` | + `findConstructorsStandings(year)`: suma puntos por `results[].team`; devuelve `{ standings, unresolvedResults }` — `unresolvedResults` son resultados puntuables sin `team` cargado (carreras previas a este campo), que no se cuentan. |
+| `back/api/controllers/teams.api.controllers.js` + `back/api/routes/teams.api.routes.js` | + `GET /api/standings/constructors?year=` (público), declarado antes de `/api/teams/:teamId`. |
+
+Respuesta (`200`):
+```json
+{
+  "standings": [
+    { "_id":"...", "position":1, "name":"McLaren", "full_team_name":"...",
+      "color":"#...", "logo":"...", "isologo":"...", "points":520 }
+  ],
+  "unresolvedResults": 12
+}
+```
+
+### Frontend
+
+| Archivo | Cambio |
+|---|---|
+| `front/src/components/PredictionsForm.jsx` (usado solo dentro de `RaceForm.jsx`, no en las predicciones de usuarios) | Cada fila de resultado suma un segundo `SearchableSelect` para la escudería (`.gp-result-team-select`), alimentado por `TeamsServices.findAll()`. Al elegir el piloto se sugiere su equipo actual (`driver.team_info`), pero queda editable. Callback renombrado `onDriverChange` → `onResultChange(pointId, position, driverId, teamId)`. |
+| `front/src/services/teams.services.js` | + `findConstructorsStandings(year)` → `GET /api/standings/constructors?year=`. |
+| `front/src/pages/Standings.jsx` | Toggle Pilotos/Constructores; tabla constructores (Pos · Escudería · Puntos); aviso si `unresolvedResults > 0`; `Podium` reutilizado con `img: team.isologo` para el top 3. |
+
+### Backfill de carreras ya cargadas
+
+Las carreras cargadas antes de este cambio no tienen `team` en sus
+resultados y por lo tanto no suman a constructores (quedan en
+`unresolvedResults`) hasta completarlas a mano reeditándolas en el admin
+(`RaceForm.jsx`, ahora con el selector de escudería) con el equipo real que
+tenía cada piloto en esa carrera puntual — investigado carrera por carrera,
+no asumido por el equipo actual ni por el anuncio de alineación de
+pre-temporada (puede no reflejar cambios posteriores).

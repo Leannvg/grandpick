@@ -38,9 +38,19 @@ nivel documento: **la sesión se identifica por `points_system`**.
 _id, id_circuit (ObjectId -> Circuits), points_system (ObjectId -> Points_System),
 date_gp_start, date_gp_end, date_race (Date),
 state ("Pendiente" | "Finalizado"),
-results: [ { position: Number, driver: ObjectId -> Drivers } ]
+results: [ { position: Number, driver: ObjectId -> Drivers, team: ObjectId -> Teams | null } ]
 ```
-`results` vacío = sesión sin cargar todavía.
+`results` vacío = sesión sin cargar todavía. `results[].team` guarda la
+escudería con la que ese piloto corrió **esa carrera puntual** (no el equipo
+actual del piloto): un piloto puede cambiar de escudería durante la
+temporada, y `Drivers.team` es un único campo mutable sin historial (se
+sobreescribe sin dejar rastro desde `Assignments.jsx`/`DriverForm.jsx`). Por
+eso el campeonato de constructores no puede calcularse a partir del equipo
+actual del piloto — necesita este campo por resultado. Se carga en el mismo
+formulario de resultados (`RaceForm.jsx` → `PredictionsForm.jsx`), sugerido
+en base al equipo actual del piloto pero editable. Carreras cargadas antes de
+este campo tienen `team: null` (o el campo ausente) y no se cuentan en
+constructores hasta que se complete manualmente.
 
 ### Otras
 - `Users`, `Tokens` — cuentas y auth (JWT en header `auth-token`).
@@ -59,6 +69,21 @@ results: [ { position: Number, driver: ObjectId -> Drivers } ]
   cargados.
 - Implementado en `back/services/drivers.services.js` →
   `findDriversStandings(year)`. Ver [features/clasificacion-pilotos.md](./features/clasificacion-pilotos.md).
+- El equipo que se muestra ahí es el **equipo actual** del piloto
+  (`Drivers.team`), no el que tenía en cada carrera puntual — por eso la
+  columna se llama "Equipo Actual". Es una simplificación aceptada para
+  pilotos, pero no sirve para sumar constructores (ver abajo).
+
+### Puntos de los CONSTRUCTORES (campeonato real) — Clasificación
+- Misma regla de puntaje que pilotos (Carrera + Sprint, `qualifying` no
+  otorga), pero sumando por `results[].team` en vez del equipo actual del
+  piloto — así un cambio de escudería a mitad de año no le atribuye
+  retroactivamente todos los puntos viejos al equipo nuevo.
+- Implementado en `back/services/teams.services.js` →
+  `findConstructorsStandings(year)`. Devuelve `{ standings, unresolvedResults }`;
+  `unresolvedResults` cuenta resultados puntuables cuyo `team` todavía no está
+  cargado (carreras viejas, previas a este campo) — esos puntos no se suman
+  hasta completarlos.
 
 ### Puntos del JUEGO de predicciones (usuarios)
 - `back/services/points.services.js` → `updatePointsAfterRace(raceId)`.

@@ -78,10 +78,10 @@ function RaceForm({
 
       const reorderedResults = [];
       (rt.results || []).forEach(r => {
-        console.log("r:", r)
         reorderedResults[r.position - 1] = {
           position: r.position,
-          driver: r.driver
+          driver: r.driver,
+          team: r.team
         };
       });
 
@@ -112,13 +112,14 @@ function RaceForm({
     setCircuitTimezone(selectedOption?.timezone || "");
   };
 
-  const handleDriverChange = useCallback((pointId, position, driverId) => {
+  const handleResultChange = useCallback((pointId, position, driverId, teamId) => {
     setPointData((prev) => {
       const updatedResults = [...(prev[pointId]?.results || [])];
 
       updatedResults[position] = {
         position: position + 1,
-        driver: driverId
+        driver: driverId,
+        team: teamId || null,
       };
 
       return {
@@ -314,6 +315,7 @@ function RaceForm({
           .map((r, idx) => ({
             position: r.position ?? idx + 1,
             driver: r.driver.toString(),
+            team: r.team ? r.team.toString() : null,
           }));
 
       for (const p of points) {
@@ -678,7 +680,7 @@ function RaceForm({
                     <PredictionsForm
                       points={p}
                       race_types={raceTypes}
-                      onDriverChange={handleDriverChange}
+                      onResultChange={handleResultChange}
                     />
                   ) : (
                     <div className="text-muted p-3">

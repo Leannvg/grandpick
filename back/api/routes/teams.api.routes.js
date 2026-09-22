@@ -20,6 +20,9 @@ router.route('/api/teams')
     teamsControllers.create
   );
 
+router.route('/api/standings/constructors')
+  .get(teamsControllers.constructorsStandings);
+
 router.route('/api/teams/:teamId')
   .get(teamsControllers.findById)
   .delete(teamsControllers.deleteById)

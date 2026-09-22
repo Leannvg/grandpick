@@ -38,7 +38,7 @@ correspondiente (ruta, props, para qué sirve, notas de reuso).
 
 | Componente | Ruta | Props | Para qué sirve |
 |---|---|---|---|
-| `Podium` | `components/Podium.jsx` | `entries`: `[{ id, rank (1-3), firstName, lastName, country (iso2), points, img, subtitle? }]` | Podio de 3 tarjetas estilo F1/F2 (foto, nombre, bandera, puntos, animaciones `framer-motion`, brillo y `Confetti`). Reordena solo (2º·1º·3º en desktop, apilado en mobile) y no renderiza nada si no hay entradas. Estilos en `assets/styles/podium.css`. Usado en `Home.jsx` (global), `Ranking.jsx` (global y por Gran Premio, cambia con el GP/año) y `Standings.jsx` (pilotos, con `subtitle` = escudería). |
+| `Podium` | `components/Podium.jsx` | `entries`: `[{ id, rank (1-3), firstName, lastName, country (iso2), points, img, subtitle? }]` | Podio de 3 tarjetas estilo F1/F2 (foto, nombre, bandera, puntos, animaciones `framer-motion`, brillo y `Confetti`). Reordena solo (2º·1º·3º en desktop, apilado en mobile) y no renderiza nada si no hay entradas. Estilos en `assets/styles/podium.css`. Usado en `Home.jsx` (global), `Ranking.jsx` (global y por Gran Premio, cambia con el GP/año) y `Standings.jsx` (pilotos con `subtitle` = escudería; constructores con `img` = `isologo` del equipo y `country`/`subtitle` vacíos). |
 | `Confetti` | `components/Confetti.jsx` | `count` (14), `colors`, `seed`, `speed`, `roundRatio` | Confeti que cae en loop (`framer-motion`, sin interacción) dentro del contenedor posicionado más cercano; clases `.confetti`/`.confetti__piece` en `home.css`. No renderiza con `prefers-reduced-motion`. `seed`/`speed`/`roundRatio` permiten variar cada instancia (distribución, velocidad, círculos vs. tiras). Usado en las 3 tarjetas del podio del Home. |
 
 ## Loaders

@@ -2,6 +2,25 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-21 · Campeonato de constructores
+
+- Se agrega la clasificación de constructores a `/standings` (toggle
+  Pilotos/Constructores). Requirió un cambio de modelo: `Races.results` ahora
+  guarda `team` por resultado (la escudería con la que corrió ese piloto esa
+  carrera puntual), porque sumar por el equipo *actual* del piloto (como hace
+  pilotos) da mal apenas hay un cambio de escudería a mitad de temporada —
+  caso real detectado en la base al investigar esto.
+- Nuevo `findConstructorsStandings(year)` en `back/services/teams.services.js`
+  + endpoint `GET /api/standings/constructors`. `RaceForm.jsx` (vía
+  `PredictionsForm.jsx`) suma un selector de escudería por resultado, sugerido
+  a partir del equipo actual del piloto y editable.
+- **Pendiente**: backfillear las carreras ya cargadas (no tienen `team` en
+  sus resultados, no suman a constructores todavía — se informan como
+  `unresolvedResults`). Requiere investigar caso por caso qué equipo tenía
+  cada piloto en cada carrera ya jugada; bloqueado por ahora en una lectura de
+  la base de producción que el modo automático no autorizó.
+- Detalle completo: [features/clasificacion-pilotos.md](./features/clasificacion-pilotos.md).
+
 ## 2026-09-20 · Podio desktop: puntos en el renglón del nombre
 
 - Desktop: bandera · nombre · puntos comparten fila (puntos a la derecha) y la

@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import DriversServices from "../services/drivers.services.js";
+import TeamsServices from "../services/teams.services.js";
 import SearchableSelect from "./SearchableSelect.jsx";
 
-function PredictionsForm({ points = {}, race_types = [], onDriverChange }) {
+function PredictionsForm({ points = {}, race_types = [], onResultChange }) {
   const [drivers, setDrivers] = useState([]);
+  const [teams, setTeams] = useState([]);
   const [selections, setSelections] = useState([]);
+  const [teamSelections, setTeamSelections] = useState([]);
   const [invalidIndexes, setInvalidIndexes] = useState([]);
 
 
@@ -14,43 +17,50 @@ function PredictionsForm({ points = {}, race_types = [], onDriverChange }) {
 
   useEffect(() => {
     DriversServices.findAll().then(setDrivers);
+    TeamsServices.findAll().then(setTeams);
   }, []);
 
   useEffect(() => {
     if (!raceType) return;
     const total = points.points.length;
     const base = Array(total).fill("");
+    const baseTeams = Array(total).fill("");
 
     if (raceType.results?.length > 0) {
       const restored = [...base];
+      const restoredTeams = [...baseTeams];
 
       raceType.results.forEach(r => {
         const idx = r.position - 1;
         if (idx >= 0 && idx < total) {
           restored[idx] = r.driver?._id || r.driver;
+          restoredTeams[idx] = r.team?._id || r.team || "";
         }
       });
 
       setSelections(restored);
+      setTeamSelections(restoredTeams);
       setInvalidIndexes([]);
 
       restored.forEach((driverId, index) => {
-        onDriverChange(points._id, index, driverId);
+        onResultChange(points._id, index, driverId, restoredTeams[index]);
       });
     }
     else {
 
       setSelections(base);
+      setTeamSelections(baseTeams);
       setInvalidIndexes([]);
 
       base.forEach((driverId, index) => {
-        onDriverChange(points._id, index, driverId);
+        onResultChange(points._id, index, driverId, "");
       });
     }
-  }, [raceType, points, onDriverChange]);
+  }, [raceType, points, onResultChange]);
 
   const handleChange = (index, value) => {
     const updated = [...selections];
+    const updatedTeams = [...teamSelections];
     const newInvalids = [...invalidIndexes];
 
     if (value !== "") {
@@ -66,15 +76,28 @@ function PredictionsForm({ points = {}, race_types = [], onDriverChange }) {
 
 
     updated[index] = value;
+    // Sugiere el equipo actual del piloto elegido; queda editable con el
+    // select de al lado (reemplazos, cambios de escudería, carga histórica).
+    const selectedDriver = drivers.find((d) => d._id === value);
+    updatedTeams[index] = selectedDriver?.team_info?._id || selectedDriver?.team || "";
+
     const cleanedInvalids = newInvalids.filter((i) => i !== index);
 
     setSelections(updated);
+    setTeamSelections(updatedTeams);
     setInvalidIndexes(cleanedInvalids);
 
 
     updated.forEach((driverId, idx) => {
-      onDriverChange(points._id, idx, driverId);
+      onResultChange(points._id, idx, driverId, updatedTeams[idx]);
     });
+  };
+
+  const handleTeamChange = (index, value) => {
+    const updatedTeams = [...teamSelections];
+    updatedTeams[index] = value;
+    setTeamSelections(updatedTeams);
+    onResultChange(points._id, index, selections[index] || "", value);
   };
 
   return (
@@ -99,6 +122,15 @@ function PredictionsForm({ points = {}, race_types = [], onDriverChange }) {
                     color: d.team_info?.color || "#ccc",
                   }))}
                 placeholder="Seleccione un piloto"
+              />
+            </div>
+            <div className="flex-fill gp-result-team-select">
+              <SearchableSelect
+                value={teamSelections[index] || ""}
+                onChange={(selected) => handleTeamChange(index, selected?.value || "")}
+                options={teams.map((t) => ({ _id: t._id, name: t.name, color: t.color }))}
+                placeholder="Escudería"
+                isDisabled={!selections[index]}
               />
             </div>
           </div>
