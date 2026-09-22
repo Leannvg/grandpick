@@ -14,11 +14,12 @@ Orden cronológico inverso (lo más nuevo arriba).
   + endpoint `GET /api/standings/constructors`. `RaceForm.jsx` (vía
   `PredictionsForm.jsx`) suma un selector de escudería por resultado, sugerido
   a partir del equipo actual del piloto y editable.
-- **Pendiente**: backfillear las carreras ya cargadas (no tienen `team` en
-  sus resultados, no suman a constructores todavía — se informan como
-  `unresolvedResults`). Requiere investigar caso por caso qué equipo tenía
-  cada piloto en cada carrera ya jugada; bloqueado por ahora en una lectura de
-  la base de producción que el modo automático no autorizó.
+- **Backfill de las 33 carreras ya cargadas (hecho)**: investigado ronda por
+  ronda con fuentes reales (RacingNews365, Sky Sports, F1.com). Solo Hadjar y
+  Lawson necesitaban un equipo distinto al "actual" de la base, por un
+  reemplazo real de mitad de temporada (lesión de muñeca de Hadjar: Lawson lo
+  reemplazó en Red Bull desde el GP de Países Bajos). Script de un solo uso,
+  ya descartado tras aplicarse; `unresolvedResults` quedó en 0.
 - Detalle completo: [features/clasificacion-pilotos.md](./features/clasificacion-pilotos.md).
 
 ## 2026-09-20 · Podio desktop: puntos en el renglón del nombre

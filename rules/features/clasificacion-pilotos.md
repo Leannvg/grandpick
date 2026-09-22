@@ -105,12 +105,31 @@ Respuesta (`200`):
 | `front/src/services/teams.services.js` | + `findConstructorsStandings(year)` → `GET /api/standings/constructors?year=`. |
 | `front/src/pages/Standings.jsx` | Toggle Pilotos/Constructores; tabla constructores (Pos · Escudería · Puntos); aviso si `unresolvedResults > 0`; `Podium` reutilizado con `img: team.isologo` para el top 3. |
 
-### Backfill de carreras ya cargadas
+### Backfill de las 33 carreras ya cargadas (hecho, 2026-09-21)
 
-Las carreras cargadas antes de este cambio no tienen `team` en sus
-resultados y por lo tanto no suman a constructores (quedan en
-`unresolvedResults`) hasta completarlas a mano reeditándolas en el admin
-(`RaceForm.jsx`, ahora con el selector de escudería) con el equipo real que
-tenía cada piloto en esa carrera puntual — investigado carrera por carrera,
-no asumido por el equipo actual ni por el anuncio de alineación de
-pre-temporada (puede no reflejar cambios posteriores).
+Se investigó carrera por carrera (fuentes: RacingNews365, Sky Sports, F1.com)
+qué escudería tenía cada piloto en cada una de las 14 rondas ya jugadas de
+2026, y se corrió un script de una sola vez (`back/scripts/backfillResultsTeam.js`,
+ya descartado tras aplicarse) que completó `results[].team` en los 222
+resultados de las 33 carreras. `unresolvedResults` quedó en 0.
+
+De los 20 pilotos que puntuaron, **18 ya tenían el equipo correcto en
+`Drivers.team`** (su equipo "actual" coincidía con el de todas sus
+apariciones). Dos necesitaron un valor distinto según la fecha, por un caso
+real de reemplazo por lesión:
+- **Hadjar**: corrió con **Red Bull** en las 11 rondas donde aparece
+  (Australia 05/03 a Hungría 23/07). La base lo tenía sin equipo/inactivo.
+- **Lawson**: corrió con **Racing Bulls** en esas mismas rondas, y pasó a
+  **Red Bull** desde Países Bajos (20/08) en adelante — reemplazando a un
+  Hadjar que se fracturó la muñeca en el receso de verano y se perdió los
+  Grandes Premios de Países Bajos, Italia y España. La base lo tenía fijo en
+  Red Bull para toda la temporada.
+- Como consecuencia, Tsunoda (que reemplazó a Lawson en Racing Bulls durante
+  esas 3 fechas) ya tenía el equipo correcto — solo aparece puntuando en
+  Italia, donde su equipo actual (Racing Bulls) ya era el dato correcto.
+
+Verificación posterior (`Mercedes 503 pts = Antonelli 292 + Russell 211`,
+exacto) confirmó el cálculo. De acá en adelante, toda carrera nueva captura
+`team` al cargar resultados (`RaceForm.jsx`), así que no debería volver a
+hacer falta un backfill manual salvo que se detecte otro caso similar no
+capturado a tiempo por el admin.
