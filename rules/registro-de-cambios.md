@@ -2,6 +2,15 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-22 · Pills de piloto en constructores: trigrama y puntos destacados
+
+- La columna "Pilotos" de constructores muestra el **trigrama** de cada
+  piloto (antes el nombre completo), con el nombre completo como `title`
+  (tooltip). El backend suma `trigram` a `findConstructorsStandings`.
+- Los puntos de cada piloto pasan a un chip aparte dentro de la pill
+  (`.team-driver-pill__points`, fondo `--color-accent`, texto blanco) para
+  que resalten más que antes (antes solo negrita).
+
 ## 2026-09-21 · Mismo orden de columnas en pilotos y constructores
 
 - Ambas tablas de `/standings` arrancan igual: Posición · Piloto/Escudería ·

@@ -151,6 +151,7 @@ export async function findConstructorsStandings(year) {
             driversByTeam[teamId].push({
                 _id: d._id,
                 full_name: d.full_name,
+                trigram: d.trigram,
                 points: pointsByDriver[d._id.toString()] || 0
             });
         });

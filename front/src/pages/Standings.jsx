@@ -264,9 +264,15 @@ function Standings() {
                                                 <td className="text-start">
                                                     {team.drivers && team.drivers.length > 0 ? (
                                                         team.drivers.map((driver) => (
-                                                            <span key={driver._id} className="team-driver-pill">
-                                                                {driver.full_name}
-                                                                <strong>{driver.points}</strong>
+                                                            <span
+                                                                key={driver._id}
+                                                                className="team-driver-pill"
+                                                                title={driver.full_name}
+                                                            >
+                                                                {driver.trigram || driver.full_name}
+                                                                <strong className="team-driver-pill__points">
+                                                                    {driver.points}
+                                                                </strong>
                                                             </span>
                                                         ))
                                                     ) : (

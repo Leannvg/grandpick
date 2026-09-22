@@ -85,8 +85,17 @@
     white-space: nowrap;
 }
 
-.team-driver-pill strong {
-    color: #111;
+.team-driver-pill__points {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    background-color: var(--color-accent, #3975A2);
+    color: #fff;
+    font-size: 0.75rem;
+    line-height: 1.5;
 }
 
 .team-driver-pill--empty {
