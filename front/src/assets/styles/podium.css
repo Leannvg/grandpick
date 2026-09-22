@@ -192,19 +192,19 @@
 
   /* Tarjetas angostas: el texto ocupa todo el ancho y va debajo de la foto */
   .podium__item {
-    --podium-height: 210px;
+    --podium-height: 245px;
     --podium-photo: 130px;
     height: var(--podium-height);
     order: 0;
   }
 
   .podium__item--pos1 {
-    --podium-height: 240px;
+    --podium-height: 275px;
     --podium-photo: 160px;
   }
 
   .podium__item--pos3 {
-    --podium-height: 200px;
+    --podium-height: 235px;
     --podium-photo: 120px;
   }
 

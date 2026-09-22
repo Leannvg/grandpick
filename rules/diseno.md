@@ -67,7 +67,7 @@ piloto), `.podium__flag` y `.podium__points` (abajo, grande).
 
 - **Mobile**: tarjetas apiladas en columna, orden 1º · 2º · 3º (`order` CSS).
 - **Desktop (≥992px)**: grilla de 3 columnas en orden DOM 2º · 1º · 3º,
-  alineadas abajo; el 1º más alto (330px), 2º 290px, 3º 280px. Las tarjetas
+  alineadas abajo; el 1º más alto (275px), 2º 245px, 3º 235px. Las tarjetas
   son angostas, así que el texto ocupa todo el ancho **debajo de la foto**
   (nombre y escudería sin truncarse).
 - **Mobile**: la foto va centrada verticalmente y la bandera a la izquierda del

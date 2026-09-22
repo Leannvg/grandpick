@@ -2,12 +2,15 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
-## 2026-09-21 · Podio: sin borde en la foto y menos espacio hasta el texto
+## 2026-09-21 · Podio: sin borde en la foto y ajuste de alturas en desktop
 
 - Se quita el borde blanco de `.podium__photo`.
-- En desktop, las tarjetas bajan de altura (330/290/280 → 240/210/200 según
-  puesto) para acercar el nombre/puntos a la foto; antes quedaba un hueco
-  grande porque el texto se ancla siempre abajo de la tarjeta.
+- Primer ajuste: las tarjetas bajan de altura (330/290/280 → 210/240/200 según
+  puesto) para acercar el nombre/puntos a la foto.
+- Ajuste posterior: ese achique fue demasiado — con subtítulo (escudería,
+  Standings) el texto quedaba pisando la foto, y sin subtítulo (Home/Ranking
+  global) casi sin aire. Alturas finales 235/275/245 (pos3/pos1/pos2), que dan
+  un margen prolijo en ambos casos (verificado con captura de ambos layouts).
 
 ## 2026-09-21 · Campeonato de constructores
 
