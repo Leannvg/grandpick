@@ -2,6 +2,13 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-21 · Podio: sin borde en la foto y menos espacio hasta el texto
+
+- Se quita el borde blanco de `.podium__photo`.
+- En desktop, las tarjetas bajan de altura (330/290/280 → 240/210/200 según
+  puesto) para acercar el nombre/puntos a la foto; antes quedaba un hueco
+  grande porque el texto se ancla siempre abajo de la tarjeta.
+
 ## 2026-09-21 · Campeonato de constructores
 
 - Se agrega la clasificación de constructores a `/standings` (toggle
