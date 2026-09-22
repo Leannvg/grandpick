@@ -2,6 +2,20 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-21 · Constructores en mobile: tarjetas en vez de tabla
+
+- La tabla de constructores rompía en mobile: "Puntos" quedaba fuera de
+  pantalla (scroll horizontal) y la columna de pilotos rompía la fila.
+- Se reemplaza, solo en `<768px`, por tarjetas propias (`.constructors-card`):
+  Pos + Escudería + Puntos siempre visibles arriba, pilotos envolviendo
+  debajo. Desktop sigue usando la tabla (`d-none d-md-table` / `d-md-none`,
+  mismo patrón que otros toggles responsive del proyecto).
+- Nota técnica: se descartó forzar la `<table>` a `display:flex` en mobile
+  por un bug de Chromium (la última celda desaparece con contenedor de ancho
+  porcentual); confirmado midiendo `getBoundingClientRect()` en vez de
+  confiar en capturas de headless Chrome, que resultaron no confiables para
+  este caso.
+
 ## 2026-09-21 · Tabla de constructores: escuderías en 0 y columna de pilotos
 
 - `findConstructorsStandings` ya no filtra las escuderías con 0 puntos: se

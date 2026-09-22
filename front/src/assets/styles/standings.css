@@ -104,3 +104,63 @@
         min-width: 560px;
     }
 }
+
+/* Constructores en mobile (<768px, ver Standings.jsx): tarjetas en vez de
+   tabla. Se probó forzar la tabla a flex con CSS, pero un <table> con
+   `display:flex` en la fila tiene un bug de layout en Chromium que hace
+   desaparecer la última celda cuando el ancho del contenedor es porcentual
+   — por eso acá es markup propio (divs), sin ningún elemento de tabla. */
+.constructors-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px #0002;
+}
+
+.constructors-card__top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.constructors-card__top .pos-cell {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background-color: #eef1f4;
+}
+
+.constructors-card__top .team-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1 1 0%;
+    min-width: 0;
+}
+
+.constructors-card__top .team-cell span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.constructors-card__points {
+    flex: 0 0 auto;
+    font-weight: 700;
+    color: #111;
+}
+
+.constructors-card__points strong {
+    font-size: 1.1rem;
+}
+
+.constructors-card__drivers {
+    padding-top: 8px;
+    border-top: 1px solid #f0f0f0;
+}
