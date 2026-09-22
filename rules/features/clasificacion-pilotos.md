@@ -93,11 +93,21 @@ Respuesta (`200`):
 {
   "standings": [
     { "_id":"...", "position":1, "name":"McLaren", "full_team_name":"...",
-      "color":"#...", "logo":"...", "isologo":"...", "points":520 }
+      "color":"#...", "logo":"...", "isologo":"...", "points":520,
+      "drivers": [
+        { "_id":"...", "full_name":"Lando Norris", "points":280 },
+        { "_id":"...", "full_name":"Oscar Piastri", "points":240 }
+      ] }
   ],
   "unresolvedResults": 12
 }
 ```
+
+Se listan **todas** las escuderías (sumen o no puntos todavía), no solo las
+que ya puntuaron. `drivers` es el plantel **actual** de cada escudería
+(`Drivers.team`, mismo criterio que la tabla de escuderías del admin — no el
+histórico por carrera), con el total de puntos de la temporada de cada
+piloto (mismo cálculo que pilotos), ordenado de mayor a menor.
 
 ### Frontend
 
@@ -105,7 +115,8 @@ Respuesta (`200`):
 |---|---|
 | `front/src/components/PredictionsForm.jsx` (usado solo dentro de `RaceForm.jsx`, no en las predicciones de usuarios) | Cada fila de resultado suma un segundo `SearchableSelect` para la escudería (`.gp-result-team-select`), alimentado por `TeamsServices.findAll()`. Al elegir el piloto se sugiere su equipo actual (`driver.team_info`), pero queda editable. Callback renombrado `onDriverChange` → `onResultChange(pointId, position, driverId, teamId)`. |
 | `front/src/services/teams.services.js` | + `findConstructorsStandings(year)` → `GET /api/standings/constructors?year=`. |
-| `front/src/pages/Standings.jsx` | Toggle Pilotos/Constructores; tabla constructores (Pos · Escudería · Puntos); aviso si `unresolvedResults > 0`; `Podium` reutilizado con `img: team.isologo` para el top 3. |
+| `front/src/pages/Standings.jsx` | Toggle Pilotos/Constructores; tabla constructores (Pos · Escudería · Pilotos · Puntos, todas las escuderías aunque tengan 0 puntos); columna "Pilotos" con una pill por piloto del plantel actual (`.team-driver-pill`, mismo lenguaje visual que `.admin-status-pill.pill-driver` del admin) con sus puntos de la temporada al lado; aviso si `unresolvedResults > 0`; `Podium` reutilizado con `img: team.isologo` para el top 3. |
+| `front/src/assets/styles/standings.css` | + `.team-driver-pill` / `.team-driver-pill--empty`; `.standings-table--constructors` (min-width mayor en la tabla de constructores por la columna de pilotos). |
 
 ### Backfill de las 33 carreras ya cargadas (hecho, 2026-09-21)
 

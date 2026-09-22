@@ -232,11 +232,12 @@ function Standings() {
                                 </tbody>
                             </table>
                         ) : (
-                            <table className="ranking-table standings-table">
+                            <table className="ranking-table standings-table standings-table--constructors">
                                 <thead>
                                     <tr>
                                         <th className="w-50px">Pos.</th>
                                         <th className="text-start">Escudería</th>
+                                        <th className="text-start">Pilotos</th>
                                         <th className="w-120px">Puntos</th>
                                     </tr>
                                 </thead>
@@ -257,6 +258,20 @@ function Standings() {
                                                         <span>{team.name}</span>
                                                     </div>
                                                 </td>
+                                                <td className="text-start">
+                                                    {team.drivers && team.drivers.length > 0 ? (
+                                                        team.drivers.map((driver) => (
+                                                            <span key={driver._id} className="team-driver-pill">
+                                                                {driver.full_name}
+                                                                <strong>{driver.points}</strong>
+                                                            </span>
+                                                        ))
+                                                    ) : (
+                                                        <span className="team-driver-pill team-driver-pill--empty">
+                                                            Sin pilotos
+                                                        </span>
+                                                    )}
+                                                </td>
                                                 <td className="points-cell">
                                                     <strong>{team.points}</strong>
                                                 </td>
@@ -265,7 +280,7 @@ function Standings() {
                                     })}
                                     {filteredConstructors.length === 0 && (
                                         <tr>
-                                            <td colSpan="3" className="ranking-empty-state">
+                                            <td colSpan="4" className="ranking-empty-state">
                                                 No hay datos de clasificación para esta temporada
                                             </td>
                                         </tr>

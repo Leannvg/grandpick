@@ -115,6 +115,7 @@ export async function findConstructorsStandings(year) {
         }).toArray();
 
         const pointsByTeam = {};
+        const pointsByDriver = {};
         let unresolvedResults = 0;
 
         for (const race of races) {
@@ -126,6 +127,9 @@ export async function findConstructorsStandings(year) {
                 const earned = ps.points[result.position - 1] || 0;
                 if (!earned) continue;
 
+                const driverId = result.driver.toString();
+                pointsByDriver[driverId] = (pointsByDriver[driverId] || 0) + earned;
+
                 if (!result.team) {
                     unresolvedResults += 1;
                     continue;
@@ -135,8 +139,25 @@ export async function findConstructorsStandings(year) {
             }
         }
 
+        // Plantel actual por escudería (mismo criterio que la tabla de
+        // escuderías del admin: `Drivers.team`, no el histórico por carrera),
+        // con los puntos totales de la temporada de cada piloto.
+        const drivers = await db.collection("Drivers").find({ active: { $ne: false } }).toArray();
+        const driversByTeam = {};
+        drivers.forEach((d) => {
+            if (!d.team) return;
+            const teamId = d.team.toString();
+            if (!driversByTeam[teamId]) driversByTeam[teamId] = [];
+            driversByTeam[teamId].push({
+                _id: d._id,
+                full_name: d.full_name,
+                points: pointsByDriver[d._id.toString()] || 0
+            });
+        });
+
         const teams = await db.collection("Teams").find().toArray();
 
+        // Se listan todas las escuderías, sumen o no puntos todavía.
         const standings = teams
             .map((t) => ({
                 _id: t._id,
@@ -145,9 +166,10 @@ export async function findConstructorsStandings(year) {
                 color: t.color,
                 logo: t.logo,
                 isologo: t.isologo,
-                points: pointsByTeam[t._id.toString()] || 0
+                points: pointsByTeam[t._id.toString()] || 0,
+                drivers: (driversByTeam[t._id.toString()] || [])
+                    .sort((a, b) => b.points - a.points)
             }))
-            .filter((t) => t.points > 0)
             .sort((a, b) => b.points - a.points || a.name.localeCompare(b.name));
 
         standings.forEach((t, index) => {

@@ -2,6 +2,16 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-21 · Tabla de constructores: escuderías en 0 y columna de pilotos
+
+- `findConstructorsStandings` ya no filtra las escuderías con 0 puntos: se
+  listan todas.
+- Nueva columna **Pilotos** en la tabla: una pill por piloto del plantel
+  actual de la escudería (mismo criterio que la tabla de escuderías del
+  admin), con sus puntos de la temporada al lado. Estilo `.team-driver-pill`
+  en `standings.css`, inspirado en `.admin-status-pill.pill-driver` del panel
+  admin pero para la tabla pública.
+
 ## 2026-09-21 · Renombrar "Clasificación" a "Campeonato"
 
 - Ítem del mega menú `Nav.jsx`: "CLASIFICACIÓN" → "CAMPEONATO".

@@ -67,6 +67,38 @@
     color: #111;
 }
 
+/* Pill de piloto en la tabla de constructores (mismo lenguaje visual que
+   .admin-status-pill.pill-driver del panel admin, adaptado a la tabla
+   pública), con los puntos de la temporada al lado del nombre. */
+.team-driver-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    margin: 2px 4px 2px 0;
+    border-radius: 12px;
+    background-color: #f1f3f5;
+    border: 1px solid #ced4da;
+    color: #343a40;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.team-driver-pill strong {
+    color: #111;
+}
+
+.team-driver-pill--empty {
+    font-style: italic;
+    font-weight: 400;
+    color: #868e96;
+}
+
+.standings-table--constructors {
+    min-width: 640px;
+}
+
 @media (max-width: 767px) {
     .standings-table {
         min-width: 560px;
