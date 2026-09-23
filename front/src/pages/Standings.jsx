@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useLoader } from "../context/LoaderContext";
 import DriversServices from "../services/drivers.services";
 import TeamsServices from "../services/teams.services";
@@ -15,6 +16,8 @@ function Standings() {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const { showLoader, hideLoader } = useLoader();
+    const reduceMotion = useReducedMotion();
+    const isSearching = searchTerm.trim().length > 0;
 
     useEffect(() => {
         if (mode !== "drivers") return;
@@ -126,40 +129,41 @@ function Standings() {
                 </header>
 
                 <div className="standings-filters">
-                    <div className="standings-mode-toggle d-flex gap-2">
-                        <button
-                            className={`info-page__mode-btn btn-mode ${mode === "drivers" ? "is-active" : ""}`}
-                            onClick={() => setMode("drivers")}
-                        >
-                            Pilotos
-                        </button>
-                        <button
-                            className={`info-page__mode-btn btn-mode ${mode === "constructors" ? "is-active" : ""}`}
-                            onClick={() => setMode("constructors")}
-                        >
-                            Constructores
-                        </button>
+                    <div className="standings-filters__left d-flex flex-wrap gap-2 align-items-center">
+                        <div className="standings-mode-toggle d-flex gap-2">
+                            <button
+                                className={`info-page__mode-btn btn-mode ${mode === "drivers" ? "is-active" : ""}`}
+                                onClick={() => setMode("drivers")}
+                            >
+                                Pilotos
+                            </button>
+                            <button
+                                className={`info-page__mode-btn btn-mode ${mode === "constructors" ? "is-active" : ""}`}
+                                onClick={() => setMode("constructors")}
+                            >
+                                Constructores
+                            </button>
+                        </div>
+
+                        <div className="ranking-input-group h-38px">
+                            <span className="ranking-input-group-text">Año</span>
+                            <select
+                                value={selectedYear}
+                                onChange={(e) => setSelectedYear(Number(e.target.value))}
+                            >
+                                {years.map((year) => (
+                                    <option key={year} value={year}>
+                                        {year}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
 
-                    <div className="ranking-input-group h-38px">
-                        <span className="ranking-input-group-text">Año</span>
-                        <select
-                            value={selectedYear}
-                            onChange={(e) => setSelectedYear(Number(e.target.value))}
-                        >
-                            {years.map((year) => (
-                                <option key={year} value={year}>
-                                    {year}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="ranking-input-group h-38px">
+                    <div className="ranking-input-group h-38px min-w-200">
                         <span className="ranking-input-group-text">Buscar</span>
                         <input
                             type="text"
-                            className="standings-search__input"
                             placeholder={mode === "drivers" ? "Piloto o escudería" : "Escudería"}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -167,7 +171,20 @@ function Standings() {
                     </div>
                 </div>
 
-                <Podium key={`${mode}-${selectedYear}`} entries={podiumEntries} />
+                <AnimatePresence initial={false}>
+                    {!isSearching && (
+                        <motion.div
+                            key="standings-podium"
+                            initial={reduceMotion ? false : { opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
+                            transition={{ duration: reduceMotion ? 0 : 0.3, ease: "easeInOut" }}
+                            style={{ overflow: "hidden" }}
+                        >
+                            <Podium key={`${mode}-${selectedYear}`} entries={podiumEntries} />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
                 {mode === "constructors" && unresolvedResults > 0 && (
                     <div className="alert alert-warning text-start mb-3">

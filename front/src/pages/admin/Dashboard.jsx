@@ -524,15 +524,14 @@ function Dashboard() {
               </div>
 
               <div className="admin-filters-right">
-                <div className="ranking-search">
+                <div className="ranking-input-group h-38px">
+                  <span className="ranking-input-group-text">Buscar</span>
                   <input
                     type="text"
                     placeholder="Buscador"
-                    className="ranking-search__input"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
-                  <button className="ranking-search__button">Buscar</button>
                 </div>
               </div>
             </div>

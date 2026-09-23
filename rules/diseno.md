@@ -46,7 +46,7 @@ armonía. **No crear tablas nuevas desde cero**: reutilizar o extender.
 | `.ranking-table th` | Header azul `#5c8ab3`, texto blanco |
 | `.ranking-table td` | Celdas con borde inferior `#f0f0f0`, `vertical-align: middle` |
 | `.pos-cell` + `.pos-1` / `.pos-2` / `.pos-3` | Columna de posición; fondo de podio en top 3 |
-| `.ranking-input-group` + `.ranking-input-group-text` | Filtros (label gris + `select`/`input` sin borde) |
+| `.ranking-input-group` + `.ranking-input-group-text` | Filtros (label gris + `select`/`input` sin borde). También es el **buscador estándar** de todo el proyecto: label "Buscar" + `<input>` que filtra en vivo con cada tecla — **sin botón** (un botón "Buscar" separado es confuso si el filtro ya se aplica solo). Reemplazó a `.ranking-search`/`.ranking-search__button` y a `.search-bar`/`.btn-search` (eliminadas), que sí tenían un botón sin acción real. Usado en Home/Ranking/Standings, `PredictionHistory.jsx` y el buscador del admin (`Dashboard.jsx`). |
 | `.ranking-empty-state` | Fila de "sin resultados" |
 | `.emoji-flag` | Banderas emoji (fuente Twemoji) |
 | `.w-50px`, `.w-120px`, `.h-38px` | Utilidades de tamaño ya definidas |
@@ -85,6 +85,16 @@ piloto), `.podium__flag` y `.podium__points` (abajo, grande).
 - `.podium__info` es una grilla (posición · nombre · subtítulo · bandera + puntos);
   en mobile la tarjeta usa `min-height` y crece si hace falta, para que nada
   se superponga.
+
+**Ocultar el podio al buscar (`Standings.jsx`)**: mientras el buscador tiene
+texto, el podio se desmonta con `AnimatePresence`/`motion.div` (colapso de
+`height` + fade, 0.3s, `overflow: hidden` en el wrapper para que el margen no
+se pierda ni colapse con la tabla) — así la tabla filtrada queda visible sin
+scrollear de más. Respeta `useReducedMotion()` (sin animación, solo
+mostrar/ocultar). Espaciado propio de esta pantalla (no tocar el resto de
+usos de `Podium`): `.standings-page .ranking__podium` con más margen arriba
+(32px / 48px desktop, separación de los filtros) y menos abajo (12px / 20px,
+pegado a la tabla).
 
 ## Animaciones (regla del proyecto)
 

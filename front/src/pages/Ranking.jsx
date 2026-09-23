@@ -370,15 +370,15 @@ function Ranking() {
 
                         {/* BUSCADOR */}
                         <div className="order-1 order-md-3 flex-md-fill min-w-200">
-                            <div className="ranking-search w-100 m-0 h-44px max-w-none">
+                            <div className="ranking-input-group w-100 m-0 h-44px max-w-none">
+                                <span className="ranking-input-group-text">Buscar</span>
                                 <input
                                     type="text"
                                     placeholder="Buscador"
-                                    className="ranking-search__input w-100"
+                                    className="w-100"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
-                                <button className="ranking-search__button">Buscar</button>
                             </div>
                         </div>
                     </div>

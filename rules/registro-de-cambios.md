@@ -2,6 +2,31 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-23 · Buscador único en todo el proyecto + ajustes en Campeonato
+
+- **Buscador unificado**: se reemplaza el patrón "input + botón celeste
+  'Buscar'" (que no hacía nada, porque el filtro ya se aplica al tipear) por
+  el mismo componente que ya usaba `Standings.jsx`: `.ranking-input-group`
+  con label "Buscar" y un `<input>` sin botón. Se actualizan `Ranking.jsx`,
+  `PredictionHistory.jsx` y el buscador del admin (`Dashboard.jsx`); se
+  eliminan las clases que quedaron sin uso (`.ranking-search`,
+  `.ranking-search__input`, `.ranking-search__button` de `components.css`;
+  `.search-bar`, `.btn-search` de `predictionHistory.css`). Nueva regla
+  compartida `.ranking-input-group input[type="text"|"search"]` en
+  `ranking.css` para que cualquier pantalla pueda usar este buscador sin
+  clases propias.
+- **`Standings.jsx`** (Campeonato de pilotos/constructores):
+  - Los filtros se reordenan: botones Pilotos/Constructores + Año agrupados a
+    la izquierda, buscador a la derecha (antes: botones — año — buscador,
+    en ese orden, más separados).
+  - Más espacio entre los filtros y el podio; menos espacio entre el podio y
+    la tabla.
+  - Al escribir en el buscador, el podio se oculta con una animación de
+    colapso (`framer-motion`) para que la tabla filtrada quede visible sin
+    scrollear; reaparece al vaciar el buscador. Respeta
+    `prefers-reduced-motion`.
+- Detalle en [diseno.md](./diseno.md).
+
 ## 2026-09-23 · Orden fijo filtros → podio → tabla
 
 - Se fija un orden único para toda pantalla con podio: filtros/buscador

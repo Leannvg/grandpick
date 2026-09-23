@@ -163,14 +163,14 @@ function PredictionHistory() {
                             <div className="year-selector">
                                 <span className="year-display">{year}</span>
                             </div>
-                            <div className="search-bar">
+                            <div className="ranking-input-group h-38px flex-fill">
+                                <span className="ranking-input-group-text">Buscar</span>
                                 <input
                                     type="text"
                                     placeholder="Buscador"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
-                                <button className="btn-search">Buscar</button>
                             </div>
                         </div>
 
