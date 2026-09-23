@@ -2,6 +2,19 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-23 · Fix: filas que "vuelan" a la esquina al buscar
+
+- Causa real del glitch reportado (filas deslizándose a la esquina superior
+  izquierda): `mode="popLayout"` en `AnimatePresence`. Ese modo saca la fila
+  saliente con `position: absolute` para que las demás se reacomoden antes de
+  que termine de desvanecerse — pero un `<tr>` no admite `position: absolute`
+  como layout de tabla válido, así que se desprende de la tabla y queda
+  apilado en la esquina. Confirmado con una prueba aislada (React + Framer
+  Motion) comparando ambos modos.
+- Se saca `mode="popLayout"` de las 7 tablas (quedó solo `AnimatePresence`
+  modo por defecto + fade en el `motion.tr`, sin `layout`).
+- Detalle en [diseno.md](./diseno.md).
+
 ## 2026-09-23 · Ajustes de feedback: animación de filas, podio y filtros
 
 - **Filas de tabla**: se saca la prop `layout` de `motion.tr` en las 7 tablas

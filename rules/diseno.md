@@ -118,12 +118,17 @@ tarjeta en loop (`.podium__shine`) y confeti cayendo en las tres (`Confetti`), c
 
 **Filas de tabla al filtrar por búsqueda**: toda tabla con buscador en vivo
 (`.ranking-table`/`.admin-table`) anima la aparición/desaparición de sus filas
-con `AnimatePresence` (`mode="popLayout"`) + `motion.tr` — **solo
+con `AnimatePresence` (modo por defecto) + `motion.tr` — **solo
 desvanecimiento** (`opacity 0→1`/`1→0`, 0.2s, sin animación si
-`useReducedMotion()`), sin `layout`/desplazamiento: se probó con `layout`
-(anima también la reubicación de filas) pero se veía como si las filas se
-corrieran de costado, así que se sacó. Se aplica en `Ranking.jsx`,
-`Standings.jsx` (ambas tablas) y las 5 tablas del admin (`DriversTable`,
+`useReducedMotion()`). **No usar `layout` en el `motion.tr` ni
+`mode="popLayout"` en el `AnimatePresence`**: ambos se probaron y rompen el
+layout de la tabla — `mode="popLayout"` saca la fila que se va con
+`position: absolute` para que las demás reacomoden antes, pero un `<tr>` no
+soporta position:absolute como layout válido dentro de una tabla, así que la
+fila se desprende y aparece apilada arriba a la izquierda de la pantalla en
+vez de desvanecerse en su lugar (confirmado con una prueba aislada). Se
+aplica en `Ranking.jsx`, `Standings.jsx` (ambas tablas) y las 5 tablas del
+admin (`DriversTable`,
 `TeamsTable`, `CircuitsTable`, `RacesTable`, `UsersTable`).
 
 ## Modales (`gp-modal-*`, definidos en `assets/styles/components.css`)

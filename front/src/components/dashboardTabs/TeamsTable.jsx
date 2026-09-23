@@ -30,7 +30,7 @@ export default function TeamsTable({ teams, onEdit, onDelete, pageSize }) {
             </thead>
 
             <tbody>
-              <AnimatePresence initial={false} mode="popLayout">
+              <AnimatePresence initial={false}>
               {paginatedData.map((t) => (
                 <motion.tr
                   key={t._id}

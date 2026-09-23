@@ -31,7 +31,7 @@ export default function UsersTable({ users, onToggleBlock, pageSize }) {
             </thead>
 
             <tbody>
-              <AnimatePresence initial={false} mode="popLayout">
+              <AnimatePresence initial={false}>
               {paginatedData.map((u) => (
                 <motion.tr
                   key={u._id}

@@ -31,7 +31,7 @@ export default function DriversTable({ drivers, onEdit, onDelete, onToggle, page
             </thead>
 
             <tbody>
-              <AnimatePresence initial={false} mode="popLayout">
+              <AnimatePresence initial={false}>
               {paginatedData.map((d) => (
                 <motion.tr
                   key={d._id}

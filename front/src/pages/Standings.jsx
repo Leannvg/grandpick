@@ -207,7 +207,7 @@ function Standings() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <AnimatePresence initial={false} mode="popLayout">
+                                <AnimatePresence initial={false}>
                                     {filteredStandings.map((driver) => {
                                         const pos = driver.position;
                                         const posClass = pos <= 3 ? `pos-${pos}` : "";
@@ -267,7 +267,7 @@ function Standings() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <AnimatePresence initial={false} mode="popLayout">
+                                <AnimatePresence initial={false}>
                                     {filteredConstructors.map((team) => {
                                         const pos = team.position;
                                         const posClass = pos <= 3 ? `pos-${pos}` : "";

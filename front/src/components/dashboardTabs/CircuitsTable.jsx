@@ -28,7 +28,7 @@ export default function CircuitsTable({ circuits, onEdit, onDelete, pageSize }) 
               </tr>
             </thead>
             <tbody>
-              <AnimatePresence initial={false} mode="popLayout">
+              <AnimatePresence initial={false}>
               {paginatedData.map((c) => (
                 <motion.tr
                   key={c._id}

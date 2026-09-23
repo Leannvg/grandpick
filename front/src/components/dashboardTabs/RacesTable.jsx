@@ -46,7 +46,7 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
             </thead>
 
             <tbody>
-              <AnimatePresence initial={false} mode="popLayout">
+              <AnimatePresence initial={false}>
               {paginatedData.map((r) => {
                 const isUpcoming = upcomingIndex !== -1 && races[upcomingIndex].gpRaceId === r.gpRaceId;
 
