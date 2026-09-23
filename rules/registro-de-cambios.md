@@ -2,6 +2,18 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-23 · Orden fijo filtros → podio → tabla
+
+- Se fija un orden único para toda pantalla con podio: filtros/buscador
+  arriba de todo, podio en el medio, tabla abajo.
+- `Ranking.jsx`: el podio pasa de estar arriba de los filtros a estar debajo
+  (mismo bloque de filtros, sin cambios internos).
+- `Standings.jsx`: los botones Pilotos/Constructores (antes en su propia fila
+  arriba del podio) se unifican dentro de `.standings-filters`, junto al año
+  y el buscador, y todo ese bloque pasa a estar arriba del podio.
+- Verificado en mobile y desktop (con Bootstrap real) que ninguna fila se
+  rompe con el reacomodo.
+
 ## 2026-09-22 · Pills de piloto en constructores: trigrama y puntos destacados
 
 - La columna "Pilotos" de constructores muestra el **trigrama** de cada

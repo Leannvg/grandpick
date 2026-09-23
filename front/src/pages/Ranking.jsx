@@ -211,8 +211,6 @@ function Ranking() {
                     <p className="section-subtitle">Campeonato de predicciones</p>
                 </header>
 
-                <Podium key={`${mode}-${selectedCircuitId}-${selectedYear}`} entries={podiumEntries} />
-
                 <div className="ranking-filters">
 
                     <div className="row w-100 m-0 g-2 justify-content-between align-items-center">
@@ -385,6 +383,8 @@ function Ranking() {
                         </div>
                     </div>
                 </div>
+
+                <Podium key={`${mode}-${selectedCircuitId}-${selectedYear}`} entries={podiumEntries} />
 
                 <div className="ranking-card">
                     <div className="ranking-table-container table-responsive">

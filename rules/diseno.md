@@ -54,7 +54,14 @@ armonía. **No crear tablas nuevas desde cero**: reutilizar o extender.
 
 ## Podio (`Podium`, estilos en `assets/styles/podium.css`)
 
-Componente reutilizable `components/Podium.jsx` (ver [componentes.md](./componentes.md)); se usa en Home, Ranking (global y por GP) y Clasificación de pilotos. Clases `.ranking__podium`, `.podium__*`.
+Componente reutilizable `components/Podium.jsx` (ver [componentes.md](./componentes.md)); se usa en Home, Ranking (global y por GP) y Campeonato de pilotos/constructores. Clases `.ranking__podium`, `.podium__*`.
+
+**Orden fijo en toda pantalla con podio**: filtros/buscador → podio → tabla.
+Si hay botones de modo (Global/Por Gran Premio en `Ranking.jsx`; Pilotos/
+Constructores en `Standings.jsx`), van dentro de la misma fila que los demás
+filtros (no sueltos arriba del podio) — mismo patrón de grilla responsive
+que ya usa `Ranking.jsx` (columnas `col-12 col-md-auto` con `order`/`order-md`
+para reordenar en mobile sin romper).
 
 Tarjetas estilo F1/F2 (referencia: podios oficiales de f1.com / fiaformula2.com).
 Cada `.podium__item` (`--pos1/2/3`) define `--podium-color` (`--color-pos1/2/3`)

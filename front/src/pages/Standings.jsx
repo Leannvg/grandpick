@@ -125,24 +125,22 @@ function Standings() {
                     </p>
                 </header>
 
-                <div className="standings-mode-toggle d-flex justify-content-center gap-2 mb-4">
-                    <button
-                        className={`info-page__mode-btn btn-mode ${mode === "drivers" ? "is-active" : ""}`}
-                        onClick={() => setMode("drivers")}
-                    >
-                        Pilotos
-                    </button>
-                    <button
-                        className={`info-page__mode-btn btn-mode ${mode === "constructors" ? "is-active" : ""}`}
-                        onClick={() => setMode("constructors")}
-                    >
-                        Constructores
-                    </button>
-                </div>
-
-                <Podium key={`${mode}-${selectedYear}`} entries={podiumEntries} />
-
                 <div className="standings-filters">
+                    <div className="standings-mode-toggle d-flex gap-2">
+                        <button
+                            className={`info-page__mode-btn btn-mode ${mode === "drivers" ? "is-active" : ""}`}
+                            onClick={() => setMode("drivers")}
+                        >
+                            Pilotos
+                        </button>
+                        <button
+                            className={`info-page__mode-btn btn-mode ${mode === "constructors" ? "is-active" : ""}`}
+                            onClick={() => setMode("constructors")}
+                        >
+                            Constructores
+                        </button>
+                    </div>
+
                     <div className="ranking-input-group h-38px">
                         <span className="ranking-input-group-text">Año</span>
                         <select
@@ -168,6 +166,8 @@ function Standings() {
                         />
                     </div>
                 </div>
+
+                <Podium key={`${mode}-${selectedYear}`} entries={podiumEntries} />
 
                 {mode === "constructors" && unresolvedResults > 0 && (
                     <div className="alert alert-warning text-start mb-3">
