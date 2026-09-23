@@ -1,7 +1,9 @@
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { usePagination } from "./../../hooks/usePagination.js";
 import CountryDisplay from "../CountryDisplay.jsx";
 
 export default function DriversTable({ drivers, onEdit, onDelete, onToggle, pageSize }) {
+  const reduceMotion = useReducedMotion();
   const {
     page,
     pageSize: currentPageSize,
@@ -29,8 +31,16 @@ export default function DriversTable({ drivers, onEdit, onDelete, onToggle, page
             </thead>
 
             <tbody>
+              <AnimatePresence initial={false} mode="popLayout">
               {paginatedData.map((d) => (
-                <tr key={d._id}>
+                <motion.tr
+                  key={d._id}
+                  layout
+                  initial={reduceMotion ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={reduceMotion ? undefined : { opacity: 0 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.2 }}
+                >
                   <td className="sticky-col">{d.full_name}</td>
                   <td>{d.trigram}</td>
                   <td>{d.number}</td>
@@ -61,8 +71,9 @@ export default function DriversTable({ drivers, onEdit, onDelete, onToggle, page
                       <i className={`bi ${d.active ? "bi-person-x-fill" : "bi-person-check-fill"}`}></i>
                     </button>
                   </td>
-                </tr>
+                </motion.tr>
               ))}
+              </AnimatePresence>
             </tbody>
           </table>
         </div>

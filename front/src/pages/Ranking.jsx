@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useLoader } from "../context/LoaderContext";
 import UsersServices from "../services/users.services";
 import PredictionsServices from "../services/predictions.services";
@@ -14,6 +15,7 @@ import "../assets/styles/ranking.css";
 
 function Ranking() {
     const navigate = useNavigate();
+    const reduceMotion = useReducedMotion();
     const [stats, setStats] = useState([]);
     const [currentUserStat, setCurrentUserStat] = useState(null);
     const [profile, setProfile] = useState(null);
@@ -402,6 +404,7 @@ function Ranking() {
                                 </tr>
                             </thead>
                             <tbody>
+                                <AnimatePresence initial={false} mode="popLayout">
                                 {paginatedData.map((item) => {
                                     const pos = item.globalRank;
                                     const isTop3 = pos <= 3;
@@ -413,10 +416,15 @@ function Ranking() {
                                     const avgPoints = totalPredictions > 0 ? (totalPoints / totalPredictions).toFixed(1) : "0.0";
 
                                     return (
-                                        <tr
+                                        <motion.tr
                                             key={item._id || pos}
                                             id={item._id ? `user-row-${item._id}` : undefined}
                                             className={currentUserStat?._id === item._id ? 'is-current-user' : ''}
+                                            layout
+                                            initial={reduceMotion ? false : { opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={reduceMotion ? undefined : { opacity: 0 }}
+                                            transition={{ duration: reduceMotion ? 0 : 0.2 }}
                                         >
                                             <td className={`pos-cell ${posClass}`}>{pos}</td>
                                             <td>
@@ -483,9 +491,10 @@ function Ranking() {
                                                     return item.gap;
                                                 })()}
                                             </td>}
-                                        </tr>
+                                        </motion.tr>
                                     );
                                 })}
+                                </AnimatePresence>
                                 {paginatedData.length === 0 && (
                                     <tr>
                                         <td colSpan={mode === 'global' ? "7" : "5"} className="ranking-empty-state">

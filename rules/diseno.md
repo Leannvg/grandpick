@@ -111,6 +111,15 @@ Ejemplo: tarjetas del podio del Home — entrada escalonada (3º → 2º → 1º
 elevación de 6px al hover y animaciones constantes: brillo que barre cada
 tarjeta en loop (`.podium__shine`) y confeti cayendo en las tres (`Confetti`), con la misma paleta en las tres (el podio se comparte) pero distinto ritmo y forma: 1º mixto, 2º círculos lentos, 3º tiras rápidas.
 
+**Filas de tabla al filtrar por búsqueda**: toda tabla con buscador en vivo
+(`.ranking-table`/`.admin-table`) anima la aparición/desaparición de sus filas
+con `AnimatePresence` (`mode="popLayout"`) + `motion.tr` (`layout`, fade
+`opacity 0→1`/`1→0`, 0.2s, sin animación si `useReducedMotion()`). Se aplica
+en `Ranking.jsx`, `Standings.jsx` (ambas tablas) y las 5 tablas del admin
+(`DriversTable`, `TeamsTable`, `CircuitsTable`, `RacesTable`, `UsersTable`).
+No se anima `height`/layout de fila completo (evita romper el `<table>`);
+solo opacidad + reflow de posición vía `layout`.
+
 ## Modales (`gp-modal-*`, definidos en `assets/styles/components.css`)
 
 Patrón base en `FloatingDialog.jsx` (overlay + card animados con `framer-motion`):

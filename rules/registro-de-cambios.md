@@ -2,6 +2,22 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-23 · Fix buscador admin, reorden en Campeonato y animación de filas
+
+- **Fix**: el buscador del admin (`Dashboard.jsx`) no llegaba al borde derecho
+  — al buscador (`.ranking-input-group`) le faltaba `w-100` para llenar el
+  ancho reservado por `.admin-filters-right`. Regresión del cambio anterior
+  (al unificar el buscador se perdió el `width:100%` que tenía el viejo
+  `.ranking-search`).
+- **`Standings.jsx`**: los filtros vuelven a reordenarse — Año queda solo a
+  la izquierda; Buscar + los botones Pilotos/Constructores se agrupan a la
+  derecha (antes: botones+Año a la izquierda, Buscar a la derecha).
+- **Animación de filas al buscar**: toda tabla con buscador en vivo anima sus
+  filas al aparecer/desaparecer por el filtro (`framer-motion`,
+  `AnimatePresence`+`motion.tr`, fade 0.2s, respeta `prefers-reduced-motion`).
+  Aplicado en `Ranking.jsx`, `Standings.jsx` y las 5 tablas del admin.
+- Detalle en [diseno.md](./diseno.md).
+
 ## 2026-09-23 · Buscador único en todo el proyecto + ajustes en Campeonato
 
 - **Buscador unificado**: se reemplaza el patrón "input + botón celeste

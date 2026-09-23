@@ -1,8 +1,10 @@
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { usePagination } from "./../../hooks/usePagination.js";
 import { formatDate } from "../../utils/helpers.js";
 import CountryDisplay from "../CountryDisplay.jsx";
 
 export default function UsersTable({ users, onToggleBlock, pageSize }) {
+  const reduceMotion = useReducedMotion();
   const {
     page,
     pageSize: currentPageSize,
@@ -29,8 +31,16 @@ export default function UsersTable({ users, onToggleBlock, pageSize }) {
             </thead>
 
             <tbody>
+              <AnimatePresence initial={false} mode="popLayout">
               {paginatedData.map((u) => (
-                <tr key={u._id}>
+                <motion.tr
+                  key={u._id}
+                  layout
+                  initial={reduceMotion ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={reduceMotion ? undefined : { opacity: 0 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.2 }}
+                >
                   <td className="sticky-col">{`${u.name} ${u.last_name}`}</td>
                   <td>{u.email}</td>
                   <td>{u.points}</td>
@@ -45,8 +55,9 @@ export default function UsersTable({ users, onToggleBlock, pageSize }) {
                       <i className={`bi ${u.blocked ? "bi-lock-fill" : "bi-unlock-fill"}`}></i>
                     </button>
                   </td>
-                </tr>
+                </motion.tr>
               ))}
+              </AnimatePresence>
             </tbody>
           </table>
         </div>

@@ -129,7 +129,31 @@ function Standings() {
                 </header>
 
                 <div className="standings-filters">
-                    <div className="standings-filters__left d-flex flex-wrap gap-2 align-items-center">
+                    <div className="ranking-input-group h-38px">
+                        <span className="ranking-input-group-text">Año</span>
+                        <select
+                            value={selectedYear}
+                            onChange={(e) => setSelectedYear(Number(e.target.value))}
+                        >
+                            {years.map((year) => (
+                                <option key={year} value={year}>
+                                    {year}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="standings-filters__right d-flex flex-wrap gap-2 align-items-center">
+                        <div className="ranking-input-group h-38px min-w-200">
+                            <span className="ranking-input-group-text">Buscar</span>
+                            <input
+                                type="text"
+                                placeholder={mode === "drivers" ? "Piloto o escudería" : "Escudería"}
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+
                         <div className="standings-mode-toggle d-flex gap-2">
                             <button
                                 className={`info-page__mode-btn btn-mode ${mode === "drivers" ? "is-active" : ""}`}
@@ -144,30 +168,6 @@ function Standings() {
                                 Constructores
                             </button>
                         </div>
-
-                        <div className="ranking-input-group h-38px">
-                            <span className="ranking-input-group-text">Año</span>
-                            <select
-                                value={selectedYear}
-                                onChange={(e) => setSelectedYear(Number(e.target.value))}
-                            >
-                                {years.map((year) => (
-                                    <option key={year} value={year}>
-                                        {year}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div className="ranking-input-group h-38px min-w-200">
-                        <span className="ranking-input-group-text">Buscar</span>
-                        <input
-                            type="text"
-                            placeholder={mode === "drivers" ? "Piloto o escudería" : "Escudería"}
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
                     </div>
                 </div>
 
@@ -207,13 +207,21 @@ function Standings() {
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <AnimatePresence initial={false} mode="popLayout">
                                     {filteredStandings.map((driver) => {
                                         const pos = driver.position;
                                         const posClass = pos <= 3 ? `pos-${pos}` : "";
                                         const { first, last } = splitName(driver.full_name);
 
                                         return (
-                                            <tr key={driver._id}>
+                                            <motion.tr
+                                                key={driver._id}
+                                                layout
+                                                initial={reduceMotion ? false : { opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={reduceMotion ? undefined : { opacity: 0 }}
+                                                transition={{ duration: reduceMotion ? 0 : 0.2 }}
+                                            >
                                                 <td className={`pos-cell ${posClass}`}>{pos}</td>
                                                 <td className="text-start">
                                                     <div className="driver-cell">
@@ -236,9 +244,10 @@ function Standings() {
                                                         <span>{driver.team?.name || "Sin escudería"}</span>
                                                     </div>
                                                 </td>
-                                            </tr>
+                                            </motion.tr>
                                         );
                                     })}
+                                </AnimatePresence>
                                     {filteredStandings.length === 0 && (
                                         <tr>
                                             <td colSpan="5" className="ranking-empty-state">
@@ -259,12 +268,20 @@ function Standings() {
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <AnimatePresence initial={false} mode="popLayout">
                                     {filteredConstructors.map((team) => {
                                         const pos = team.position;
                                         const posClass = pos <= 3 ? `pos-${pos}` : "";
 
                                         return (
-                                            <tr key={team._id}>
+                                            <motion.tr
+                                                key={team._id}
+                                                layout
+                                                initial={reduceMotion ? false : { opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={reduceMotion ? undefined : { opacity: 0 }}
+                                                transition={{ duration: reduceMotion ? 0 : 0.2 }}
+                                            >
                                                 <td className={`pos-cell ${posClass}`}>{pos}</td>
                                                 <td className="text-start">
                                                     <div
@@ -298,9 +315,10 @@ function Standings() {
                                                         </span>
                                                     )}
                                                 </td>
-                                            </tr>
+                                            </motion.tr>
                                         );
                                     })}
+                                </AnimatePresence>
                                     {filteredConstructors.length === 0 && (
                                         <tr>
                                             <td colSpan="4" className="ranking-empty-state">

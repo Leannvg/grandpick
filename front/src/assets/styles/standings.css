@@ -17,11 +17,11 @@
     margin-bottom: 20px;
 }
 
-/* Año + toggle Pilotos/Constructores agrupados a la izquierda; el buscador
-   (segundo hijo directo de .standings-filters) queda a la derecha gracias al
-   justify-content: space-between del padre. */
-.standings-filters__left {
+/* Año queda solo a la izquierda; buscador + toggle Pilotos/Constructores
+   agrupados a la derecha gracias al justify-content: space-between del padre. */
+.standings-filters__right {
     flex: 1 1 auto;
+    justify-content: flex-end;
 }
 
 /* Podio de esta pantalla: más aire respecto de los filtros de arriba, menos
