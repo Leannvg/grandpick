@@ -32,7 +32,6 @@ export default function CircuitsTable({ circuits, onEdit, onDelete, pageSize }) 
               {paginatedData.map((c) => (
                 <motion.tr
                   key={c._id}
-                  layout
                   initial={reduceMotion ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={reduceMotion ? undefined : { opacity: 0 }}

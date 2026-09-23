@@ -35,7 +35,6 @@ export default function UsersTable({ users, onToggleBlock, pageSize }) {
               {paginatedData.map((u) => (
                 <motion.tr
                   key={u._id}
-                  layout
                   initial={reduceMotion ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={reduceMotion ? undefined : { opacity: 0 }}

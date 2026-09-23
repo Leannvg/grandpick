@@ -129,21 +129,21 @@ function Standings() {
                 </header>
 
                 <div className="standings-filters">
-                    <div className="ranking-input-group h-38px">
-                        <span className="ranking-input-group-text">Año</span>
-                        <select
-                            value={selectedYear}
-                            onChange={(e) => setSelectedYear(Number(e.target.value))}
-                        >
-                            {years.map((year) => (
-                                <option key={year} value={year}>
-                                    {year}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    <div className="standings-filters__left d-flex flex-wrap gap-2 align-items-center">
+                        <div className="ranking-input-group h-38px">
+                            <span className="ranking-input-group-text">Año</span>
+                            <select
+                                value={selectedYear}
+                                onChange={(e) => setSelectedYear(Number(e.target.value))}
+                            >
+                                {years.map((year) => (
+                                    <option key={year} value={year}>
+                                        {year}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                    <div className="standings-filters__right d-flex flex-wrap gap-2 align-items-center">
                         <div className="ranking-input-group h-38px min-w-200">
                             <span className="ranking-input-group-text">Buscar</span>
                             <input
@@ -153,21 +153,21 @@ function Standings() {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
+                    </div>
 
-                        <div className="standings-mode-toggle d-flex gap-2">
-                            <button
-                                className={`info-page__mode-btn btn-mode ${mode === "drivers" ? "is-active" : ""}`}
-                                onClick={() => setMode("drivers")}
-                            >
-                                Pilotos
-                            </button>
-                            <button
-                                className={`info-page__mode-btn btn-mode ${mode === "constructors" ? "is-active" : ""}`}
-                                onClick={() => setMode("constructors")}
-                            >
-                                Constructores
-                            </button>
-                        </div>
+                    <div className="standings-mode-toggle d-flex gap-2">
+                        <button
+                            className={`info-page__mode-btn btn-mode ${mode === "drivers" ? "is-active" : ""}`}
+                            onClick={() => setMode("drivers")}
+                        >
+                            Pilotos
+                        </button>
+                        <button
+                            className={`info-page__mode-btn btn-mode ${mode === "constructors" ? "is-active" : ""}`}
+                            onClick={() => setMode("constructors")}
+                        >
+                            Constructores
+                        </button>
                     </div>
                 </div>
 
@@ -216,7 +216,6 @@ function Standings() {
                                         return (
                                             <motion.tr
                                                 key={driver._id}
-                                                layout
                                                 initial={reduceMotion ? false : { opacity: 0 }}
                                                 animate={{ opacity: 1 }}
                                                 exit={reduceMotion ? undefined : { opacity: 0 }}
@@ -276,7 +275,6 @@ function Standings() {
                                         return (
                                             <motion.tr
                                                 key={team._id}
-                                                layout
                                                 initial={reduceMotion ? false : { opacity: 0 }}
                                                 animate={{ opacity: 1 }}
                                                 exit={reduceMotion ? undefined : { opacity: 0 }}

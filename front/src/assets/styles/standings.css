@@ -17,26 +17,11 @@
     margin-bottom: 20px;
 }
 
-/* Año queda solo a la izquierda; buscador + toggle Pilotos/Constructores
-   agrupados a la derecha gracias al justify-content: space-between del padre. */
-.standings-filters__right {
+/* Año + buscador agrupados y pegados a la izquierda; el toggle
+   Pilotos/Constructores queda a la derecha gracias al justify-content:
+   space-between del padre. */
+.standings-filters__left {
     flex: 1 1 auto;
-    justify-content: flex-end;
-}
-
-/* Podio de esta pantalla: más aire respecto de los filtros de arriba, menos
-   respecto de la tabla de abajo (pedido explícito, no tocar el resto de
-   pantallas que usan Podium). */
-.standings-page .ranking__podium {
-    margin-top: 32px;
-    margin-bottom: 12px;
-}
-
-@media (min-width: 992px) {
-    .standings-page .ranking__podium {
-        margin-top: 48px;
-        margin-bottom: 20px;
-    }
 }
 
 /* Celda de piloto */

@@ -1,11 +1,14 @@
 /* Podio reutilizable (components/Podium.jsx): tarjetas estilo F1/F2 */
 
+/* Espaciado: siempre más pegado a la tabla de abajo que a los filtros/buscador
+   de arriba, en todo lugar donde se usa el podio (Home, Ranking, Standings). */
 .ranking__podium {
   display: flex;
   flex-direction: column;
   gap: 12px;
   width: 100%;
-  margin-bottom: 32px;
+  margin-top: 32px;
+  margin-bottom: 12px;
 }
 
 /* Tarjeta de podio (estilo F1/F2): color por puesto, rayas y foto a la derecha */
@@ -187,7 +190,8 @@
     grid-template-columns: repeat(3, 1fr);
     align-items: end;
     gap: 20px;
-    margin-bottom: 60px;
+    margin-top: 48px;
+    margin-bottom: 20px;
   }
 
   /* Tarjetas angostas: el texto ocupa todo el ancho y va debajo de la foto */

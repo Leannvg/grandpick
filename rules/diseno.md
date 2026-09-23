@@ -61,7 +61,22 @@ Si hay botones de modo (Global/Por Gran Premio en `Ranking.jsx`; Pilotos/
 Constructores en `Standings.jsx`), van dentro de la misma fila que los demás
 filtros (no sueltos arriba del podio) — mismo patrón de grilla responsive
 que ya usa `Ranking.jsx` (columnas `col-12 col-md-auto` con `order`/`order-md`
-para reordenar en mobile sin romper).
+para reordenar en mobile sin romper). En `Standings.jsx` el buscador va pegado
+al selector de Año (mismo grupo, a la izquierda); el toggle Pilotos/
+Constructores queda solo, a la derecha.
+
+**Espaciado, siempre el mismo en los tres usos** (regla base en
+`.ranking__podium`, `podium.css`, no una excepción por pantalla): el podio
+queda más pegado a la tabla de abajo que a los filtros de arriba —
+`margin-top: 32px` (48px desktop) / `margin-bottom: 12px` (20px desktop).
+
+**Ocultar el podio al buscar**: en `Ranking.jsx` y `Standings.jsx`, mientras
+el buscador tiene texto, el podio se desmonta con `AnimatePresence`/
+`motion.div` (colapso de `height` + fade, 0.3s, `overflow: hidden` en el
+wrapper para que el margen no se pierda ni colapse con la tabla) — así la
+tabla filtrada queda visible sin scrollear de más. Respeta
+`useReducedMotion()` (sin animación, solo mostrar/ocultar). `Home.jsx` no
+tiene buscador, así que no aplica.
 
 Tarjetas estilo F1/F2 (referencia: podios oficiales de f1.com / fiaformula2.com).
 Cada `.podium__item` (`--pos1/2/3`) define `--podium-color` (`--color-pos1/2/3`)
@@ -86,16 +101,6 @@ piloto), `.podium__flag` y `.podium__points` (abajo, grande).
   en mobile la tarjeta usa `min-height` y crece si hace falta, para que nada
   se superponga.
 
-**Ocultar el podio al buscar (`Standings.jsx`)**: mientras el buscador tiene
-texto, el podio se desmonta con `AnimatePresence`/`motion.div` (colapso de
-`height` + fade, 0.3s, `overflow: hidden` en el wrapper para que el margen no
-se pierda ni colapse con la tabla) — así la tabla filtrada queda visible sin
-scrollear de más. Respeta `useReducedMotion()` (sin animación, solo
-mostrar/ocultar). Espaciado propio de esta pantalla (no tocar el resto de
-usos de `Podium`): `.standings-page .ranking__podium` con más margen arriba
-(32px / 48px desktop, separación de los filtros) y menos abajo (12px / 20px,
-pegado a la tabla).
-
 ## Animaciones (regla del proyecto)
 
 Toda animación de UI se hace con **`framer-motion`** (`motion.*`, `AnimatePresence`,
@@ -113,12 +118,13 @@ tarjeta en loop (`.podium__shine`) y confeti cayendo en las tres (`Confetti`), c
 
 **Filas de tabla al filtrar por búsqueda**: toda tabla con buscador en vivo
 (`.ranking-table`/`.admin-table`) anima la aparición/desaparición de sus filas
-con `AnimatePresence` (`mode="popLayout"`) + `motion.tr` (`layout`, fade
-`opacity 0→1`/`1→0`, 0.2s, sin animación si `useReducedMotion()`). Se aplica
-en `Ranking.jsx`, `Standings.jsx` (ambas tablas) y las 5 tablas del admin
-(`DriversTable`, `TeamsTable`, `CircuitsTable`, `RacesTable`, `UsersTable`).
-No se anima `height`/layout de fila completo (evita romper el `<table>`);
-solo opacidad + reflow de posición vía `layout`.
+con `AnimatePresence` (`mode="popLayout"`) + `motion.tr` — **solo
+desvanecimiento** (`opacity 0→1`/`1→0`, 0.2s, sin animación si
+`useReducedMotion()`), sin `layout`/desplazamiento: se probó con `layout`
+(anima también la reubicación de filas) pero se veía como si las filas se
+corrieran de costado, así que se sacó. Se aplica en `Ranking.jsx`,
+`Standings.jsx` (ambas tablas) y las 5 tablas del admin (`DriversTable`,
+`TeamsTable`, `CircuitsTable`, `RacesTable`, `UsersTable`).
 
 ## Modales (`gp-modal-*`, definidos en `assets/styles/components.css`)
 

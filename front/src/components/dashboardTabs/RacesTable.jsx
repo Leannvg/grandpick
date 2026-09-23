@@ -54,7 +54,6 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
                   <motion.tr
                     key={r.gpRaceId}
                     className={isUpcoming ? 'row-upcoming' : ''}
-                    layout
                     initial={reduceMotion ? false : { opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={reduceMotion ? undefined : { opacity: 0 }}

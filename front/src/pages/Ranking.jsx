@@ -181,6 +181,8 @@ function Ranking() {
         });
     }, [stats, searchTerm]);
 
+    const isSearching = searchTerm.trim().length > 0;
+
     const podiumEntries = useMemo(
         () =>
             stats.slice(0, 3).map((u, i) => ({
@@ -386,7 +388,20 @@ function Ranking() {
                     </div>
                 </div>
 
-                <Podium key={`${mode}-${selectedCircuitId}-${selectedYear}`} entries={podiumEntries} />
+                <AnimatePresence initial={false}>
+                    {!isSearching && (
+                        <motion.div
+                            key="ranking-podium"
+                            initial={reduceMotion ? false : { opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
+                            transition={{ duration: reduceMotion ? 0 : 0.3, ease: "easeInOut" }}
+                            style={{ overflow: "hidden" }}
+                        >
+                            <Podium key={`${mode}-${selectedCircuitId}-${selectedYear}`} entries={podiumEntries} />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
                 <div className="ranking-card">
                     <div className="ranking-table-container table-responsive">
@@ -420,7 +435,6 @@ function Ranking() {
                                             key={item._id || pos}
                                             id={item._id ? `user-row-${item._id}` : undefined}
                                             className={currentUserStat?._id === item._id ? 'is-current-user' : ''}
-                                            layout
                                             initial={reduceMotion ? false : { opacity: 0 }}
                                             animate={{ opacity: 1 }}
                                             exit={reduceMotion ? undefined : { opacity: 0 }}

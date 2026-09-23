@@ -35,7 +35,6 @@ export default function DriversTable({ drivers, onEdit, onDelete, onToggle, page
               {paginatedData.map((d) => (
                 <motion.tr
                   key={d._id}
-                  layout
                   initial={reduceMotion ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={reduceMotion ? undefined : { opacity: 0 }}

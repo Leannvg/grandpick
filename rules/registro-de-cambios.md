@@ -2,6 +2,22 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-23 · Ajustes de feedback: animación de filas, podio y filtros
+
+- **Filas de tabla**: se saca la prop `layout` de `motion.tr` en las 7 tablas
+  (se veía como si las filas se corrieran de costado al filtrar); queda solo
+  el desvanecimiento (`opacity`).
+- **Ocultar podio al buscar**: ahora también en `Ranking.jsx` (antes solo en
+  `Standings.jsx`), mismo patrón `AnimatePresence`/`motion.div`.
+- **Espaciado del podio**: la regla "más pegado a la tabla que al filtro"
+  (antes solo en `Standings.jsx`) pasa a ser la regla **base** de
+  `.ranking__podium` en `podium.css` — aplica en Home, Ranking y Standings
+  por igual.
+- **`Standings.jsx`**: el buscador vuelve a quedar pegado al selector de Año
+  (mismo grupo, a la izquierda); el toggle Pilotos/Constructores queda solo,
+  a la derecha (antes: Buscar pegado a los botones).
+- Detalle en [diseno.md](./diseno.md).
+
 ## 2026-09-23 · Fix buscador admin, reorden en Campeonato y animación de filas
 
 - **Fix**: el buscador del admin (`Dashboard.jsx`) no llegaba al borde derecho

@@ -34,7 +34,6 @@ export default function TeamsTable({ teams, onEdit, onDelete, pageSize }) {
               {paginatedData.map((t) => (
                 <motion.tr
                   key={t._id}
-                  layout
                   initial={reduceMotion ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={reduceMotion ? undefined : { opacity: 0 }}
