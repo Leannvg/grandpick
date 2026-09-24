@@ -5,6 +5,7 @@ import { getFlagEmoji } from "../utils/helpers";
 import { DateTime } from "luxon";
 import { onSocketReady } from "../socket";
 import { getCountries } from "../services/countries.services";
+import Reveal from "../components/Reveal";
 
 function Calendar() {
     const [races, setRaces] = useState([]);
@@ -194,7 +195,12 @@ function Calendar() {
                     {/* Columna izquierda */}
                     <div className="calendar-col left-col">
                         {leftRaces.map((race, index) => (
-                            <article className="calendar-item" key={race._id || index}>
+                            <Reveal
+                                as="article"
+                                className="calendar-item"
+                                key={race._id || index}
+                                delay={Math.min(index * 0.05, 0.4)}
+                            >
                                 <div className="race-info">
                                     <div className="race-top">
                                         <div className="race-location">
@@ -225,14 +231,19 @@ function Calendar() {
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
                                     <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
                                 </div>
-                            </article>
+                            </Reveal>
                         ))}
                     </div>
 
                     {/* Columna derecha */}
                     <div className="calendar-col right-col">
                         {rightRaces.map((race, index) => (
-                            <article className="calendar-item" key={race._id || index}>
+                            <Reveal
+                                as="article"
+                                className="calendar-item"
+                                key={race._id || index}
+                                delay={Math.min(index * 0.05, 0.4)}
+                            >
                                 <div className="race-info">
                                     <div className="race-top">
                                         <div className="race-location">
@@ -263,7 +274,7 @@ function Calendar() {
                                     <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
                                     <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
                                 </div>
-                            </article>
+                            </Reveal>
                         ))}
                     </div>
                 </div>

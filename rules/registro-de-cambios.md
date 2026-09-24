@@ -2,6 +2,13 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-24 · Extender `Reveal` a las tarjetas del calendario
+
+- `Calendar.jsx`: las `article.calendar-item` de ambas columnas
+  (`left-col`/`right-col`) ahora usan `Reveal` (delay escalonado por índice
+  dentro de cada columna, así las dos tarjetas de una misma fila aparecen
+  juntas).
+
 ## 2026-09-24 · Animación de aparición al hacer scroll (`Reveal`)
 
 - Nuevo componente genérico `components/Reveal.jsx`: envuelve una sección o

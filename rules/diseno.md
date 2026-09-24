@@ -122,9 +122,12 @@ una sección o tarjeta y la anima con fade + `y` al entrar en viewport
 (`whileInView`, `once: true`). Usado en `Home.jsx` (secciones "¿Cómo
 funciona?", las 3 `info-card` con delay escalonado 0/0.1/0.2, y el
 `split-section` final — el hero queda afuera por estar arriba del pliegue) y
-en las grillas de tarjetas de `Drivers.jsx`, `Teams.jsx` y `Circuits.jsx`
-(delay escalonado por índice, `Math.min(index * 0.05, 0.4)` para no demorar
-demasiado en listas largas). No se aplicó a `Ranking.jsx`/`Standings.jsx`
+en las grillas de tarjetas de `Drivers.jsx`, `Teams.jsx`, `Circuits.jsx` y
+`Calendar.jsx` (delay escalonado por índice, `Math.min(index * 0.05, 0.4)`
+para no demorar demasiado en listas largas). En `Calendar.jsx`, al ser dos
+columnas (`left-col`/`right-col`) el índice se reinicia en cada columna, así
+las tarjetas de una misma fila (misma ronda visual) revelan juntas. No se
+aplicó a `Ranking.jsx`/`Standings.jsx`
 (filas de tabla — ver nota debajo) ni al `Podium` (ya tiene su propia
 animación de entrada).
 
