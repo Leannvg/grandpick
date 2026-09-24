@@ -7,6 +7,7 @@ import API_URL from "../services/api";
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../utils/cloudinary.js";
 import InstallAppBanner from '../components/InstallAppBanner';
 import Podium from '../components/Podium';
+import Reveal from '../components/Reveal';
 import '../assets/styles/home.css';
 
 const Home = () => {
@@ -104,7 +105,7 @@ const Home = () => {
 
                 <InstallAppBanner />
 
-                <section className="how-it-works">
+                <Reveal as="section" className="how-it-works">
                     {/* BLOQUE AZUL */}
                     <div className="how-it-works__text-wrapper">
                         <div className="container">
@@ -186,10 +187,10 @@ const Home = () => {
                         </div>
                     </div>
 
-                </section>
+                </Reveal>
 
                 <section className="info-cards">
-                    <Link to="/drivers" className="info-card">
+                    <Reveal as={Link} to="/drivers" className="info-card">
                         <img src={getImageUrl("pilotos.webp", 800)} alt="Pilotos de F1" />
 
                         <div className="info-card__overlay"></div>
@@ -216,9 +217,9 @@ const Home = () => {
                                 </span>
                             </span>
                         </div>
-                    </Link>
+                    </Reveal>
 
-                    <Link to="/circuits" className="info-card">
+                    <Reveal as={Link} to="/circuits" className="info-card" delay={0.1}>
                         <img src={getImageUrl("circuitos.png", 700)} alt="Circuitos de F1" />
                         <div className="info-card__overlay"></div>
 
@@ -244,9 +245,9 @@ const Home = () => {
                                 </span>
                             </span>
                         </div>
-                    </Link>
+                    </Reveal>
 
-                    <Link to="/teams" className="info-card">
+                    <Reveal as={Link} to="/teams" className="info-card" delay={0.2}>
                         <img src={getImageUrl("escuderias.webp", 800)} alt="Escuderías de F1" />
                         <div className="info-card__overlay"></div>
 
@@ -272,7 +273,7 @@ const Home = () => {
                                 </span>
                             </span>
                         </div>
-                    </Link>
+                    </Reveal>
 
                 </section>
 
@@ -375,7 +376,7 @@ const Home = () => {
                     </div>
                 </section>
 
-                <section className="split-section split-section--light">
+                <Reveal as="section" className="split-section split-section--light">
                     <div className="split-section__content">
                         <div className="container">
                             <div className="split-section__text-wrapper">
@@ -405,7 +406,7 @@ const Home = () => {
                     <div className="split-section__image">
                         <img src={getImageUrl("tutoriales.webp", 1200)} alt="Tutoriales GRANDPICK" />
                     </div>
-                </section>
+                </Reveal>
             </>
         </div>
     );

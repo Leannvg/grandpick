@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLoader } from "../context/LoaderContext";
 import DriverCardDesktop from "../components/drivers/DriverCardDesktop";
 import DriverCardMobile from "../components/drivers/DriverCardMobile";
+import Reveal from "../components/Reveal";
 
 import TeamsServices from "../services/teams.services";
 
@@ -52,12 +53,14 @@ function Drivers() {
         </header>
 
         <div className="drivers-grid">
-          {drivers.map((driver) => (
-            isMobile ? (
-              <DriverCardMobile key={driver._id.$oid} driver={driver} />
-            ) : (
-              <DriverCardDesktop key={driver._id.$oid} driver={driver} />
-            )
+          {drivers.map((driver, index) => (
+            <Reveal key={driver._id.$oid} delay={Math.min(index * 0.05, 0.4)}>
+              {isMobile ? (
+                <DriverCardMobile driver={driver} />
+              ) : (
+                <DriverCardDesktop driver={driver} />
+              )}
+            </Reveal>
           ))}
         </div>
       </section>

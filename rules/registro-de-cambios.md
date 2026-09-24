@@ -2,6 +2,24 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-24 · Animación de aparición al hacer scroll (`Reveal`)
+
+- Nuevo componente genérico `components/Reveal.jsx`: envuelve una sección o
+  tarjeta y la anima con fade + `y` al entrar en viewport (`framer-motion`
+  `whileInView`, `once: true`), respeta `useReducedMotion()`. Soporta `as`
+  como tag string (`"section"`, `"article"`) o como componente con
+  forwardRef (ej. `Link` de react-router), memoizado para no remontar el
+  subárbol en cada render.
+- Aplicado en `Home.jsx`: sección "¿Cómo funciona?", las 3 `info-card`
+  (delay escalonado 0/0.1/0.2) y el `split-section` final. El hero queda
+  sin animar por estar arriba del pliegue, y la sección de ranking queda
+  sin envolver porque el `Podium` ya tiene su propia entrada animada.
+- Aplicado en las grillas de tarjetas de `Drivers.jsx`, `Teams.jsx` y
+  `Circuits.jsx`, con delay escalonado por índice
+  (`Math.min(index * 0.05, 0.4)`).
+- No se tocó `Ranking.jsx`/`Standings.jsx` (filas de tabla): sigue vigente
+  la pausa de animación de filas acordada en la entrada anterior.
+
 ## 2026-09-24 · Sacar animación de filas de las tablas (por ahora)
 
 - Se quita `AnimatePresence`/`motion.tr` de las 7 tablas (`Ranking.jsx`,

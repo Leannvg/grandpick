@@ -116,6 +116,18 @@ Ejemplo: tarjetas del podio del Home — entrada escalonada (3º → 2º → 1º
 elevación de 6px al hover y animaciones constantes: brillo que barre cada
 tarjeta en loop (`.podium__shine`) y confeti cayendo en las tres (`Confetti`), con la misma paleta en las tres (el podio se comparte) pero distinto ritmo y forma: 1º mixto, 2º círculos lentos, 3º tiras rápidas.
 
+**Aparición de contenido al hacer scroll (`Reveal`)**: componente genérico
+(`components/Reveal.jsx`, ver [componentes.md](./componentes.md)) que envuelve
+una sección o tarjeta y la anima con fade + `y` al entrar en viewport
+(`whileInView`, `once: true`). Usado en `Home.jsx` (secciones "¿Cómo
+funciona?", las 3 `info-card` con delay escalonado 0/0.1/0.2, y el
+`split-section` final — el hero queda afuera por estar arriba del pliegue) y
+en las grillas de tarjetas de `Drivers.jsx`, `Teams.jsx` y `Circuits.jsx`
+(delay escalonado por índice, `Math.min(index * 0.05, 0.4)` para no demorar
+demasiado en listas largas). No se aplicó a `Ranking.jsx`/`Standings.jsx`
+(filas de tabla — ver nota debajo) ni al `Podium` (ya tiene su propia
+animación de entrada).
+
 **Filas de tabla al filtrar por búsqueda — sin animación (pausado)**: se
 probó animar la aparición/desaparición de filas con `AnimatePresence` +
 `motion.tr` (`Ranking.jsx`, `Standings.jsx` y las 5 tablas del admin:

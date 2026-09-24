@@ -5,6 +5,7 @@ import * as countriesServices from "../services/countries.services";
 import { useLoader } from "../context/LoaderContext";
 import { getFlagEmoji } from "../utils/helpers";
 import { getImageUrl } from "../utils/cloudinary";
+import Reveal from "../components/Reveal";
 
 function Circuits() {
     const [circuits, setCircuits] = useState([]);
@@ -49,8 +50,14 @@ function Circuits() {
                     </p>
                 </header>
                 <div className="container circuits-grid">
-                    {circuits.map((circuit) => (
-                        <Link to={`/circuits/${circuit._id}`} className="text-decoration-none" key={circuit._id}>
+                    {circuits.map((circuit, index) => (
+                        <Reveal
+                            as={Link}
+                            to={`/circuits/${circuit._id}`}
+                            className="text-decoration-none"
+                            key={circuit._id}
+                            delay={Math.min(index * 0.05, 0.4)}
+                        >
                             <article className="track-card">
                                 <div className="track-card-header">
                                     <img
@@ -69,7 +76,7 @@ function Circuits() {
                                     <p className="track-card-subtitle">{circuit.circuit_name}</p>
                                 </div>
                             </article>
-                        </Link>
+                        </Reveal>
                     ))}
                 </div>
             </section>

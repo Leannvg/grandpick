@@ -5,6 +5,7 @@ import { useLoader } from "../context/LoaderContext";
 import API_URL from "../services/api";
 import helmet from "../assets/icons/helmet_white.png";
 import { getImageUrl } from "../utils/cloudinary";
+import Reveal from "../components/Reveal";
 
 function Teams() {
     const [teams, setTeams] = useState([]);
@@ -38,8 +39,13 @@ function Teams() {
                 </header>
 
                 <section className="teams-list">
-                    {teams.map((team) => (
-                        <article className="team-list-card" key={team._id}>
+                    {teams.map((team, index) => (
+                        <Reveal
+                            as="article"
+                            className="team-list-card"
+                            key={team._id}
+                            delay={Math.min(index * 0.05, 0.4)}
+                        >
                             <div className="team-logo">
                                 <img
                                     src={getImageUrl(team.isologo, 100)}
@@ -66,7 +72,7 @@ function Teams() {
                             >
                                 <span className="chevron">❯❯</span>
                             </Link>
-                        </article>
+                        </Reveal>
                     ))}
                 </section>
             </section>
