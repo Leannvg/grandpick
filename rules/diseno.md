@@ -116,20 +116,18 @@ Ejemplo: tarjetas del podio del Home — entrada escalonada (3º → 2º → 1º
 elevación de 6px al hover y animaciones constantes: brillo que barre cada
 tarjeta en loop (`.podium__shine`) y confeti cayendo en las tres (`Confetti`), con la misma paleta en las tres (el podio se comparte) pero distinto ritmo y forma: 1º mixto, 2º círculos lentos, 3º tiras rápidas.
 
-**Filas de tabla al filtrar por búsqueda**: toda tabla con buscador en vivo
-(`.ranking-table`/`.admin-table`) anima la aparición/desaparición de sus filas
-con `AnimatePresence` (modo por defecto) + `motion.tr` — **solo
-desvanecimiento** (`opacity 0→1`/`1→0`, 0.2s, sin animación si
-`useReducedMotion()`). **No usar `layout` en el `motion.tr` ni
-`mode="popLayout"` en el `AnimatePresence`**: ambos se probaron y rompen el
-layout de la tabla — `mode="popLayout"` saca la fila que se va con
-`position: absolute` para que las demás reacomoden antes, pero un `<tr>` no
-soporta position:absolute como layout válido dentro de una tabla, así que la
-fila se desprende y aparece apilada arriba a la izquierda de la pantalla en
-vez de desvanecerse en su lugar (confirmado con una prueba aislada). Se
-aplica en `Ranking.jsx`, `Standings.jsx` (ambas tablas) y las 5 tablas del
-admin (`DriversTable`,
-`TeamsTable`, `CircuitsTable`, `RacesTable`, `UsersTable`).
+**Filas de tabla al filtrar por búsqueda — sin animación (pausado)**: se
+probó animar la aparición/desaparición de filas con `AnimatePresence` +
+`motion.tr` (`Ranking.jsx`, `Standings.jsx` y las 5 tablas del admin:
+`DriversTable`, `TeamsTable`, `CircuitsTable`, `RacesTable`, `UsersTable`).
+Se descartaron dos variantes que rompían el layout de la tabla: `layout` en
+el `motion.tr` (las filas parecían correrse de costado) y
+`mode="popLayout"` en el `AnimatePresence` (saca la fila con
+`position: absolute`, que no es válido en un `<tr>` — la fila se desprendía
+y quedaba apilada arriba a la izquierda). Con solo desvanecimiento (sin
+`layout` ni `popLayout`) tampoco convenció, así que por ahora **las filas se
+filtran sin animación** (`<tr>` plano) en las 7 tablas — no reintroducir sin
+antes acordar el diseño.
 
 ## Modales (`gp-modal-*`, definidos en `assets/styles/components.css`)
 

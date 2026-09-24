@@ -1,9 +1,7 @@
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { usePagination } from "./../../hooks/usePagination.js";
 import CountryDisplay from "../CountryDisplay.jsx";
 
 export default function TeamsTable({ teams, onEdit, onDelete, pageSize }) {
-  const reduceMotion = useReducedMotion();
   const {
     page,
     pageSize: currentPageSize,
@@ -30,15 +28,8 @@ export default function TeamsTable({ teams, onEdit, onDelete, pageSize }) {
             </thead>
 
             <tbody>
-              <AnimatePresence initial={false}>
               {paginatedData.map((t) => (
-                <motion.tr
-                  key={t._id}
-                  initial={reduceMotion ? false : { opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={reduceMotion ? undefined : { opacity: 0 }}
-                  transition={{ duration: reduceMotion ? 0 : 0.2 }}
-                >
+                <tr key={t._id}>
                   <td className="sticky-col">{t.name}</td>
                   <td>{t.chief}</td>
                   <td>{t.power_unit}</td>
@@ -72,9 +63,8 @@ export default function TeamsTable({ teams, onEdit, onDelete, pageSize }) {
                       <i className="bi bi-trash-fill"></i>
                     </button>
                   </td>
-                </motion.tr>
+                </tr>
               ))}
-              </AnimatePresence>
             </tbody>
           </table>
         </div>

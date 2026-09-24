@@ -207,20 +207,13 @@ function Standings() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <AnimatePresence initial={false}>
                                     {filteredStandings.map((driver) => {
                                         const pos = driver.position;
                                         const posClass = pos <= 3 ? `pos-${pos}` : "";
                                         const { first, last } = splitName(driver.full_name);
 
                                         return (
-                                            <motion.tr
-                                                key={driver._id}
-                                                initial={reduceMotion ? false : { opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                exit={reduceMotion ? undefined : { opacity: 0 }}
-                                                transition={{ duration: reduceMotion ? 0 : 0.2 }}
-                                            >
+                                            <tr key={driver._id}>
                                                 <td className={`pos-cell ${posClass}`}>{pos}</td>
                                                 <td className="text-start">
                                                     <div className="driver-cell">
@@ -243,10 +236,9 @@ function Standings() {
                                                         <span>{driver.team?.name || "Sin escudería"}</span>
                                                     </div>
                                                 </td>
-                                            </motion.tr>
+                                            </tr>
                                         );
                                     })}
-                                </AnimatePresence>
                                     {filteredStandings.length === 0 && (
                                         <tr>
                                             <td colSpan="5" className="ranking-empty-state">
@@ -267,19 +259,12 @@ function Standings() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <AnimatePresence initial={false}>
                                     {filteredConstructors.map((team) => {
                                         const pos = team.position;
                                         const posClass = pos <= 3 ? `pos-${pos}` : "";
 
                                         return (
-                                            <motion.tr
-                                                key={team._id}
-                                                initial={reduceMotion ? false : { opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                exit={reduceMotion ? undefined : { opacity: 0 }}
-                                                transition={{ duration: reduceMotion ? 0 : 0.2 }}
-                                            >
+                                            <tr key={team._id}>
                                                 <td className={`pos-cell ${posClass}`}>{pos}</td>
                                                 <td className="text-start">
                                                     <div
@@ -313,10 +298,9 @@ function Standings() {
                                                         </span>
                                                     )}
                                                 </td>
-                                            </motion.tr>
+                                            </tr>
                                         );
                                     })}
-                                </AnimatePresence>
                                     {filteredConstructors.length === 0 && (
                                         <tr>
                                             <td colSpan="4" className="ranking-empty-state">

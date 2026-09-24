@@ -1,11 +1,9 @@
 import { useEffect, useMemo } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { usePagination } from "./../../hooks/usePagination.js";
 import { formatDateInTimezone } from "../../utils/helpers.js";
 import CountryDisplay from "../CountryDisplay.jsx";
 
 export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
-  const reduceMotion = useReducedMotion();
   const {
     page,
     pageSize: currentPageSize,
@@ -46,19 +44,11 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
             </thead>
 
             <tbody>
-              <AnimatePresence initial={false}>
               {paginatedData.map((r) => {
                 const isUpcoming = upcomingIndex !== -1 && races[upcomingIndex].gpRaceId === r.gpRaceId;
 
                 return (
-                  <motion.tr
-                    key={r.gpRaceId}
-                    className={isUpcoming ? 'row-upcoming' : ''}
-                    initial={reduceMotion ? false : { opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={reduceMotion ? undefined : { opacity: 0 }}
-                    transition={{ duration: reduceMotion ? 0 : 0.2 }}
-                  >
+                  <tr key={r.gpRaceId} className={isUpcoming ? 'row-upcoming' : ''}>
                     <td>{r.round}</td>
                     <td className="sticky-col"><CountryDisplay iso2={r.country} /></td>
                     <td>{r.gp_name}</td>
@@ -92,10 +82,9 @@ export default function RacesTable({ races, onEdit, onDelete, pageSize }) {
                         <i className="bi bi-trash-fill"></i>
                       </button>
                     </td>
-                  </motion.tr>
+                  </tr>
                 );
               })}
-              </AnimatePresence>
             </tbody>
           </table>
         </div>

@@ -2,6 +2,19 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-24 · Sacar animación de filas de las tablas (por ahora)
+
+- Se quita `AnimatePresence`/`motion.tr` de las 7 tablas (`Ranking.jsx`,
+  `Standings.jsx` x2, `DriversTable`, `TeamsTable`, `CircuitsTable`,
+  `RacesTable`, `UsersTable`); vuelven a ser `<tr>` planos, sin animación al
+  filtrar. Después de probar `layout` (rompía, filas de costado) y
+  `mode="popLayout"` (rompía distinto, filas a la esquina), el
+  desvanecimiento solo tampoco convenció — se pausa la animación hasta
+  definir un diseño que funcione bien.
+- El podio que se oculta al buscar (`Ranking.jsx`/`Standings.jsx`) no se
+  toca, sigue igual.
+- Detalle en [diseno.md](./diseno.md).
+
 ## 2026-09-23 · Fix: filas que "vuelan" a la esquina al buscar
 
 - Causa real del glitch reportado (filas deslizándose a la esquina superior

@@ -419,7 +419,6 @@ function Ranking() {
                                 </tr>
                             </thead>
                             <tbody>
-                                <AnimatePresence initial={false}>
                                 {paginatedData.map((item) => {
                                     const pos = item.globalRank;
                                     const isTop3 = pos <= 3;
@@ -431,14 +430,10 @@ function Ranking() {
                                     const avgPoints = totalPredictions > 0 ? (totalPoints / totalPredictions).toFixed(1) : "0.0";
 
                                     return (
-                                        <motion.tr
+                                        <tr
                                             key={item._id || pos}
                                             id={item._id ? `user-row-${item._id}` : undefined}
                                             className={currentUserStat?._id === item._id ? 'is-current-user' : ''}
-                                            initial={reduceMotion ? false : { opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            exit={reduceMotion ? undefined : { opacity: 0 }}
-                                            transition={{ duration: reduceMotion ? 0 : 0.2 }}
                                         >
                                             <td className={`pos-cell ${posClass}`}>{pos}</td>
                                             <td>
@@ -505,10 +500,9 @@ function Ranking() {
                                                     return item.gap;
                                                 })()}
                                             </td>}
-                                        </motion.tr>
+                                        </tr>
                                     );
                                 })}
-                                </AnimatePresence>
                                 {paginatedData.length === 0 && (
                                     <tr>
                                         <td colSpan={mode === 'global' ? "7" : "5"} className="ranking-empty-state">
