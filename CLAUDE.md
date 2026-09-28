@@ -29,12 +29,14 @@ Monorepo: `back/` (API Node + Express + MongoDB nativo), `front/` (React + Vite)
      `git checkout -b leandro` si no existe todavía localmente).
    - Por cada cambio: commit en `leandro` → `git push origin leandro` →
      `git checkout main && git pull && git merge leandro && git push origin main`
-     → volver a `git checkout leandro`. El push a `main` es lo que dispara
-     el deploy (front en Vercel, API en Railway), así que recién ahí queda
-     publicado.
-   - Antes de mergear a `main`, hacer `git pull origin main` para traer los
-     cambios que haya subido la otra persona, y resolver conflictos si
-     aparecen (no descartar cambios ajenos).
+     → `git checkout leandro && git merge main` → seguir trabajando ahí. El
+     push a `main` es lo que dispara el deploy (front en Vercel, API en
+     Railway), así que recién ahí queda publicado.
+   - El `pull`/`merge` de `main` antes de mergear `leandro` trae lo que haya
+     subido la otra persona; el `merge main` final (al volver a `leandro`)
+     evita que la rama se desactualice si la otra persona mergeó algo
+     mientras tanto. Si hay conflicto en cualquiera de los dos merges,
+     resolverlo a mano (no descartar cambios ajenos con `--ours`/checkout).
 6. Reutilizar componentes y clases CSS existentes antes de crear nuevos
    (armonía de diseño).
 
