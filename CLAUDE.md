@@ -21,8 +21,20 @@ Monorepo: `back/` (API Node + Express + MongoDB nativo), `front/` (React + Vite)
    - si cambió diseño / estructura / lógica transversal, actualizar ese doc
 4. **Commits en español**, imperativo corto. Terminar con la línea de
    `Co-Authored-By` que indique la sesión.
-5. **Git**: usar la cuenta vinculada a la carpeta. Todos los cambios se pushean a
-   `main` para desplegar (front en Vercel, API en Railway).
+5. **Git**: usar la cuenta vinculada a la carpeta. **No commitear ni pushear
+   directo a `main`** — hay otra persona trabajando en paralelo en su propia
+   rama. El trabajo de esta carpeta va en la rama `leandro`:
+   - Verificar rama actual con `git branch --show-current`; si no es
+     `leandro`, hacer `git checkout leandro` antes de commitear (o
+     `git checkout -b leandro` si no existe todavía localmente).
+   - Por cada cambio: commit en `leandro` → `git push origin leandro` →
+     `git checkout main && git pull && git merge leandro && git push origin main`
+     → volver a `git checkout leandro`. El push a `main` es lo que dispara
+     el deploy (front en Vercel, API en Railway), así que recién ahí queda
+     publicado.
+   - Antes de mergear a `main`, hacer `git pull origin main` para traer los
+     cambios que haya subido la otra persona, y resolver conflictos si
+     aparecen (no descartar cambios ajenos).
 6. Reutilizar componentes y clases CSS existentes antes de crear nuevos
    (armonía de diseño).
 
