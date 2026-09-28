@@ -22,21 +22,25 @@ Monorepo: `back/` (API Node + Express + MongoDB nativo), `front/` (React + Vite)
 4. **Commits en español**, imperativo corto. Terminar con la línea de
    `Co-Authored-By` que indique la sesión.
 5. **Git**: usar la cuenta vinculada a la carpeta. **No commitear ni pushear
-   directo a `main`** — hay otra persona trabajando en paralelo en su propia
-   rama. El trabajo de esta carpeta va en la rama `leandro`:
-   - Verificar rama actual con `git branch --show-current`; si no es
-     `leandro`, hacer `git checkout leandro` antes de commitear (o
-     `git checkout -b leandro` si no existe todavía localmente).
-   - Por cada cambio: commit en `leandro` → `git push origin leandro` →
-     `git checkout main && git pull && git merge leandro && git push origin main`
-     → `git checkout leandro && git merge main` → seguir trabajando ahí. El
-     push a `main` es lo que dispara el deploy (front en Vercel, API en
+   directo a `main`** — hay más de una persona trabajando en paralelo, cada
+   una en su propia rama personal (una rama fija por persona, no una nueva
+   por feature). Ramas en uso actualmente: `leandro` (Leandro). Si trabajás
+   en este repo y todavía no tenés tu rama, creá la tuya con otro nombre
+   antes de tu primer commit (`git checkout -b <tu-rama>` y sumate a esta
+   lista).
+   - Al empezar, verificar rama actual con `git branch --show-current`; si
+     es `main` (o la de otra persona), cambiar a la propia con
+     `git checkout <tu-rama>`.
+   - Por cada cambio: commit en `<tu-rama>` → `git push origin <tu-rama>` →
+     `git checkout main && git pull && git merge <tu-rama> && git push origin main`
+     → `git checkout <tu-rama> && git merge main` → seguir trabajando ahí.
+     El push a `main` es lo que dispara el deploy (front en Vercel, API en
      Railway), así que recién ahí queda publicado.
-   - El `pull`/`merge` de `main` antes de mergear `leandro` trae lo que haya
-     subido la otra persona; el `merge main` final (al volver a `leandro`)
-     evita que la rama se desactualice si la otra persona mergeó algo
-     mientras tanto. Si hay conflicto en cualquiera de los dos merges,
-     resolverlo a mano (no descartar cambios ajenos con `--ours`/checkout).
+   - El `pull`/`merge` de `main` antes de mergear tu rama trae lo que haya
+     subido la otra persona; el `merge main` final (al volver a tu rama)
+     evita que se desactualice si la otra persona mergeó algo mientras
+     tanto. Si hay conflicto en cualquiera de los dos merges, resolverlo a
+     mano (no descartar cambios ajenos con `--ours`/checkout).
 6. Reutilizar componentes y clases CSS existentes antes de crear nuevos
    (armonía de diseño).
 
