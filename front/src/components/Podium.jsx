@@ -11,16 +11,13 @@ const CONFETTI_BY_RANK = {
     3: { count: 16, seed: 3, speed: 1.3, roundRatio: 0 },
 };
 
-// Definidos a nivel módulo (referencia estable) para el brillo en loop: un
-// objeto/array nuevo en cada render de Podium reinicia la animación en
-// Framer Motion, y con varios renders seguidos (ej. carga de datos en
-// cascada) puede terminar cancelada sin volver a arrancar. Ver Confetti.jsx.
-const SHINE_INITIAL = { x: "-130%" };
-const SHINE_ANIMATE = { x: "130%" };
-const SHINE_TRANSITION_BY_RANK = {
-    1: { duration: 1.4, ease: "easeInOut", repeat: Infinity, repeatDelay: 3.5, delay: 1 + 1 * 0.6 },
-    2: { duration: 1.4, ease: "easeInOut", repeat: Infinity, repeatDelay: 3.5, delay: 1 + 2 * 0.6 },
-    3: { duration: 1.4, ease: "easeInOut", repeat: Infinity, repeatDelay: 3.5, delay: 1 + 3 * 0.6 },
+// Delay por puesto del brillo en loop (`.podium__shine` en podium.css, CSS
+// nativo — mismo motivo que Confetti.jsx). Misma duración de ciclo para los
+// tres, así quedan sincronizados y barren en orden 1º → 2º → 3º siempre.
+const SHINE_DELAY_BY_RANK = {
+    1: "1.6s",
+    2: "2.2s",
+    3: "2.8s",
 };
 
 /**
@@ -57,12 +54,10 @@ const Podium = ({ entries = [] }) => {
                     />
                     <Confetti {...CONFETTI_BY_RANK[entry.rank]} />
                     {!reduceMotion && (
-                        <motion.span
+                        <span
                             className="podium__shine"
                             aria-hidden="true"
-                            initial={SHINE_INITIAL}
-                            animate={SHINE_ANIMATE}
-                            transition={SHINE_TRANSITION_BY_RANK[entry.rank]}
+                            style={{ "--shine-delay": SHINE_DELAY_BY_RANK[entry.rank] }}
                         />
                     )}
                     <div className="podium__info">

@@ -74,6 +74,26 @@
     transparent 60%
   );
   pointer-events: none;
+  /* CSS nativo, no framer-motion: mismo motivo que el confeti (ver
+     Confetti.jsx / registro-de-cambios.md, 2026-09-29). Ciclo total 4.9s
+     (1.4s de barrido + 3.5s de pausa); con animation-delay distinto por
+     puesto y la misma duración, quedan sincronizados para siempre —
+     barren en orden 1º → 2º → 3º en cada vuelta, no solo la primera. */
+  animation: podium-shine 4.9s ease-in-out infinite;
+  animation-delay: var(--shine-delay, 0s);
+  animation-fill-mode: backwards;
+}
+
+@keyframes podium-shine {
+  0% {
+    transform: translateX(-130%);
+  }
+  28.57% {
+    transform: translateX(130%);
+  }
+  100% {
+    transform: translateX(130%);
+  }
 }
 
 /* Confeti (components/Confetti.jsx) */

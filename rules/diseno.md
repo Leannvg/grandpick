@@ -128,12 +128,20 @@ renderiza `<span>` planos con `@keyframes confetti-fall` en `podium.css`
 variable CSS `--confetti-spin`). El loop lo maneja el motor de renderizado
 directamente, no WAAPI orquestado por React — inmune al problema. Sigue
 respetando `useReducedMotion()` (no renderiza nada si el usuario pidió
-reducir movimiento). Ver el historial completo en
+reducir movimiento). Mismo tratamiento para el brillo del podio
+(`.podium__shine`): `@keyframes podium-shine` en `podium.css`, con
+`animation-delay` distinto por puesto vía la variable CSS `--shine-delay`
+(`Podium.jsx`) y la misma duración de ciclo total (4.9s) para los tres, así
+quedan sincronizados para siempre y barren en orden 1º → 2º → 3º en cada
+vuelta, no solo la primera. Ver el historial completo en
 `registro-de-cambios.md` (2026-09-29).
 
 Ejemplo: tarjetas del podio del Home — entrada escalonada (3º → 2º → 1º),
 elevación de 6px al hover y animaciones constantes: brillo que barre cada
-tarjeta en loop (`.podium__shine`) y confeti cayendo en las tres (`Confetti`), con la misma paleta en las tres (el podio se comparte) pero distinto ritmo y forma: 1º mixto, 2º círculos lentos, 3º tiras rápidas.
+tarjeta en loop, en orden (1º → 2º → 3º, `.podium__shine`) y confeti
+cayendo en las tres (`Confetti`), con la misma paleta en las tres (el podio
+se comparte) pero distinto ritmo y forma: 1º mixto, 2º círculos lentos, 3º
+tiras rápidas.
 
 **Aparición de contenido al hacer scroll (`Reveal`)**: componente genérico
 (`components/Reveal.jsx`, ver [componentes.md](./componentes.md)) que envuelve

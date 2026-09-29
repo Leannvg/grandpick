@@ -2,6 +2,23 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-29 · Ajustes al confeti CSS + brillo del podio también a CSS nativo
+
+- `Confetti.jsx`/`podium.css`: al arrancar, las piezas se veían todas
+  amontonadas arriba antes de empezar a caer — faltaba
+  `animation-fill-mode: backwards` en `.confetti__piece`, así que durante
+  el `animation-delay` de cada pieza se mostraba su posición de reposo
+  (arriba, sin transformar) en vez de ya arrancar en el estado inicial del
+  keyframe (arriba, invisible). Agregado.
+- `Podium.jsx`/`podium.css`: el brillo (`.podium__shine`) usaba el mismo
+  patrón de `framer-motion` + `repeat: Infinity` que el confeti, y tenía el
+  mismo problema (no se veía nunca). Se pasó a CSS nativo igual que el
+  confeti: `@keyframes podium-shine`, `animation-delay` distinto por puesto
+  vía la variable CSS `--shine-delay` y la misma duración de ciclo (4.9s =
+  1.4s de barrido + 3.5s de pausa) para los tres — como tienen el mismo
+  período, quedan sincronizados para siempre y barren en orden
+  1º → 2º → 3º en cada vuelta del loop, no solo la primera vez.
+
 ## 2026-09-29 · Confeti del podio: pasar el loop a CSS nativo (fix definitivo)
 
 - El remount cada 6s (entrada de abajo) tampoco resolvió el problema: se
