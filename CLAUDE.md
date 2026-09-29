@@ -24,7 +24,8 @@ Monorepo: `back/` (API Node + Express + MongoDB nativo), `front/` (React + Vite)
 5. **Git**: usar la cuenta vinculada a la carpeta. **No commitear ni pushear
    directo a `main`** — hay más de una persona trabajando en paralelo, cada
    una en su propia rama personal (una rama fija por persona, no una nueva
-   por feature). Ramas en uso actualmente: `leandro` (Leandro). Si trabajás
+   por feature). Ramas en uso actualmente: `leandro` (Leandro), `julieta`
+   (Julieta). Si trabajás
    en este repo y todavía no tenés tu rama, creá la tuya con otro nombre
    antes de tu primer commit (`git checkout -b <tu-rama>` y sumate a esta
    lista).
