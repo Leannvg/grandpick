@@ -112,34 +112,24 @@ solo la primera vez, y respetar `useReducedMotion()` (con `initial={false}`).
 Los `whileHover` deben definir su propia `transition` para no heredar el `delay`
 de la entrada.
 
-**Animaciones con `repeat: Infinity`: siempre animar propiedades de
-`transform`/`opacity` (`x`, `y`, `scale`, `rotate`), nunca propiedades de
-layout (`top`, `left`, `width`, `height`).** Es más barato para el navegador
-(corre en el compositor) y evita depender de que el motor no decida
-"terminar" una animación de layout en loop. Caso real: el confeti del podio
-(`Confetti.jsx`) animaba `top: -10% → 110%`; se cambió a `y: -24 → 320`
-(px, `transform`).
-
-**Animaciones con `repeat: Infinity`: los objetos `initial`/`animate`/
-`transition` deben tener referencia estable entre renders (definirlos en un
-`useMemo` o a nivel módulo si son constantes), nunca objetos/arrays inline
-en el JSX.** Un objeto nuevo en cada render puede hacer que Framer Motion
-reinicie la animación; si el componente padre re-renderiza varias veces
-seguidas (ej. una cascada de `setState` de distintos `await` en el mismo
-efecto), la animación puede terminar cancelada sin volver a arrancar nunca
-(`repeat: Infinity` nunca llega a correr un segundo ciclo). Diagnosticado en
-producción confirmando con `el.getAnimations()` en DevTools que la pieza no
-tenía ninguna animación activa (array vacío) aunque el elemento seguía en el
-DOM con el estilo del último frame. Aplicado en `Confetti.jsx` (piezas) y
-`Podium.jsx` (`.podium__shine`, con `SHINE_TRANSITION_BY_RANK` a nivel
-módulo, mismo patrón que `CONFETTI_BY_RANK`). **No alcanzó por sí solo**:
-en producción el confeti se congeló igual (mismo síntoma, `getAnimations()`
-vacío) incluso con mount único confirmado por logs (sin re-render, sin
-remount) — no se pudo aislar la causa real ni reproducirla en un harness
-mínimo. `Confetti.jsx` remonta sus piezas cada `RESET_INTERVAL_MS` (6s) vía
-`key` que cambia con un `setInterval`, como salvaguarda: si el navegador
-"congela" el loop por el motivo que sea, se recupera solo en vez de quedar
-detenido para siempre — ver `registro-de-cambios.md`.
+**Excepción a la regla de arriba — loops infinitos decorativos
+(`repeat: Infinity` / `animation-iteration-count: infinite`): usar CSS
+nativo (`@keyframes` + `animation`), no `framer-motion`.** El confeti del
+podio (`Confetti.jsx`) usaba `framer-motion` con `repeat: Infinity` y, en
+producción, la animación se "congelaba" (dejaba de repetir) sin causa
+aislable — no reproducía en ningún harness mínimo, con mount confirmado
+limpio (sin re-render, sin remount) por logs. Se probaron y descartaron
+como causa: animar `top` en vez de `y`/`transform`, objetos `initial`/
+`animate`/`transition` recreados por render (se memoizaron igual, por buena
+práctica) y un remount periódico como salvaguarda — ninguno lo resolvió.
+La solución fue sacar el loop de `framer-motion` por completo: `Confetti.jsx`
+renderiza `<span>` planos con `@keyframes confetti-fall` en `podium.css`
+(`animation-iteration-count: infinite`, ángulo de rotación por pieza vía la
+variable CSS `--confetti-spin`). El loop lo maneja el motor de renderizado
+directamente, no WAAPI orquestado por React — inmune al problema. Sigue
+respetando `useReducedMotion()` (no renderiza nada si el usuario pidió
+reducir movimiento). Ver el historial completo en
+`registro-de-cambios.md` (2026-09-29).
 
 Ejemplo: tarjetas del podio del Home — entrada escalonada (3º → 2º → 1º),
 elevación de 6px al hover y animaciones constantes: brillo que barre cada

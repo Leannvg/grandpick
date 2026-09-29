@@ -89,6 +89,29 @@
   position: absolute;
   top: 0;
   left: 0;
+  animation-name: confetti-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Animación CSS nativa (no framer-motion): en producción, la versión con
+   framer-motion (repeat: Infinity) se "congelaba" después de un tiempo sin
+   causa aislable (ver rules/registro-de-cambios.md, 2026-09-29). El loop
+   infinito vía @keyframes lo maneja el motor de renderizado directamente,
+   sin depender de WAAPI orquestado por React/framer-motion. */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-24px) rotate(0deg);
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(320px) rotate(var(--confetti-spin, 360deg));
+    opacity: 0;
+  }
 }
 
 .podium__photo {

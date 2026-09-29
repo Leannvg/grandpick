@@ -2,6 +2,30 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-29 · Confeti del podio: pasar el loop a CSS nativo (fix definitivo)
+
+- El remount cada 6s (entrada de abajo) tampoco resolvió el problema: se
+  verificó en vivo, 3 chequeos separados por varios segundos, que el
+  `transform` de las piezas no cambiaba nunca (siempre en el frame final),
+  a pesar de confirmar por el bundle desplegado (buscando el literal `KV=6e3`
+  minificado) que el código del remount SÍ estaba corriendo en producción.
+  Antes de eso también se descartó una falsa pista: comparar el hash del
+  bundle local (Windows) contra el de Vercel (Linux) no es una forma válida
+  de detectar staleness — esos hashes pueden diferir por plataforma aunque
+  el código sea idéntico.
+- Se sacó el loop del confeti de `framer-motion` (`repeat: Infinity`) por
+  completo. `Confetti.jsx` ahora renderiza `<span>` planos (sin
+  `motion.span`) con una animación CSS nativa: `@keyframes confetti-fall`
+  en `podium.css`, `animation-iteration-count: infinite`, ángulo de
+  rotación variable por pieza vía la CSS custom property `--confetti-spin`
+  (seteada inline por pieza). Sigue respetando `useReducedMotion()`.
+- Se sacó también el `useState`/`setInterval` del remount-cada-6s (ya no
+  hace falta: el loop nativo no depende de React para seguir corriendo).
+- Regla documentada en `diseno.md`: para loops infinitos puramente
+  decorativos, usar CSS nativo en vez de `framer-motion` — es la única
+  excepción a la regla general del proyecto de animar todo con
+  `framer-motion`.
+
 ## 2026-09-29 · Confeti del podio: remontar periódicamente (salvaguarda)
 
 - El fix de memoización (entrada de abajo) tampoco alcanzó: se instrumentó
