@@ -208,11 +208,22 @@ la familia `ranking-*`.
 Patrón usado en Login, Register, ForgotPassword, `PasswordInput`,
 `FloatingEditProfile` y formularios de admin: `.gp-input-group-container` >
 `.gp-input-group` (label + input en fila) + `.gp-input-label` (cápsula azul,
-ancho fijo 160px, texto **alineado a la izquierda** — no centrado, aunque en
-labels cortos como "País" se note menos la diferencia si estuviera mal). Para
-usar `CountrySelect` dentro de este patrón: `hideLabel={true}` y el `<label
-className="gp-input-label">` se pone afuera, en el `.gp-input-group` (mismo
-approach que el resto de los campos).
+ancho fijo 160px, texto **centrado**). Los placeholders/valores de los
+`<input>` van **alineados a la izquierda** (default del navegador para
+`.form-control`, no hace falta CSS extra). Para usar `CountrySelect` dentro
+de este patrón: `hideLabel={true}` y el `<label className="gp-input-label">`
+se pone afuera, en el `.gp-input-group` (mismo approach que el resto de los
+campos).
+
+**Ojo con `react-select` dentro de un contenedor `.text-center`** (como
+`.auth-section` en Login/Register): a diferencia de un `<input>` (que tiene
+`text-align: start` por defecto en el navegador y no hereda el centrado del
+ancestro), los `<div>` que arma `react-select` para el placeholder/valor
+(`.react-select__placeholder`, `.react-select__single-value`) **sí heredan**
+el `text-align` del contenedor — por eso `CountrySelect` se veía centrado
+mientras los `<input>` de al lado quedaban a la izquierda. Fix: `text-align:
+left` en `.react-select__value-container` (`components.css`), que cubre
+placeholder/valor/input por herencia.
 
 `.submit-btn` (botón circular de confirmar, ver también `.btn-row-action`)
 soporta `disabled` (`opacity: 0.6; cursor: not-allowed`) — usarlo mientras un
