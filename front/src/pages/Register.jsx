@@ -14,12 +14,14 @@ function Register() {
   const [password, setPassword] = useState("");
   const [country, setPais] = useState("");
   const [errorsForm, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { showAlert } = useAlert();
   const { confirmDialog } = useDialog();
 
   async function onSubmit(event) {
     event.preventDefault();
+    if (isSubmitting) return;
 
     const dialog = {
       title: "¿Todo listo para correr?",
@@ -30,6 +32,8 @@ function Register() {
     };
     const confirmed = await confirmDialog(dialog);
     if (!confirmed) return;
+
+    setIsSubmitting(true);
 
     authServices
       .register(name, last_name, country, email, password)
@@ -55,7 +59,8 @@ function Register() {
 
         const parsedErrors = helpers.parseErrorMessage(error);
         setErrors(parsedErrors);
-      });
+      })
+      .finally(() => setIsSubmitting(false));
   }
 
   return (
@@ -161,7 +166,7 @@ function Register() {
               autoComplete="new-password"
             />
 
-            <button className="submit-btn" type="submit" aria-label="Crear cuenta">
+            <button className="submit-btn" type="submit" aria-label="Crear cuenta" disabled={isSubmitting}>
               <svg
                 className="icon-submit"
                 xmlns="http://www.w3.org/2000/svg"
