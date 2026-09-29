@@ -2,6 +2,28 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-28 · Arreglar confeti congelado del podio y `confirmDialog` que rechazaba al cancelar
+
+- **Confeti congelado (`Confetti.jsx`)**: en producción, el confeti del
+  podio a veces dejaba de aparecer y no volvía ni refrescando — solo un
+  remount (ej. buscar y borrar en Ranking) lo hacía volver. Confirmado con
+  DevTools en vivo: las piezas quedaban con `top: '110%', opacity: '0'`
+  fijo entre dos lecturas separadas por 1s, es decir, la animación
+  `repeat: Infinity` corrió una vez y no volvió a repetir — comportamiento
+  conocido de Chrome con animaciones de `top` (layout) en pestañas que
+  estuvieron en segundo plano. Se cambió a animar `y` (`transform`) con
+  valores fijos en px (`-24 → 320`) en vez de `top` en porcentaje; se
+  documentó la regla general en `diseno.md`.
+- **`DialogContext.jsx` (`confirmDialog`)**: al cancelar, la promesa hacía
+  `reject(false)` en vez de `resolve(false)`. Los call-sites que hacían
+  `const confirmed = await confirmDialog(...); if (!confirmed) return;`
+  (Register, Predictions, Circuit/Team/Driver Create-Edit, RaceForm)
+  quedaban con una promesa rechazada sin capturar al cancelar. Se cambió a
+  `resolve(false)` y se ajustaron los call-sites que dependían del
+  `reject` para abortar por `catch` (`Dashboard.jsx` x3, `Assignments.jsx`,
+  `NotificationsTab.jsx`) para que ahora chequeen el `confirmed` resuelto
+  en vez de depender de la excepción.
+
 ## 2026-09-24 · Extender `Reveal` a las tarjetas del calendario
 
 - `Calendar.jsx`: las `article.calendar-item` de ambas columnas

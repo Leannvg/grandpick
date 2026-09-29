@@ -50,8 +50,11 @@ const Confetti = ({ count = 14, colors = DEFAULT_COLORS, seed = 0, speed = 1, ro
                         borderRadius: p.round ? "50%" : 1,
                         backgroundColor: p.color,
                     }}
-                    initial={{ top: "-10%", rotate: 0, opacity: 0 }}
-                    animate={{ top: "110%", rotate: p.spin, opacity: [0, 1, 1, 0] }}
+                    // y (transform) en vez de top (layout): Chrome puede "terminar"
+                    // y no reanudar animaciones de layout con repeat:Infinity en
+                    // pestañas que estuvieron en segundo plano; transform no sufre eso.
+                    initial={{ y: -24, rotate: 0, opacity: 0 }}
+                    animate={{ y: 320, rotate: p.spin, opacity: [0, 1, 1, 0] }}
                     transition={{
                         duration: p.duration,
                         delay: p.delay,

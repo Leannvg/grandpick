@@ -86,13 +86,14 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
         return;
       }
 
-      await confirmDialog({
+      const confirmed = await confirmDialog({
         title: "¿Guardar asignaciones?",
         message: "Esta acción actualizará los equipos y pilotos seleccionados.",
         confirmText: "Guardar",
         cancelText: "Cancelar",
         confirmVariant: "success"
       });
+      if (!confirmed) return;
 
       setSaving(true);
 
