@@ -17,7 +17,7 @@ export function DialogProvider({ children }) {
 
   const confirmDialog = useCallback(
     ({ title, message, confirmText, cancelText, confirmVariant }) => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         setDialog({
           show: true,
           title,
@@ -31,7 +31,7 @@ export function DialogProvider({ children }) {
           },
           onCancel: () => {
             setDialog((prev) => ({ ...prev, show: false }));
-            reject(false);
+            resolve(false);
           },
         });
       });

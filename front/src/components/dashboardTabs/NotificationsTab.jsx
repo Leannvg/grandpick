@@ -39,27 +39,23 @@ function NotificationsTab({ users = [] }) {
         return u ? `${u.name} ${u.last_name} (${u.email})` : "Usuario específico";
       })();
 
-    try {
-      await confirmDialog({
-        title: "¿Confirmar Envío?",
-        message: (
-          <span>
-            Estás a punto de enviar una notificación a <strong>{recipientName}</strong>.<br /><br />
-            <strong>Título:</strong> {formData.title}<br />
-            <strong>Mensaje:</strong> {formData.message}
-            {formData.link && <><br /><strong>Link:</strong> {formData.link}</>}
-            <br /><br />
-            Esta acción disparará notificaciones push reales.
-          </span>
-        ),
-        confirmText: "Enviar",
-        cancelText: "Cancelar",
-        confirmVariant: "danger",
-      });
-    } catch (e) {
-      // Usuario canceló
-      return;
-    }
+    const confirmed = await confirmDialog({
+      title: "¿Confirmar Envío?",
+      message: (
+        <span>
+          Estás a punto de enviar una notificación a <strong>{recipientName}</strong>.<br /><br />
+          <strong>Título:</strong> {formData.title}<br />
+          <strong>Mensaje:</strong> {formData.message}
+          {formData.link && <><br /><strong>Link:</strong> {formData.link}</>}
+          <br /><br />
+          Esta acción disparará notificaciones push reales.
+        </span>
+      ),
+      confirmText: "Enviar",
+      cancelText: "Cancelar",
+      confirmVariant: "danger",
+    });
+    if (!confirmed) return;
 
     setLoading(true);
     showLoader("Enviando...");

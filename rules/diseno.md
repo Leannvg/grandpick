@@ -112,6 +112,16 @@ solo la primera vez, y respetar `useReducedMotion()` (con `initial={false}`).
 Los `whileHover` deben definir su propia `transition` para no heredar el `delay`
 de la entrada.
 
+**Animaciones con `repeat: Infinity`: siempre animar propiedades de
+`transform`/`opacity` (`x`, `y`, `scale`, `rotate`), nunca propiedades de
+layout (`top`, `left`, `width`, `height`).** Chrome puede "terminar" (y no
+reanudar) una animación en loop infinito que anima una propiedad de layout
+si la pestaña estuvo en segundo plano — la animación queda congelada en su
+último frame para siempre. `transform`/`opacity` corren en el compositor y
+no sufren ese corte. Caso real: el confeti del podio (`Confetti.jsx`)
+animaba `top: -10% → 110%` y se congelaba así en producción; se cambió a
+`y: -24 → 320` (px, `transform`) — ver `registro-de-cambios.md`.
+
 Ejemplo: tarjetas del podio del Home — entrada escalonada (3º → 2º → 1º),
 elevación de 6px al hover y animaciones constantes: brillo que barre cada
 tarjeta en loop (`.podium__shine`) y confeti cayendo en las tres (`Confetti`), con la misma paleta en las tres (el podio se comparte) pero distinto ritmo y forma: 1º mixto, 2º círculos lentos, 3º tiras rápidas.

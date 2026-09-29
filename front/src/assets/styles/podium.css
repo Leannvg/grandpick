@@ -87,7 +87,8 @@
 
 .confetti__piece {
   position: absolute;
-  top: -10%;
+  top: 0;
+  left: 0;
 }
 
 .podium__photo {

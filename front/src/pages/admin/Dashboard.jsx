@@ -295,14 +295,14 @@ function Dashboard() {
         }
       }
 
-      await confirmDialog({
+      const confirmed = await confirmDialog({
         title: `¿Eliminar "${name}"?`,
         message: "Por favor confirmar que desea eliminar este registro.",
         confirmText: "Eliminar",
         cancelText: "Cancelar",
         confirmVariant: "danger",
       });
-
+      if (!confirmed) return;
 
       if (activeTab === TABS.RACES) {
         await RacesServices.deleteRace(id);
@@ -345,13 +345,14 @@ function Dashboard() {
   const handleToggleBlockUser = async (user) => {
     const action = user.blocked ? "Desbloquear" : "Bloquear";
     console.log(user);
-    await confirmDialog({
+    const confirmed = await confirmDialog({
       title: `¿Deseas ${action} al usuario "${user.name} ${user.last_name}"?`,
       message: "Esta acción cambiará el estado del usuario, pero no será eliminado de nuestros registros.",
       confirmText: `${action}`,
       cancelText: "Cancelar",
       confirmVariant: `${(action === 'Bloquear') ? 'danger' : 'success'}`,
     });
+    if (!confirmed) return;
 
     try {
       if (user.blocked) {
@@ -390,13 +391,14 @@ function Dashboard() {
 
       const action = driver.active ? "Deshabilitar" : "Habilitar";
 
-      await confirmDialog({
+      const confirmed = await confirmDialog({
         title: `¿Deseas ${action.toLowerCase()} al piloto "${driver.full_name}"?`,
         message: "Esta acción cambiará el estado del piloto, pero no será eliminado de nuestros registros.",
         confirmText: `${action}`,
         cancelText: "Cancelar",
         confirmVariant: `${(action === 'Deshabilitar') ? 'danger' : 'success'}`,
       });
+      if (!confirmed) return;
 
       if (driver.active) {
         await DriversServices.disableDriver(driver._id);
