@@ -181,6 +181,23 @@ Usan otra familia: `.admin-table`, `.admin-table-container`, `.admin-status-pill
 `.btn-admin-action` (ver `assets/styles/admin.css`). Para vistas públicas se usa
 la familia `ranking-*`.
 
+## Formularios (`.gp-input-group`, `assets/styles/components.css`)
+
+Patrón usado en Login, Register, ForgotPassword, `PasswordInput`,
+`FloatingEditProfile` y formularios de admin: `.gp-input-group-container` >
+`.gp-input-group` (label + input en fila) + `.gp-input-label` (cápsula azul,
+ancho fijo 160px, texto **alineado a la izquierda** — no centrado, aunque en
+labels cortos como "País" se note menos la diferencia si estuviera mal). Para
+usar `CountrySelect` dentro de este patrón: `hideLabel={true}` y el `<label
+className="gp-input-label">` se pone afuera, en el `.gp-input-group` (mismo
+approach que el resto de los campos).
+
+`.submit-btn` (botón circular de confirmar, ver también `.btn-row-action`)
+soporta `disabled` (`opacity: 0.6; cursor: not-allowed`) — usarlo mientras un
+submit async está en curso (ver `Register.jsx`) para evitar doble envío, en
+vez de agregar un loader de pantalla completa (`LoaderCar` es para cargas de
+datos en página, no para acciones de auth de un solo request).
+
 ## Navegación (`front/src/components/Nav.jsx`)
 
 - Navbar sticky de Bootstrap. Ítems públicos: HOME, CALENDARIO. Autenticado suma

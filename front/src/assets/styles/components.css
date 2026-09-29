@@ -690,8 +690,8 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     width: 160px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
+    justify-content: flex-start;
+    text-align: left;
     margin-bottom: 0 !important;
     flex-shrink: 0;
     font-weight: 500;
@@ -873,6 +873,11 @@ input[type="time"].form-control {
 .submit-btn .icon-submit {
     width: 28px;
     height: 28px;
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .driver-card-vertical {

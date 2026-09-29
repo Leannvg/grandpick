@@ -2,6 +2,23 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-28 · Fix alineación de labels y botón deshabilitado en Register
+
+- **Fix**: `.gp-input-label` (`components.css`) tenía `text-align`/
+  `justify-content: center`, afectando a todos los formularios del proyecto
+  (Login, Register, ForgotPassword, admin). Se notaba solo en labels cortos
+  como "País" en `CountrySelect` dentro de `Register.jsx`. Se cambia a
+  `flex-start`/`left` de forma global — consistencia real, no un parche
+  puntual.
+- **`Register.jsx`**: se evaluó agregar `LoaderCar` (pantalla de carga) entre
+  la confirmación del modal y el redirect a `/login`; se descartó por ser un
+  único request rápido y porque `Login.jsx` sigue el mismo flujo (confirmar →
+  submit → toast + redirect) sin loader — agregarlo solo acá rompía la
+  simetría. En cambio, se agrega estado `isSubmitting`: el botón "Crear
+  cuenta" (`submit-btn`) se deshabilita mientras la request está en curso
+  (evita doble submit), con estilo `.submit-btn:disabled` nuevo
+  (`opacity: 0.6`, mismo criterio que `.gp-btn-confirm:disabled`).
+
 ## 2026-09-28 · Navegación directa en botones "F1 ACTUAL" y "TUTORIALES"
 
 - `Nav.jsx`: los botones padre de los mega menús no navegaban a ninguna
