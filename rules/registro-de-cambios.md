@@ -2,6 +2,26 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-29 · Confeti del podio: remontar periódicamente (salvaguarda)
+
+- El fix de memoización (entrada de abajo) tampoco alcanzó: se instrumentó
+  `Confetti.jsx` con logs temporales de render/mount y se confirmó en
+  producción que cada instancia monta **una sola vez** y **no vuelve a
+  re-renderizar ni desmontarse** — y aun así, con mount 100% limpio, la
+  animación terminó igual congelada (`el.getAnimations()` vacío, estilo
+  fijo en el último frame de la animación).
+- No se logró aislar la causa real: el mismo código (memoizado, con
+  `transform` en vez de `top`) corrió sin problema más de 20s seguidos en
+  un harness aislado (esm.sh + React 18.3.1 + framer-motion 12, las mismas
+  versiones del proyecto), pero se congela igual en la página real. Se
+  descartan como causa: layout vs. transform, objetos recreados por render,
+  y re-renders/remounts del componente.
+- Se aplicó una salvaguarda pragmática en `Confetti.jsx`: las piezas se
+  remontan cada `RESET_INTERVAL_MS` (6s) cambiando el `key` del contenedor
+  vía `setInterval`. No es un fix de causa raíz — es una recuperación
+  automática para que, pase lo que pase, el confeti no quede detenido para
+  siempre. Se sacaron los logs de diagnóstico temporales.
+
 ## 2026-09-29 · Confeti del podio: memoizar `initial`/`animate`/`transition`
 
 - El primer intento (cambiar `top` por `y`/`transform`) no resolvió el

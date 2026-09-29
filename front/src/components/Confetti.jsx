@@ -1,5 +1,15 @@
-import { useMemo, useRef, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+
+// Cada cuánto se remonta el confeti (ms). Es una salvaguarda: en producción
+// se observó que, en algunos casos, el navegador deja de repetir una
+// animación en loop infinito (queda "congelada" en su último frame, sin
+// ninguna Animation activa en `el.getAnimations()`) sin que haya de por
+// medio ningún re-render de React ni cambio de props — no se pudo aislar
+// la causa exacta (no reproduce en un harness mínimo). Remontar las piezas
+// periódicamente garantiza que, pase lo que pase, el confeti se recupera
+// solo en vez de quedar detenido para siempre.
+const RESET_INTERVAL_MS = 6000;
 
 const DEFAULT_COLORS = ["#DDBF4A", "#FFFFFF", "#7AB3DE", "#E10600", "#D8D8D8"];
 
@@ -21,19 +31,12 @@ const seeded = (i, salt, seed = 0) => {
 const Confetti = ({ count = 14, colors = DEFAULT_COLORS, seed = 0, speed = 1, roundRatio = 0.3 }) => {
     const reduceMotion = useReducedMotion();
 
-    // DEBUG TEMPORAL — sacar después de diagnosticar el freeze del confeti.
-    const renderCount = useRef(0);
-    renderCount.current += 1;
-    // eslint-disable-next-line no-console
-    console.log(`[Confetti seed=${seed}] render #${renderCount.current}`, { reduceMotion });
+    const [resetKey, setResetKey] = useState(0);
     useEffect(() => {
-        // eslint-disable-next-line no-console
-        console.log(`[Confetti seed=${seed}] MOUNT`);
-        return () => {
-            // eslint-disable-next-line no-console
-            console.log(`[Confetti seed=${seed}] UNMOUNT`);
-        };
-    }, []);
+        if (reduceMotion) return;
+        const id = setInterval(() => setResetKey((k) => k + 1), RESET_INTERVAL_MS);
+        return () => clearInterval(id);
+    }, [reduceMotion]);
 
     // initial/animate/transition van armados acá adentro (no inline en el JSX)
     // para que mantengan la misma referencia entre renders del padre: un
@@ -72,7 +75,7 @@ const Confetti = ({ count = 14, colors = DEFAULT_COLORS, seed = 0, speed = 1, ro
     if (reduceMotion) return null;
 
     return (
-        <div className="confetti" aria-hidden="true">
+        <div className="confetti" aria-hidden="true" key={resetKey}>
             {pieces.map((p) => (
                 <motion.span
                     key={p.key}
@@ -81,14 +84,6 @@ const Confetti = ({ count = 14, colors = DEFAULT_COLORS, seed = 0, speed = 1, ro
                     initial={p.initial}
                     animate={p.animate}
                     transition={p.transition}
-                    // DEBUG TEMPORAL: con repeat:Infinity esto no debería
-                    // llamarse nunca; si se llama, confirma que la animación
-                    // se está completando/cancelando en vez de repetir.
-                    onAnimationComplete={
-                        p.key === 0
-                            ? () => console.log(`[Confetti seed=${seed}] piece 0 onAnimationComplete`, Date.now())
-                            : undefined
-                    }
                 />
             ))}
         </div>

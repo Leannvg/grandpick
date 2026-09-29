@@ -132,7 +132,14 @@ producción confirmando con `el.getAnimations()` en DevTools que la pieza no
 tenía ninguna animación activa (array vacío) aunque el elemento seguía en el
 DOM con el estilo del último frame. Aplicado en `Confetti.jsx` (piezas) y
 `Podium.jsx` (`.podium__shine`, con `SHINE_TRANSITION_BY_RANK` a nivel
-módulo, mismo patrón que `CONFETTI_BY_RANK`) — ver `registro-de-cambios.md`.
+módulo, mismo patrón que `CONFETTI_BY_RANK`). **No alcanzó por sí solo**:
+en producción el confeti se congeló igual (mismo síntoma, `getAnimations()`
+vacío) incluso con mount único confirmado por logs (sin re-render, sin
+remount) — no se pudo aislar la causa real ni reproducirla en un harness
+mínimo. `Confetti.jsx` remonta sus piezas cada `RESET_INTERVAL_MS` (6s) vía
+`key` que cambia con un `setInterval`, como salvaguarda: si el navegador
+"congela" el loop por el motivo que sea, se recupera solo en vez de quedar
+detenido para siempre — ver `registro-de-cambios.md`.
 
 Ejemplo: tarjetas del podio del Home — entrada escalonada (3º → 2º → 1º),
 elevación de 6px al hover y animaciones constantes: brillo que barre cada
