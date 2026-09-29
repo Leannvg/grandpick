@@ -2,6 +2,15 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-28 · Navegación directa en botones "F1 ACTUAL" y "TUTORIALES"
+
+- `Nav.jsx`: los botones padre de los mega menús no navegaban a ninguna
+  pantalla, solo desplegaban el submenú. Ahora, en **desktop**, el click
+  navega directo a la opción más representativa (`F1 ACTUAL` → `/standings`,
+  `TUTORIALES` → `/how-to-play`) usando `useNavigate`; el `hover` sigue
+  abriendo el mega menú igual que antes. En **mobile** no se tocó nada: el
+  click sigue solo abriendo/cerrando el acordeón.
+
 ## 2026-09-24 · Extender `Reveal` a las tarjetas del calendario
 
 - `Calendar.jsx`: las `article.calendar-item` de ambas columnas

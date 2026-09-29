@@ -191,3 +191,8 @@ la familia `ranking-*`.
   - `TUTORIALES` → CÓMO JUGAR, GUÍA DE F1, F1 TV.
 - Cada ítem del mega menú es un `<li className="col-12 col-md-4">` (o `col-md-3`
   cuando el menú tiene 4 ítems) con `<Link className="mega-link">`.
+- Botones padre `F1 ACTUAL` / `TUTORIALES`: en **desktop** el `hover` abre el
+  mega menú (sin cambios) y el **click navega directo** a la opción más
+  representativa del submenú (`F1 ACTUAL` → `/standings`, `TUTORIALES` →
+  `/how-to-play`) usando `useNavigate`. En **mobile** el click sigue solo
+  abriendo/cerrando el acordeón (`isMobile.current`), sin navegación nueva.

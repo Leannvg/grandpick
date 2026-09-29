@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import NotificationsBell from "./NotificationsBell.jsx";
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../utils/cloudinary.js";
 
 function Nav({ onLogout, autenticado, esAdmin }) {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
   const [hoveredMenu, setHoveredMenu] = useState(null);
@@ -234,6 +235,9 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                     onClick={() => {
                       if (isMobile.current) {
                         setHoveredMenu(hoveredMenu === 'info' ? null : 'info');
+                      } else {
+                        closeMenu();
+                        navigate('/standings');
                       }
                     }}
                   >
@@ -253,6 +257,9 @@ function Nav({ onLogout, autenticado, esAdmin }) {
                     onClick={() => {
                       if (isMobile.current) {
                         setHoveredMenu(hoveredMenu === 'tutorials' ? null : 'tutorials');
+                      } else {
+                        closeMenu();
+                        navigate('/how-to-play');
                       }
                     }}
                   >
