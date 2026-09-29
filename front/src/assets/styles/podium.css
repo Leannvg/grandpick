@@ -92,6 +92,11 @@
   animation-name: confetti-fall;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+  /* Sin esto, durante el animation-delay de cada pieza se ve en su
+     posición de reposo (arriba, sin transformar) en vez de ya arrancar
+     invisible/arriba como el 0% del keyframe — se veían todas amontonadas
+     arriba antes de empezar a caer. */
+  animation-fill-mode: backwards;
 }
 
 /* Animación CSS nativa (no framer-motion): en producción, la versión con
