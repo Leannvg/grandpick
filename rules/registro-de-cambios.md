@@ -2,6 +2,28 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-29 · Corrección: el fix de alineación era el equivocado
+
+- El diagnóstico de la entrada anterior (2026-09-28) estaba mal: los labels
+  **sí** van centrados (`.gp-input-label` vuelve a `justify-content: center;
+  text-align: center`, como estaba antes). Lo que realmente se veía corrido
+  al centro era el **placeholder/valor del `CountrySelect`** ("Selecciona un
+  país"), no el label.
+- Causa real: los `<input>` (`.form-control`) tienen `text-align: start` por
+  default del navegador y no heredan el `text-align: center` del contenedor
+  `.text-center` (`.auth-section` en Login/Register) — por eso Nombre,
+  Apellido, Email y Contraseña ya se veían bien. Pero los `<div>` que arma
+  `react-select` para el placeholder/valor (`.react-select__placeholder`,
+  `.react-select__single-value`) no tienen ese default y sí heredan el
+  centrado del contenedor. Verificado con `getComputedStyle` en un HTML
+  aislado (`agent-browser`) antes de tocar el CSS, para no repetir el
+  diagnóstico apurado de la entrada anterior.
+- Fix real: `text-align: left` en `.react-select__value-container`
+  (`components.css`), que cubre placeholder/valor/input por herencia. No
+  afecta a otros usos de `SearchableSelect` fuera de contenedores
+  `.text-center` (ahí ya se comportaba bien, este `text-align: left` es
+  redundante pero inofensivo).
+
 ## 2026-09-28 · Fix alineación de labels y botón deshabilitado en Register
 
 - **Fix**: `.gp-input-label` (`components.css`) tenía `text-align`/
