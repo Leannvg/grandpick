@@ -21,17 +21,37 @@ const seeded = (i, salt, seed = 0) => {
 const Confetti = ({ count = 14, colors = DEFAULT_COLORS, seed = 0, speed = 1, roundRatio = 0.3 }) => {
     const reduceMotion = useReducedMotion();
 
+    // initial/animate/transition van armados acá adentro (no inline en el JSX)
+    // para que mantengan la misma referencia entre renders del padre: un
+    // objeto/array nuevo en cada render hace que Framer Motion reinicie la
+    // animación, y si el padre re-renderiza varias veces seguido (ej. varios
+    // setState de un fetch encadenado) la reinicia tantas veces que termina
+    // cancelada sin volver a arrancar (repeat: Infinity nunca llega a correr).
     const pieces = useMemo(
         () =>
-            Array.from({ length: count }, (_, i) => ({
-                left: `${seeded(i, 1, seed) * 100}%`,
-                size: 5 + seeded(i, 2, seed) * 5,
-                color: colors[i % colors.length],
-                duration: (3 + seeded(i, 3, seed) * 3) / speed,
-                delay: seeded(i, 4, seed) * 4,
-                spin: (seeded(i, 5, seed) > 0.5 ? 1 : -1) * (360 + seeded(i, 6, seed) * 360),
-                round: seeded(i, 7, seed) < roundRatio,
-            })),
+            Array.from({ length: count }, (_, i) => {
+                const spin = (seeded(i, 5, seed) > 0.5 ? 1 : -1) * (360 + seeded(i, 6, seed) * 360);
+                const round = seeded(i, 7, seed) < roundRatio;
+                const size = 5 + seeded(i, 2, seed) * 5;
+                return {
+                    key: i,
+                    style: {
+                        left: `${seeded(i, 1, seed) * 100}%`,
+                        width: size,
+                        height: round ? size : size * 1.6,
+                        borderRadius: round ? "50%" : 1,
+                        backgroundColor: colors[i % colors.length],
+                    },
+                    initial: { y: -24, rotate: 0, opacity: 0 },
+                    animate: { y: 320, rotate: spin, opacity: [0, 1, 1, 0] },
+                    transition: {
+                        duration: (3 + seeded(i, 3, seed) * 3) / speed,
+                        delay: seeded(i, 4, seed) * 4,
+                        repeat: Infinity,
+                        ease: "linear",
+                    },
+                };
+            }),
         [count, colors, seed, speed, roundRatio]
     );
 
@@ -39,28 +59,14 @@ const Confetti = ({ count = 14, colors = DEFAULT_COLORS, seed = 0, speed = 1, ro
 
     return (
         <div className="confetti" aria-hidden="true">
-            {pieces.map((p, i) => (
+            {pieces.map((p) => (
                 <motion.span
-                    key={i}
+                    key={p.key}
                     className="confetti__piece"
-                    style={{
-                        left: p.left,
-                        width: p.size,
-                        height: p.round ? p.size : p.size * 1.6,
-                        borderRadius: p.round ? "50%" : 1,
-                        backgroundColor: p.color,
-                    }}
-                    // y (transform) en vez de top (layout): Chrome puede "terminar"
-                    // y no reanudar animaciones de layout con repeat:Infinity en
-                    // pestañas que estuvieron en segundo plano; transform no sufre eso.
-                    initial={{ y: -24, rotate: 0, opacity: 0 }}
-                    animate={{ y: 320, rotate: p.spin, opacity: [0, 1, 1, 0] }}
-                    transition={{
-                        duration: p.duration,
-                        delay: p.delay,
-                        repeat: Infinity,
-                        ease: "linear",
-                    }}
+                    style={p.style}
+                    initial={p.initial}
+                    animate={p.animate}
+                    transition={p.transition}
                 />
             ))}
         </div>

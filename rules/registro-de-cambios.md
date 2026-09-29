@@ -2,6 +2,29 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-09-29 · Confeti del podio: memoizar `initial`/`animate`/`transition`
+
+- El primer intento (cambiar `top` por `y`/`transform`) no resolvió el
+  problema — confirmado en vivo con `el.getAnimations()` en DevTools: la
+  pieza no tenía ninguna animación activa (array vacío), congelada con el
+  estilo del último frame, incluso recién refrescada la página.
+- Causa más probable: `Confetti.jsx` armaba los objetos `initial`/`animate`/
+  `transition` de cada pieza inline en el JSX (nuevos en cada render), y
+  `Podium.jsx` hacía lo mismo para `.podium__shine`. Un objeto nuevo por
+  render puede hacer que Framer Motion reinicie la animación; con varios
+  renders seguidos (ej. `profile` → `stats` → `countriesMap`, cada uno con
+  su propio `await` en el mismo efecto de `Ranking.jsx`) puede terminar
+  cancelada sin volver a correr un segundo ciclo.
+- Se movieron esos objetos a un `useMemo` junto con el resto de la pieza
+  (`Confetti.jsx`) y a constantes de módulo (`Podium.jsx`,
+  `SHINE_TRANSITION_BY_RANK`, mismo patrón que `CONFETTI_BY_RANK`), para que
+  mantengan referencia estable entre renders.
+- No se pudo reproducir el freeze exacto en un harness aislado (ni con el
+  código viejo forzando 3 renders seguidos cerca del mount), así que esto es
+  el diagnóstico mejor sustentado con la evidencia disponible, no una
+  reproducción 100% confirmada — a verificar en vivo después de este deploy.
+- Regla general documentada en `diseno.md` (sección Animaciones).
+
 ## 2026-09-28 · Navegación directa en botones "F1 ACTUAL" y "TUTORIALES"
 
 - `Nav.jsx`: los botones padre de los mega menús no navegaban a ninguna
