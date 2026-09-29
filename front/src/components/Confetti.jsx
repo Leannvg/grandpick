@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 const DEFAULT_COLORS = ["#DDBF4A", "#FFFFFF", "#7AB3DE", "#E10600", "#D8D8D8"];
@@ -20,6 +20,20 @@ const seeded = (i, salt, seed = 0) => {
  */
 const Confetti = ({ count = 14, colors = DEFAULT_COLORS, seed = 0, speed = 1, roundRatio = 0.3 }) => {
     const reduceMotion = useReducedMotion();
+
+    // DEBUG TEMPORAL — sacar después de diagnosticar el freeze del confeti.
+    const renderCount = useRef(0);
+    renderCount.current += 1;
+    // eslint-disable-next-line no-console
+    console.log(`[Confetti seed=${seed}] render #${renderCount.current}`, { reduceMotion });
+    useEffect(() => {
+        // eslint-disable-next-line no-console
+        console.log(`[Confetti seed=${seed}] MOUNT`);
+        return () => {
+            // eslint-disable-next-line no-console
+            console.log(`[Confetti seed=${seed}] UNMOUNT`);
+        };
+    }, []);
 
     // initial/animate/transition van armados acá adentro (no inline en el JSX)
     // para que mantengan la misma referencia entre renders del padre: un
@@ -67,6 +81,14 @@ const Confetti = ({ count = 14, colors = DEFAULT_COLORS, seed = 0, speed = 1, ro
                     initial={p.initial}
                     animate={p.animate}
                     transition={p.transition}
+                    // DEBUG TEMPORAL: con repeat:Infinity esto no debería
+                    // llamarse nunca; si se llama, confirma que la animación
+                    // se está completando/cancelando en vez de repetir.
+                    onAnimationComplete={
+                        p.key === 0
+                            ? () => console.log(`[Confetti seed=${seed}] piece 0 onAnimationComplete`, Date.now())
+                            : undefined
+                    }
                 />
             ))}
         </div>
