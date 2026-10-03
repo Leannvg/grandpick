@@ -1,7 +1,8 @@
 import { useEffect, useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useLoader } from "../context/LoaderContext";
+import { useAlert } from "../context/AlertContext";
 import UsersServices from "../services/users.services";
 import PredictionsServices from "../services/predictions.services";
 import RacesServices from "../services/races.services";
@@ -23,11 +24,32 @@ function Ranking() {
     const [searchTerm, setSearchTerm] = useState("");
     const [countriesMap, setCountriesMap] = useState({});
 
-    const [mode, setMode] = useState("global");
+    const { showAlert } = useAlert();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const mode = searchParams.get("mode") === "grand_prix" ? "grand_prix" : "global";
     const [racesList, setRacesList] = useState([]);
-    const [selectedCircuitId, setSelectedCircuitId] = useState("");
-    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [selectedCircuitId, setSelectedCircuitId] = useState(searchParams.get("gp") || "");
+    const [selectedYear, setSelectedYear] = useState(Number(searchParams.get("year")) || new Date().getFullYear());
     const [compareTarget, setCompareTarget] = useState(null);
+
+    useEffect(() => {
+        const next = new URLSearchParams();
+        next.set("mode", mode);
+        if (mode === "grand_prix" && selectedCircuitId) next.set("gp", selectedCircuitId);
+        next.set("year", selectedYear);
+        if (next.toString() !== searchParams.toString()) {
+            setSearchParams(next, { replace: true });
+        }
+    }, [mode, selectedCircuitId, selectedYear, searchParams, setSearchParams]);
+
+    const handleShare = async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            showAlert("Link copiado al portapapeles", "success");
+        } catch {
+            showAlert("No se pudo copiar el link", "danger");
+        }
+    };
 
     useEffect(() => {
         const fetchRacesList = async () => {
@@ -262,35 +284,43 @@ function Ranking() {
                         <div className="col-12 col-md-auto order-1 order-md-2 px-0 m-0">
                             <div className="row g-2 m-0 w-100 justify-content-end h-100">
                                 <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex">
-                                    <button
+                                    <Link
+                                        to="/ranking?mode=global"
                                         className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'global' ? 'is-active' : ''}`}
-                                        onClick={() => setMode('global')}
+                                        onClick={() => setPage(1)}
                                     >
                                         Global
-                                    </button>
+                                    </Link>
                                 </div>
                                 <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex d-md-none">
-                                    <button
+                                    <Link
+                                        to="/ranking?mode=grand_prix"
                                         className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'grand_prix' ? 'is-active' : ''}`}
-                                        onClick={() => {
-                                            setMode('grand_prix');
-                                            setPage(1);
-                                        }}
+                                        onClick={() => setPage(1)}
                                     >
                                         GP
-                                    </button>
+                                    </Link>
                                 </div>
                                 <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-none d-md-flex">
-                                    <button
+                                    <Link
+                                        to="/ranking?mode=grand_prix"
                                         className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'grand_prix' ? 'is-active' : ''}`}
-                                        onClick={() => {
-                                            setMode('grand_prix');
-                                            setPage(1);
-                                        }}
+                                        onClick={() => setPage(1)}
                                     >
                                         Por Gran Premio
-                                    </button>
+                                    </Link>
                                 </div>
+                                {mode === 'grand_prix' && selectedCircuitId && (
+                                    <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex">
+                                        <button
+                                            type="button"
+                                            className="info-page__mode-btn w-100 m-0 btn-mode"
+                                            onClick={handleShare}
+                                        >
+                                            Compartir
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

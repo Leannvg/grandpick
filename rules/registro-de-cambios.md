@@ -2,6 +2,21 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-03 · Ranking: modo, circuito y año en la URL + botón "Compartir"
+
+- `Ranking.jsx`: el modo (`Global` / `Por Gran Premio`) ahora son `Link` con
+  `?mode=global|grand_prix` (mismo criterio que los tabs del panel admin con
+  `?tab=`), y el modo se lee de la URL (atrás/adelante funcionan). Circuito
+  (`gp`) y año (`year`) también viajan en la URL: un effect los sincroniza con
+  el estado con `replace`, solo si cambió.
+- Botón "Compartir" (visible en modo Gran Premio con circuito elegido): copia
+  la URL actual al portapapeles con `useAlert`.
+- Pendiente: ver si el ranking puede verse sin cuenta (ver nota en
+  `features/` cuando se resuelva). Hoy `/api/users-stats` y
+  `/api/ranking/circuit/...` no piden auth, pero `Ranking.jsx` llama primero
+  a `getUserProfile()`: un visitante anónimo recibe 401 y `apiFetch` lo manda
+  a `/login`.
+
 ## 2026-09-29 · Ajustes al confeti CSS + brillo del podio también a CSS nativo
 
 - `Confetti.jsx`/`podium.css`: al arrancar, las piezas se veían todas
