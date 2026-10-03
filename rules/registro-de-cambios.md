@@ -2,6 +2,17 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-03 · Botones de acción de fila en outline + íconos con caja exacta
+
+- `ranking.css`: `.btn-row-action` (comparar / historial en las filas) pasa a
+  outline azul (`#4c86b7`, borde y texto, fondo transparente), en vez del
+  círculo sólido. Mismo criterio que el botón Compartir. El outline azul y no
+  blanco porque la tabla tiene filas blancas.
+- `globals.css`: `.bi` pasa a `display: inline-flex` con centrado. Medido en
+  el navegador: con solo `line-height: 1` el `<i>` medía 17px para un glifo
+  de 16px (el `::before` alineado a la línea base dejaba un extra abajo, por
+  eso el ícono parecía subido). Con la regla nueva la caja mide 16×16.
+
 ## 2026-10-03 · Modales: sin blur en el fondo (parpadeo al abrir y cerrar)
 
 - `components.css`: se quitó `backdrop-filter: blur(4px)` de

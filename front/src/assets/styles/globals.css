@@ -645,7 +645,12 @@ p {
   opacity: 0.6;
   cursor: not-allowed;
 }
-/* Íconos Bootstrap Icons: sin strut de texto, el glifo queda centrado en su caja */
+/* Íconos Bootstrap Icons: la caja del <i> mide exactamente el glifo (sin strut
+   de texto ni el extra del ::before alineado a la línea base) */
 .bi {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
+  vertical-align: -0.125em;
 }
