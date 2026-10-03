@@ -645,3 +645,7 @@ p {
   opacity: 0.6;
   cursor: not-allowed;
 }
+/* Íconos Bootstrap Icons: sin strut de texto, el glifo queda centrado en su caja */
+.bi {
+  line-height: 1;
+}

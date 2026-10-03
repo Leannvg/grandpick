@@ -2,6 +2,15 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-03 · Íconos Bootstrap Icons centrados verticalmente
+
+- `globals.css`: `.bi { line-height: 1; }`. El `<i>` heredaba el
+  `line-height` del body (1.5) y dejaba un strut de texto debajo del glifo,
+  por eso parecía correrse hacia arriba dentro de botones y círculos (p. ej.
+  el de comparar en el ranking). Verificado con captura ampliada 6x: el
+  glifo pasa de quedar ~3px arriba a quedar centrado en un botón de 28px.
+- Documentado en `diseno.md` (sección Iconos).
+
 ## 2026-10-03 · Ranking: modo, circuito y año en la URL + botón "Compartir"
 
 - `Ranking.jsx`: el modo (`Global` / `Por Gran Premio`) ahora son `Link` con

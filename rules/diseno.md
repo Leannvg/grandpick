@@ -18,6 +18,14 @@ Base visual: tema oscuro azulado, tipografía `Akshar`, Bootstrap 5 para grilla.
 | `--color-stat-qualy/sprint/race` | `#E6E6E6` / `#FFCD56` / `#D40000` | Chips por tipo de sesión |
 | `--radius-general` | `2px` | Radio de bordes estándar |
 
+## Iconos (Bootstrap Icons, CDN en `index.html`)
+
+Se usan como `<i className="bi bi-…">`. Regla global en `globals.css`:
+`.bi { line-height: 1; }`, para que la caja del `<i>` no herede el strut del
+texto (el `line-height` 1.5 del body dejaba un espacio abajo del glifo y el
+ícono parecía descentrado dentro de botones y círculos). Dentro de botones
+usar contenedor flex con `align-items: center; justify-content: center`.
+
 ## Layout de página estándar
 
 ```jsx
