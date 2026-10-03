@@ -11,11 +11,12 @@ Orden cronológico inverso (lo más nuevo arriba).
   el estado con `replace`, solo si cambió.
 - Botón "Compartir" (visible en modo Gran Premio con circuito elegido): copia
   la URL actual al portapapeles con `useAlert`.
-- Pendiente: ver si el ranking puede verse sin cuenta (ver nota en
-  `features/` cuando se resuelva). Hoy `/api/users-stats` y
+- Decidido: el ranking **sigue requiriendo cuenta**. El link compartido solo
+  lo abre quien tenga login. Nota técnica: `/api/users-stats` y
   `/api/ranking/circuit/...` no piden auth, pero `Ranking.jsx` llama primero
-  a `getUserProfile()`: un visitante anónimo recibe 401 y `apiFetch` lo manda
-  a `/login`.
+  a `getUserProfile()`, así que un anónimo recibe 401 y `apiFetch` lo manda a
+  `/login`. Si más adelante se quiere público, hay que hacer opcional esa
+  llamada y ocultar «Tu puesto» y «Comparar».
 
 ## 2026-09-29 · Ajustes al confeti CSS + brillo del podio también a CSS nativo
 
