@@ -2,6 +2,18 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-03 · Modales: sin blur en el fondo (parpadeo al abrir y cerrar)
+
+- `components.css`: se quitó `backdrop-filter: blur(4px)` de
+  `.gp-modal-overlay`. Chrome re-pintaba el blur del fondo cuando la página
+  cambiaba debajo (el loader cambia la altura de `main` al confirmar), y eso
+  se veía como un parpadeo. El fondo sigue oscuro (`rgba(0,0,0,.7)`).
+- Verificado en un harness con `FloatingDialog` idéntica: el overlay se monta
+  una sola vez y se desmonta con su animación de salida, sin remontarse. Por
+  eso el arreglo apunta al blur y no al `AnimatePresence`. Otros
+  `backdrop-filter` del proyecto (badges, nav, banner de predicción) no se
+  tocaron.
+
 ## 2026-10-03 · Podio: fotos en desktop del mismo tamaño que en mobile
 
 - `podium.css`: se quitaron los overrides de `--podium-photo` del bloque
