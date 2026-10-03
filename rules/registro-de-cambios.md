@@ -10,7 +10,9 @@ Orden cronológico inverso (lo más nuevo arriba).
   (`gp`) y año (`year`) también viajan en la URL: un effect los sincroniza con
   el estado con `replace`, solo si cambió.
 - Botón "Compartir" (visible en modo Gran Premio con circuito elegido): copia
-  la URL actual al portapapeles con `useAlert`.
+  la URL actual al portapapeles con `useAlert`. Va arriba del podio, alineado
+  a la derecha, con icono `bi bi-share-fill` (Bootstrap Icons, como el resto
+  de la app).
 - Decidido: el ranking **sigue requiriendo cuenta**. El link compartido solo
   lo abre quien tenga login. Nota técnica: `/api/users-stats` y
   `/api/ranking/circuit/...` no piden auth, pero `Ranking.jsx` llama primero

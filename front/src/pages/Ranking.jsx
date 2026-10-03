@@ -310,17 +310,6 @@ function Ranking() {
                                         Por Gran Premio
                                     </Link>
                                 </div>
-                                {mode === 'grand_prix' && selectedCircuitId && (
-                                    <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex">
-                                        <button
-                                            type="button"
-                                            className="info-page__mode-btn w-100 m-0 btn-mode"
-                                            onClick={handleShare}
-                                        >
-                                            Compartir
-                                        </button>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>
@@ -417,6 +406,20 @@ function Ranking() {
                         </div>
                     </div>
                 </div>
+
+                {mode === 'grand_prix' && selectedCircuitId && (
+                    <div className="d-flex justify-content-end mb-2">
+                        <button
+                            type="button"
+                            className="info-page__mode-btn m-0 btn-mode"
+                            onClick={handleShare}
+                            title="Copiar link de este Gran Premio"
+                        >
+                            <i className="bi bi-share-fill me-2"></i>
+                            Compartir
+                        </button>
+                    </div>
+                )}
 
                 <AnimatePresence initial={false}>
                     {!isSearching && (
