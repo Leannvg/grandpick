@@ -2,6 +2,15 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-03 · Columna de posición unificada como «#»
+
+- Encabezado de la columna de posición en todas las tablas: «#» (antes «Pos.»
+  en Home y Ranking, «Posición» en Campeonato de pilotos y constructores, y
+  «Pos» en la comparación de predicciones).
+- Archivos: `Standings.jsx` (x2), `Home.jsx`, `Ranking.jsx`,
+  `PredictionComparisonTable.jsx` (x2). Las tablas del admin no tienen columna
+  de posición.
+
 ## 2026-10-03 · Botones de acción de fila en outline + íconos con caja exacta
 
 - `ranking.css`: `.btn-row-action` (comparar / historial en las filas) pasa a

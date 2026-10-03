@@ -55,7 +55,7 @@ function PredictionComparisonTable({ session, otherSession = null, otherLabel = 
             <div className="prediction-comparison-table-scroll">
             <div className="prediction-comparison-table prediction-comparison-table--compare">
                 <div className="table-header">
-                    <div className="col-pos">Pos</div>
+                    <div className="col-pos">#</div>
                     <div className="col-real">Resultado real</div>
                     <div className="col-pred">Tu predicción</div>
                     <div className="col-points">Puntos</div>
@@ -101,7 +101,7 @@ function PredictionComparisonTable({ session, otherSession = null, otherLabel = 
     return (
         <div className="prediction-comparison-table">
             <div className="table-header">
-                <div className="col-pos">Pos</div>
+                <div className="col-pos">#</div>
                 <div className="col-pred">Tu predicción</div>
                 <div className="col-real">Resultado real</div>
                 <div className="col-points">Puntos</div>

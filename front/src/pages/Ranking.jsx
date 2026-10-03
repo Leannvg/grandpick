@@ -441,7 +441,7 @@ function Ranking() {
                         <table className="ranking-table">
                             <thead>
                                 <tr>
-                                    <th>Pos.</th>
+                                    <th>#</th>
                                     <th className="w-50px">País</th>
                                     <th className="text-start col-user">Usuario</th>
                                     <th className="w-120px">Puntos totales</th>

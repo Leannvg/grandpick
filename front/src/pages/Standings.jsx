@@ -199,7 +199,7 @@ function Standings() {
                             <table className="ranking-table standings-table">
                                 <thead>
                                     <tr>
-                                        <th className="w-50px">Posición</th>
+                                        <th className="w-50px">#</th>
                                         <th className="text-start">Piloto</th>
                                         <th className="w-120px">Puntos totales</th>
                                         <th className="text-start">Nacionalidad</th>
@@ -252,7 +252,7 @@ function Standings() {
                             <table className="ranking-table standings-table standings-table--constructors">
                                 <thead>
                                     <tr>
-                                        <th className="w-50px">Posición</th>
+                                        <th className="w-50px">#</th>
                                         <th className="text-start">Escudería</th>
                                         <th className="w-120px">Puntos totales</th>
                                         <th className="text-start">Pilotos</th>

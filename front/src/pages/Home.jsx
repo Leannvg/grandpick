@@ -300,7 +300,7 @@ const Home = () => {
                                 <table className="ranking-table">
                                     <thead>
                                         <tr>
-                                            <th>Pos.</th>
+                                            <th>#</th>
                                             <th className="w-50px">País</th>
                                             <th className="text-start col-user">Nombre</th>
                                             <th className="w-120px">Puntos totales</th>
