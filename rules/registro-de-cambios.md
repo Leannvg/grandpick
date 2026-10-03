@@ -2,6 +2,13 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-03 · Podio: fotos en desktop del mismo tamaño que en mobile
+
+- `podium.css`: se quitaron los overrides de `--podium-photo` del bloque
+  `min-width: 992px` (130/160/120px). Ahora desktop hereda los de mobile:
+  110px para 2º y 3º, 136px para el 1º. Las alturas de tarjeta en desktop
+  no cambian.
+
 ## 2026-10-03 · Ranking: botón de acción de la fila a la izquierda del nombre
 
 - `Ranking.jsx`: el botón de la fila (comparar en Gran Premio, historial en
