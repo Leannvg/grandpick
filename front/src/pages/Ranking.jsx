@@ -286,7 +286,7 @@ function Ranking() {
                                 <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex">
                                     <Link
                                         to="/ranking?mode=global"
-                                        className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'global' ? 'is-active' : ''}`}
+                                        className={`info-page__mode-btn text-decoration-none w-100 m-0 btn-mode ${mode === 'global' ? 'is-active' : ''}`}
                                         onClick={() => setPage(1)}
                                     >
                                         Global
@@ -295,7 +295,7 @@ function Ranking() {
                                 <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-flex d-md-none">
                                     <Link
                                         to="/ranking?mode=grand_prix"
-                                        className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                                        className={`info-page__mode-btn text-decoration-none w-100 m-0 btn-mode ${mode === 'grand_prix' ? 'is-active' : ''}`}
                                         onClick={() => setPage(1)}
                                     >
                                         GP
@@ -304,7 +304,7 @@ function Ranking() {
                                 <div className="col-6 col-md-auto px-1 px-md-0 ms-md-2 d-none d-md-flex">
                                     <Link
                                         to="/ranking?mode=grand_prix"
-                                        className={`info-page__mode-btn w-100 m-0 btn-mode ${mode === 'grand_prix' ? 'is-active' : ''}`}
+                                        className={`info-page__mode-btn text-decoration-none w-100 m-0 btn-mode ${mode === 'grand_prix' ? 'is-active' : ''}`}
                                         onClick={() => setPage(1)}
                                     >
                                         Por Gran Premio
@@ -411,7 +411,7 @@ function Ranking() {
                     <div className="d-flex justify-content-end mb-2">
                         <button
                             type="button"
-                            className="info-page__mode-btn m-0 btn-mode"
+                            className="btn btn-outline-light btn-sm d-inline-flex align-items-center gap-2"
                             onClick={handleShare}
                             title="Copiar link de este Gran Premio"
                         >

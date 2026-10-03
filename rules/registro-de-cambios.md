@@ -12,7 +12,9 @@ Orden cronológico inverso (lo más nuevo arriba).
 - Botón "Compartir" (visible en modo Gran Premio con circuito elegido): copia
   la URL actual al portapapeles con `useAlert`. Va arriba del podio, alineado
   a la derecha, con icono `bi bi-share-fill` (Bootstrap Icons, como el resto
-  de la app).
+  de la app) y estilo `btn-outline-light` para diferenciarlo de los toggles.
+- Los toggles `Global` / `Por Gran Premio` (ahora `Link`) llevan
+  `text-decoration-none` para que no tengan subrayado de link.
 - Decidido: el ranking **sigue requiriendo cuenta**. El link compartido solo
   lo abre quien tenga login. Nota técnica: `/api/users-stats` y
   `/api/ranking/circuit/...` no piden auth, pero `Ranking.jsx` llama primero
