@@ -476,8 +476,6 @@ function Ranking() {
                                             </td>
                                             <td className="text-start col-user">
                                                 <div className="user-info">
-                                                    <span className="user-name">{item.name}</span>
-                                                    <span className="user-lastname">{item.last_name}</span>
                                                     {currentUserStat?._id !== item._id && (
                                                         mode === 'global' ? (
                                                             <button
@@ -497,6 +495,8 @@ function Ranking() {
                                                             </button>
                                                         )
                                                     )}
+                                                    <span className="user-name">{item.name}</span>
+                                                    <span className="user-lastname">{item.last_name}</span>
                                                 </div>
                                             </td>
                                             <td><strong>{totalPoints}</strong></td>

@@ -2,6 +2,13 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-03 · Ranking: botón de acción de la fila a la izquierda del nombre
+
+- `Ranking.jsx`: el botón de la fila (comparar en Gran Premio, historial en
+  Global, que ocupa el mismo lugar) pasa antes del nombre, dentro de
+  `.user-info`. Se movió en ambos modos para que quede igual en todas las
+  filas.
+
 ## 2026-10-03 · Íconos Bootstrap Icons centrados verticalmente
 
 - `globals.css`: `.bi { line-height: 1; }`. El `<i>` heredaba el
