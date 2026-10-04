@@ -34,6 +34,15 @@ Orden cronológico inverso (lo más nuevo arriba).
   `backdrop-filter` del proyecto (badges, nav, banner de predicción) no se
   tocaron.
 
+## 2026-10-03 · Historial de otro usuario: el loader espera también las estadísticas
+
+- `PredictionHistory.jsx`: `getUserStats` se pedía con `.then` sin esperarlo,
+  así que el loader se apagaba antes de que llegaran los datos del usuario
+  (cabecera con nombre, predicciones, aciertos y puntos). Ahora historial y
+  estadísticas se piden juntos con `Promise.all` y el loader se oculta cuando
+  están los dos. Si las estadísticas fallan, se loguea y el historial se muestra
+  igual.
+
 ## 2026-10-03 · Modales sin framer-motion (entrada y salida con CSS)
 
 - Nuevo hook `hooks/useModalPhase.js` (`open` / `closing` / `closed`): al

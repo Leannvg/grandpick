@@ -61,14 +61,17 @@ function PredictionHistory() {
                 const userData = await UsersServices.getUserProfile();
                 setUser(userData);
                 const targetUserId = routeUserId || userData._id;
-                const historyData = await PredictionServices.findHistoryByUser(targetUserId, year);
+                const [historyData, statsData] = await Promise.all([
+                    PredictionServices.findHistoryByUser(targetUserId, year),
+                    routeUserId
+                        ? UsersServices.getUserStats(targetUserId).catch(err => {
+                            console.error("Error loading user stats:", err);
+                            return null;
+                        })
+                        : Promise.resolve(null),
+                ]);
                 setHistory(historyData);
-
-                if (routeUserId) {
-                    UsersServices.getUserStats(targetUserId)
-                        .then(setUserStats)
-                        .catch(err => console.error("Error loading user stats:", err));
-                }
+                if (statsData) setUserStats(statsData);
 
                 if (historyData.length > 0) {
                     setSelectedCircuitId(historyData[0].circuit._id);
