@@ -42,8 +42,10 @@ Orden cronológico inverso (lo más nuevo arriba).
   transiciones CSS (`.gp-modal-overlay--css`, keyframes `gp-modal-*` en
   `components.css`). `FloatingEditProfile` pierde el leve desplazamiento
   vertical de su entrada: ahora es solo escala.
-- `FloatingPredictionCompare` (drawer con arrastre en mobile) y
-  `FloatingAlert` (toast) siguen con framer-motion.
+- `FloatingPredictionCompare`: la rama de desktop (modal centrado) pasa a
+  CSS con el mismo hook, porque también mostraba el parpadeo. El drawer de
+  mobile sigue con framer-motion porque necesita el arrastre.
+- `FloatingAlert` (toast) sigue con framer-motion.
 - Motivo: el parpadeo al confirmar predicciones y en la edición de carrera
   no se logró aislar; esta es la prueba para descartar framer como causa.
 

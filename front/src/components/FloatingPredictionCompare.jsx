@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useModalPhase } from "../hooks/useModalPhase";
 import PredictionServices from "../services/predictions.services";
 import SessionTabs from "./predictions/SessionTabs";
 import PredictionComparisonTable from "./predictions/PredictionComparisonTable";
@@ -27,6 +28,7 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1200);
 
     useEscapeKey(show, onClose);
+  const phase = useModalPhase(show);
 
     useEffect(() => {
         const handleResize = () => setIsDesktop(window.innerWidth >= 1200);
@@ -201,38 +203,28 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
         );
     }
 
+    if (phase === "closed") return null;
+
     return (
-        <AnimatePresence>
-            {show && (
-                <motion.div
-                    className="gp-modal-overlay"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                >
-                    <motion.div
-                        className="gp-modal-card gp-modal-card--wide"
-                        role="dialog"
-                        aria-modal="true"
-                        aria-labelledby="dialog-title-compare"
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.9, opacity: 0 }}
-                    >
-                        {compareTitle}
-                        {compareSubtitle}
+        <div className={`gp-modal-overlay gp-modal-overlay--css ${phase === "closing" ? "is-closing" : ""}`}>
+            <div
+                className="gp-modal-card gp-modal-card--wide"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="dialog-title-compare"
+            >
+                {compareTitle}
+                {compareSubtitle}
 
-                        {body}
+                {body}
 
-                        <div className="gp-modal-actions">
-                            <button className="gp-btn-cancel" onClick={onClose}>
-                                Cerrar
-                            </button>
-                        </div>
-                    </motion.div>
-                </motion.div>
-            )}
-        </AnimatePresence>
+                <div className="gp-modal-actions">
+                    <button className="gp-btn-cancel" onClick={onClose}>
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
     );
 }
 
