@@ -2295,3 +2295,43 @@ input[type="time"].form-control {
     from { opacity: 1; transform: scale(1); }
     to { opacity: 0; transform: scale(0.9); }
 }
+
+/* Toast y drawer de comparación (mobile) con transición CSS, sin framer-motion */
+.global-alert--css {
+    animation: gp-alert-in 0.3s ease-out;
+}
+.global-alert--css.is-closing {
+    animation: gp-alert-out 0.3s ease-in forwards;
+}
+@keyframes gp-alert-in {
+    from { transform: translateY(-100%); }
+    to { transform: none; }
+}
+@keyframes gp-alert-out {
+    from { transform: none; }
+    to { transform: translateY(-100%); }
+}
+.gp-drawer-overlay--css {
+    animation: gp-modal-fade-in 0.2s ease-out;
+}
+.gp-drawer-overlay--css.is-closing {
+    animation: gp-modal-fade-out 0.25s ease-in forwards;
+}
+.gp-compare-drawer--css {
+    animation: gp-drawer-in 0.3s ease-out;
+    transition: transform 0.25s ease;
+}
+.gp-compare-drawer--css.is-dragging {
+    transition: none;
+}
+.gp-compare-drawer--css.is-closing {
+    animation: gp-drawer-out 0.25s ease-in forwards;
+}
+@keyframes gp-drawer-in {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+@keyframes gp-drawer-out {
+    from { transform: translateY(0); }
+    to { transform: translateY(100%); }
+}

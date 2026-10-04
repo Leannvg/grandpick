@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { useModalPhase } from "../hooks/useModalPhase";
 import PredictionServices from "../services/predictions.services";
 import SessionTabs from "./predictions/SessionTabs";
@@ -98,11 +97,25 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
         ? formatRaceDate(circuitData.date_gp_start, circuitData.date_gp_end)
         : null;
 
-    // Funcionalidad de deslizar para cerrar (mismo patrón que PredictionHistory)
-    const handleDragEnd = (_, info) => {
-        if (info.offset.y > 100) {
-            onClose();
-        }
+    // Deslizar para cerrar (solo desde el tirador/encabezado del drawer en mobile)
+    const [dragY, setDragY] = useState(0);
+    const [dragging, setDragging] = useState(false);
+    const dragStartRef = useRef(0);
+
+    const onDragStart = (e) => {
+        dragStartRef.current = e.clientY;
+        setDragging(true);
+        e.currentTarget.setPointerCapture(e.pointerId);
+    };
+    const onDragMove = (e) => {
+        if (!dragging) return;
+        setDragY(Math.max(0, e.clientY - dragStartRef.current));
+    };
+    const onDragEnd = () => {
+        if (!dragging) return;
+        setDragging(false);
+        if (dragY > 100) onClose();
+        else setDragY(0);
     };
 
     const compareTitle = (
@@ -160,50 +173,50 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
         </>
     );
 
+    if (phase === "closed") return null;
+
+    const sheetContent = (
+        <>
+            <div className="drawer-handle"></div>
+            <div className="gp-compare-drawer-header">
+                {compareTitle}
+                {compareSubtitle}
+            </div>
+        </>
+    );
+
     if (!isDesktop) {
         return (
-            <AnimatePresence>
-                {show && (
-                    <>
-                        <motion.div
-                            className="history-drawer-overlay is-open"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={onClose}
-                        />
-                        <motion.div
-                            className="gp-compare-drawer"
-                            role="dialog"
-                            aria-modal="true"
-                            aria-labelledby="dialog-title-compare"
-                            initial={{ y: "100%" }}
-                            animate={{ y: 0 }}
-                            exit={{ y: "100%" }}
-                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                            drag="y"
-                            dragConstraints={{ top: 0 }}
-                            dragElastic={0.2}
-                            onDragEnd={handleDragEnd}
-                        >
-                            <div className="drawer-handle"></div>
+            <>
+                <div
+                    className={`history-drawer-overlay is-open gp-drawer-overlay--css ${phase === "closing" ? "is-closing" : ""}`}
+                    onClick={onClose}
+                />
+                <div
+                    className={`gp-compare-drawer gp-compare-drawer--css ${phase === "closing" ? "is-closing" : ""} ${dragging ? "is-dragging" : ""}`}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="dialog-title-compare"
+                    style={{ transform: `translateY(${dragY}px)` }}
+                >
+                    <div
+                        className="gp-compare-drag-zone"
+                        style={{ touchAction: "none" }}
+                        onPointerDown={onDragStart}
+                        onPointerMove={onDragMove}
+                        onPointerUp={onDragEnd}
+                        onPointerCancel={onDragEnd}
+                    >
+                        {sheetContent}
+                    </div>
 
-                            <div className="gp-compare-drawer-header">
-                                {compareTitle}
-                                {compareSubtitle}
-                            </div>
-
-                            <div className="gp-compare-drawer-body">
-                                {body}
-                            </div>
-                        </motion.div>
-                    </>
-                )}
-            </AnimatePresence>
+                    <div className="gp-compare-drawer-body">
+                        {body}
+                    </div>
+                </div>
+            </>
         );
     }
-
-    if (phase === "closed") return null;
 
     return (
         <div className={`gp-modal-overlay gp-modal-overlay--css ${phase === "closing" ? "is-closing" : ""}`}>
