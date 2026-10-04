@@ -34,6 +34,12 @@ Orden cronológico inverso (lo más nuevo arriba).
   `backdrop-filter` del proyecto (badges, nav, banner de predicción) no se
   tocaron.
 
+## 2026-10-03 · Botones «Volver a…» sin forma de botón
+
+- `components.css`: `.breadcrumb-link` pasa a solo texto con flecha (sin
+  fondo, borde ni padding). En hover queda el cambio a blanco y un
+  desplazamiento de 3px.
+
 ## 2026-10-03 · Historial de otro usuario: el loader espera también las estadísticas
 
 - `PredictionHistory.jsx`: `getUserStats` se pedía con `.then` sin esperarlo,

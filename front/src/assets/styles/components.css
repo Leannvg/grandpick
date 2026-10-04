@@ -1218,18 +1218,15 @@ input[type="time"].form-control {
     letter-spacing: 1px;
     text-decoration: none;
     text-transform: uppercase;
-    transition: all 0.3s ease;
-    padding: 8px 16px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: color 0.2s ease, transform 0.2s ease;
+    padding: 0;
+    background: none;
+    border: none;
 }
 
 .breadcrumb-link:hover {
     color: #fff;
-    background: var(--color-accent, #5ba4d6);
-    border-color: var(--color-accent, #5ba4d6);
-    transform: translateX(-5px);
+    transform: translateX(-3px);
 }
 
 .race-info {
