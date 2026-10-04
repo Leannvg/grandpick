@@ -2266,3 +2266,32 @@ input[type="time"].form-control {
 .global-alert.alert-warning .global-alert__close {
     border-color: rgba(0, 0, 0, 0.3);
 }
+/* Modales con transición CSS (hook useModalPhase): entrada y salida sin framer-motion */
+.gp-modal-overlay--css {
+    animation: gp-modal-fade-in 0.2s ease-out;
+}
+.gp-modal-overlay--css.is-closing {
+    animation: gp-modal-fade-out 0.2s ease-in forwards;
+}
+.gp-modal-overlay--css .gp-modal-card {
+    animation: gp-modal-pop-in 0.2s ease-out;
+}
+.gp-modal-overlay--css.is-closing .gp-modal-card {
+    animation: gp-modal-pop-out 0.2s ease-in forwards;
+}
+@keyframes gp-modal-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes gp-modal-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+@keyframes gp-modal-pop-in {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+@keyframes gp-modal-pop-out {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); }
+}

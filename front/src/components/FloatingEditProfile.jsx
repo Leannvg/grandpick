@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useModalPhase } from "../hooks/useModalPhase";
 import { useAlert } from "./../context/AlertContext.jsx";
 import CountrySelect from "./CountrySelect.jsx";
 import UsersServices from "../services/users.services";
@@ -30,6 +30,7 @@ function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
   const imageUrl = getImageUrl(currentImage, 500);
 
   useEscapeKey(show, onClose);
+  const phase = useModalPhase(show);
 
   useEffect(() => {
     if (show && usuario) {
@@ -89,25 +90,19 @@ function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
 
 
 
+  if (phase === "closed") return null;
+
   return (
-    <AnimatePresence>
-      {show && (
-        <motion.div
-          className="gp-modal-overlay"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <motion.div
-            className="gp-modal-card"
+    <div className={`gp-modal-overlay gp-modal-overlay--css ${phase === "closing" ? "is-closing" : ""}`}>
+      <div
+        className="gp-modal-card"
             role="dialog"
             aria-modal="true"
             aria-labelledby="dialog-title-profile"
             initial={{ scale: 0.8, opacity: 0, y: -30 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: -30 }}
-            transition={{ type: "spring", duration: 0.35 }}
-          >
+      >
 
             <h2 id="dialog-title-profile" className="gp-modal-title">Editar Perfil</h2>
             <p className="gp-modal-subtitle">Mantén tus datos actualizados</p>
@@ -213,10 +208,8 @@ function FloatingEditProfile({ show, onClose, usuario, onUpdated }) {
               </button>
             </div>
 
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+      </div>
+    </div>
   );
 }
 

@@ -34,6 +34,19 @@ Orden cronológico inverso (lo más nuevo arriba).
   `backdrop-filter` del proyecto (badges, nav, banner de predicción) no se
   tocaron.
 
+## 2026-10-03 · Modales sin framer-motion (entrada y salida con CSS)
+
+- Nuevo hook `hooks/useModalPhase.js` (`open` / `closing` / `closed`): al
+  cerrar espera 200ms antes de desmontar, para que la salida se vea.
+- `FloatingDialog`, `FloatingChangePassword` y `FloatingEditProfile` pasan a
+  transiciones CSS (`.gp-modal-overlay--css`, keyframes `gp-modal-*` en
+  `components.css`). `FloatingEditProfile` pierde el leve desplazamiento
+  vertical de su entrada: ahora es solo escala.
+- `FloatingPredictionCompare` (drawer con arrastre en mobile) y
+  `FloatingAlert` (toast) siguen con framer-motion.
+- Motivo: el parpadeo al confirmar predicciones y en la edición de carrera
+  no se logró aislar; esta es la prueba para descartar framer como causa.
+
 ## 2026-10-03 · Podio: fotos en desktop del mismo tamaño que en mobile
 
 - `podium.css`: se quitaron los overrides de `--podium-photo` del bloque
