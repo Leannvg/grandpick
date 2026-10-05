@@ -1,0 +1,374 @@
+/* Calendario (components/calendar/CalendarCard.jsx). Prefijo cal- para no
+   chocar con las clases viejas de components.css. */
+
+:root {
+    --cal-ink: #0f2a44;
+    --cal-circuit: #494949;
+    --cal-panel: #3f4a55;
+    --cal-finished: #727272;
+    --cal-current: #812E9A;
+    --cal-upcoming: #D40000;
+    --cal-ease: cubic-bezier(.2, .7, .2, 1);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.calendar-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+}
+
+@media (max-width: 767.98px) {
+    .calendar-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Tarjeta */
+.cal-card {
+    border-radius: 10px;
+    overflow: hidden;
+    color: #1d1d1d;
+}
+
+.cal-card__row {
+    display: flex;
+    align-items: stretch;
+    min-height: 80px;
+    background: #F3F3F3;
+}
+
+.cal-card__rail {
+    width: 46px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e7ebef;
+    border-right: 1px solid #d5dbe1;
+}
+
+.cal-card__ord {
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--cal-ink);
+    letter-spacing: -.5px;
+}
+
+.cal-card__ord sup {
+    font-size: .6em;
+    vertical-align: top;
+    position: relative;
+    top: .15em;
+}
+
+.cal-card__info {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px 10px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+}
+
+.cal-card__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+}
+
+.cal-card__loc {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .95rem;
+    min-width: 0;
+}
+
+.cal-card__country {
+    font-weight: 700;
+    color: var(--cal-circuit);
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cal-card__circuit {
+    margin: 0;
+    font-size: .9rem;
+    font-weight: 300;
+    color: var(--cal-circuit);
+}
+
+.cal-card__sprint {
+    flex-shrink: 0;
+    background: #4c86b7;
+    color: #fff;
+    font-size: .62rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: .4px;
+}
+
+/* Reloj: gira a X al abrir */
+.cal-card__toggle {
+    position: relative;
+    width: 34px;
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    background: #495057;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color .3s var(--cal-ease);
+}
+
+.cal-card__toggle:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: -4px;
+}
+
+.cal-card__ico {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: transform .35s var(--cal-ease), opacity .25s ease;
+}
+
+.cal-card__ico--close {
+    opacity: 0;
+    transform: rotate(-90deg) scale(.6);
+}
+
+.cal-card.is-open .cal-card__toggle {
+    background: #fff;
+    color: #495057;
+}
+
+.cal-card.is-open .cal-card__ico--clock {
+    opacity: 0;
+    transform: rotate(90deg) scale(.6);
+}
+
+.cal-card.is-open .cal-card__ico--close {
+    opacity: 1;
+    transform: none;
+}
+
+/* Fecha y estado */
+.cal-card__date {
+    width: 104px;
+    flex-shrink: 0;
+    padding: 10px 6px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+.cal-card__date.is-finished { background: var(--cal-finished); }
+.cal-card__date.is-current { background: var(--cal-current); }
+.cal-card__date.is-upcoming { background: var(--cal-upcoming); }
+
+.cal-card__day {
+    font-size: 1.55rem;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+    letter-spacing: -.3px;
+    font-variant-numeric: tabular-nums;
+}
+
+.cal-card__month {
+    margin-top: 2px;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    opacity: .92;
+}
+
+.cal-card__status {
+    margin-top: 8px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, .18);
+    font-size: .6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+/* Panel de horarios: crece con grid-template-rows */
+.cal-card__panel-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .4s var(--cal-ease);
+}
+
+.cal-card.is-open .cal-card__panel-wrap {
+    grid-template-rows: 1fr;
+}
+
+.cal-card__panel {
+    min-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    background: var(--cal-panel);
+    color: #fff;
+    transition: visibility .4s;
+}
+
+.cal-card.is-open .cal-card__panel {
+    visibility: visible;
+}
+
+.cal-card__panel-inner {
+    padding: 12px 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Switch de zona horaria: independiente en cada tarjeta */
+.cal-zone {
+    align-self: flex-start;
+    display: inline-flex;
+    background: rgba(255, 255, 255, .12);
+    border-radius: 999px;
+    padding: 3px;
+    gap: 2px;
+    margin-bottom: 6px;
+}
+
+.cal-zone button {
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font-size: .72rem;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: background-color .25s var(--cal-ease), color .25s var(--cal-ease);
+}
+
+.cal-zone button.is-active {
+    background: #fff;
+    color: var(--cal-ink);
+}
+
+/* Fila de sesión */
+.cal-session {
+    display: grid;
+    grid-template-columns: 52px 1px 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 2px;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+}
+
+.cal-session:first-of-type {
+    border-top: 0;
+}
+
+.cal-session__date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.cal-session__dow {
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .8px;
+    opacity: .75;
+}
+
+.cal-session__dnum {
+    margin-top: 3px;
+    font-size: 1.45rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.cal-session__sep {
+    width: 1px;
+    align-self: stretch;
+    background: rgba(255, 255, 255, .25);
+}
+
+.cal-session__name {
+    display: block;
+    font-size: .95rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+
+.cal-session__time {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+    font-size: .82rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    opacity: .92;
+}
+
+.cal-session__time i {
+    font-size: .8rem;
+    opacity: .7;
+}
+
+/* Entrada escalonada de las filas al abrir (solo fade) */
+@keyframes cal-row-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.cal-card.is-open .cal-session {
+    animation: cal-row-in .3s ease-out both;
+    animation-delay: calc(var(--i, 0) * 40ms + 150ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cal-card__panel-wrap,
+    .cal-card__panel,
+    .cal-card__toggle,
+    .cal-card__ico,
+    .cal-zone button {
+        transition: none !important;
+    }
+
+    .cal-card.is-open .cal-session {
+        animation: none !important;
+    }
+}

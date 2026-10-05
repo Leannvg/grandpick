@@ -1,11 +1,14 @@
 import { useEffect, useState, useCallback } from "react";
 import racesServices from "../services/races.services";
 import { useLoader } from "../context/LoaderContext";
-import { getFlagEmoji } from "../utils/helpers";
 import { DateTime } from "luxon";
 import { onSocketReady } from "../socket";
 import { getCountries } from "../services/countries.services";
 import Reveal from "../components/Reveal";
+import CalendarCard from "../components/calendar/CalendarCard";
+
+const MONTHS = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
+const pad2 = (n) => String(n).padStart(2, "0");
 
 function Calendar() {
     const [races, setRaces] = useState([]);
@@ -108,30 +111,29 @@ function Calendar() {
         };
     }, [loadRaces]);
 
-    function getStatusClass(index) {
-        if (currentIndex === -1) return "race-finished";
-        if (index < currentIndex) return "race-finished";
-        if (index === currentIndex) return "race-current";
-        return "race-upcoming";
+    function getStatus(index) {
+        if (currentIndex === -1) return "finished";
+        if (index < currentIndex) return "finished";
+        if (index === currentIndex) return "current";
+        return "upcoming";
     }
 
     function formatDayRange(startDate, endDate, timezone = "local") {
         const start = DateTime.fromISO(startDate).setZone(timezone);
         const end = DateTime.fromISO(endDate).setZone(timezone);
-        const dayStart = start.day;
-        const dayEnd = end.day;
+        const a = pad2(start.day);
+        const b = pad2(end.day);
 
-        if (dayStart === dayEnd) return `${dayStart}`;
-        return `${dayStart}–${dayEnd}`;
+        if (a === b) return a;
+        return `${a}–${b}`;
     }
 
     function formatMonthShort(startDate, endDate, timezone = "local") {
-        const months = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
         const start = DateTime.fromISO(startDate).setZone(timezone);
         const end = DateTime.fromISO(endDate).setZone(timezone);
 
-        const startMonth = months[start.month - 1];
-        const endMonth = months[end.month - 1];
+        const startMonth = MONTHS[start.month - 1];
+        const endMonth = MONTHS[end.month - 1];
 
         if (startMonth === endMonth) return startMonth;
         return `${startMonth}-${endMonth}`;
@@ -141,44 +143,20 @@ function Calendar() {
     const leftRaces = races.slice(0, midPoint);
     const rightRaces = races.slice(midPoint);
 
-    const [openSchedules, setOpenSchedules] = useState({});
-    const toggleSchedule = (id) => {
-        setOpenSchedules(prev => ({ ...prev, [id]: !prev[id] }));
-    };
-
-    const ScheduleOverlay = ({ sessions, timezone, country, onClose, isOpen }) => {
-        const sortedSessions = [...sessions].sort((a, b) => {
-            const tA = DateTime.fromISO(a.date_race).toMillis();
-            const tB = DateTime.fromISO(b.date_race).toMillis();
-            return tA - tB;
-        });
-
-        return (
-            <div className={`schedule-overlay ${isOpen ? 'open' : ''}`}>
-                {isOpen && (
-                    <>
-                        <button className="close-schedule-btn" onClick={(e) => { e.stopPropagation(); onClose(); }} title="Cerrar horarios">&times;</button>
-                        <div className="schedule-list">
-                            {sortedSessions.map(s => {
-                                const utcDt = DateTime.fromISO(s.date_race);
-                                const dt = utcDt.setZone(timezone || "UTC");
-                                const localDt = utcDt.setZone('local');
-                                return (
-                                    <div key={s._id} className="schedule-column">
-                                        <span className="session-type">{s.points_system?.type?.toUpperCase() || 'RACE'}</span>
-                                        <div className="session-times text-center">
-                                            <div className="time-circuit" title="Hora del circuito"><span className="emoji-flag">{getFlagEmoji(country)}</span> {dt.toFormat("dd/MM HH:mm")}</div>
-                                            <div className="time-local" title="Tu hora local">📍 {localDt.toFormat("dd/MM HH:mm")}</div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </>
-                )}
-            </div>
-        );
-    };
+    const renderCard = (race, globalIndex) => (
+        <Reveal
+            key={race._id || globalIndex}
+            delay={Math.min((globalIndex % midPoint) * 0.05, 0.4)}
+        >
+            <CalendarCard
+                race={race}
+                roundNumber={globalIndex + 1}
+                status={getStatus(globalIndex)}
+                dayLabel={formatDayRange(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}
+                monthLabel={formatMonthShort(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}
+            />
+        </Reveal>
+    );
 
     return (
         <div className="calendar-page page-wrapper">
@@ -191,91 +169,12 @@ function Calendar() {
                     </p>
                 </header>
 
-                <div className="calendar-list calendar-grid">
-                    {/* Columna izquierda */}
-                    <div className="calendar-col left-col">
-                        {leftRaces.map((race, index) => (
-                            <Reveal
-                                as="article"
-                                className="calendar-item"
-                                key={race._id || index}
-                                delay={Math.min(index * 0.05, 0.4)}
-                            >
-                                <div className="race-info">
-                                    <div className="race-top">
-                                        <div className="race-location">
-                                            <span className="emoji-flag me-2">{getFlagEmoji(race.circuit?.country)}</span>
-                                            <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
-                                            <span className="race-round">/ RONDA {index + 1}</span>
-                                        </div>
-                                        <div className="d-flex align-items-center">
-                                            {race.sessionTypes.includes('sprint') && (
-                                                <span className="race-sessions sprint-tag">SPRINT</span>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <p className="race-circuit">{race.circuit.circuit_name}</p>
-
-                                    <ScheduleOverlay
-                                        sessions={race.sessions}
-                                        timezone={race.circuit?.timezone}
-                                        country={race.circuit?.country}
-                                        onClose={() => toggleSchedule(race._id || index)}
-                                        isOpen={!!openSchedules[race._id || index]}
-                                    />
-                                </div>
-                                <div className={`race-date ${getStatusClass(index)}`}>
-                                    <button className="schedule-overlay-toggle" onClick={() => toggleSchedule(race._id || index)} title="Ver Horarios">
-                                        <i className="bi bi-clock"></i>
-                                    </button>
-                                    <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
-                                    <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
-                                </div>
-                            </Reveal>
-                        ))}
+                <div className="calendar-grid">
+                    <div className="calendar-col">
+                        {leftRaces.map((race, i) => renderCard(race, i))}
                     </div>
-
-                    {/* Columna derecha */}
-                    <div className="calendar-col right-col">
-                        {rightRaces.map((race, index) => (
-                            <Reveal
-                                as="article"
-                                className="calendar-item"
-                                key={race._id || index}
-                                delay={Math.min(index * 0.05, 0.4)}
-                            >
-                                <div className="race-info">
-                                    <div className="race-top">
-                                        <div className="race-location">
-                                            <span className="emoji-flag me-2">{getFlagEmoji(race.circuit?.country)}</span>
-                                            <span className="race-country">{race.circuit.country_name || race.circuit.country}</span>
-                                            <span className="race-round">/ RONDA {midPoint + index + 1}</span>
-                                        </div>
-                                        <div className="d-flex align-items-center">
-                                            {race.sessionTypes.includes('sprint') && (
-                                                <span className="race-sessions sprint-tag">SPRINT</span>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <p className="race-circuit">{race.circuit.circuit_name}</p>
-
-                                    <ScheduleOverlay
-                                        sessions={race.sessions}
-                                        timezone={race.circuit?.timezone}
-                                        country={race.circuit?.country}
-                                        onClose={() => toggleSchedule(race._id || (midPoint + index))}
-                                        isOpen={!!openSchedules[race._id || (midPoint + index)]}
-                                    />
-                                </div>
-                                <div className={`race-date ${getStatusClass(midPoint + index)}`}>
-                                    <button className="schedule-overlay-toggle" onClick={() => toggleSchedule(race._id || (midPoint + index))} title="Ver Horarios">
-                                        <i className="bi bi-clock"></i>
-                                    </button>
-                                    <span className="race-day">{formatDayRange(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
-                                    <span className="race-month">{formatMonthShort(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
-                                </div>
-                            </Reveal>
-                        ))}
+                    <div className="calendar-col">
+                        {rightRaces.map((race, i) => renderCard(race, midPoint + i))}
                     </div>
                 </div>
             </section>

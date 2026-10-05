@@ -42,6 +42,12 @@ correspondiente (ruta, props, para qué sirve, notas de reuso).
 | `Confetti` | `components/Confetti.jsx` | `count` (14), `colors`, `seed`, `speed`, `roundRatio` | Confeti que cae en loop, sin interacción, dentro del contenedor posicionado más cercano; clases `.confetti`/`.confetti__piece` + `@keyframes confetti-fall` en `podium.css`. **Excepción a la regla del proyecto**: el loop es CSS nativo (`animation-iteration-count: infinite`), no `framer-motion` — la versión con `framer-motion` se congelaba en producción sin causa aislable (ver [diseno.md](./diseno.md)). No renderiza con `prefers-reduced-motion`. `seed`/`speed`/`roundRatio` permiten variar cada instancia (distribución, velocidad, círculos vs. tiras). Usado en las 3 tarjetas del `Podium` (Home, Ranking, Standings). |
 | `Reveal` | `components/Reveal.jsx` | `as` (tag string o componente con forwardRef, ej. `Link`; default `"div"`), `delay`, `y` (24), `amount` (0.2), `children`, `...props` | Envoltorio genérico de fade + `y` al entrar en viewport (`framer-motion` `whileInView`, `once: true`), respeta `useReducedMotion()`. `as` string usa `motion[as]`; con un componente custom usa `motion(Component)` (memoizado por identidad de `as`, para no remontar el subárbol en cada render del padre). Usado en `Home.jsx` (secciones y las 3 `info-card`) y en las grillas de `Drivers.jsx`/`Teams.jsx`/`Circuits.jsx`/`Calendar.jsx` con delay escalonado por índice. Ver [diseno.md](./diseno.md). |
 
+## Calendario
+
+| Componente | Ruta | Props | Para qué sirve |
+|---|---|---|---|
+| `CalendarCard` | `components/calendar/CalendarCard.jsx` | `race`, `roundNumber`, `status` (`finished`/`current`/`upcoming`), `dayLabel`, `monthLabel` | Tarjeta del calendario: riel con el número de ronda, reloj que abre el panel de sesiones (gira a X), fecha con estado y switch «Mi tiempo / Tiempo de circuito» propio de cada tarjeta. Estilos en `assets/styles/calendar.css` (prefijo `cal-`). Usado en `Calendar.jsx`. |
+
 ## Loaders
 
 | Componente | Ruta | Props / API | Para qué sirve |

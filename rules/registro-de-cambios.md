@@ -34,6 +34,23 @@ Orden cronológico inverso (lo más nuevo arriba).
   `backdrop-filter` del proyecto (badges, nav, banner de predicción) no se
   tocaron.
 
+## 2026-10-04 · Calendario: tarjetas nuevas con panel de sesiones
+
+- Nuevo `components/calendar/CalendarCard.jsx` y `assets/styles/calendar.css`
+  (prefijo `cal-`). `Calendar.jsx` renderiza estas tarjetas en dos columnas.
+- Riel con el número de ronda (`1º`, `2º`…), fecha con estado centrado debajo
+  del mes (`Finalizado` / `En curso` / `Próximo`), fechas siempre con dos cifras.
+- El reloj abre el panel de sesiones con altura animada (`grid-template-rows`),
+  el ícono gira a X y las filas entran con un fade escalonado. Con
+  `prefers-reduced-motion` no hay animación.
+- Cada tarjeta tiene su propio switch «Mi tiempo / Tiempo de circuito»: cambiar
+  una no afecta a las demás. El estado no se guarda al recargar.
+- Las sesiones que se muestran son las de `Races` (carrera, sprint y
+  clasificación). Las prácticas y la duración todavía no están: quedan para la
+  siguiente etapa (colección de prácticas y carga en `RaceForm`).
+- Las clases viejas del calendario (`.race-date`, `.schedule-overlay`, etc.) en
+  `components.css` ya no se usan; sacarlas queda pendiente.
+
 ## 2026-10-03 · Botones «Volver a…» sin forma de botón
 
 - `components.css`: `.breadcrumb-link` pasa a solo texto con flecha (sin
