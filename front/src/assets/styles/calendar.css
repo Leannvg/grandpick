@@ -93,9 +93,14 @@
 .cal-card__loc {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: .95rem;
+    gap: 8px;
+    font-size: 1.1rem;
     min-width: 0;
+}
+
+.cal-card__loc .emoji-flag {
+    font-size: 1.35rem;
+    line-height: 1;
 }
 
 .cal-card__country {
@@ -187,7 +192,8 @@
 }
 
 .cal-card__date.is-finished { background: var(--cal-finished); }
-.cal-card__date.is-current { background: var(--cal-current); }
+.cal-card__date.is-current,
+.cal-card__date.is-next { background: var(--cal-current); }
 .cal-card__date.is-upcoming { background: var(--cal-upcoming); }
 
 .cal-card__day {

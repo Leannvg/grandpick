@@ -33,6 +33,7 @@ function buildSchedule(sessions) {
 const STATUS = {
     finished: { label: "Finalizado", icon: "bi-check2" },
     current: { label: "En curso", icon: "bi-broadcast" },
+    next: { label: "Próximo", icon: "bi-hourglass-split" },
     upcoming: { label: "Próximo", icon: "bi-hourglass-split" },
 };
 

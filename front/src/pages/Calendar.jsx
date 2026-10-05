@@ -114,8 +114,11 @@ function Calendar() {
     function getStatus(index) {
         if (currentIndex === -1) return "finished";
         if (index < currentIndex) return "finished";
-        if (index === currentIndex) return "current";
-        return "upcoming";
+        if (index > currentIndex) return "upcoming";
+        const race = races[index];
+        const tz = race.circuit?.timezone || "local";
+        const startOfDay = DateTime.fromISO(race.date_gp_start).setZone(tz).startOf("day").toMillis();
+        return DateTime.now().toMillis() >= startOfDay ? "current" : "next";
     }
 
     function formatDayRange(startDate, endDate, timezone = "local") {

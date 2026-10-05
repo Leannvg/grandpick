@@ -34,6 +34,13 @@ Orden cronológico inverso (lo más nuevo arriba).
   `backdrop-filter` del proyecto (badges, nav, banner de predicción) no se
   tocaron.
 
+## 2026-10-04 · Calendario: estado «Próximo» morado y país más grande
+
+- La próxima carrera muestra «Próximo» en morado hasta su fecha de inicio (en
+  la zona del circuito). Desde esa fecha pasa a «En curso», también morado. Las
+  siguientes siguen en rojo con «Próximo».
+- Tamaño de país y bandera aumentado en la tarjeta.
+
 ## 2026-10-04 · Calendario: títulos de grupo y duraciones genéricas
 
 - El panel agrupa las sesiones en «Fin de semana sprint» (solo si hay sprint) y
