@@ -1,0 +1,71 @@
+[
+  { "gp": "Gran Premio de Australia", "tz": "Australia/Melbourne", "sessions": [
+    { "name": "FP1", "date": "2026-03-06", "time": "12:30" }, { "name": "FP2", "date": "2026-03-06", "time": "16:00" },
+    { "name": "FP3", "date": "2026-03-07", "time": "12:30" }, { "name": "QUALY", "date": "2026-03-07", "time": "16:00" } ] },
+  { "gp": "Gran Premio de China", "tz": "Asia/Shanghai", "sessions": [
+    { "name": "FP1", "date": "2026-03-13", "time": "11:30" }, { "name": "SQ", "date": "2026-03-13", "time": "15:30" },
+    { "name": "QUALY", "date": "2026-03-14", "time": "15:00" } ] },
+  { "gp": "Gran Premio de Japón", "tz": "Asia/Tokyo", "sessions": [
+    { "name": "FP1", "date": "2026-03-27", "time": "11:30" }, { "name": "FP2", "date": "2026-03-27", "time": "15:00" },
+    { "name": "FP3", "date": "2026-03-28", "time": "11:30" }, { "name": "QUALY", "date": "2026-03-28", "time": "15:00" } ] },
+  { "gp": "Gran Premio de Miami", "tz": "America/New_York", "sessions": [
+    { "name": "FP1", "date": "2026-05-01", "time": "12:00" }, { "name": "SQ", "date": "2026-05-01", "time": "16:30" },
+    { "name": "QUALY", "date": "2026-05-02", "time": "16:00" } ] },
+  { "gp": "Gran Premio Pirelli de Canadá", "tz": "America/Toronto", "sessions": [
+    { "name": "FP1", "date": "2026-05-22", "time": "12:30" }, { "name": "SQ", "date": "2026-05-22", "time": "16:30" },
+    { "name": "QUALY", "date": "2026-05-23", "time": "16:00" } ] },
+  { "gp": "Gran Premio de Mónaco", "tz": "Europe/Monaco", "sessions": [
+    { "name": "FP1", "date": "2026-06-05", "time": "13:30" }, { "name": "FP2", "date": "2026-06-05", "time": "17:00" },
+    { "name": "FP3", "date": "2026-06-06", "time": "12:30" }, { "name": "QUALY", "date": "2026-06-06", "time": "16:00" } ] },
+  { "gp": "Gran Premio de Barcelona-Cataluña", "tz": "Europe/Madrid", "sessions": [
+    { "name": "FP1", "date": "2026-06-12", "time": "13:30" }, { "name": "FP2", "date": "2026-06-12", "time": "17:00" },
+    { "name": "FP3", "date": "2026-06-13", "time": "12:30" }, { "name": "QUALY", "date": "2026-06-13", "time": "16:00" } ] },
+  { "gp": "Gran Premio de Austria", "tz": "Europe/Vienna", "sessions": [
+    { "name": "FP1", "date": "2026-06-26", "time": "13:30" }, { "name": "FP2", "date": "2026-06-26", "time": "17:00" },
+    { "name": "FP3", "date": "2026-06-27", "time": "12:30" }, { "name": "QUALY", "date": "2026-06-27", "time": "16:00" } ] },
+  { "gp": "Gran Premio Británico", "tz": "Europe/London", "sessions": [
+    { "name": "FP1", "date": "2026-07-03", "time": "12:30" }, { "name": "SQ", "date": "2026-07-03", "time": "16:30" },
+    { "name": "QUALY", "date": "2026-07-04", "time": "16:00" } ] },
+  { "gp": "Gran Premio de Bélgica", "tz": "Europe/Brussels", "sessions": [
+    { "name": "FP1", "date": "2026-07-17", "time": "13:30" }, { "name": "FP2", "date": "2026-07-17", "time": "17:00" },
+    { "name": "FP3", "date": "2026-07-18", "time": "12:30" }, { "name": "QUALY", "date": "2026-07-18", "time": "16:00" } ] },
+  { "gp": "Gran Premio de Hungría", "tz": "Europe/Budapest", "sessions": [
+    { "name": "FP1", "date": "2026-07-24", "time": "13:30" }, { "name": "FP2", "date": "2026-07-24", "time": "17:00" },
+    { "name": "FP3", "date": "2026-07-25", "time": "12:30" }, { "name": "QUALY", "date": "2026-07-25", "time": "16:00" } ] },
+  { "gp": "Gran Premio de Países Bajos", "tz": "Europe/Amsterdam", "sessions": [
+    { "name": "FP1", "date": "2026-08-21", "time": "12:30" }, { "name": "SQ", "date": "2026-08-21", "time": "16:30" },
+    { "name": "QUALY", "date": "2026-08-22", "time": "16:00" } ] },
+  { "gp": "Gran Premio de Italia", "tz": "Europe/Rome", "sessions": [
+    { "name": "FP1", "date": "2026-09-04", "time": "12:30" }, { "name": "FP2", "date": "2026-09-04", "time": "16:00" },
+    { "name": "FP3", "date": "2026-09-05", "time": "12:30" }, { "name": "QUALY", "date": "2026-09-05", "time": "16:00" } ] },
+  { "gp": "Gran Premio de España", "tz": "Europe/Madrid", "sessions": [
+    { "name": "FP1", "date": "2026-09-11", "time": "13:30" }, { "name": "FP2", "date": "2026-09-11", "time": "17:00" },
+    { "name": "FP3", "date": "2026-09-12", "time": "12:30" }, { "name": "QUALY", "date": "2026-09-12", "time": "16:00" } ] },
+  { "gp": "Gran Premio de Azerbaiyán", "tz": "Asia/Baku", "sessions": [
+    { "name": "FP1", "date": "2026-09-24", "time": "12:30" }, { "name": "FP2", "date": "2026-09-24", "time": "16:00" },
+    { "name": "FP3", "date": "2026-09-25", "time": "12:30" }, { "name": "QUALY", "date": "2026-09-25", "time": "16:00" } ] },
+  { "gp": "Gran Premio de Malasia", "tz": "Asia/Kuala_Lumpur", "sessions": [
+    { "name": "FP1", "date": "2026-10-02", "time": "12:30" }, { "name": "FP2", "date": "2026-10-02", "time": "16:00" },
+    { "name": "FP3", "date": "2026-10-03", "time": "12:30" }, { "name": "QUALY", "date": "2026-10-03", "time": "16:00" } ] },
+  { "gp": "Gran Premio de Singapur", "tz": "Asia/Singapore", "sessions": [
+    { "name": "FP1", "date": "2026-10-09", "time": "16:30" }, { "name": "SQ", "date": "2026-10-09", "time": "20:30" },
+    { "name": "QUALY", "date": "2026-10-10", "time": "21:00" } ] },
+  { "gp": "Gran Premio de Estados Unidos", "tz": "America/Chicago", "sessions": [
+    { "name": "FP1", "date": "2026-10-23", "time": "12:30" }, { "name": "FP2", "date": "2026-10-23", "time": "16:00" },
+    { "name": "FP3", "date": "2026-10-24", "time": "12:30" }, { "name": "QUALY", "date": "2026-10-24", "time": "16:00" } ] },
+  { "gp": "Gran Premio de la Ciudad de México", "tz": "America/Mexico_City", "sessions": [
+    { "name": "FP1", "date": "2026-10-30", "time": "12:30" }, { "name": "FP2", "date": "2026-10-30", "time": "16:00" },
+    { "name": "FP3", "date": "2026-10-31", "time": "11:30" }, { "name": "QUALY", "date": "2026-10-31", "time": "15:00" } ] },
+  { "gp": "Gran Premio de São Paulo", "tz": "America/Sao_Paulo", "sessions": [
+    { "name": "FP1", "date": "2026-11-06", "time": "12:30" }, { "name": "FP2", "date": "2026-11-06", "time": "16:00" },
+    { "name": "FP3", "date": "2026-11-07", "time": "11:30" }, { "name": "QUALY", "date": "2026-11-07", "time": "15:00" } ] },
+  { "gp": "Gran Premio Heineken Las Vegas", "tz": "America/Los_Angeles", "sessions": [
+    { "name": "FP1", "date": "2026-11-19", "time": "16:30" }, { "name": "FP2", "date": "2026-11-19", "time": "20:00" },
+    { "name": "FP3", "date": "2026-11-20", "time": "16:30" }, { "name": "QUALY", "date": "2026-11-20", "time": "20:00" } ] },
+  { "gp": "Gran Premio de Qatar", "tz": "Asia/Qatar", "sessions": [
+    { "name": "FP1", "date": "2026-11-26", "time": "16:30" }, { "name": "FP2", "date": "2026-11-26", "time": "20:00" },
+    { "name": "FP3", "date": "2026-11-27", "time": "17:30" }, { "name": "QUALY", "date": "2026-11-28", "time": "21:00" } ] },
+  { "gp": "Gran Premio de Abu Dhabi", "tz": "Asia/Dubai", "sessions": [
+    { "name": "FP1", "date": "2026-12-04", "time": "13:30" }, { "name": "FP2", "date": "2026-12-04", "time": "17:00" },
+    { "name": "FP3", "date": "2026-12-05", "time": "14:30" }, { "name": "QUALY", "date": "2026-12-05", "time": "18:00" } ] }
+]

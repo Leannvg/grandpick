@@ -600,6 +600,7 @@ function RaceForm({
                 <option value="FP1">FP1</option>
                 <option value="FP2">FP2</option>
                 <option value="FP3">FP3</option>
+                <option value="SQ">SQ (clasificación sprint)</option>
               </select>
               <input
                 type="datetime-local"

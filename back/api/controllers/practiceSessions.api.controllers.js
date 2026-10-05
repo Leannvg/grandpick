@@ -1,6 +1,7 @@
 import * as practiceSessionsServices from "../../services/practiceSessions.services.js";
 
-const ALLOWED_NAMES = ["FP1", "FP2", "FP3"];
+// SQ = clasificación sprint (solo fines de semana sprint)
+const ALLOWED_NAMES = ["FP1", "FP2", "FP3", "SQ"];
 
 export async function findAll(req, res) {
     const { year, circuitId } = req.query;
@@ -17,7 +18,7 @@ export async function replaceForCircuit(req, res) {
     const valid = sessions.every(
         (s) => ALLOWED_NAMES.includes(s.name) && !Number.isNaN(new Date(s.date_utc).getTime())
     );
-    if (!valid) return res.status(400).json({ message: "Cada práctica necesita un nombre (FP1-FP3) y una fecha válida en UTC." });
+    if (!valid) return res.status(400).json({ message: "Cada práctica necesita un nombre (FP1-FP3 o SQ) y una fecha válida en UTC." });
 
     const saved = await practiceSessionsServices.replacePracticeSessions(circuitId, year, sessions);
     res.status(200).json(saved);

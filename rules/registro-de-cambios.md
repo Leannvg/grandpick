@@ -40,7 +40,10 @@ Orden cronológico inverso (lo más nuevo arriba).
 - Backend: `GET /api/practice-sessions?year=&circuitId=` (público) y `PUT /api/dashboard/practice-sessions/:circuitId/:year` (admin, reemplaza las prácticas de ese circuito y año). Servicio `services/practiceSessions.services.js`, controlador y rutas `practiceSessions.api.*`.
 - `RaceForm.jsx`: sección «Prácticas». Se ingresa en hora del circuito y se convierte a UTC con luxon al guardar. Solo se reemplazan si el admin las tocó.
 - Calendario: las prácticas aparecen como grupo «Prácticas» (Práctica 1–3, 60 MIN.). Sin datos cargados, el grupo no aparece.
-- Pendiente: cargar los horarios 2026 (confirmados en formula1.com) desde el admin.
+- Clasificación sprint: `name` `SQ` en `Practice_Sessions` (solo fines de semana sprint). El calendario la muestra en «Fin de semana sprint» (45 MIN.) y reemplaza a la regla por fecha si existe.
+- Carga 2026: script `back/scripts/import-practice-sessions-2026.js` (sin `--apply` simula) con datos de `back/data/practice-sessions-2026.json`. Valida cada clasificación contra `Races` antes de guardar: 23 GP, 23 FP1, 17 FP2, 17 FP3 y 6 SQ.
+- Corregida la zona del circuito de Australia: `Australia/Adelaide` → `Australia/Melbourne`.
+- Detalle en `rules/features/practicas.md`.
 
 ## 2026-10-04 · Calendario: clasificación mal rotulada como carrera
 

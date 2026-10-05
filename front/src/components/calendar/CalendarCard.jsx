@@ -15,23 +15,35 @@ function normalizeType(type) {
 
 // Arma los grupos del panel a partir de las sesiones de Races.
 // En fin de semana sprint, la clasificación anterior al sprint es "Clasificación sprint".
+// SQ (clasificación sprint) viene de Practice_Sessions. Si existe, reemplaza a la regla por fecha.
 function buildSchedule(sessions, practices = []) {
     const hasSprint = sessions.some((s) => normalizeType(s.points_system?.type) === "sprint");
     const sprintMillis = hasSprint
         ? DateTime.fromISO(sessions.find((s) => normalizeType(s.points_system?.type) === "sprint").date_race).toMillis()
         : null;
+    const sqList = practices.filter((p) => p.name === "SQ");
+    const hasSq = sqList.length > 0;
 
-    const items = sessions.map((s) => {
+    const items = sessions.flatMap((s) => {
         const type = normalizeType(s.points_system?.type);
         const millis = DateTime.fromISO(s.date_race).toMillis();
-        if (type === "sprint") return { id: s._id, iso: s.date_race, group: "sprint", label: "Sprint", dur: DURATION.sprint, race: false };
+        if (type === "sprint") return [{ id: s._id, iso: s.date_race, group: "sprint", label: "Sprint", dur: DURATION.sprint, race: false }];
         if (type === "qualy" && hasSprint && millis < sprintMillis)
-            return { id: s._id, iso: s.date_race, group: "sprint", label: "Clasificación sprint", dur: DURATION.qualySprint, race: false };
-        if (type === "qualy") return { id: s._id, iso: s.date_race, group: "main", label: "Clasificación", dur: DURATION.qualyMain, race: false };
-        return { id: s._id, iso: s.date_race, group: "main", label: "Carrera", dur: DURATION.race, race: true };
+            return hasSq ? [] : [{ id: s._id, iso: s.date_race, group: "sprint", label: "Clasificación sprint", dur: DURATION.qualySprint, race: false }];
+        if (type === "qualy") return [{ id: s._id, iso: s.date_race, group: "main", label: "Clasificación", dur: DURATION.qualyMain, race: false }];
+        return [{ id: s._id, iso: s.date_race, group: "main", label: "Carrera", dur: DURATION.race, race: true }];
     });
 
-    const practiceItems = practices.map((p) => ({
+    const sqItems = sqList.map((p) => ({
+        id: p._id,
+        iso: p.date_utc,
+        group: "sprint",
+        label: "Clasificación sprint",
+        dur: DURATION.qualySprint,
+        race: false,
+    }));
+
+    const practiceItems = practices.filter((p) => p.name !== "SQ").map((p) => ({
         id: p._id,
         iso: p.date_utc,
         group: "practice",
@@ -40,9 +52,12 @@ function buildSchedule(sessions, practices = []) {
         race: false,
     }));
 
+    const sprintItems = [...items.filter((i) => i.group === "sprint"), ...sqItems]
+        .sort((a, b) => DateTime.fromISO(a.iso).toMillis() - DateTime.fromISO(b.iso).toMillis());
+
     const groups = [];
     if (practiceItems.length) groups.push({ key: "practice", title: "Prácticas", icon: "bi-stopwatch", items: practiceItems.sort((a, b) => a.label.localeCompare(b.label)) });
-    if (hasSprint) groups.push({ key: "sprint", title: "Fin de semana sprint", icon: "bi-lightning-charge-fill", items: items.filter((i) => i.group === "sprint") });
+    if (sprintItems.length) groups.push({ key: "sprint", title: "Fin de semana sprint", icon: "bi-lightning-charge-fill", items: sprintItems });
     groups.push({ key: "main", title: "Clasificación y carrera", icon: "bi-flag-fill", items: items.filter((i) => i.group === "main") });
     return groups.filter((g) => g.items.length > 0);
 }
