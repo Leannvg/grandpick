@@ -394,3 +394,29 @@
     background: #FFCD56;
     color: #000;
 }
+
+/* Títulos de grupo dentro del panel */
+.cal-card__group + .cal-card__group {
+    margin-top: 6px;
+}
+
+.cal-card__group-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-top: 4px;
+    font-size: .66rem;
+    font-weight: 700;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    opacity: .85;
+}
+
+.cal-card.is-open .cal-card__group-title {
+    animation: cal-row-in .3s ease-out both;
+    animation-delay: calc(var(--i, 0) * 40ms + 120ms);
+}
+
+.cal-card__group-title + .cal-session {
+    border-top: 0;
+}

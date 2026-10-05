@@ -34,6 +34,17 @@ Orden cronológico inverso (lo más nuevo arriba).
   `backdrop-filter` del proyecto (badges, nav, banner de predicción) no se
   tocaron.
 
+## 2026-10-04 · Calendario: títulos de grupo y duraciones genéricas
+
+- El panel agrupa las sesiones en «Fin de semana sprint» (solo si hay sprint) y
+  «Clasificación y carrera». La clasificación anterior al sprint se muestra como
+  «Clasificación sprint».
+- Duraciones genéricas por tipo (`DURATION` en `CalendarCard.jsx`): práctica 60
+  MIN., clasificación 60 MIN., clasificación sprint 45 MIN., sprint 35 MIN.,
+  carrera 2 HS.
+- El título «Prácticas» queda pendiente: aparece cuando existan los datos de
+  prácticas.
+
 ## 2026-10-04 · Calendario: alineación a la izquierda y duración por sesión
 
 - La página de calendario tiene `text-center` en la sección y las tarjetas lo

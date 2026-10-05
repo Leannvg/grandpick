@@ -4,9 +4,32 @@ import { getFlagEmoji } from "../../utils/helpers";
 import "../../assets/styles/calendar.css";
 
 const DOW = ["DOM", "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB"];
-const SESSION_LABEL = { race: "Carrera", sprint: "Sprint", qualy: "Clasificación" };
-// Duraciones aproximadas por tipo de sesión (la base no las guarda todavía)
-const SESSION_DURATION = { race: "2 HS.", sprint: "35 MIN.", qualy: "60 MIN." };
+// Duraciones genéricas por tipo de sesión (la base todavía no las guarda)
+const DURATION = { practice: "60 MIN.", qualyMain: "60 MIN.", qualySprint: "45 MIN.", sprint: "35 MIN.", race: "2 HS." };
+
+// Arma los grupos del panel a partir de las sesiones de Races.
+// En fin de semana sprint, la clasificación anterior al sprint es "Clasificación sprint".
+function buildSchedule(sessions) {
+    const hasSprint = sessions.some((s) => s.points_system?.type === "sprint");
+    const sprintMillis = hasSprint
+        ? DateTime.fromISO(sessions.find((s) => s.points_system?.type === "sprint").date_race).toMillis()
+        : null;
+
+    const items = sessions.map((s) => {
+        const type = s.points_system?.type;
+        const millis = DateTime.fromISO(s.date_race).toMillis();
+        if (type === "sprint") return { id: s._id, iso: s.date_race, group: "sprint", label: "Sprint", dur: DURATION.sprint, race: false };
+        if (type === "qualy" && hasSprint && millis < sprintMillis)
+            return { id: s._id, iso: s.date_race, group: "sprint", label: "Clasificación sprint", dur: DURATION.qualySprint, race: false };
+        if (type === "qualy") return { id: s._id, iso: s.date_race, group: "main", label: "Clasificación", dur: DURATION.qualyMain, race: false };
+        return { id: s._id, iso: s.date_race, group: "main", label: "Carrera", dur: DURATION.race, race: true };
+    });
+
+    const groups = [];
+    if (hasSprint) groups.push({ key: "sprint", title: "Fin de semana sprint", icon: "bi-lightning-charge-fill", items: items.filter((i) => i.group === "sprint") });
+    groups.push({ key: "main", title: "Clasificación y carrera", icon: "bi-flag-fill", items: items.filter((i) => i.group === "main") });
+    return groups.filter((g) => g.items.length > 0);
+}
 const STATUS = {
     finished: { label: "Finalizado", icon: "bi-check2" },
     current: { label: "En curso", icon: "bi-broadcast" },
@@ -30,6 +53,7 @@ function CalendarCard({ race, roundNumber, status, dayLabel, monthLabel }) {
     const sessions = [...race.sessions].sort(
         (a, b) => DateTime.fromISO(a.date_race).toMillis() - DateTime.fromISO(b.date_race).toMillis()
     );
+    const groups = buildSchedule(sessions);
     const hasSprint = race.sessionTypes.includes("sprint");
     const statusInfo = STATUS[status];
     const panelId = `cal-panel-${race._id}`;
@@ -94,30 +118,32 @@ function CalendarCard({ race, roundNumber, status, dayLabel, monthLabel }) {
                             </button>
                         </div>
 
-                        {sessions.map((s, i) => {
-                            const type = s.points_system?.type;
-                            const t = formatSessionTime(s.date_race, zoneMode === "mine" ? "local" : circuitZone);
-                            return (
-                                <div className="cal-session" key={s._id} style={{ "--i": i }}>
-                                    <div className="cal-session__date">
-                                        <span className="cal-session__dow">{t.dow}</span>
-                                        <span className="cal-session__dnum">{t.day}</span>
-                                    </div>
-                                    <span className="cal-session__sep" aria-hidden="true"></span>
-                                    <div className="cal-session__main">
-                                        <span className="cal-session__name">{SESSION_LABEL[type] || type}</span>
-                                        <span className="cal-session__time">
-                                            <i className="bi bi-clock"></i>{t.time}
-                                        </span>
-                                    </div>
-                                    {SESSION_DURATION[type] && (
-                                        <span className={`cal-session__dur ${type === "race" ? "is-race" : type === "sprint" ? "is-sprint" : ""}`}>
-                                            {SESSION_DURATION[type]}
-                                        </span>
-                                    )}
+                        {groups.map((g, gi) => (
+                            <div className="cal-card__group" key={g.key}>
+                                <div className="cal-card__group-title" style={{ "--i": gi * 3 }}>
+                                    <i className={`bi ${g.icon}`}></i>{g.title}
                                 </div>
-                            );
-                        })}
+                                {g.items.map((it, i) => {
+                                    const t = formatSessionTime(it.iso, zoneMode === "mine" ? "local" : circuitZone);
+                                    return (
+                                        <div className="cal-session" key={it.id} style={{ "--i": gi * 3 + i + 1 }}>
+                                            <div className="cal-session__date">
+                                                <span className="cal-session__dow">{t.dow}</span>
+                                                <span className="cal-session__dnum">{t.day}</span>
+                                            </div>
+                                            <span className="cal-session__sep" aria-hidden="true"></span>
+                                            <div className="cal-session__main">
+                                                <span className="cal-session__name">{it.label}</span>
+                                                <span className="cal-session__time">
+                                                    <i className="bi bi-clock"></i>{t.time}
+                                                </span>
+                                            </div>
+                                            <span className={`cal-session__dur ${it.race ? "is-race" : it.label === "Sprint" ? "is-sprint" : ""}`}>{it.dur}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
