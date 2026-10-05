@@ -42,6 +42,7 @@ Orden cronológico inverso (lo más nuevo arriba).
 - Calendario: las prácticas aparecen como grupo «Prácticas» (Práctica 1–3, 60 MIN.). Sin datos cargados, el grupo no aparece.
 - Clasificación sprint: `name` `SQ` en `Practice_Sessions` (solo fines de semana sprint). El calendario la muestra en «Fin de semana sprint» (45 MIN.) y reemplaza a la regla por fecha si existe.
 - Carga 2026: script `back/scripts/import-practice-sessions-2026.js` (sin `--apply` simula) con datos de `back/data/practice-sessions-2026.json`. Valida cada clasificación contra `Races` antes de guardar: 23 GP, 23 FP1, 17 FP2, 17 FP3 y 6 SQ.
+- Corregido en `RaceForm.jsx`: las prácticas guardadas se veían con fecha vacía. El formato de Luxon necesita la `T` entre comillas (`'T'`); sin eso la fecha salía corrupta y el `datetime-local` la mostraba en blanco.
 - Corregida la zona del circuito de Australia: `Australia/Adelaide` → `Australia/Melbourne`.
 - Detalle en `rules/features/practicas.md`.
 

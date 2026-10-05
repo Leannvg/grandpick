@@ -232,7 +232,7 @@ function RaceForm({
         if (cancelled) return;
         setPractices(list.map((p) => ({
           name: p.name,
-          local: DateTime.fromISO(p.date_utc).setZone(circuitTimezone).toFormat("yyyy-MM-ddTHH:mm"),
+          local: DateTime.fromISO(p.date_utc).setZone(circuitTimezone).toFormat("yyyy-MM-dd'T'HH:mm"),
         })));
         setPracticesTouched(false);
       })
