@@ -34,6 +34,12 @@ Orden cronológico inverso (lo más nuevo arriba).
   `backdrop-filter` del proyecto (badges, nav, banner de predicción) no se
   tocaron.
 
+## 2026-10-04 · Calendario: clasificación mal rotulada como carrera
+
+- En `points_system` la clasificación se guarda como `qualifying` (no `qualy`);
+  el panel la mostraba como «Carrera». `CalendarCard.jsx` ahora normaliza ambos
+  valores (`normalizeType`).
+
 ## 2026-10-04 · Calendario: estado «Próximo» morado y país más grande
 
 - La próxima carrera muestra «Próximo» en morado hasta su fecha de inicio (en

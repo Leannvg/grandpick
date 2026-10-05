@@ -7,16 +7,22 @@ const DOW = ["DOM", "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB"];
 // Duraciones genéricas por tipo de sesión (la base todavía no las guarda)
 const DURATION = { practice: "60 MIN.", qualyMain: "60 MIN.", qualySprint: "45 MIN.", sprint: "35 MIN.", race: "2 HS." };
 
+// En la base la clasificación se guarda como "qualifying" (y antes como "qualy")
+function normalizeType(type) {
+    if (type === "qualifying" || type === "qualy") return "qualy";
+    return type;
+}
+
 // Arma los grupos del panel a partir de las sesiones de Races.
 // En fin de semana sprint, la clasificación anterior al sprint es "Clasificación sprint".
 function buildSchedule(sessions) {
-    const hasSprint = sessions.some((s) => s.points_system?.type === "sprint");
+    const hasSprint = sessions.some((s) => normalizeType(s.points_system?.type) === "sprint");
     const sprintMillis = hasSprint
-        ? DateTime.fromISO(sessions.find((s) => s.points_system?.type === "sprint").date_race).toMillis()
+        ? DateTime.fromISO(sessions.find((s) => normalizeType(s.points_system?.type) === "sprint").date_race).toMillis()
         : null;
 
     const items = sessions.map((s) => {
-        const type = s.points_system?.type;
+        const type = normalizeType(s.points_system?.type);
         const millis = DateTime.fromISO(s.date_race).toMillis();
         if (type === "sprint") return { id: s._id, iso: s.date_race, group: "sprint", label: "Sprint", dur: DURATION.sprint, race: false };
         if (type === "qualy" && hasSprint && millis < sprintMillis)
