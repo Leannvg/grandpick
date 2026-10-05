@@ -6,6 +6,7 @@ import { onSocketReady } from "../socket";
 import { getCountries } from "../services/countries.services";
 import Reveal from "../components/Reveal";
 import CalendarCard from "../components/calendar/CalendarCard";
+import practiceSessionsServices from "../services/practiceSessions.services";
 
 const MONTHS = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
 const pad2 = (n) => String(n).padStart(2, "0");
@@ -13,6 +14,7 @@ const pad2 = (n) => String(n).padStart(2, "0");
 function Calendar() {
     const [races, setRaces] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(-1);
+    const [practicesList, setPracticesList] = useState([]);
     const { showLoader, hideLoader } = useLoader();
 
     const loadRaces = useCallback(async (isSilent = false) => {
@@ -20,6 +22,9 @@ function Calendar() {
         try {
             const currentYear = new Date().getFullYear();
             const data = await racesServices.findAllByYear(currentYear);
+            practiceSessionsServices.findAll({ year: currentYear })
+                .then(setPracticesList)
+                .catch((err) => console.error("Error cargando prácticas:", err));
 
             const groupedMap = new Map();
             data.forEach(race => {
@@ -157,6 +162,7 @@ function Calendar() {
                 status={getStatus(globalIndex)}
                 dayLabel={formatDayRange(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}
                 monthLabel={formatMonthShort(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}
+                practices={practicesList.filter((p) => String(p.id_circuit) === String(race.id_circuit?._id || race.id_circuit || race.circuit?._id))}
             />
         </Reveal>
     );

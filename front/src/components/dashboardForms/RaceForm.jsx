@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import Points from "../../services/points.services.js";
+import PracticeSessionsServices from "../../services/practiceSessions.services";
 import RacesServices from "../../services/races.services.js";
 import CircuitsServices from "../../services/circuits.services.js";
 import PredictionsForm from "../PredictionsForm.jsx";
@@ -36,6 +37,8 @@ function RaceForm({
   }, [points]);
   const [year, setYear] = useState(String(DateTime.now().year));
   const [usedCircuits, setUsedCircuits] = useState([]);
+  const [practices, setPractices] = useState([]);
+  const [practicesTouched, setPracticesTouched] = useState(false);
   const [activeTab, setActiveTab] = useState("");
   const redirectToTab = useRedirectToTab();
   const { showAlert } = useAlert();
@@ -221,6 +224,35 @@ function RaceForm({
 
 
 
+  useEffect(() => {
+    if (!circuit || !year || !circuitTimezone) return;
+    let cancelled = false;
+    PracticeSessionsServices.findAll({ year, circuitId: circuit })
+      .then((list) => {
+        if (cancelled) return;
+        setPractices(list.map((p) => ({
+          name: p.name,
+          local: DateTime.fromISO(p.date_utc).setZone(circuitTimezone).toFormat("yyyy-MM-ddTHH:mm"),
+        })));
+        setPracticesTouched(false);
+      })
+      .catch((err) => console.error("Error cargando prácticas:", err));
+    return () => { cancelled = true; };
+  }, [circuit, year, circuitTimezone]);
+
+  const addPractice = () => {
+    setPractices((prev) => [...prev, { name: "FP1", local: "" }]);
+    setPracticesTouched(true);
+  };
+  const updatePractice = (i, field, value) => {
+    setPractices((prev) => prev.map((p, idx) => (idx === i ? { ...p, [field]: value } : p)));
+    setPracticesTouched(true);
+  };
+  const removePractice = (i) => {
+    setPractices((prev) => prev.filter((_, idx) => idx !== i));
+    setPracticesTouched(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -383,6 +415,16 @@ function RaceForm({
         ...creates.map(r => RacesServices.createRace(r)),
       ]);
 
+      if (practicesTouched) {
+        const sessionsUtc = practices
+          .filter((p) => p.local)
+          .map((p) => ({
+            name: p.name,
+            date_utc: DateTime.fromISO(p.local, { zone: circuitTimezone }).toUTC().toISO(),
+          }));
+        await PracticeSessionsServices.replaceForCircuit(circuit, year, sessionsUtc);
+      }
+
       const refreshed = await RacesServices.findByCircuitAndYear(circuit, year);
       setRaceTypes(refreshed.race_types);
 
@@ -535,6 +577,57 @@ function RaceForm({
                 <div className="invalid-feedback d-block text-start mt-1">{errorsForm.date_gp_end}</div>
               )}
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* GRUPO 1b: Prácticas (solo informativo: no genera predicciones ni puntos) */}
+      <div className="row mb-5">
+        <div className="col-12 col-md-3 mb-3 mb-md-0">
+          <div className="d-flex justify-content-center align-items-center rounded-3 p-2 text-white text-center gp-section-title">
+            Prácticas
+          </div>
+        </div>
+        <div className="col-12 col-md-9">
+          {practices.map((p, i) => (
+            <div className="d-flex gap-2 align-items-center mb-2" key={i}>
+              <select
+                className="form-select w-auto"
+                value={p.name}
+                onChange={(e) => updatePractice(i, "name", e.target.value)}
+                aria-label="Nombre de la práctica"
+              >
+                <option value="FP1">FP1</option>
+                <option value="FP2">FP2</option>
+                <option value="FP3">FP3</option>
+              </select>
+              <input
+                type="datetime-local"
+                className="form-control"
+                value={p.local}
+                onChange={(e) => updatePractice(i, "local", e.target.value)}
+                aria-label="Fecha y hora (hora del circuito)"
+              />
+              <button
+                type="button"
+                className="btn btn-outline-danger btn-sm"
+                onClick={() => removePractice(i)}
+                aria-label="Quitar práctica"
+              >
+                <i className="bi bi-trash-fill"></i>
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            className="btn btn-outline-secondary btn-sm"
+            onClick={addPractice}
+            disabled={!circuitTimezone}
+          >
+            <i className="bi bi-plus-lg me-1"></i>Agregar práctica
+          </button>
+          <div className="form-text text-start mt-2">
+            Hora del circuito. Es solo información: no genera predicciones ni puntos.
           </div>
         </div>
       </div>

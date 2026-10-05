@@ -15,7 +15,7 @@ function normalizeType(type) {
 
 // Arma los grupos del panel a partir de las sesiones de Races.
 // En fin de semana sprint, la clasificación anterior al sprint es "Clasificación sprint".
-function buildSchedule(sessions) {
+function buildSchedule(sessions, practices = []) {
     const hasSprint = sessions.some((s) => normalizeType(s.points_system?.type) === "sprint");
     const sprintMillis = hasSprint
         ? DateTime.fromISO(sessions.find((s) => normalizeType(s.points_system?.type) === "sprint").date_race).toMillis()
@@ -31,7 +31,17 @@ function buildSchedule(sessions) {
         return { id: s._id, iso: s.date_race, group: "main", label: "Carrera", dur: DURATION.race, race: true };
     });
 
+    const practiceItems = practices.map((p) => ({
+        id: p._id,
+        iso: p.date_utc,
+        group: "practice",
+        label: `Práctica ${p.name.replace("FP", "")}`,
+        dur: DURATION.practice,
+        race: false,
+    }));
+
     const groups = [];
+    if (practiceItems.length) groups.push({ key: "practice", title: "Prácticas", icon: "bi-stopwatch", items: practiceItems.sort((a, b) => a.label.localeCompare(b.label)) });
     if (hasSprint) groups.push({ key: "sprint", title: "Fin de semana sprint", icon: "bi-lightning-charge-fill", items: items.filter((i) => i.group === "sprint") });
     groups.push({ key: "main", title: "Clasificación y carrera", icon: "bi-flag-fill", items: items.filter((i) => i.group === "main") });
     return groups.filter((g) => g.items.length > 0);
@@ -52,7 +62,7 @@ function formatSessionTime(iso, zone) {
     };
 }
 
-function CalendarCard({ race, roundNumber, status, dayLabel, monthLabel }) {
+function CalendarCard({ race, roundNumber, status, dayLabel, monthLabel, practices = [] }) {
     const [isOpen, setIsOpen] = useState(false);
     const [zoneMode, setZoneMode] = useState("mine");
 
@@ -60,7 +70,7 @@ function CalendarCard({ race, roundNumber, status, dayLabel, monthLabel }) {
     const sessions = [...race.sessions].sort(
         (a, b) => DateTime.fromISO(a.date_race).toMillis() - DateTime.fromISO(b.date_race).toMillis()
     );
-    const groups = buildSchedule(sessions);
+    const groups = buildSchedule(sessions, practices);
     const hasSprint = race.sessionTypes.includes("sprint");
     const statusInfo = STATUS[status];
     const panelId = `cal-panel-${race._id}`;

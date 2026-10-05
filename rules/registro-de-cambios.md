@@ -34,7 +34,16 @@ Orden cronológico inverso (lo más nuevo arriba).
   `backdrop-filter` del proyecto (badges, nav, banner de predicción) no se
   tocaron.
 
+## 2026-10-05 · Prácticas (FP1–FP3): colección, carga en RaceForm y panel
+
+- Nueva colección `Practice_Sessions` (`id_circuit`, `year`, `name` FP1/FP2/FP3, `date_utc`). Se guarda en UTC igual que `date_race`.
+- Backend: `GET /api/practice-sessions?year=&circuitId=` (público) y `PUT /api/dashboard/practice-sessions/:circuitId/:year` (admin, reemplaza las prácticas de ese circuito y año). Servicio `services/practiceSessions.services.js`, controlador y rutas `practiceSessions.api.*`.
+- `RaceForm.jsx`: sección «Prácticas». Se ingresa en hora del circuito y se convierte a UTC con luxon al guardar. Solo se reemplazan si el admin las tocó.
+- Calendario: las prácticas aparecen como grupo «Prácticas» (Práctica 1–3, 60 MIN.). Sin datos cargados, el grupo no aparece.
+- Pendiente: cargar los horarios 2026 (confirmados en formula1.com) desde el admin.
+
 ## 2026-10-04 · Calendario: clasificación mal rotulada como carrera
+
 
 - En `points_system` la clasificación se guarda como `qualifying` (no `qualy`);
   el panel la mostraba como «Carrera». `CalendarCard.jsx` ahora normaliza ambos

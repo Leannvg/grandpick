@@ -46,7 +46,7 @@ correspondiente (ruta, props, para qué sirve, notas de reuso).
 
 | Componente | Ruta | Props | Para qué sirve |
 |---|---|---|---|
-| `CalendarCard` | `components/calendar/CalendarCard.jsx` | `race`, `roundNumber`, `status` (`finished`/`current`/`upcoming`), `dayLabel`, `monthLabel` | Tarjeta del calendario: riel con el número de ronda, reloj que abre el panel de sesiones (gira a X), fecha con estado y switch «Mi tiempo / Tiempo de circuito» propio de cada tarjeta. Estilos en `assets/styles/calendar.css` (prefijo `cal-`). Usado en `Calendar.jsx`. |
+| `CalendarCard` | `components/calendar/CalendarCard.jsx` | `race`, `roundNumber`, `status` (`finished`/`current`/`next`/`upcoming`), `dayLabel`, `monthLabel`, `practices` (de `Practice_Sessions` del circuito) | Tarjeta del calendario: riel con el número de ronda, reloj que abre el panel de sesiones (gira a X), fecha con estado y switch «Mi tiempo / Tiempo de circuito» propio de cada tarjeta. Estilos en `assets/styles/calendar.css` (prefijo `cal-`). Usado en `Calendar.jsx`. |
 
 ## Loaders
 
