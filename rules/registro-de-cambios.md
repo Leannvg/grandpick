@@ -34,6 +34,15 @@ Orden cronológico inverso (lo más nuevo arriba).
   `backdrop-filter` del proyecto (badges, nav, banner de predicción) no se
   tocaron.
 
+## 2026-10-04 · Calendario: alineación a la izquierda y duración por sesión
+
+- La página de calendario tiene `text-center` en la sección y las tarjetas lo
+  heredaban (nombre de circuito y filas de sesión quedaban centradas). `.cal-card`
+  ahora tiene `text-align: left`; la fecha sigue centrada.
+- Duración por tipo de sesión en `CalendarCard.jsx` (`SESSION_DURATION`):
+  carrera 2 HS., sprint 35 MIN., clasificación 60 MIN. Son valores aproximados
+  mientras la base no guarde la duración real.
+
 ## 2026-10-04 · Calendario: tarjetas nuevas con panel de sesiones
 
 - Nuevo `components/calendar/CalendarCard.jsx` y `assets/styles/calendar.css`

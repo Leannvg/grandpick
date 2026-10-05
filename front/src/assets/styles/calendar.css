@@ -38,6 +38,7 @@
     border-radius: 10px;
     overflow: hidden;
     color: #1d1d1d;
+    text-align: left;
 }
 
 .cal-card__row {
@@ -286,7 +287,7 @@
 /* Fila de sesión */
 .cal-session {
     display: grid;
-    grid-template-columns: 52px 1px 1fr;
+    grid-template-columns: 52px 1px 1fr auto;
     gap: 12px;
     align-items: center;
     padding: 10px 2px;
@@ -371,4 +372,25 @@
     .cal-card.is-open .cal-session {
         animation: none !important;
     }
+}
+
+/* Duración de la sesión (valores aproximados por tipo) */
+.cal-session__dur {
+    font-size: .66rem;
+    font-weight: 700;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .1);
+    white-space: nowrap;
+}
+
+.cal-session__dur.is-race {
+    background: #D40000;
+}
+
+.cal-session__dur.is-sprint {
+    background: #FFCD56;
+    color: #000;
 }

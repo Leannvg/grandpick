@@ -5,6 +5,8 @@ import "../../assets/styles/calendar.css";
 
 const DOW = ["DOM", "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB"];
 const SESSION_LABEL = { race: "Carrera", sprint: "Sprint", qualy: "Clasificación" };
+// Duraciones aproximadas por tipo de sesión (la base no las guarda todavía)
+const SESSION_DURATION = { race: "2 HS.", sprint: "35 MIN.", qualy: "60 MIN." };
 const STATUS = {
     finished: { label: "Finalizado", icon: "bi-check2" },
     current: { label: "En curso", icon: "bi-broadcast" },
@@ -108,6 +110,11 @@ function CalendarCard({ race, roundNumber, status, dayLabel, monthLabel }) {
                                             <i className="bi bi-clock"></i>{t.time}
                                         </span>
                                     </div>
+                                    {SESSION_DURATION[type] && (
+                                        <span className={`cal-session__dur ${type === "race" ? "is-race" : type === "sprint" ? "is-sprint" : ""}`}>
+                                            {SESSION_DURATION[type]}
+                                        </span>
+                                    )}
                                 </div>
                             );
                         })}
