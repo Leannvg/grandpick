@@ -315,7 +315,7 @@ function RaceForm({
       let dialog = ""
       if (action === "edit") {
         dialog = {
-          title: "¿Deseas editar esta carrera?",
+          title: "¿Deseás editar esta carrera?",
           message: "Se actualizarán los cambios realizados.",
           confirmText: "Editar",
           cancelText: "Cancelar",
@@ -323,7 +323,7 @@ function RaceForm({
         }
       } else {
         dialog = {
-          title: "¿Deseas crear una nueva carrera?",
+          title: "¿Deseás crear una nueva carrera?",
           message: "Se creará un nuevo fin de semana de carrera con el circuito y fechas seleccionados.",
           confirmText: "Crear",
           cancelText: "Cancelar",

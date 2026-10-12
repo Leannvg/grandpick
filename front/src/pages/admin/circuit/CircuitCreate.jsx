@@ -19,7 +19,7 @@ function CircuitCreate() {
   async function handleCreate(circuitData, imageFile) {
     try {
       const dialog = {
-        title: "¿Deseas crear un nuevo circuito?",
+        title: "¿Deseás crear un nuevo circuito?",
         message: "Se creará un nuevo circuito con los datos ingresados.",
         confirmText: "Crear",
         cancelText: "Cancelar",

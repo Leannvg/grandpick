@@ -201,7 +201,7 @@ function Predictions() {
     }
 
     const dialog = {
-      title: "¿Deseas cargar la siguiente predicción?",
+      title: "¿Deseás cargar la siguiente predicción?",
       message: `Estás por predecir el resultado del GP de ${race.circuit.gp_name}`,
       confirmText: "Predecir",
       cancelText: "Cancelar",

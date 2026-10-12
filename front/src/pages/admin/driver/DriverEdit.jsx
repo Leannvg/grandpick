@@ -29,7 +29,7 @@ function DriverEdit() {
   async function handleEdit(driverData, imageFile) {
     try {
       const dialog = {
-        title: `¿Deseas editar el piloto ${driverData.full_name}?`,
+        title: `¿Deseás editar el piloto ${driverData.full_name}?`,
         message: "Se actualizarán los cambios realizados.",
         confirmText: "Editar",
         cancelText: "Cancelar",

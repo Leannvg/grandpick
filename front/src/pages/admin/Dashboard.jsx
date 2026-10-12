@@ -346,7 +346,7 @@ function Dashboard() {
     const action = user.blocked ? "Desbloquear" : "Bloquear";
     console.log(user);
     const confirmed = await confirmDialog({
-      title: `¿Deseas ${action} al usuario "${user.name} ${user.last_name}"?`,
+      title: `¿Deseás ${action} al usuario "${user.name} ${user.last_name}"?`,
       message: "Esta acción cambiará el estado del usuario, pero no será eliminado de nuestros registros.",
       confirmText: `${action}`,
       cancelText: "Cancelar",
@@ -392,7 +392,7 @@ function Dashboard() {
       const action = driver.active ? "Deshabilitar" : "Habilitar";
 
       const confirmed = await confirmDialog({
-        title: `¿Deseas ${action.toLowerCase()} al piloto "${driver.full_name}"?`,
+        title: `¿Deseás ${action.toLowerCase()} al piloto "${driver.full_name}"?`,
         message: "Esta acción cambiará el estado del piloto, pero no será eliminado de nuestros registros.",
         confirmText: `${action}`,
         cancelText: "Cancelar",

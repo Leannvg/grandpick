@@ -18,7 +18,7 @@ function TeamCreate() {
   async function handleCreate(teamData, logoFile, isologoFile) {
     try {
       const dialog = {
-        title: `¿Deseas crear la escudería ${teamData.name}?`,
+        title: `¿Deseás crear la escudería ${teamData.name}?`,
         message: "Se creará una nueva escudería con los datos ingresados.",
         confirmText: "Crear",
         cancelText: "Cancelar",

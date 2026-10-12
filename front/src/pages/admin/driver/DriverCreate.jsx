@@ -18,7 +18,7 @@ function DriverCreate() {
   async function handleCreate(driverData, imageFile) {
     try {
       const dialog = {
-        title: `¿Deseas crear el piloto ${driverData.full_name}?`,
+        title: `¿Deseás crear el piloto ${driverData.full_name}?`,
         message: "Se creará un nuevo piloto.",
         confirmText: "Crear",
         cancelText: "Cancelar",

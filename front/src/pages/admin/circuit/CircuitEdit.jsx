@@ -27,7 +27,7 @@ function CircuitEdit() {
   async function handleEdit(circuitData, imageFile) {
     try {
       const dialog = {
-        title: `¿Deseas editar ${circuitData.circuit_name}?`,
+        title: `¿Deseás editar ${circuitData.circuit_name}?`,
         message: "Se actualizarán los cambios realizados.",
         confirmText: "Editar",
         cancelText: "Cancelar",

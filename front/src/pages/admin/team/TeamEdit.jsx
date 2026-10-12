@@ -25,7 +25,7 @@ function TeamEdit() {
   async function handleEdit(teamData, logoFile, isologoFile) {
     try {
       const dialog = {
-        title: `¿Deseas editar la escudería ${teamData.name}?`,
+        title: `¿Deseás editar la escudería ${teamData.name}?`,
         message: "Se actualizarán los cambios realizados.",
         confirmText: "Editar",
         cancelText: "Cancelar",
