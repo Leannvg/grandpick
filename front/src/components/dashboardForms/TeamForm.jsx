@@ -140,7 +140,7 @@ function TeamForm({
                   className="d-none"
                 />
                 <span className="text-secondary fs-sm">
-                  {logoFile ? logoFile.name : (currentLogo ? "Logo cargado" : "Selecciona Logo")}
+                  {logoFile ? logoFile.name : (currentLogo ? "Logo cargado" : "Seleccioná Logo")}
                 </span>
               </label>
             </div>
@@ -164,7 +164,7 @@ function TeamForm({
                   className="d-none"
                 />
                 <span className="text-secondary fs-sm">
-                  {isologoFile ? isologoFile.name : (currentIsologo ? "Isologo cargado" : "Selecciona Isologo")}
+                  {isologoFile ? isologoFile.name : (currentIsologo ? "Isologo cargado" : "Seleccioná Isologo")}
                 </span>
               </label>
             </div>

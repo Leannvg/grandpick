@@ -277,7 +277,7 @@ function PredictionHistory() {
                                 </>
                             ) : (
                                 <div className="no-selection-message">
-                                    Selecciona un circuito para ver tu historial
+                                    Seleccioná un circuito para ver tu historial
                                 </div>
                             )}
                         </div>

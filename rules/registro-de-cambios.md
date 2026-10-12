@@ -2,6 +2,15 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-12 · Corrección ortográfica: «Selecciona» → «Seleccioná»
+
+- Placeholders, textos de botones y mensajes usaban «Selecciona...» (forma
+  "tú"). Se corrigió a «Seleccioná...» (voseo), respetando mayúscula/minúscula
+  inicial según cada caso.
+- Archivos: `CountrySelect.jsx`, `InstallAppBanner.jsx` (x2),
+  `CircuitForm.jsx`, `DriverForm.jsx`, `RaceForm.jsx` (x2), `TeamForm.jsx`
+  (x2), `PredictionHistory.jsx`, `Dashboard.jsx`.
+
 ## 2026-10-12 · Corrección ortográfica: «Deseas» → «Deseás»
 
 - Los diálogos de confirmación del panel admin usaban «¿Deseas...?» (sin

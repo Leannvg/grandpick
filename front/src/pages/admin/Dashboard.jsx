@@ -443,7 +443,7 @@ function Dashboard() {
       case TABS.NOTIFICATIONS:
         return <NotificationsTab users={users} />;
       default:
-        return <p>Selecciona una pestaña.</p>;
+        return <p>Seleccioná una pestaña.</p>;
     }
   };
 

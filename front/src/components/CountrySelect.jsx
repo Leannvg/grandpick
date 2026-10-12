@@ -39,7 +39,7 @@ function CountrySelect({
         }))}
         value={selectedCountry}
         onChange={handleChange}
-        placeholder="Selecciona un país"
+        placeholder="Seleccioná un país"
         isInvalid={isInvalid}
         inputId={inputId}
       />

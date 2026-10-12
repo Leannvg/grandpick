@@ -101,7 +101,7 @@ function DriverForm({
                   className="d-none"
                 />
                 <span className="text-secondary fs-sm">
-                  {imageFile ? imageFile.name : (currentImage ? "Imagen cargada" : "Selecciona una imagen")}
+                  {imageFile ? imageFile.name : (currentImage ? "Imagen cargada" : "Seleccioná una imagen")}
                 </span>
               </label>
             </div>

@@ -513,7 +513,7 @@ function RaceForm({
                 onChange={(e) => setYear(e.target.value)}
                 disabled={action === "edit"}
               >
-                <option value="">Selecciona un año</option>
+                <option value="">Seleccioná un año</option>
                 {Array.from({ length: 7 }, (_, i) => DateTime.now().year - 1 + i).map((y) => (
                   <option key={y} value={y}>
                     {y}
@@ -534,7 +534,7 @@ function RaceForm({
                   isInvalid={!!errorsForm.id_circuit}
                   isDisabled={action === "edit"}
                   getOptionDisabled={(opt) => usedCircuits.includes(opt._id)}
-                  placeholder="Selecciona un circuito"
+                  placeholder="Seleccioná un circuito"
                 />
               </div>
             </div>

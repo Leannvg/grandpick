@@ -130,8 +130,8 @@ const InstallAppBanner = () => {
                         <div className="install-banner__text" style={{ textAlign: 'left' }}>
                             <h3 className="install-banner__title" style={{ marginBottom: '16px' }}>Instalación manual</h3>
                             <ul className="install-banner__desc" style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '10px', textAlign: 'left' }}>
-                                <li>📱 <strong>iOS (Safari):</strong> Toca Compartir y selecciona "Agregar a inicio".</li>
-                                <li>🤖 <strong>Android (Chrome):</strong> Toca los 3 puntos (⋮) y selecciona "Instalar aplicación".</li>
+                                <li>📱 <strong>iOS (Safari):</strong> Toca Compartir y seleccioná "Agregar a inicio".</li>
+                                <li>🤖 <strong>Android (Chrome):</strong> Toca los 3 puntos (⋮) y seleccioná "Instalar aplicación".</li>
                                 <li>💻 <strong>PC:</strong> Toca el ícono de instalación en la barra de direcciones del navegador.</li>
                             </ul>
                         </div>
