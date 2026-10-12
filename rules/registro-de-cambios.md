@@ -2,6 +2,15 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-12 · Corrección ortográfica: «Deseas» → «Deseás»
+
+- Los diálogos de confirmación del panel admin usaban «¿Deseas...?» (sin
+  tilde, forma "tú"). Se corrigió a «¿Deseás...?» (voseo, acorde al resto de
+  los textos del proyecto).
+- Archivos: `RaceForm.jsx` (x2), `Predictions.jsx`, `Dashboard.jsx` (x2),
+  `CircuitCreate.jsx`, `CircuitEdit.jsx`, `DriverCreate.jsx`,
+  `DriverEdit.jsx`, `TeamCreate.jsx`, `TeamEdit.jsx`.
+
 ## 2026-10-03 · Columna de posición unificada como «#»
 
 - Encabezado de la columna de posición en todas las tablas: «#» (antes «Pos.»
