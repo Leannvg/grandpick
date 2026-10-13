@@ -697,6 +697,17 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     border-radius: 0;
 }
 
+/* Grupos con overflow visible (para no recortar el menú de un react-select):
+   al no haber overflow:hidden recortando el label contra el contenedor,
+   hay que redondear a mano con el mismo radio que usa .gp-input-group */
+.gp-input-group.overflow-visible .gp-input-label {
+    border-radius: 8px 0 0 8px;
+}
+
+.gp-input-group.overflow-visible.is-invalid .gp-input-label {
+    border-radius: 8px 0 0 0;
+}
+
 .gp-input-group input.form-control,
 .gp-input-group select.form-control {
     flex: 1;

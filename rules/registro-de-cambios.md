@@ -2,6 +2,23 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-12 · Labels de selects (overflow-visible) sin esquinas redondeadas
+
+- Los `.gp-input-label` normalmente se ven redondeados porque `.gp-input-group`
+  tiene `overflow: hidden` y recorta al radio de 8px del contenedor. Los
+  campos con un `react-select` (País, Ciudad/Estado, Circuito, Escudería,
+  Destinatario de notificación, etc.) usan la clase `overflow-visible` en
+  `.gp-input-group` para que el menú desplegable no quede recortado — eso
+  dejaba al label con sus esquinas cuadradas (`border-radius: 0`, el valor
+  base de `.gp-input-label`) en vez de heredar el recorte del contenedor.
+- `components.css`: se agregó `.gp-input-group.overflow-visible .gp-input-label`
+  con `border-radius: 8px 0 0 8px` (mismo radio que usa `.gp-input-group`
+  en el resto de los campos) y una variante para el estado inválido
+  (`8px 0 0 0`, sin redondear abajo porque el mensaje de error se pega debajo).
+- Afecta a `CountrySelect`/`CitySelect` dentro de `CircuitForm.jsx`,
+  `DriverForm.jsx`, `TeamForm.jsx`, `Register.jsx`, el circuito de
+  `RaceForm.jsx` y el destinatario de `NotificationsTab.jsx`.
+
 ## 2026-10-12 · Corrección ortográfica: «Selecciona» → «Seleccioná»
 
 - Placeholders, textos de botones y mensajes usaban «Selecciona...» (forma
