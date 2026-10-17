@@ -110,6 +110,19 @@ function Profile() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
   const [openFold, setOpenFold] = useState(null);
+  const [navHeight, setNavHeight] = useState(96);
+
+  // El nav no tiene un alto fijo en el CSS (.site-header es sticky, no fixed, sin
+  // altura declarada), así que se mide en vivo en vez de adivinar un número.
+  useEffect(() => {
+    const header = document.querySelector(".site-header");
+    if (!header) return;
+    const update = () => setNavHeight(header.offsetHeight);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(header);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     if (usuario?.img_user) setCurrentImage(usuario.img_user);
@@ -189,8 +202,10 @@ function Profile() {
 
   const podiumAttempts = (stats.predictions?.race || 0) + (stats.predictions?.sprint || 0);
   const poleAttempts = stats.predictions?.qualifying || 0;
-  const sprintAccuracy = pct(stats.successes?.sprint, stats.predictions?.sprint);
-  const raceAccuracy = pct(stats.successes?.race, stats.predictions?.race);
+  // Se divide por posiciones predichas (sprint = 8, carrera = 10), no por sesiones:
+  // dividir por sesiones da porcentajes imposibles (>100%).
+  const sprintAccuracy = pct(stats.successes?.sprint, stats.positionsPredicted?.sprint);
+  const raceAccuracy = pct(stats.successes?.race, stats.positionsPredicted?.race);
   const podiumAccuracy = podiumAttempts > 0 ? Math.round(((stats.podiums?.total || 0) / (podiumAttempts * 3)) * 100) : 0;
   const poleAccuracy = pct(stats.poles?.total, poleAttempts);
 
@@ -203,7 +218,7 @@ function Profile() {
   const posMax = playedPos.length ? Math.min(totalPlayers, Math.max(...playedPos) + 2) : totalPlayers;
 
   return (
-    <div className="fp-page">
+    <div className="fp-page" style={{ "--fp-nav-h": `${navHeight}px` }}>
       <header className="page-head">
         <p className="kicker">Tu garaje digital</p>
         <h1>Ficha de <strong>piloto</strong></h1>
@@ -302,7 +317,7 @@ function Profile() {
             <div className="status-item">
               <div className="t"><i className="bi bi-snow"></i> Racha de fallos</div>
               <div className="v">{stats.failStreak || 0}</div>
-              <div className="s">sesiones seguidas sin aciertos</div>
+              <div className="s">máxima racha de la temporada sin aciertos</div>
             </div>
             <div className="status-item">
               <div className="t"><i className="bi bi-people"></i> Equipo más acertado</div>
@@ -333,6 +348,7 @@ function Profile() {
                   options={{
                     maintainAspectRatio: false,
                     animation: { duration: 500 },
+                    layout: { padding: { top: 10, bottom: 2 } },
                     plugins: { legend: { display: false } },
                     scales: {
                       x: { ticks: { color: "#c5d2dd", maxRotation: 60, minRotation: 60, font: { size: 10 } }, grid: { display: false } },
@@ -356,6 +372,7 @@ function Profile() {
                   options={{
                     maintainAspectRatio: false,
                     animation: { duration: 500 },
+                    layout: { padding: { top: 10, bottom: 2 } },
                     plugins: {
                       legend: { display: false },
                       tooltip: { callbacks: { label: (ctx) => `P${ctx.parsed.y} de ${totalPlayers}` } },

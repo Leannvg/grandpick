@@ -38,7 +38,7 @@
 
 /* Panel genérico = .stats-section real (fondo sólido, sin borde, mismo radio) */
 .fp-page .panel { background: var(--fp-panel); border-radius: var(--fp-radius); padding: 28px 28px 22px; }
-@media (min-width: 1040px) { .fp-page .identity { position: sticky; top: 24px; } }
+@media (min-width: 1040px) { .fp-page .identity { position: sticky; top: calc(var(--fp-nav-h, 96px) + 16px); } }
 .fp-page .panel__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; }
 .fp-page .panel__head h2 { margin: 0; font-size: 16px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
 .fp-page .panel__head h2 .bi { color: var(--fp-sprint); font-size: 15px; }

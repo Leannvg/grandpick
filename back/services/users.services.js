@@ -115,6 +115,7 @@ async function getUserWithStats(userId, racesInfo = null, psystems = null, drive
     podiums: { total: 0, byCircuit: {} },
     poles: { total: 0, byCircuit: {} },
     hitsByCircuit: {},
+    positionsPredicted: { qualifying: 0, sprint: 0, race: 0 },
     bestSession: null,
     failStreak: 0,
     mostPredictedDriver: null,
@@ -168,6 +169,9 @@ async function getUserWithStats(userId, racesInfo = null, psystems = null, drive
       }
       stats.successes.total += successes;
       stats.successes[type] = (stats.successes[type] || 0) + successes;
+      // Posiciones predichas por tipo (no sesiones): qualy tiene 3, sprint 8, carrera 10 posiciones
+      // puntuables, así que "aciertos / sesiones predichas" da porcentajes imposibles (>100%).
+      stats.positionsPredicted[type] = (stats.positionsPredicted[type] || 0) + p.prediction.length;
       if (circuitId) stats.hitsByCircuit[circuitId] = (stats.hitsByCircuit[circuitId] || 0) + successes;
 
       if (!stats.bestSession || successes > stats.bestSession.successes) {
@@ -192,11 +196,17 @@ async function getUserWithStats(userId, racesInfo = null, psystems = null, drive
     stats.mostAccurateTeam = { teamId: topTeamId, name: team?.name || "???", count: teamCount[topTeamId] };
   }
 
-  // Racha de fallos: sesiones cerradas seguidas sin acierto, contando desde la más reciente
-  closedChrono.sort((a, b) => b.date - a.date);
+  // Racha de fallos: la mayor cantidad de sesiones SEGUIDAS sin ningún acierto en toda
+  // la temporada (no solo la racha actual, que da 0 casi siempre si al usuario le va bien).
+  closedChrono.sort((a, b) => a.date - b.date);
+  let currentFailStreak = 0;
   for (const s of closedChrono) {
-    if (s.successes === 0) stats.failStreak++;
-    else break;
+    if (s.successes === 0) {
+      currentFailStreak++;
+      if (currentFailStreak > stats.failStreak) stats.failStreak = currentFailStreak;
+    } else {
+      currentFailStreak = 0;
+    }
   }
 
   // Puntos perdidos por no predecir una sesión cerrada

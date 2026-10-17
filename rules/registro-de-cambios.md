@@ -2,6 +2,22 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-17 · Ficha de piloto: 4 correcciones vistas en producción
+
+- Panel de identidad tapado por el nav al hacer scroll (`.site-header` es
+  sticky sin alto fijo en el CSS): se mide el alto real del nav en vivo
+  (`ResizeObserver`) y se usa como offset del `sticky` del panel, en vez de
+  adivinar un número.
+- Puntos del gráfico de posición recortados arriba: faltaba padding en el
+  área del gráfico (`layout.padding` en Chart.js).
+- "Acierto en sprint"/"en carrera" mostraba porcentajes imposibles (167%,
+  241%): dividía aciertos por *sesiones* predichas en vez de por
+  *posiciones* predichas (sprint tiene 8 posiciones puntuables por sesión,
+  carrera 10). Nuevo campo `stats.positionsPredicted` en `getUserWithStats`.
+- "Racha de fallos" pasó de "racha actual" (sesiones sin acierto contando
+  desde la última jugada, da 0 casi siempre si va bien) a "racha más larga
+  de la temporada" — más informativo y no confunde con un bug.
+
 ## 2026-10-17 · Ficha de piloto: estadísticas nuevas y ranking por sesión
 
 - Rediseño completo de `Profile.jsx`/`profile.css`: identidad en panel aparte,
