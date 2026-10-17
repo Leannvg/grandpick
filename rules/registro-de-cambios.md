@@ -2,6 +2,26 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-17 · Ficha de piloto: 5 correcciones más vistas en producción
+
+- Título y bajada del encabezado usaban un tamaño fijo propio (34px) en vez de
+  `--title-size` (40-70px responsive). Ahora reusa las clases reales del sitio:
+  `.section-label`/`.section-title`/`.section-subtitle`.
+- Los puntos de color (Qualy/Sprint/Race) se deformaban a óvalos dentro de la
+  grilla de desglose; se les agregó `aspect-ratio: 1/1` para que el círculo no
+  dependa de cómo el contenedor (grid/flex) intente estirarlos.
+- Email y "Miembro desde" no quedaban centrados en mobile (`.meta` pasó de
+  grid con `justify-items` a flex-column con `align-items: center`, más
+  confiable para centrar filas de ancho variable).
+- Nombres de GP largos ("Gran Premio de Australia") empujaban el resto de la
+  fila a una segunda línea en mobile; se acortan igual que ya se hacía en el
+  eje del gráfico de Evolución (`shortGpName`, reusado en las filas de los
+  desplegables y en los textos de "Mejor sesión"/"Mejor posición").
+- Al abrir un desplegable con el otro ya abierto, el scroll apuntaba a una
+  posición calculada mientras el otro todavía estaba expandido en el DOM;
+  quedaba desfasado cuando ese otro terminaba de colapsar. Ahora espera a que
+  las dos transiciones (0.4s) terminen antes de medir y desplazar.
+
 ## 2026-10-17 · Ficha de piloto: 4 correcciones vistas en producción
 
 - Panel de identidad tapado por el nav al hacer scroll (`.site-header` es

@@ -27,14 +27,15 @@
   .fp-page { grid-template-columns: 340px 1fr; align-items: start; }
 }
 
-.fp-page .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.fp-page .dot {
+  width: 11px; height: 11px; aspect-ratio: 1 / 1; border-radius: 50%; display: inline-block;
+  flex-shrink: 0; justify-self: start;
+}
 
-/* Encabezado: mismo patrón que el resto del sitio (etiqueta / título / bajada) */
+/* Encabezado: usa las clases reales del sitio (section-label/section-title/section-subtitle),
+   .page-head solo maneja el layout dentro de la grilla de dos columnas */
 .fp-page .page-head { grid-column: 1 / -1; text-align: center; border-bottom: 1px solid var(--fp-line); padding-bottom: 20px; }
-.fp-page .page-head .kicker { font-size: 13px; font-weight: 700; letter-spacing: .5px; color: var(--fp-ink); }
-.fp-page .page-head h1 { margin: 4px 0 0; font-size: 34px; font-weight: 400; text-transform: uppercase; color: #fff; }
-.fp-page .page-head h1 strong { font-weight: 700; }
-.fp-page .page-head .sub { color: #ccc; font-weight: 300; font-size: 14px; margin-top: 6px; }
+.fp-page .page-head .section-title strong { font-weight: 700; }
 
 /* Panel genérico = .stats-section real (fondo sólido, sin borde, mismo radio) */
 .fp-page .panel { background: var(--fp-panel); border-radius: var(--fp-radius); padding: 28px 28px 22px; }
@@ -58,7 +59,7 @@
 .fp-page .identity .name { margin: 16px 0 0; font-size: 26px; font-weight: 400; text-transform: uppercase; color: #fff; line-height: 1.1; }
 .fp-page .identity .name strong { font-weight: 700; }
 .fp-page .identity .trigram { display: block; margin-top: 6px; font-size: 12px; letter-spacing: 5px; color: var(--fp-muted); font-weight: 700; }
-.fp-page .identity .meta { margin-top: 16px; display: grid; gap: 8px; font-size: 13px; color: #c5d2dd; justify-items: center; }
+.fp-page .identity .meta { margin-top: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; color: #c5d2dd; }
 .fp-page .identity .meta .row { display: flex; align-items: center; gap: 8px; }
 .fp-page .identity .meta .bi { color: var(--fp-muted); }
 .fp-page .identity .actions { margin-top: 20px; display: grid; gap: 8px; border-top: 1px solid var(--fp-line); padding-top: 18px; text-align: left; }

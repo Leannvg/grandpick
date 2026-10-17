@@ -37,6 +37,12 @@ function trigramFrom(lastName) {
   return clean.slice(0, 3).toUpperCase() || "---";
 }
 
+// "Gran Premio de Australia" -> "Australia". Sin esto, los nombres largos empujan el resto
+// de la fila a una segunda línea en mobile (las filas por GP y el eje del gráfico).
+function shortGpName(name) {
+  return (name || "").replace(/^Gran Premio( de)?\s*/i, "");
+}
+
 function pct(n, total) {
   return total > 0 ? Math.round((n / total) * 100) : 0;
 }
@@ -74,7 +80,12 @@ function GpFold({ foldKey, icon, iconColor, title, subtitle, isOpen, onToggle, r
   const handleClick = () => {
     const opening = !isOpen;
     onToggle(opening ? foldKey : null);
-    if (opening) scrollFoldIntoView(foldRef.current, headRef.current, bodyRef.current);
+    if (opening) {
+      // Si había otro desplegable abierto, se cierra al mismo tiempo que este se abre.
+      // Medir de una lo apuntaba a una posición que todavía iba a cambiar cuando el otro
+      // terminara de colapsar — se espera a que las dos transiciones (0.4s) terminen.
+      setTimeout(() => scrollFoldIntoView(foldRef.current, headRef.current, bodyRef.current), 420);
+    }
   };
 
   return (
@@ -210,7 +221,7 @@ function Profile() {
   const poleAccuracy = pct(stats.poles?.total, poleAttempts);
 
   // Evolución en la temporada: puntos y posición (carrera) por GP, en el mismo orden que el calendario
-  const evoLabels = gpList.map((g) => g.name.replace(/^Gran Premio( de)?\s*/i, ""));
+  const evoLabels = gpList.map((g) => shortGpName(g.name));
   const evoPoints = gpList.map((g) => stats.pointsByCircuit?.[g.circuitId] ?? 0);
   const evoPos = gpList.map((g) => sessionsByCircuit[g.circuitId]?.race?.rank ?? null);
   const playedPos = evoPos.filter((v) => v !== null);
@@ -220,9 +231,9 @@ function Profile() {
   return (
     <div className="fp-page" style={{ "--fp-nav-h": `${navHeight}px` }}>
       <header className="page-head">
-        <p className="kicker">Tu garaje digital</p>
-        <h1>Ficha de <strong>piloto</strong></h1>
-        <p className="sub">Seguimiento de predicciones y resultados · Temporada {new Date().getFullYear()}</p>
+        <p className="section-label">Tu garaje digital</p>
+        <h1 className="section-title">Ficha de <strong>piloto</strong></h1>
+        <p className="section-subtitle">Seguimiento de predicciones y resultados · Temporada {new Date().getFullYear()}</p>
       </header>
 
       <aside className="identity panel" aria-label="Identidad">
@@ -312,7 +323,7 @@ function Profile() {
             <div className="status-item">
               <div className="t"><i className="bi bi-star-fill"></i> Mayor cantidad de aciertos por sesión</div>
               <div className="v">{stats.bestSession?.successes ?? "—"}</div>
-              <div className="s">{bestSessionCircuit ? `${bestSessionCircuit.name} · ${stats.bestSession.type === "race" ? "carrera" : stats.bestSession.type === "sprint" ? "sprint" : "qualy"}` : "todavía sin datos"}</div>
+              <div className="s">{bestSessionCircuit ? `${shortGpName(bestSessionCircuit.name)} · ${stats.bestSession.type === "race" ? "carrera" : stats.bestSession.type === "sprint" ? "sprint" : "qualy"}` : "todavía sin datos"}</div>
             </div>
             <div className="status-item">
               <div className="t"><i className="bi bi-snow"></i> Racha de fallos</div>
@@ -327,7 +338,7 @@ function Profile() {
             <div className="status-item">
               <div className="t"><i className="bi bi-graph-up-arrow"></i> Mejor posición</div>
               <div className="v">{bestPos ? `#${bestPos.rank}` : "—"}</div>
-              <div className="s">{bestPosCircuit ? `en ${bestPosCircuit.name} · ${bestPos.type === "race" ? "carrera" : bestPos.type === "sprint" ? "sprint" : "qualy"}` : "todavía sin datos"}</div>
+              <div className="s">{bestPosCircuit ? `en ${shortGpName(bestPosCircuit.name)} · ${bestPos.type === "race" ? "carrera" : bestPos.type === "sprint" ? "sprint" : "qualy"}` : "todavía sin datos"}</div>
             </div>
             <div className="status-item">
               <div className="t"><i className="bi bi-exclamation-triangle"></i> Puntos perdidos</div>
@@ -402,7 +413,7 @@ function Profile() {
               rows={gpList}
               renderRow={(gp, i) => (
                 <div className="gp-row" style={{ "--i": i }} key={gp.circuitId}>
-                  <div className="gp-row__name"><CountryDisplay iso2={gp.country} showName={false} /> {gp.name}</div>
+                  <div className="gp-row__name"><CountryDisplay iso2={gp.country} showName={false} /> {shortGpName(gp.name)}</div>
                   <div className="gp-row__sessions">
                     {SESSION_TYPES.map((s) => {
                       const entry = sessionsByCircuit[gp.circuitId]?.[s.key];
@@ -431,7 +442,7 @@ function Profile() {
                 const pending = hits === undefined;
                 return (
                   <div className="gp-row" style={{ "--i": i }} key={gp.circuitId}>
-                    <div className="gp-row__name"><CountryDisplay iso2={gp.country} showName={false} /> {gp.name}</div>
+                    <div className="gp-row__name"><CountryDisplay iso2={gp.country} showName={false} /> {shortGpName(gp.name)}</div>
                     <div className="gp-row__totals">
                       <span className="tot">
                         {!pending && <span className="tot__n">{hits}</span>}
