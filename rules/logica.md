@@ -90,9 +90,20 @@ constructores hasta que se complete manualmente.
 - Compara `Predictions.prediction[i].driver` contra `race.results[i].driver` y
   acumula `points_system.points[i]` por acierto de posición.
 - Regla histórica: para sesiones de qualy anteriores al 2026-05-21 los puntos se
-  dividían por 3.
+  dividían por 3. **Bug conocido:** la condición que aplica esto usa `race.type`,
+  que no existe en `Races` (la sesión se identifica por `points_system`, no por
+  `type`), así que nunca se aplicó. Sin corregir — ver
+  `rules/features/estadisticas-perfil.md`.
 - Desempate del ranking global (estilo F1 / countback): puntos totales →
-  aciertos → promedio por predicción → mejores fines de semana.
+  aciertos → promedio por predicción → mejores fines de semana. Vive duplicado en
+  dos lugares: `front/src/pages/Ranking.jsx` (lo calcula al mostrar la tabla) y
+  `back/services/points.services.js` → `compareForRanking()` (lo recalcula una vez
+  por carga de resultados y lo guarda en `Users.ranking_position`, para que la
+  ficha de piloto lo lea sin recorrer a todos los usuarios en cada visita). Si se
+  cambia el desempate, actualizar los dos.
+- Ranking por **sesión individual** (no por GP ni por temporada):
+  `updateSessionRanking(raceId)` en `points.services.js`, guarda `rank`/
+  `totalPlayers` en cada `Users_Points`. Ver `rules/features/estadisticas-perfil.md`.
 
 ### Temporada vigente (título del podio del Home)
 `utils/helpers.js` → `getSeasonYear(currentYearRaces, now)`: devuelve el año actual

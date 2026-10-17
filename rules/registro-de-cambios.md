@@ -2,6 +2,27 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-17 · Ficha de piloto: estadísticas nuevas y ranking por sesión
+
+- Rediseño completo de `Profile.jsx`/`profile.css`: identidad en panel aparte,
+  anillos con desglose siempre visible (no solo al hover), 9 estadísticas nuevas
+  en "Resumen", gráfico de evolución en la temporada (puntos y posición por GP),
+  y dos desplegables "Por Gran Premio" (Posición final, Aciertos totales) con la
+  misma animación de apertura que el calendario.
+- `getUserWithStats` suma: podios/poles por circuito, aciertos y puntos por
+  circuito, mejor sesión, racha de fallos, piloto más predicho, equipo más
+  acertado, puntos perdidos (por error y por no predecir) y la posición en el
+  ranking (global y por sesión).
+- Nuevo: ranking por sesión individual (`updateSessionRanking`) y ranking global
+  recalculado en el backend (`updateGlobalRanking`), ambos disparados al cargar
+  resultados de una carrera (`updatePointsAfterRace`), no en cada visita a un
+  perfil — ver `rules/features/estadisticas-perfil.md` para el porqué.
+  `back/scripts/backfill-rankings.js` cargó esto para las 40 sesiones ya jugadas.
+- Encontrado (sin corregir): el descuento de 1/3 en puntos de qualy anterior al
+  21/05/2026 nunca se aplicó, por un chequeo contra un campo que no existe
+  (`race.type`). Documentado en `rules/logica.md` y en el feature doc.
+- Avatar de la ficha a 800px (no 400 ni 500), banderas con `CountryDisplay`.
+
 ## 2026-10-12 · Labels de selects (overflow-visible) sin esquinas redondeadas
 
 - Los `.gp-input-label` normalmente se ven redondeados porque `.gp-input-group`
