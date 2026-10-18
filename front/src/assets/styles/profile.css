@@ -61,7 +61,7 @@
 .fp-page .identity .name strong { font-weight: 700; }
 .fp-page .identity .trigram { display: block; margin-top: 6px; font-size: 12px; letter-spacing: 5px; color: var(--fp-muted); font-weight: 700; }
 .fp-page .identity .meta { margin-top: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; color: #c5d2dd; }
-.fp-page .identity .meta .row { display: flex; align-items: center; gap: 8px; }
+.fp-page .identity .meta .meta-row { display: flex; align-items: center; gap: 8px; }
 .fp-page .identity .meta .bi { color: var(--fp-muted); }
 .fp-page .identity .actions { margin-top: 20px; display: grid; gap: 8px; border-top: 1px solid var(--fp-line); padding-top: 18px; text-align: left; }
 .fp-page .action {
@@ -90,7 +90,7 @@
 .fp-page .ring .center .t { display: block; font-size: 11px; color: var(--fp-muted); text-transform: uppercase; letter-spacing: .6px; }
 .fp-page .ring .center .v { font-size: 32px; font-weight: 800; line-height: 1; color: #fff; }
 .fp-page .breakdown { width: 100%; display: grid; gap: 6px; border-top: 1px solid var(--fp-line); padding-top: 10px; }
-.fp-page .breakdown .row { display: grid; grid-template-columns: 10px 1fr auto 46px; align-items: center; gap: 8px; font-size: 13px; }
+.fp-page .breakdown .bd-row { display: grid; grid-template-columns: 10px 1fr auto 46px; align-items: center; gap: 8px; font-size: 13px; }
 .fp-page .breakdown .k { color: #c5d2dd; }
 .fp-page .breakdown .n { font-weight: 700; font-variant-numeric: tabular-nums; }
 .fp-page .breakdown .p { color: var(--fp-muted); font-size: 11px; text-align: right; font-variant-numeric: tabular-nums; }

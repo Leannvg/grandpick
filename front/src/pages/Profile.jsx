@@ -244,9 +244,9 @@ function Profile() {
         <h2 className="name">{(usuario.name || "Piloto")} <strong>{usuario.last_name || ""}</strong></h2>
         <span className="trigram">{trigramFrom(usuario.last_name).split("").join(" ")}</span>
         <div className="meta">
-          <div className="row"><CountryDisplay iso2={usuario.country} /></div>
-          <div className="row"><i className="bi bi-envelope"></i> {usuario.email}</div>
-          {memberSince(usuario._id) ? <div className="row"><i className="bi bi-calendar-check"></i> Miembro desde {memberSince(usuario._id)}</div> : null}
+          <div className="meta-row"><CountryDisplay iso2={usuario.country} /></div>
+          <div className="meta-row"><i className="bi bi-envelope"></i> {usuario.email}</div>
+          {memberSince(usuario._id) ? <div className="meta-row"><i className="bi bi-calendar-check"></i> Miembro desde {memberSince(usuario._id)}</div> : null}
         </div>
         <nav className="actions" aria-label="Acciones de la cuenta">
           <button className="action primary" type="button" onClick={() => setShowProfileModal(true)}>
@@ -284,7 +284,7 @@ function Profile() {
                 </div>
                 <div className="breakdown">
                   {["qualifying", "sprint", "race"].map((t, i) => (
-                    <div className="row" key={t}>
+                    <div className="bd-row" key={t}>
                       <span className="dot" style={{ background: RING_COLORS[i] }}></span>
                       <span className="k">{t === "qualifying" ? "Qualy" : t === "sprint" ? "Sprint" : "Race"}</span>
                       <span className="n">{stats[key]?.[t] || 0}</span>

@@ -2,6 +2,28 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-17 · Ficha de piloto: causa real de los puntos ovalados y el texto corrido
+
+- Encontrada la causa, reproducida localmente con Bootstrap real (`agent-browser`):
+  usaba `className="row"` en dos lugares (filas del desglose de los anillos,
+  filas de email/bandera/miembro desde). Bootstrap define `.row > * { width:
+  100%; max-width: 100%; padding: 0 12px; ... }` para su sistema de grillas,
+  y esa regla afecta a los hijos directos de **cualquier** elemento con clase
+  `row`, sin importar el dueño. Con `box-sizing: border-box`, un padding de
+  24px (12+12) que supera el `width/max-width: 11px` del punto no se puede
+  "comprimir" a contenido negativo: el navegador infla la caja a 24×11, el
+  óvalo. El mismo mecanismo forzaba `width:100%` en los íconos de email/
+  calendario, corriendo el texto.
+- Las dos correcciones anteriores (`aspect-ratio`, `min/max-width`, `flex-
+  column`) no alcanzaban porque no tocaban `padding`/el `width` del ícono —
+  atacaban el síntoma, no la colisión de nombre.
+- Arreglo real: renombrar las clases (`row` → `bd-row` en el desglose,
+  `meta-row` en la identidad) para dejar de coincidir con el selector de
+  Bootstrap, en vez de agregar más reglas para pelear contra él.
+- Lección para `rules/componentes.md`/nuevas clases: revisar colisiones
+  también contra Bootstrap (ya cargado globalmente), no solo contra el CSS
+  propio del proyecto — `row` y `col` son los nombres de mayor riesgo.
+
 ## 2026-10-17 · Ficha de piloto: 5 correcciones más vistas en producción
 
 - Título y bajada del encabezado usaban un tamaño fijo propio (34px) en vez de
