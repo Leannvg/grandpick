@@ -20,9 +20,10 @@ Se agregan a `stats`, sin tocar los campos que ya devolvía (`predictions`, `suc
   puntuables por sesión, sprint 8, carrera 10 — dividir aciertos por *sesiones*
   en vez de por *posiciones* da porcentajes imposibles (>100%).
 - `bestSession`: `{ successes, raceId, circuitId, type }` — la sesión con más aciertos.
-- `failStreak`: la mayor cantidad de sesiones cerradas **seguidas** sin ningún
-  acierto en toda la temporada (no la racha actual — esa da 0 casi siempre si al
-  usuario le va bien, y se presta a confusión con un bug).
+- `wrongPredictions`: cantidad de sesiones cerradas y predichas sin ningún acierto
+  (antes era `failStreak`, la racha más larga; se cambió por un conteo total a
+  pedido). No cuenta posiciones individuales mal predichas dentro de una sesión
+  con algún acierto — eso lo cubre `pointsLost.byMistakes`.
 - `mostPredictedDriver`: `{ driverId, trigram, count }` — piloto más elegido en los
   pronósticos (todas las predicciones, no solo las cerradas).
 - `mostAccurateTeam`: `{ teamId, name, count }` — equipo con más aciertos, usando

@@ -321,9 +321,9 @@ function Profile() {
               <div className="s">{bestSessionCircuit ? `${shortGpName(bestSessionCircuit.name)} · ${stats.bestSession.type === "race" ? "carrera" : stats.bestSession.type === "sprint" ? "sprint" : "qualy"}` : "todavía sin datos"}</div>
             </div>
             <div className="status-item">
-              <div className="t"><i className="bi bi-snow"></i> Racha de fallos</div>
-              <div className="v">{stats.failStreak || 0}</div>
-              <div className="s">máxima racha de la temporada sin aciertos</div>
+              <div className="t"><i className="bi bi-x-circle"></i> Predicciones erradas</div>
+              <div className="v">{stats.wrongPredictions ?? 0}</div>
+              <div className="s">sesiones sin ningún acierto</div>
             </div>
             <div className="status-item">
               <div className="t"><i className="bi bi-people"></i> Equipo más acertado</div>

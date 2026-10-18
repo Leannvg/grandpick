@@ -117,7 +117,7 @@ async function getUserWithStats(userId, racesInfo = null, psystems = null, drive
     hitsByCircuit: {},
     positionsPredicted: { qualifying: 0, sprint: 0, race: 0 },
     bestSession: null,
-    failStreak: 0,
+    wrongPredictions: 0,
     mostPredictedDriver: null,
     mostAccurateTeam: null,
     pointsLost: { total: 0, byMistakes: 0, byMissedSessions: 0 },
@@ -196,18 +196,10 @@ async function getUserWithStats(userId, racesInfo = null, psystems = null, drive
     stats.mostAccurateTeam = { teamId: topTeamId, name: team?.name || "???", count: teamCount[topTeamId] };
   }
 
-  // Racha de fallos: la mayor cantidad de sesiones SEGUIDAS sin ningún acierto en toda
-  // la temporada (no solo la racha actual, que da 0 casi siempre si al usuario le va bien).
-  closedChrono.sort((a, b) => a.date - b.date);
-  let currentFailStreak = 0;
-  for (const s of closedChrono) {
-    if (s.successes === 0) {
-      currentFailStreak++;
-      if (currentFailStreak > stats.failStreak) stats.failStreak = currentFailStreak;
-    } else {
-      currentFailStreak = 0;
-    }
-  }
+  // Predicciones erradas: cantidad de sesiones cerradas y predichas sin ningún acierto
+  // (no cuenta las posiciones individuales mal predichas dentro de una sesión con algún
+  // acierto — eso ya lo cubre pointsLost.byMistakes).
+  stats.wrongPredictions = closedChrono.filter((s) => s.successes === 0).length;
 
   // Puntos perdidos por no predecir una sesión cerrada
   for (const race of racesInfo) {
