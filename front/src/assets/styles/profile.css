@@ -112,7 +112,11 @@
 }
 .fp-page .evo-col .legend-line { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #c5d2dd; margin-bottom: 8px; }
 .fp-page .evo-col .line-swatch { display: inline-block; width: 16px; height: 2px; background: #fff; }
-.fp-page .evo-chart-wrap { position: relative; height: 240px; }
+/* min-width/height:0 evita un problema conocido de Chart.js dentro de un contenedor
+   display:grid: por defecto los ítems de grid tienen un "ancho/alto mínimo automático"
+   que a veces le impide al canvas ajustarse bien al tamaño real del contenedor. */
+.fp-page .evo-col { min-width: 0; }
+.fp-page .evo-chart-wrap { position: relative; height: 240px; min-width: 0; min-height: 0; overflow: hidden; }
 @media (max-width: 899.98px) { .fp-page .evo-chart-wrap { height: 260px; } }
 
 /* Por Gran Premio: desplegables con filas (mismo patrón que .cal-session del calendario) */

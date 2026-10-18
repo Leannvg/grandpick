@@ -354,7 +354,7 @@ function Profile() {
                   options={{
                     maintainAspectRatio: false,
                     animation: { duration: 500 },
-                    layout: { padding: { top: 10, bottom: 2 } },
+                    layout: { padding: { top: 16, bottom: 4 } },
                     plugins: { legend: { display: false } },
                     scales: {
                       x: { ticks: { color: "#c5d2dd", maxRotation: 60, minRotation: 60, font: { size: 10 } }, grid: { display: false } },
@@ -378,7 +378,7 @@ function Profile() {
                   options={{
                     maintainAspectRatio: false,
                     animation: { duration: 500 },
-                    layout: { padding: { top: 10, bottom: 2 } },
+                    layout: { padding: { top: 16, bottom: 4 } },
                     plugins: {
                       legend: { display: false },
                       tooltip: { callbacks: { label: (ctx) => `P${ctx.parsed.y} de ${totalPlayers}` } },
