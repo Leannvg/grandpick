@@ -115,7 +115,7 @@ body {
   --space-nav-first: 60px;
   --space-title-body: 60px;
   --space-between-elements: 10px !important;
-  --radius-general: 2px;
+  --radius-general: 6px;
   --color-body: #0C2C40;
   --color-accent: #3975A2;
   --color-dark-blue: #081D2B;
@@ -584,7 +584,6 @@ p {
     --subtitle-size: 18px;
     --space-nav-first: 90px;
     --space-title-body: 90px;
-    --radius-general: 6px;
   }
 }
 

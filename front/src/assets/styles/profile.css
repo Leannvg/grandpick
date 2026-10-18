@@ -11,10 +11,7 @@
   --fp-race: #D40000;
   --fp-qualy: #E6E6E6;
   --fp-sprint: #FFCD56;
-  /* Fijo en 6px en todas las resoluciones (a pedido): --radius-general real del
-     sitio es responsive (2px hasta 992px, 6px de ahí en adelante), pero acá se
-     mantiene constante en vez de seguir ese token. */
-  --fp-radius: 6px;
+  --fp-radius: var(--radius-general, 6px); /* ahora 6px fijo en todo el sitio */
   --fp-ease: cubic-bezier(.2, .7, .2, 1); /* = --cal-ease del calendario */
 
   max-width: 1200px;

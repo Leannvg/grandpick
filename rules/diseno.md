@@ -16,7 +16,7 @@ Base visual: tema oscuro azulado, tipografía `Akshar`, Bootstrap 5 para grilla.
 | `--color-logout` | `#E85F5F` | Botón logout |
 | `--color-pos1/2/3` | `#DDBF4A` / `#D8D8D8` / `#D89762` | Podio en tablas (oro/plata/bronce) |
 | `--color-stat-qualy/sprint/race` | `#E6E6E6` / `#FFCD56` / `#D40000` | Chips por tipo de sesión |
-| `--radius-general` | `2px` | Radio de bordes estándar |
+| `--radius-general` | `6px` | Radio de bordes estándar. Antes era responsive (2px hasta 992px, 6px en desktop); desde 2026-10-17 queda fijo en 6px en todas las resoluciones (a pedido). |
 
 ## Iconos (Bootstrap Icons, CDN en `index.html`)
 
