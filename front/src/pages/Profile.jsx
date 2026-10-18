@@ -436,7 +436,7 @@ function Profile() {
                 const points = stats.pointsByCircuit?.[gp.circuitId];
                 const pending = hits === undefined;
                 return (
-                  <div className="gp-row" style={{ "--i": i }} key={gp.circuitId}>
+                  <div className="gp-row gp-row--nowrap" style={{ "--i": i }} key={gp.circuitId}>
                     <div className="gp-row__name"><CountryDisplay iso2={gp.country} showName={false} /> {shortGpName(gp.name)}</div>
                     <div className="gp-row__totals">
                       <span className="tot">

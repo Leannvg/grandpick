@@ -39,7 +39,10 @@
 .fp-page .page-head .section-title strong { font-weight: 700; }
 
 /* Panel genérico = .stats-section real (fondo sólido, sin borde, mismo radio) */
-.fp-page .panel { background: var(--fp-panel); border-radius: var(--fp-radius); padding: 28px 28px 22px; }
+/* min-width:0: .panel es ítem de grid de .stats, .fold es ítem de grid de .fold-group;
+   sin esto ninguno de los dos puede achicarse por debajo de su contenido, y el
+   truncado del nombre del GP (más abajo en la cadena) nunca llega a activarse */
+.fp-page .panel { background: var(--fp-panel); border-radius: var(--fp-radius); padding: 28px 28px 22px; min-width: 0; }
 @media (min-width: 1040px) { .fp-page .identity { position: sticky; top: calc(var(--fp-nav-h, 96px) + 16px); } }
 .fp-page .panel__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; }
 .fp-page .panel__head h2 { margin: 0; font-size: 16px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
@@ -121,7 +124,7 @@
 
 /* Por Gran Premio: desplegables con filas (mismo patrón que .cal-session del calendario) */
 .fp-page .fold-group { display: grid; gap: 10px; }
-.fp-page .fold { background: rgba(255, 255, 255, .045); border-radius: var(--fp-radius); }
+.fp-page .fold { background: rgba(255, 255, 255, .045); border-radius: var(--fp-radius); min-width: 0; }
 .fp-page .fold-head {
   all: unset; box-sizing: border-box; width: 100%; cursor: pointer; position: relative;
   padding: 15px 42px 15px 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
@@ -145,10 +148,22 @@
 }
 
 .fp-page .gp-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 12px 2px; border-top: 1px solid var(--fp-line); }
+/* Aciertos totales: nunca envuelve, así el nombre se trunca para dejar los
+   aciertos/puntos siempre a la derecha en el mismo renglón (flex-wrap decide
+   usando el ancho natural del texto, así que hay que sacarlo para que el
+   min-width:0 del nombre pueda achicarlo) */
+.fp-page .gp-row--nowrap { flex-wrap: nowrap; }
 .fp-page .gp-row:first-child { border-top: 0; }
-.fp-page .gp-row__name { flex: 1 1 150px; min-width: 130px; font-size: 13px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
-.fp-page .gp-row__name .emoji-flag { font-size: 1.1em; }
-.fp-page .gp-row__sessions, .fp-page .gp-row__totals { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+/* min-width:0 + ellipsis: el nombre se trunca si hace falta, en vez de empujar
+   los aciertos/puntos a otro renglón */
+.fp-page .gp-row__name {
+  flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 13px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 8px;
+}
+.fp-page .gp-row__name .emoji-flag { font-size: 1.1em; flex-shrink: 0; }
+.fp-page .gp-row__sessions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+/* Los totales (aciertos/puntos) no se envuelven ni se achican: quedan fijos a la derecha */
+.fp-page .gp-row__totals { display: flex; align-items: center; gap: 20px; flex-wrap: nowrap; flex-shrink: 0; margin-left: auto; }
 
 .fp-page .sess { display: flex; flex-direction: column; gap: 2px; font-size: 10px; color: var(--fp-muted); text-transform: uppercase; }
 .fp-page .sess b { font-size: 16px; color: #fff; font-weight: 800; font-variant-numeric: tabular-nums; }
