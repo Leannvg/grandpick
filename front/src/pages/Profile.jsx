@@ -232,7 +232,7 @@ function Profile() {
     <div className="fp-page" style={{ "--fp-nav-h": `${navHeight}px` }}>
       <header className="page-head">
         <p className="section-label">Tu garaje digital</p>
-        <h1 className="section-title">Ficha de <strong>piloto</strong></h1>
+        <h1 className="section-title">Ficha de piloto</h1>
         <p className="section-subtitle">Seguimiento de predicciones y resultados · Temporada {new Date().getFullYear()}</p>
       </header>
 
@@ -265,11 +265,6 @@ function Profile() {
         <section className="panel">
           <div className="panel__head">
             <h2><i className="bi bi-speedometer2"></i> Rendimiento</h2>
-            <div className="panel__legend">
-              <span><i className="dot" style={{ background: "var(--qualy)" }}></i>Qualy</span>
-              <span><i className="dot" style={{ background: "var(--sprint)" }}></i>Sprint</span>
-              <span><i className="dot" style={{ background: "var(--race)" }}></i>Race</span>
-            </div>
           </div>
           <div className="rings">
             {[

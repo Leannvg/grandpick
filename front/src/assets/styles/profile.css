@@ -44,8 +44,6 @@
 .fp-page .panel__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; }
 .fp-page .panel__head h2 { margin: 0; font-size: 16px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
 .fp-page .panel__head h2 .bi { color: var(--fp-sprint); font-size: 15px; }
-.fp-page .panel__legend { display: flex; gap: 14px; font-size: 12px; color: #c5d2dd; }
-.fp-page .panel__legend span { display: inline-flex; align-items: center; gap: 6px; }
 
 /* Identidad: avatar contenido con borde blanco, como .user-avatar-box real (no una foto a sangre) */
 .fp-page .identity { text-align: center; }
