@@ -186,7 +186,7 @@
 @media (max-width: 599.98px) {
   .fp-page { padding: 20px 16px 48px; gap: 16px; }
   .fp-page .page-head { padding-bottom: 16px; }
-  .fp-page .panel { padding: 16px 16px 14px; }
+  .fp-page .panel { padding: 24px 16px 14px; }
 
   .fp-page .fold-head { padding: 13px 38px 13px 16px; }
   .fp-page .fold-head .sub { flex-basis: 100%; margin-left: 28px; }
