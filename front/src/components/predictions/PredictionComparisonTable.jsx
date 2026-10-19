@@ -110,7 +110,7 @@ function PredictionComparisonTable({ session, otherSession = null, otherLabel = 
                 <div className="cmp-table is-compact">
                     <div className="cmp-head is-compact">
                         <div className="cmp-pos">#</div>
-                        <div>Real</div>
+                        <div className="cmp-real-cell">Real</div>
                         <div className="cmp-head__name cmp-head__name--me">
                             <span className="cmp-head__name-label">{myLabel}</span>
                             <span className="cmp-total-pill">{myTotal} PTS</span>
@@ -123,7 +123,7 @@ function PredictionComparisonTable({ session, otherSession = null, otherLabel = 
                     {rows.map(r => (
                         <div key={r.pos} className="cmp-row is-compact">
                             <div className="cmp-pos">{r.pos}</div>
-                            <div><CompareDriverCell item={r.real} /></div>
+                            <div className="cmp-real-cell"><CompareDriverCell item={r.real} /></div>
                             <div className={`cmp-cell-pred ${r.predWrong ? 'is-wrong' : ''}`}>
                                 <CompareDriverCell item={r.pred} wrong={r.predWrong} />
                                 <CompareMiniPts pts={r.myPts} />

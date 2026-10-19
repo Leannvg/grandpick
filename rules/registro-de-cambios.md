@@ -2,6 +2,24 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-19 · Tabla de comparación: scroll horizontal fijo en mobile (causa real)
+
+- El fix anterior (nombres largos) no era la causa completa: el usuario
+  seguía viendo scroll horizontal en mobile sin importar el ancho ni el
+  contenido, y lo encontró él mismo con el inspector del navegador.
+- Causa real: `.cmp-table-scroll` tenía `width: 100%` A LA VEZ que
+  `.gp-compare-drawer-body .cmp-table-scroll { margin: 0 10px; }` — en un
+  div de bloque, `width: 100%` no resta su propio margin, así que el
+  margin se suma aparte y desborda 20px el contenedor, siempre, sin
+  importar el contenido. Se saca el `width: 100%` (innecesario: un div de
+  bloque con `width: auto` ya ocupa el ancho disponible y sí resta su
+  margin correctamente).
+- De paso, defensivo: se agrega `min-width: 0` a la celda de "Real" en la
+  fila/encabezado (`.cmp-real-cell`, nueva clase) y se le da un poco más
+  de aire al ancho fijo en mobile (62px → 70px), mismo criterio de
+  "todo ítem de grid/flex con texto necesita min-width:0 para poder
+  achicarse de verdad" ya documentado en otras partes del sitio.
+
 ## 2026-10-19 · Tabla de comparación: scroll horizontal con nombres largos
 
 - Bug reportado con captura: en mobile, con un nombre de usuario largo

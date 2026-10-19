@@ -187,8 +187,13 @@
    blanca de 6 columnas anterior. Los puntos de cada predicción van como
    píldora pegada al piloto (no una columna aparte), así entra sin scroll
    horizontal en mobile y no hay que ir y volver para comparar. ---------- */
+/* Sin width:100% a propósito: es un div de bloque, "auto" ya ocupa el
+   ancho disponible y sí resta su propio margin (ver
+   .gp-compare-drawer-body .cmp-table-scroll más abajo, margin: 0 10px).
+   Con width:100% el margin se suma aparte y desborda 20px -> scroll
+   horizontal fijo sin importar el contenido (encontrado con el
+   inspector). */
 .cmp-table-scroll {
-    width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     border-radius: var(--radius-general);
@@ -224,6 +229,15 @@
 .cmp-row:first-of-type { border-top: 0; }
 
 .cmp-pos { color: #8fa3b5; font-weight: 700; }
+
+/* Celda de "Real" (columna fija y angosta en mobile, ver
+   .gp-compare-drawer-body más abajo): sin min-width:0 acá, el ítem de
+   grid usa como ancho mínimo el contenido sin achicar (bug conocido de
+   grid/flex), así que con una fuente más ancha que la de prueba (Akshar)
+   el trigrama + la barra no entraban en los 62px fijos y estiraban toda
+   la grilla -> scroll horizontal, aun con el nombre truncando bien en las
+   otras columnas. */
+.cmp-real-cell { min-width: 0; overflow: hidden; }
 
 /* Columna con el nombre de cada usuario en vez de "Tu predicción"/
    "Predicción de X": el propio usuario se destaca en celeste (mismo
@@ -381,5 +395,5 @@
    completo del piloto. */
 .gp-compare-drawer-body .cmp-head.is-compact,
 .gp-compare-drawer-body .cmp-row.is-compact {
-    grid-template-columns: 20px 62px 1fr 1fr;
+    grid-template-columns: 20px 70px 1fr 1fr;
 }
