@@ -597,70 +597,41 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
     cursor: not-allowed;
 }
 
-/* Encabezado "rico" del modal de comparación de predicciones (FloatingPredictionCompare):
-   "{myLabel} VS {otherLabel}" en vez de un <h2> plano, más el nombre del GP
-   como subtítulo cuando ya se cargaron los datos. Mismo look & feel que
-   .gp-modal-title/.gp-modal-subtitle (misma paleta, sin colores nuevos salvo
-   el círculo "VS" que reutiliza --color-red, ya usado como acento/destacado). */
-.gp-compare-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    margin: 0 0 4px;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #fff;
-    text-align: center;
-    flex-wrap: wrap;
-}
-
-.gp-compare-name {
-    max-width: 40%;
-    overflow-wrap: break-word;
-}
-
-.gp-compare-name--me {
-    color: var(--color-login);
-}
-
-.gp-compare-vs {
-    flex: 0 0 auto;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 46px;
-    height: 46px;
+/* Cruz flotante para cerrar un modal (FloatingPredictionCompare): flota
+   semi-afuera de la esquina superior derecha de .gp-modal-card, sobre el
+   overlay, en vez de un botón "Cerrar" al pie — así no empuja el contenido
+   para abajo ni necesita hueco reservado adentro. Ningún otro modal del
+   sitio la usa todavía (todos cierran con un botón de texto al pie), queda
+   disponible para sumarla ahí si se decide más adelante. */
+.gp-modal-close {
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    z-index: 2;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    background: var(--color-red);
+    background: #16222f;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     color: #fff;
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    border: 2px solid rgba(255, 255, 255, 0.85);
-    box-shadow: 0 4px 14px rgba(225, 6, 0, 0.5);
-}
-
-.gp-compare-subtitle {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    text-align: center;
-    margin-bottom: 20px;
+    cursor: pointer;
+    font-size: 15px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
 }
 
-.gp-compare-subtitle-name {
-    font-weight: 600;
+.gp-modal-close:hover {
+    background: #1e3042;
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.06);
 }
 
-.gp-compare-subtitle-date {
-    opacity: 0.75;
-}
-
-.gp-compare-subtitle-sep {
-    opacity: 0.5;
+.gp-modal-close:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
 }
 
 .gp-input-group-container {

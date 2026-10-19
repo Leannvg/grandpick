@@ -9,6 +9,186 @@ Orden cronológico inverso (lo más nuevo arriba).
 - Al entrar a una ruta protegida sin sesión, el login vuelve a la URL original.
 - Detalle en `features/links-historial-predicciones.md`.
 
+## 2026-10-19 · Tabla de comparación: scroll horizontal fijo en mobile (causa real)
+
+- El fix anterior (nombres largos) no era la causa completa: el usuario
+  seguía viendo scroll horizontal en mobile sin importar el ancho ni el
+  contenido, y lo encontró él mismo con el inspector del navegador.
+- Causa real: `.cmp-table-scroll` tenía `width: 100%` A LA VEZ que
+  `.gp-compare-drawer-body .cmp-table-scroll { margin: 0 10px; }` — en un
+  div de bloque, `width: 100%` no resta su propio margin, así que el
+  margin se suma aparte y desborda 20px el contenedor, siempre, sin
+  importar el contenido. Se saca el `width: 100%` (innecesario: un div de
+  bloque con `width: auto` ya ocupa el ancho disponible y sí resta su
+  margin correctamente).
+- De paso, defensivo: se agrega `min-width: 0` a la celda de "Real" en la
+  fila/encabezado (`.cmp-real-cell`, nueva clase) y se le da un poco más
+  de aire al ancho fijo en mobile (62px → 70px), mismo criterio de
+  "todo ítem de grid/flex con texto necesita min-width:0 para poder
+  achicarse de verdad" ya documentado en otras partes del sitio.
+
+## 2026-10-19 · Tabla de comparación: scroll horizontal con nombres largos
+
+- Bug reportado con captura: en mobile, con un nombre de usuario largo
+  (ej. "Mariela Rimasa..."), toda la página quedaba con scroll horizontal.
+- Causa: `.cmp-head__name-label` y `.cmp-driver .name` tienen
+  `white-space: nowrap` para truncar con elipsis, pero son hijos flex sin
+  `min-width: 0` — por default, el ancho mínimo automático de un hijo flex
+  con texto `nowrap` es el del texto completo (nunca se corta), así que un
+  nombre largo empujaba la fila/columna a desbordar en vez de truncarse,
+  y de ahí el scroll horizontal de toda la página.
+- Arreglo: `min-width: 0` en los dos (`predictionCompare.css`). Verificado
+  montando la tabla aislada con un nombre largo a 390px de ancho: sin el
+  fix desbordaba, con el fix trunca a "Mariela..." y no hay scroll a nivel
+  página.
+
+## 2026-10-19 · Tabla de comparación: alto fijo, columna Real angosta y scroll de fondo
+
+- **Tabla siempre de 10 filas**: antes `PredictionComparisonTable` usaba la
+  cantidad de posiciones de la sesión elegida (3 en Qualy, 8 en Sprint, 10
+  en Race), así que la tabla se achicaba o agrandaba cada vez que se
+  cambiaba de pestaña. En modo comparación ahora siempre renderiza 10 filas
+  (la cantidad de Race); las posiciones que no existen en la sesión elegida
+  quedan en blanco ("-"), ya lo manejaban `CompareDriverCell`/
+  `CompareMiniPts` cuando no hay dato para esa posición.
+- **Columna "Real" más angosta en mobile**: ahí siempre muestra trigrama (3
+  letras + barra de color, nunca el nombre completo), así que no necesita
+  repartirse el ancho en partes iguales con las columnas de predicción —
+  pasa a un ancho fijo chico (`.gp-compare-drawer-body .cmp-head.is-compact`/
+  `.cmp-row.is-compact`, `grid-template-columns: 20px 62px 1fr 1fr`), y el
+  resto queda para `{myLabel}`/`{otherLabel}`, que necesitan lugar para la
+  píldora de puntos. En desktop sigue igual (ahí "Real" muestra el nombre
+  completo).
+- **Scroll de fondo saltaba al top en mobile**: `.body-scroll-lock` pone
+  `position: fixed` en el `<body>` sin compensar el scroll previo, así que
+  fijarlo "resetea" visualmente la página al top (bug compartido por todos
+  los usos de esa clase: `Nav.jsx`, `PredictionHistory.jsx`,
+  `InformationPage.jsx`, `LoaderCar.jsx` — no se tocaron, se corrigió solo
+  acá). `FloatingPredictionCompare` ahora guarda `window.scrollY` en
+  `body.style.top` (negativo) mientras el bottom-sheet está abierto, y lo
+  restaura con `window.scrollTo` al cerrarlo.
+
+## 2026-10-19 · Modal de comparación en blanco mientras carga
+
+- Bug reportado con captura: al abrir el modal de comparación, mientras
+  carga se veía un rectángulo blanco en vez de la card oscura.
+- Reproducido montando el componente aislado con una demora artificial en
+  la carga (no se pudo probar logueado contra datos reales). Causa real:
+  `LoaderSpinner` (`components/LoaderSpinner.jsx`) pinta su contenedor de
+  blanco sólido y en tamaño 100% del padre (pensado para los paneles
+  claros del admin, únicos otros usuarios del componente) — tapaba por
+  completo la card oscura mientras se esperaba la respuesta de las dos
+  predicciones.
+- Arreglo: `.loader-spinner-container` pasa a transparente solo dentro de
+  `.gp-modal-card`/`.gp-compare-drawer` (`predictionCompare.css`), sin
+  tocar el componente compartido (lo siguen usando paneles claros del
+  admin sin cambios).
+
+## 2026-10-18 · Rediseño oscuro del modal de comparación de predicciones
+
+- Iterado primero como mockup local (HTML/CSS/JS aislado en el scratchpad,
+  sin tocar el repo) a lo largo de muchas rondas de feedback, y recién
+  implementado una vez validado el diseño.
+- `FloatingPredictionCompare` deja el tema claro tipo "Mi Historial" (tabla
+  blanca, título "VOS vs. X" con círculo rojo) y pasa al lenguaje visual
+  oscuro del resto del sitio: card de GP oscura (`.cmp-gp-card`) en vez del
+  título "VS", tabla de 4 columnas con los puntos como píldora pegada al
+  piloto (no columna aparte) y el total de puntos de cada usuario junto a
+  su nombre en el encabezado, tabs de sesión propios sin fecha ni puntaje
+  (`CompareSessionTabs`, puntito de color en vez de píldora).
+- Nombre completo del piloto en desktop, trigrama en el bottom-sheet
+  mobile, decidido por CSS según el contenedor real (no una preferencia
+  manual).
+- Corregido un bug real: `.gp-compare-drawer` en mobile tenía `top: 12%` Y
+  `bottom: 0` a la vez, lo que fuerza el alto a un tamaño fijo (88% del
+  viewport) sin importar el contenido — al cambiar de Qualy a Race la
+  solapa no crecía y había que scrollear a mano. Se saca el `top` fijo
+  para que el alto se ajuste de verdad al contenido de cada sesión.
+- Cruz flotante para cerrar (`.gp-modal-close`, nueva) solo en desktop, en
+  vez del botón "Cerrar" al pie; en mobile no hay cruz (ya se cierra
+  arrastrando o tocando afuera).
+- Detalle completo (componentes, clases nuevas, CSS eliminado) en
+  [features/ver-predicciones-otros-usuarios.md](./features/ver-predicciones-otros-usuarios.md).
+
+## 2026-10-17 · Ficha de piloto: causa real de los puntos ovalados y el texto corrido
+
+- Encontrada la causa, reproducida localmente con Bootstrap real (`agent-browser`):
+  usaba `className="row"` en dos lugares (filas del desglose de los anillos,
+  filas de email/bandera/miembro desde). Bootstrap define `.row > * { width:
+  100%; max-width: 100%; padding: 0 12px; ... }` para su sistema de grillas,
+  y esa regla afecta a los hijos directos de **cualquier** elemento con clase
+  `row`, sin importar el dueño. Con `box-sizing: border-box`, un padding de
+  24px (12+12) que supera el `width/max-width: 11px` del punto no se puede
+  "comprimir" a contenido negativo: el navegador infla la caja a 24×11, el
+  óvalo. El mismo mecanismo forzaba `width:100%` en los íconos de email/
+  calendario, corriendo el texto.
+- Las dos correcciones anteriores (`aspect-ratio`, `min/max-width`, `flex-
+  column`) no alcanzaban porque no tocaban `padding`/el `width` del ícono —
+  atacaban el síntoma, no la colisión de nombre.
+- Arreglo real: renombrar las clases (`row` → `bd-row` en el desglose,
+  `meta-row` en la identidad) para dejar de coincidir con el selector de
+  Bootstrap, en vez de agregar más reglas para pelear contra él.
+- Lección para `rules/componentes.md`/nuevas clases: revisar colisiones
+  también contra Bootstrap (ya cargado globalmente), no solo contra el CSS
+  propio del proyecto — `row` y `col` son los nombres de mayor riesgo.
+
+## 2026-10-17 · Ficha de piloto: 5 correcciones más vistas en producción
+
+- Título y bajada del encabezado usaban un tamaño fijo propio (34px) en vez de
+  `--title-size` (40-70px responsive). Ahora reusa las clases reales del sitio:
+  `.section-label`/`.section-title`/`.section-subtitle`.
+- Los puntos de color (Qualy/Sprint/Race) se deformaban a óvalos dentro de la
+  grilla de desglose; se les agregó `aspect-ratio: 1/1` para que el círculo no
+  dependa de cómo el contenedor (grid/flex) intente estirarlos.
+- Email y "Miembro desde" no quedaban centrados en mobile (`.meta` pasó de
+  grid con `justify-items` a flex-column con `align-items: center`, más
+  confiable para centrar filas de ancho variable).
+- Nombres de GP largos ("Gran Premio de Australia") empujaban el resto de la
+  fila a una segunda línea en mobile; se acortan igual que ya se hacía en el
+  eje del gráfico de Evolución (`shortGpName`, reusado en las filas de los
+  desplegables y en los textos de "Mejor sesión"/"Mejor posición").
+- Al abrir un desplegable con el otro ya abierto, el scroll apuntaba a una
+  posición calculada mientras el otro todavía estaba expandido en el DOM;
+  quedaba desfasado cuando ese otro terminaba de colapsar. Ahora espera a que
+  las dos transiciones (0.4s) terminen antes de medir y desplazar.
+
+## 2026-10-17 · Ficha de piloto: 4 correcciones vistas en producción
+
+- Panel de identidad tapado por el nav al hacer scroll (`.site-header` es
+  sticky sin alto fijo en el CSS): se mide el alto real del nav en vivo
+  (`ResizeObserver`) y se usa como offset del `sticky` del panel, en vez de
+  adivinar un número.
+- Puntos del gráfico de posición recortados arriba: faltaba padding en el
+  área del gráfico (`layout.padding` en Chart.js).
+- "Acierto en sprint"/"en carrera" mostraba porcentajes imposibles (167%,
+  241%): dividía aciertos por *sesiones* predichas en vez de por
+  *posiciones* predichas (sprint tiene 8 posiciones puntuables por sesión,
+  carrera 10). Nuevo campo `stats.positionsPredicted` en `getUserWithStats`.
+- "Racha de fallos" pasó de "racha actual" (sesiones sin acierto contando
+  desde la última jugada, da 0 casi siempre si va bien) a "racha más larga
+  de la temporada" — más informativo y no confunde con un bug.
+
+## 2026-10-17 · Ficha de piloto: estadísticas nuevas y ranking por sesión
+
+- Rediseño completo de `Profile.jsx`/`profile.css`: identidad en panel aparte,
+  anillos con desglose siempre visible (no solo al hover), 9 estadísticas nuevas
+  en "Resumen", gráfico de evolución en la temporada (puntos y posición por GP),
+  y dos desplegables "Por Gran Premio" (Posición final, Aciertos totales) con la
+  misma animación de apertura que el calendario.
+- `getUserWithStats` suma: podios/poles por circuito, aciertos y puntos por
+  circuito, mejor sesión, racha de fallos, piloto más predicho, equipo más
+  acertado, puntos perdidos (por error y por no predecir) y la posición en el
+  ranking (global y por sesión).
+- Nuevo: ranking por sesión individual (`updateSessionRanking`) y ranking global
+  recalculado en el backend (`updateGlobalRanking`), ambos disparados al cargar
+  resultados de una carrera (`updatePointsAfterRace`), no en cada visita a un
+  perfil — ver `rules/features/estadisticas-perfil.md` para el porqué.
+  `back/scripts/backfill-rankings.js` cargó esto para las 40 sesiones ya jugadas.
+- Encontrado (sin corregir): el descuento de 1/3 en puntos de qualy anterior al
+  21/05/2026 nunca se aplicó, por un chequeo contra un campo que no existe
+  (`race.type`). Documentado en `rules/logica.md` y en el feature doc.
+- Avatar de la ficha a 800px (no 400 ni 500), banderas con `CountryDisplay`.
+
 ## 2026-10-12 · Labels de selects (overflow-visible) sin esquinas redondeadas
 
 - Los `.gp-input-label` normalmente se ven redondeados porque `.gp-input-group`

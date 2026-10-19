@@ -1,0 +1,399 @@
+/* Modal de comparación de predicciones entre dos usuarios
+   (components/FloatingPredictionCompare.jsx, componente de tabla en
+   components/predictions/PredictionComparisonTable.jsx cuando recibe
+   `otherSession`). Prefijo cmp- para no chocar con las clases de
+   predictionHistory.css (Mi Historial, tema claro, sin tocar).
+
+   Antes esta ficha reusaba el mismo blanco/celeste de "Mi Historial"; ahora
+   usa el lenguaje visual oscuro del resto del sitio (mismos tokens que
+   profile.css: fondo sólido + tarjetas rgba(255,255,255,.045), acentos
+   --color-stat-sprint/qualy/race). */
+
+/* LoaderSpinner (components/LoaderSpinner.jsx) pinta su contenedor de
+   blanco sólido (`.loader-spinner-container`) — pensado para los paneles
+   claros del admin, que es donde se usa en el resto del sitio. Acá tapaba
+   por completo el fondo oscuro del modal mientras carga, mostrando un
+   rectángulo blanco en vez de la card. Se lo hace transparente solo en
+   este contexto oscuro (el aro del spinner ya se ve bien sobre fondo
+   oscuro, no hace falta tocar el componente compartido). */
+.gp-modal-card .loader-spinner-container,
+.gp-compare-drawer .loader-spinner-container {
+    background-color: transparent;
+}
+
+/* Envoltorio del modal desktop: separado de .gp-modal-card (que tiene
+   overflow-y:auto para scrollear la tabla larga) para que la cruz de cerrar,
+   posicionada semi-afuera de la esquina superior derecha con offset
+   negativo, no quede recortada por ese overflow. */
+.cmp-modal-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 960px;
+}
+
+/* ---------- card de GP (reemplaza el título "VOS vs. X" + subtítulo) ----------
+   Misma estructura que .cal-card__row del calendario (ubicación + caja de
+   fecha a la derecha), sin el riel de ronda ni el botón de horarios porque
+   acá no aplican. Fondo oscuro translúcido (no el blanco de .cal-card__row
+   real, que tiene sentido en el calendario pero no adentro de este modal). */
+.cmp-gp-card {
+    display: flex;
+    align-items: stretch;
+    min-height: 64px;
+    background: rgba(255, 255, 255, .045);
+    border-radius: var(--radius-general);
+    overflow: hidden;
+    color: #e8eef4;
+    margin-bottom: 18px;
+}
+
+.cmp-gp-card__info {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+}
+
+.cmp-gp-card__loc {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    min-width: 0;
+}
+
+.cmp-gp-card__loc .emoji-flag {
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.cmp-gp-card__country {
+    font-weight: 700;
+    color: #e8eef4;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cmp-gp-card__circuit {
+    margin: 0;
+    font-size: .82rem;
+    font-weight: 300;
+    color: #8fa3b5;
+}
+
+/* La fecha es un dato más de la card, no una llamada a la acción: mismo
+   fondo oscuro que el resto, sin bloque de color sólido. */
+.cmp-gp-card__date {
+    width: 112px;
+    flex-shrink: 0;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #e8eef4;
+}
+
+.cmp-gp-card__date .d {
+    font-size: .95rem;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: #fff;
+}
+
+.cmp-gp-card__date .m {
+    margin-top: 2px;
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .6px;
+    color: #8fa3b5;
+}
+
+/* ---------- tabs de sesión propias del modal (CompareSessionTabs) ----------
+   Reusa los tokens de color sprint/qualy/race que ya existen en
+   globals.css, en vez del botón blanco plano de .history-session-tab que no
+   combina con el resto del modal oscuro. Borde visible siempre (no solo en
+   hover/selección): la card de GP y la tabla usan el mismo fondo
+   rgba(255,255,255,.045) pero son solo informativas, así que un tab con ese
+   mismo fondo y sin borde propio se confunde con ellas y no se lee como
+   botón — el borde marca el límite del "chip" clickeable incluso en reposo. */
+.cmp-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.cmp-tab {
+    flex: 1;
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .14);
+    border-radius: var(--radius-general);
+    padding: 13px 10px;
+    cursor: pointer;
+    color: #e8eef4;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color .2s ease, border-color .2s ease, transform .15s ease;
+}
+
+.cmp-tab:hover:not(:disabled) {
+    background: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .25);
+    transform: translateY(-1px);
+}
+
+.cmp-tab:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+/* Puntito del color de sesión, siempre visible: reemplaza la píldora de
+   puntos que tenía el tab antes (acá hay dos usuarios, un puntaje suelto en
+   el tab no decía de quién era). */
+.cmp-tab::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.cmp-tab--sprint::before { background: var(--color-stat-sprint); }
+.cmp-tab--qualy::before { background: var(--color-stat-qualy); }
+.cmp-tab--race::before { background: var(--color-stat-race); }
+
+.cmp-tab.is-selected { background: rgba(255, 255, 255, .1); }
+.cmp-tab--sprint.is-selected { border-color: var(--color-stat-sprint); }
+.cmp-tab--qualy.is-selected { border-color: var(--color-stat-qualy); }
+.cmp-tab--race.is-selected { border-color: var(--color-stat-race); }
+
+/* ---------- tabla: filas oscuras con separador, 4 columnas
+   (# | Resultado real | {myLabel} | {otherLabel}) en vez de la tabla
+   blanca de 6 columnas anterior. Los puntos de cada predicción van como
+   píldora pegada al piloto (no una columna aparte), así entra sin scroll
+   horizontal en mobile y no hay que ir y volver para comparar. ---------- */
+/* Sin width:100% a propósito: es un div de bloque, "auto" ya ocupa el
+   ancho disponible y sí resta su propio margin (ver
+   .gp-compare-drawer-body .cmp-table-scroll más abajo, margin: 0 10px).
+   Con width:100% el margin se suma aparte y desborda 20px -> scroll
+   horizontal fijo sin importar el contenido (encontrado con el
+   inspector). */
+.cmp-table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius-general);
+    background: rgba(255, 255, 255, .045);
+}
+
+.cmp-table.is-compact { min-width: 0; }
+
+.cmp-head.is-compact,
+.cmp-row.is-compact {
+    display: grid;
+    grid-template-columns: 26px 1fr 1fr 1fr;
+    align-items: center;
+    gap: 8px;
+}
+
+.cmp-head {
+    padding: 12px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: #8fa3b5;
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.cmp-row {
+    padding: 10px 16px;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    font-size: 13px;
+}
+
+.cmp-row:first-of-type { border-top: 0; }
+
+.cmp-pos { color: #8fa3b5; font-weight: 700; }
+
+/* Celda de "Real" (columna fija y angosta en mobile, ver
+   .gp-compare-drawer-body más abajo): sin min-width:0 acá, el ítem de
+   grid usa como ancho mínimo el contenido sin achicar (bug conocido de
+   grid/flex), así que con una fuente más ancha que la de prueba (Akshar)
+   el trigrama + la barra no entraban en los 62px fijos y estiraban toda
+   la grilla -> scroll horizontal, aun con el nombre truncando bien en las
+   otras columnas. */
+.cmp-real-cell { min-width: 0; overflow: hidden; }
+
+/* Columna con el nombre de cada usuario en vez de "Tu predicción"/
+   "Predicción de X": el propio usuario se destaca en celeste (mismo
+   criterio que .gp-compare-name--me real). El total de puntos de esa
+   persona en la sesión elegida va a la derecha de su nombre, mismo
+   criterio que los puntos de cada pronóstico (a la derecha del piloto). */
+.cmp-head__name {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 0;
+}
+
+.cmp-head__name-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #e8eef4;
+    font-size: 12px;
+    /* Es hijo flex de .cmp-head__name: sin esto, el ancho mínimo automático
+       de un texto con white-space:nowrap es el del texto completo (nunca
+       se corta), así que con un nombre largo (ej. "Mariela Rimasa...")
+       empuja toda la fila/tabla a desbordar en vez de truncarse — de ahí
+       el scroll horizontal de toda la página en mobile. */
+    min-width: 0;
+}
+
+.cmp-head__name--me .cmp-head__name-label { color: var(--color-login); }
+
+/* Píldora amarilla, mismo lenguaje visual que las píldoras verde/roja de
+   acierto/error de cada fila (mismo radio, mismo padding). */
+.cmp-total-pill {
+    flex-shrink: 0;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    color: #000;
+    background: var(--color-stat-sprint);
+    padding: 3px 9px;
+    border-radius: 99px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.cmp-driver {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+}
+
+.cmp-driver .bar {
+    width: 5px;
+    height: 26px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.cmp-driver .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* mismo motivo que .cmp-head__name-label: sin min-width:0 el texto no
+       se trunca de verdad, empuja la fila a desbordar */
+    min-width: 0;
+}
+
+.cmp-driver .name strong { text-transform: uppercase; font-weight: 800; }
+
+.cmp-cell-pred {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    min-width: 0;
+}
+
+.cmp-cell-pred .cmp-driver { flex: 1 1 auto; }
+
+/* El fondo rojo de "predicción errada" pasa por detrás de TODA la celda
+   (piloto + píldora de puntos), no se corta antes de la píldora: va en
+   .cmp-cell-pred entero (no en .cmp-driver), que es quien contiene las dos
+   cosas. */
+.cmp-cell-pred.is-wrong {
+    background: rgba(182, 65, 65, .18);
+    border-radius: 4px;
+    padding: 4px 6px;
+    margin: -4px -6px;
+}
+
+.cmp-cell-pred.is-wrong .cmp-driver.is-wrong {
+    background: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+}
+
+.cmp-mini-pts {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    line-height: 1.4;
+}
+
+.cmp-mini-pts.match { background: var(--color-add); color: #fff; }
+.cmp-mini-pts.mismatch { background: var(--color-zero); color: #fff; }
+.cmp-mini-pts.empty { display: none; }
+
+/* Nombre completo en desktop, trigrama siempre en el bottom-sheet mobile:
+   no es una preferencia manual, depende de en qué contenedor cae la tabla
+   (.gp-modal-card = modal centrado desktop, .gp-compare-drawer = bottom
+   sheet mobile), así que el propio HTML trae los dos nombres y el CSS
+   decide cuál mostrar según dónde está montada la tabla. */
+.cmp-driver .name-tri {
+    display: none;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: .5px;
+}
+
+.gp-compare-drawer .cmp-driver .name-full { display: none; }
+.gp-compare-drawer .cmp-driver .name-tri { display: inline; }
+
+/* =====================================================================
+   Bottom-sheet mobile: ajustes de tamaño de la card de GP y la tabla
+   (el "cascarón" del sheet, incluido el fix del alto, vive en
+   predictionHistory.css junto con el resto de .gp-compare-drawer)
+   ===================================================================== */
+.gp-compare-drawer-header .cmp-gp-card {
+    min-height: 52px;
+    margin-bottom: 0;
+}
+
+.gp-compare-drawer-header .cmp-gp-card__date { width: 86px; }
+
+.gp-compare-drawer-body .cmp-tabs { margin: 0 10px 10px; gap: 8px; }
+.gp-compare-drawer-body .cmp-tab { padding: 10px 6px; font-size: 11px; }
+.gp-compare-drawer-body .cmp-table-scroll { margin: 0 10px; }
+
+.gp-compare-drawer-body .cmp-row,
+.gp-compare-drawer-body .cmp-head {
+    font-size: 12px;
+    padding: 8px 12px;
+}
+
+/* La columna "Real" acá siempre muestra trigrama (3 letras + barra, nunca
+   el nombre completo, ver .name-tri/.name-full arriba), así que no
+   necesita repartirse el ancho en partes iguales con las columnas de
+   predicción — se le da un ancho fijo chico y el resto queda para
+   {myLabel}/{otherLabel}, que sí necesitan lugar para la píldora de
+   puntos. En desktop sigue a 1fr porque ahí "Real" muestra el nombre
+   completo del piloto. */
+.gp-compare-drawer-body .cmp-head.is-compact,
+.gp-compare-drawer-body .cmp-row.is-compact {
+    grid-template-columns: 20px 70px 1fr 1fr;
+}
