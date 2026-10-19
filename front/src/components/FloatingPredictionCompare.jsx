@@ -1,22 +1,64 @@
 import { useEffect, useRef, useState } from "react";
 import { useModalPhase } from "../hooks/useModalPhase";
 import PredictionServices from "../services/predictions.services";
-import SessionTabs from "./predictions/SessionTabs";
+import { getSessionButtonStatus } from "./predictions/SessionTabs";
 import PredictionComparisonTable from "./predictions/PredictionComparisonTable";
 import LoaderSpinner from "./LoaderSpinner";
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import { getFlagEmoji, formatRaceDate } from "../utils/helpers";
 import "../assets/styles/predictionHistory.css";
+import "../assets/styles/predictionCompare.css";
+
+const COMPARE_SESSION_DEFS = [
+    { id: 'sprint', label: 'SPRINT', color: 'sprint' },
+    { id: 'qualifying', label: 'QUALY', color: 'qualy' },
+    { id: 'race', label: 'RACE', color: 'race' },
+];
+
+/**
+ * Tabs de sesión propios del modal de comparación: solo el nombre + un
+ * puntito del color de la sesión (sin fecha ni puntaje, a diferencia de
+ * `SessionTabs` que usa "Mi Historial"). Acá hay dos usuarios, así que un
+ * puntaje suelto en el tab no decía de quién era — ya está resuelto en la
+ * tabla, donde cada columna muestra el total de esa persona.
+ */
+function CompareSessionTabs({ sessions, selectedSessionType, onSelect }) {
+    return (
+        <div className="cmp-tabs">
+            {COMPARE_SESSION_DEFS.map(def => {
+                const session = sessions.find(s =>
+                    s.type === def.id || (def.id === 'qualifying' && s.type === 'qualy')
+                );
+                const isSelected = selectedSessionType === def.id;
+                const status = getSessionButtonStatus(session);
+
+                return (
+                    <button
+                        key={def.id}
+                        type="button"
+                        className={`cmp-tab cmp-tab--${def.color} ${isSelected ? 'is-selected' : ''}`}
+                        onClick={() => { if (status === 'finished') onSelect(def.id); }}
+                        disabled={status !== 'finished'}
+                    >
+                        {def.label}
+                    </button>
+                );
+            })}
+        </div>
+    );
+}
 
 /**
  * Modal de comparación de predicciones entre el usuario logueado y otro
  * usuario, para un Gran Premio puntual (usado desde Ranking > Por Gran Premio).
  *
- * Desktop (>=1200px): modal centrado (`gp-modal-overlay`/`gp-modal-card--wide`)
- * con encabezado "VOS vs. {otro}" (`.gp-compare-title`).
+ * Desktop (>=1200px): modal centrado (`gp-modal-overlay`/`gp-modal-card--wide`),
+ * con una cruz flotante en la esquina para cerrar (ningún otro modal del
+ * sitio la tiene, pero este tiene mucho contenido debajo de una tabla larga).
  * Mobile (<1200px): bottom-sheet deslizable, mismo patrón que el drawer de
  * `PredictionHistory.jsx` (overlay + tirador + gesto de arrastre), reusando
- * `.history-drawer-overlay` / `.drawer-handle` de `predictionHistory.css`.
+ * `.history-drawer-overlay` / `.drawer-handle` de `predictionHistory.css`;
+ * sin cruz ahí, porque ya se cierra arrastrando o tocando afuera.
  */
 function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", otherUserId, otherLabel, circuitId, year }) {
     const [loading, setLoading] = useState(false);
@@ -118,25 +160,32 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
         else setDragY(0);
     };
 
-    const compareTitle = (
-        <h2 id="dialog-title-compare" className="gp-compare-title">
-            <span className="gp-compare-name gp-compare-name--me">{myLabel}</span>
-            <span className="gp-compare-vs">VS</span>
-            <span className="gp-compare-name gp-compare-name--other">{otherLabel}</span>
-        </h2>
-    );
+    // Card con el dato del GP (mismo criterio visual que .cal-card__row del
+    // calendario, con fondo oscuro para no desentonar con el resto del
+    // modal): bandera + nombre del GP + circuito, y la fecha aparte. Separa
+    // "8-10" de "OCTUBRE" porque formatRaceDate devuelve las dos partes en
+    // un solo string ("8-10 OCTUBRE") y acá van en dos líneas.
+    const [dateDay, ...dateMonthParts] = (circuitDateLabel || "").split(" ");
+    const dateMonth = dateMonthParts.join(" ");
 
-    const compareSubtitle = circuit && (
-        <p className="gp-modal-subtitle gp-compare-subtitle">
-            <span className="emoji-flag">{getFlagEmoji(circuit.country)}</span>
-            <span className="gp-compare-subtitle-name">{circuit.gp_name}</span>
-            {circuitDateLabel && (
-                <>
-                    <span className="gp-compare-subtitle-sep">·</span>
-                    <span className="gp-compare-subtitle-date">{circuitDateLabel}</span>
-                </>
+    const gpCard = circuit && (
+        <div className="cmp-gp-card">
+            <div className="cmp-gp-card__info">
+                <div className="cmp-gp-card__loc">
+                    <span className="emoji-flag">{getFlagEmoji(circuit.country)}</span>
+                    <span className="cmp-gp-card__country">{circuit.gp_name}</span>
+                </div>
+                {circuit.circuit_name && (
+                    <p className="cmp-gp-card__circuit">{circuit.circuit_name}</p>
+                )}
+            </div>
+            {circuitDateLabel && circuitDateLabel !== "N/A" && (
+                <div className="cmp-gp-card__date">
+                    <span className="d">{dateDay}</span>
+                    <span className="m">{dateMonth}</span>
+                </div>
             )}
-        </p>
+        </div>
     );
 
     const body = (
@@ -157,7 +206,7 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
 
             {!loading && !error && myCircuitData && otherCircuitData && (
                 <>
-                    <SessionTabs
+                    <CompareSessionTabs
                         sessions={myCircuitData.sessions}
                         selectedSessionType={selectedSessionType}
                         onSelect={setSelectedSessionType}
@@ -166,6 +215,7 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
                     <PredictionComparisonTable
                         session={mySession}
                         otherSession={otherSession}
+                        myLabel={myLabel}
                         otherLabel={otherLabel}
                     />
                 </>
@@ -175,12 +225,13 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
 
     if (phase === "closed") return null;
 
+    const dialogLabel = `Comparación de predicciones: ${myLabel} vs. ${otherLabel}`;
+
     const sheetContent = (
         <>
             <div className="drawer-handle"></div>
             <div className="gp-compare-drawer-header">
-                {compareTitle}
-                {compareSubtitle}
+                {gpCard}
             </div>
         </>
     );
@@ -196,7 +247,7 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
                     className={`gp-compare-drawer gp-compare-drawer--css ${phase === "closing" ? "is-closing" : ""} ${dragging ? "is-dragging" : ""}`}
                     role="dialog"
                     aria-modal="true"
-                    aria-labelledby="dialog-title-compare"
+                    aria-label={dialogLabel}
                     style={{ transform: `translateY(${dragY}px)` }}
                 >
                     <div
@@ -220,21 +271,24 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
 
     return (
         <div className={`gp-modal-overlay gp-modal-overlay--css ${phase === "closing" ? "is-closing" : ""}`}>
-            <div
-                className="gp-modal-card gp-modal-card--wide"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="dialog-title-compare"
-            >
-                {compareTitle}
-                {compareSubtitle}
+            {/* Envoltorio propio (no .gp-modal-card directamente) para que la cruz,
+                posicionada semi-afuera de la esquina, no quede recortada por el
+                overflow-y:auto que .gp-modal-card necesita para scrollear la tabla
+                larga sin desbordar el viewport. */}
+            <div className="cmp-modal-wrap">
+                <button type="button" className="gp-modal-close" onClick={onClose} aria-label="Cerrar">
+                    <i className="bi bi-x-lg"></i>
+                </button>
 
-                {body}
+                <div
+                    className="gp-modal-card gp-modal-card--wide"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label={dialogLabel}
+                >
+                    {gpCard}
 
-                <div className="gp-modal-actions">
-                    <button className="gp-btn-cancel" onClick={onClose}>
-                        Cerrar
-                    </button>
+                    {body}
                 </div>
             </div>
         </div>

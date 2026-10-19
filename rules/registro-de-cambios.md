@@ -2,6 +2,32 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-18 · Rediseño oscuro del modal de comparación de predicciones
+
+- Iterado primero como mockup local (HTML/CSS/JS aislado en el scratchpad,
+  sin tocar el repo) a lo largo de muchas rondas de feedback, y recién
+  implementado una vez validado el diseño.
+- `FloatingPredictionCompare` deja el tema claro tipo "Mi Historial" (tabla
+  blanca, título "VOS vs. X" con círculo rojo) y pasa al lenguaje visual
+  oscuro del resto del sitio: card de GP oscura (`.cmp-gp-card`) en vez del
+  título "VS", tabla de 4 columnas con los puntos como píldora pegada al
+  piloto (no columna aparte) y el total de puntos de cada usuario junto a
+  su nombre en el encabezado, tabs de sesión propios sin fecha ni puntaje
+  (`CompareSessionTabs`, puntito de color en vez de píldora).
+- Nombre completo del piloto en desktop, trigrama en el bottom-sheet
+  mobile, decidido por CSS según el contenedor real (no una preferencia
+  manual).
+- Corregido un bug real: `.gp-compare-drawer` en mobile tenía `top: 12%` Y
+  `bottom: 0` a la vez, lo que fuerza el alto a un tamaño fijo (88% del
+  viewport) sin importar el contenido — al cambiar de Qualy a Race la
+  solapa no crecía y había que scrollear a mano. Se saca el `top` fijo
+  para que el alto se ajuste de verdad al contenido de cada sesión.
+- Cruz flotante para cerrar (`.gp-modal-close`, nueva) solo en desktop, en
+  vez del botón "Cerrar" al pie; en mobile no hay cruz (ya se cierra
+  arrastrando o tocando afuera).
+- Detalle completo (componentes, clases nuevas, CSS eliminado) en
+  [features/ver-predicciones-otros-usuarios.md](./features/ver-predicciones-otros-usuarios.md).
+
 ## 2026-10-17 · Ficha de piloto: causa real de los puntos ovalados y el texto corrido
 
 - Encontrada la causa, reproducida localmente con Bootstrap real (`agent-browser`):

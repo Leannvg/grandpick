@@ -192,13 +192,27 @@ Los 4 modales `Floating*` (`FloatingDialog`, `FloatingEditProfile`,
 Escape en desktop vía el hook `useEscapeKey(isActive, onEscape)` (ver
 [componentes.md](./componentes.md#hooks)).
 
-**Título "rico" para modales de comparación** (`.gp-compare-title`, usado en
-`FloatingPredictionCompare`): en vez de `.gp-modal-title` plano, cuando el
-modal enfrenta a dos personas se arma `{nombre A}` — círculo "VS" (fondo
-`--color-red`) — `{nombre B}`, con el nombre del GP como subtítulo
-(`.gp-compare-subtitle`, mismo tratamiento que `.gp-modal-subtitle` pero
-centrado). No introduce colores nuevos: reutiliza `--color-red` (ya usado
-como acento/destacado) y `--color-login` para resaltar "Vos".
+**Cruz flotante para cerrar** (`.gp-modal-close`, usada en
+`FloatingPredictionCompare` desktop): flota semi-afuera de la esquina
+superior derecha de la card (offset negativo), sobre el overlay, en vez de
+un botón "Cerrar" al pie — pensada para modales con mucho contenido debajo
+(tabla larga) donde conviene poder cerrar sin bajar hasta el final. Va
+dentro de un envoltorio propio sin `overflow` (`.cmp-modal-wrap` en
+`predictionCompare.css`), no directo en `.gp-modal-card`, porque esa clase
+tiene `overflow-y: auto` para scrollear contenido largo y recortaría la
+cruz al estar parcialmente afuera de la card. Ningún otro modal del sitio
+la usa todavía (los demás cierran con un botón de texto al pie); queda
+disponible para sumarla ahí si se decide más adelante.
+
+**Card de GP** (`.cmp-gp-card`, usada en `FloatingPredictionCompare` en vez
+del título "VS" anterior, en `assets/styles/predictionCompare.css`): mismo
+criterio visual que `.cal-card__row` del calendario (bandera + nombre del
+GP + circuito a la izquierda, fecha a la derecha), pero con fondo oscuro
+translúcido (`rgba(255,255,255,.045)`, igual que el resto de las tarjetas
+del modal) en vez del blanco de `.cal-card__row` real — ese fondo claro
+tiene sentido en el calendario, que vive sobre la página, pero no adentro
+de este modal oscuro. Sin el riel de ronda ni el botón de horarios de
+`CalendarCard`, que acá no aplican.
 
 **Bottom-sheet mobile** (`<1200px`): algunos modales con contenido tabular
 denso (ej. `FloatingPredictionCompare`) reemplazan el modal centrado por un
@@ -206,9 +220,10 @@ panel que sube desde abajo, replicando el drawer de `PredictionHistory.jsx`
 (`.history-drawer-overlay` + `.drawer-handle` de `predictionHistory.css`,
 reutilizados tal cual, más `.gp-compare-drawer`/`.gp-compare-drawer-header`/
 `.gp-compare-drawer-body` para el contenedor y layout propios): overlay +
-tirador arriba + arrastre hacia abajo (`framer-motion`, `drag="y"`,
-`onDragEnd` con umbral de 100px) para cerrar. Se cierra por arrastre o
-tocando el overlay; sin botón "Cerrar" explícito.
+tirador arriba + arrastre hacia abajo (gesto manual con eventos de puntero,
+no `framer-motion`, ver `useModalPhase` en [componentes.md](./componentes.md#hooks))
+para cerrar. Se cierra por arrastre o tocando el overlay; sin botón ni cruz
+de cerrar explícita (la cruz flotante de desktop no aplica acá).
 
 ### Tablas del panel admin
 

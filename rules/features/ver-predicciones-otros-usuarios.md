@@ -137,3 +137,65 @@ pedía en `fetchStats`).
   mostrar solo el nombre a `🏁 Nombre del GP · fecha` usando `getFlagEmoji`
   y `formatRaceDate` (ambos ya existentes en `utils/helpers.js`), con la
   bandera del circuito y el rango de fechas del fin de semana.
+
+## Rediseño oscuro del modal de comparación (2026-10-18)
+
+El modal (`FloatingPredictionCompare`) reusaba el tema claro de "Mi
+Historial" (tabla blanca, header celeste) y un título tipo "VS" con
+círculo rojo. Se iteró primero con un mockup local (HTML/CSS/JS aislado,
+sin tocar el repo) hasta validar el diseño, y recién después se implementó.
+Cambios finales:
+
+- **Sin título "VS"**: se eliminó `.gp-compare-title`/`.gp-compare-vs`/
+  `.gp-compare-name` (y su CSS en `components.css`). En su lugar, una card
+  oscura con el dato del GP (`.cmp-gp-card`, ver "Card de GP" en
+  [diseno.md](../diseno.md#modales-gp-modal--definidos-en-assetsstylescomponentescss)),
+  y los nombres de cada persona pasan a ser el encabezado de su propia
+  columna en la tabla (`{myLabel}` / `{otherLabel}`), con el total de
+  puntos de esa persona en la sesión elegida al lado (píldora amarilla,
+  `.cmp-total-pill`) — reemplaza el puntaje que antes mostraba el tab de
+  sesión (ahí, con dos usuarios en pantalla, un número suelto no decía de
+  quién era).
+- **Tabla oscura de 4 columnas** (`#` / Resultado real / `{myLabel}` /
+  `{otherLabel}`) en vez de la tabla blanca de 6 (`#` / Resultado real /
+  Predicción / Puntos / Predicción del otro / Puntos): los puntos de cada
+  predicción van como píldora pegada al piloto pronosticado
+  (`.cmp-mini-pts`), no en una columna aparte — así entra sin scroll
+  horizontal en mobile y no hay que ir y volver para comparar contra el
+  resultado real. Cada predicción errada marca de rojo toda su celda
+  (piloto + píldora), no solo el nombre. Implementado en
+  `PredictionComparisonTable.jsx` (rama `compareMode`, componentes locales
+  `CompareDriverCell`/`CompareMiniPts`, nuevo prop `myLabel`), estilos en
+  el nuevo `assets/styles/predictionCompare.css`.
+- **Nombre completo en desktop, trigrama en mobile**: `driver.trigram` (ya
+  existe en el modelo de piloto, lo usa `Standings.jsx`) en vez de
+  `full_name` cuando la tabla cae en el bottom-sheet. No es una
+  preferencia manual: `CompareDriverCell` siempre renderiza las dos
+  variantes (`.name-full`/`.name-tri`) y el CSS decide cuál mostrar según
+  el contenedor real (`.gp-modal-card` vs `.gp-compare-drawer`), sin que
+  el componente sepa en cuál está montado.
+- **Tabs de sesión propios** (`CompareSessionTabs`, local a
+  `FloatingPredictionCompare.jsx`, no exportado): solo el nombre + un
+  puntito del color de sesión (`--color-stat-sprint/qualy/race`), sin
+  fecha ni puntaje — a diferencia de `SessionTabs` (que sigue igual, solo
+  la usa `PredictionHistory.jsx` ahora). Reusa `getSessionButtonStatus`
+  de `SessionTabs.jsx` para habilitar/deshabilitar.
+- **Bug de alto fijo en mobile corregido**: `.gp-compare-drawer` tenía
+  `top: 12%` A LA VEZ que `bottom: 0`, lo que fuerza el alto a un tamaño
+  constante (88% del viewport) sin importar el contenido — con sesiones
+  cortas (ej. Qualy) dejaba hueco vacío abajo, y con sesiones largas (ej.
+  Race) no entraba y había que scrollear a mano sin que la solapa
+  "creciera". Se saca el `top` fijo (solo queda `bottom: 0` +
+  `max-height: 85%`), así el alto es "auto" de verdad y se ajusta al
+  contenido de cada sesión al cambiar de pestaña.
+- **Cruz flotante para cerrar (solo desktop)**: `.gp-modal-close` (nueva,
+  documentada en [diseno.md](../diseno.md)) flota semi-afuera de la
+  esquina de la card en vez del botón "Cerrar" al pie, que se eliminó. En
+  mobile no hay cruz: el bottom-sheet ya se cierra arrastrando o tocando
+  afuera, sería redundante.
+- **CSS eliminado** (dead code, ya sin uso): `.gp-compare-title`,
+  `.gp-compare-name(--me)`, `.gp-compare-vs`, `.gp-compare-subtitle*`
+  (`components.css`); `.prediction-comparison-table-scroll`,
+  `.prediction-comparison-table--compare`, `.col-other-pred`,
+  `.cell-wrong` (`predictionHistory.css` — la tabla sin `otherSession`,
+  usada por "Mi Historial", no los usaba).

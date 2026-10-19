@@ -33,67 +33,102 @@ function DriverCell({ item }) {
 }
 
 /**
+ * Piloto para el modo comparación (ficha oscura, `cmp-*`): nombre completo
+ * en desktop, trigrama en el bottom-sheet mobile — lo decide el CSS según
+ * el contenedor (`.gp-modal-card` vs `.gp-compare-drawer`), no JS, por eso
+ * siempre renderiza las dos variantes.
+ */
+function CompareDriverCell({ item, wrong = false }) {
+    if (!item) return <div className="cmp-driver">-</div>;
+    const first = item.driver.full_name.split(' ')[0];
+    const last = item.driver.full_name.split(' ').slice(1).join(' ');
+    return (
+        <div className={`cmp-driver ${wrong ? 'is-wrong' : ''}`}>
+            <span className="bar" style={{ backgroundColor: item.driver.team_info?.color || '#ccc' }}></span>
+            <span className="name name-full">{first} <strong>{last}</strong></span>
+            <span className="name name-tri">{item.driver.trigram || first}</span>
+        </div>
+    );
+}
+
+function CompareMiniPts({ pts }) {
+    if (pts === null) return <span className="cmp-mini-pts empty">-</span>;
+    return <span className={`cmp-mini-pts ${pts > 0 ? 'match' : 'mismatch'}`}>{pts}</span>;
+}
+
+/**
  * Tabla de comparación predicción vs. resultado real, reutilizada en
  * PredictionHistory ("Mi Historial") y en el modal de comparación entre
  * dos usuarios (FloatingPredictionCompare).
  *
  * - Sin `otherSession`: 4 columnas (comportamiento original, sin cambios):
  *   Pos | Tu predicción | Resultado real | Puntos.
- * - Con `otherSession` + `otherLabel`: 6 columnas, con el resultado real
- *   primero (después de Pos) y los puntos de cada usuario pegados a la
- *   derecha de su propia columna de predicción: Pos | Resultado real |
- *   Tu predicción | Puntos | Predicción de {otherLabel} | Puntos. Cada
- *   predicción errada se marca en rojo de forma independiente (no toda la
- *   fila), para no confundir cuando un usuario acierta y el otro no.
+ * - Con `otherSession` + `otherLabel`: ficha oscura de 4 columnas (Pos |
+ *   Resultado real | {myLabel} | {otherLabel}), con los puntos de cada
+ *   predicción como píldora pegada al nombre del piloto pronosticado (no
+ *   una columna de puntos aparte) y el total de puntos de la sesión de
+ *   cada usuario junto a su nombre en el encabezado. Cada predicción
+ *   errada marca de rojo toda su celda (piloto + píldora), no la fila
+ *   completa, para no confundir cuando un usuario acierta y el otro no.
  */
-function PredictionComparisonTable({ session, otherSession = null, otherLabel = null }) {
+function PredictionComparisonTable({ session, otherSession = null, otherLabel = null, myLabel = "Vos" }) {
     const length = session?.points_system?.points?.length || 10;
     const compareMode = !!otherSession;
 
     if (compareMode) {
-        return (
-            <div className="prediction-comparison-table-scroll">
-            <div className="prediction-comparison-table prediction-comparison-table--compare">
-                <div className="table-header">
-                    <div className="col-pos">#</div>
-                    <div className="col-real">Resultado real</div>
-                    <div className="col-pred">Tu predicción</div>
-                    <div className="col-points">Puntos</div>
-                    <div className="col-other-pred">Predicción de {otherLabel}</div>
-                    <div className="col-points">Puntos</div>
-                </div>
-                <div className="table-body">
-                    {Array.from({ length }).map((_, idx) => {
-                        const pos = idx + 1;
-                        const real = session?.results?.find(r => r.position === pos);
-                        const pred = session?.prediction?.find(p => p.position === pos);
-                        const otherPred = otherSession?.prediction?.find(p => p.position === pos);
-                        const { isMatch, points } = calcPrediction(session, idx, pred, real);
-                        const otherCalc = calcPrediction(otherSession, idx, otherPred, real);
-                        const predWrong = !!(pred && real && !isMatch);
-                        const otherWrong = !!(otherPred && real && !otherCalc.isMatch);
+        const rows = Array.from({ length }).map((_, idx) => {
+            const pos = idx + 1;
+            const real = session?.results?.find(r => r.position === pos);
+            const pred = session?.prediction?.find(p => p.position === pos);
+            const otherPred = otherSession?.prediction?.find(p => p.position === pos);
+            const { isMatch, points } = calcPrediction(session, idx, pred, real);
+            const otherCalc = calcPrediction(otherSession, idx, otherPred, real);
 
-                        return (
-                            <div key={pos} className="table-row">
-                                <div className="col-pos">{pos}</div>
-                                <div className="col-real"><DriverCell item={real} /></div>
-                                <div className={`col-pred ${predWrong ? 'cell-wrong' : ''}`}>
-                                    <DriverCell item={pred} />
-                                </div>
-                                <div className={`col-points ${isMatch ? 'match' : (pred && real ? 'mismatch' : '')}`}>
-                                    {isMatch ? points : (pred && real ? 0 : '-')}
-                                </div>
-                                <div className={`col-other-pred ${otherWrong ? 'cell-wrong' : ''}`}>
-                                    <DriverCell item={otherPred} />
-                                </div>
-                                <div className={`col-points ${otherCalc.isMatch ? 'match' : (otherPred && real ? 'mismatch' : '')}`}>
-                                    {otherCalc.isMatch ? otherCalc.points : (otherPred && real ? 0 : '-')}
-                                </div>
+            return {
+                pos,
+                real,
+                pred,
+                otherPred,
+                predWrong: !!(pred && real && !isMatch),
+                otherWrong: !!(otherPred && real && !otherCalc.isMatch),
+                myPts: (pred && real) ? (isMatch ? points : 0) : null,
+                otherPts: (otherPred && real) ? (otherCalc.isMatch ? otherCalc.points : 0) : null,
+            };
+        });
+
+        const myTotal = rows.reduce((sum, r) => sum + (r.myPts || 0), 0);
+        const otherTotal = rows.reduce((sum, r) => sum + (r.otherPts || 0), 0);
+
+        return (
+            <div className="cmp-table-scroll">
+                <div className="cmp-table is-compact">
+                    <div className="cmp-head is-compact">
+                        <div className="cmp-pos">#</div>
+                        <div>Real</div>
+                        <div className="cmp-head__name cmp-head__name--me">
+                            <span className="cmp-head__name-label">{myLabel}</span>
+                            <span className="cmp-total-pill">{myTotal} PTS</span>
+                        </div>
+                        <div className="cmp-head__name">
+                            <span className="cmp-head__name-label">{otherLabel}</span>
+                            <span className="cmp-total-pill">{otherTotal} PTS</span>
+                        </div>
+                    </div>
+                    {rows.map(r => (
+                        <div key={r.pos} className="cmp-row is-compact">
+                            <div className="cmp-pos">{r.pos}</div>
+                            <div><CompareDriverCell item={r.real} /></div>
+                            <div className={`cmp-cell-pred ${r.predWrong ? 'is-wrong' : ''}`}>
+                                <CompareDriverCell item={r.pred} wrong={r.predWrong} />
+                                <CompareMiniPts pts={r.myPts} />
                             </div>
-                        );
-                    })}
+                            <div className={`cmp-cell-pred ${r.otherWrong ? 'is-wrong' : ''}`}>
+                                <CompareDriverCell item={r.otherPred} wrong={r.otherWrong} />
+                                <CompareMiniPts pts={r.otherPts} />
+                            </div>
+                        </div>
+                    ))}
                 </div>
-            </div>
             </div>
         );
     }
