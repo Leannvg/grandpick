@@ -163,10 +163,17 @@ export async function editById(req, res) {
                 notificationMessage = "La FIA modificó los resultados oficiales de la carrera y tus puntos pudieron haber cambiado. ¡Revisá tu historial!";
             }
 
+            const circuitId = updatedRace?.id_circuit?.toString();
+            const sessionType = updatedRace?.points_system?.type;
+            const linkParams = new URLSearchParams();
+            if (circuitId) linkParams.set("gp", circuitId);
+            if (sessionType) linkParams.set("session", sessionType);
+            const linkQuery = linkParams.toString();
+
             await sendGlobalNotification(req.app, {
                 title: notificationTitle,
                 message: notificationMessage,
-                link: `/prediction-history`,
+                link: linkQuery ? `/prediction-history?${linkQuery}` : `/prediction-history`,
                 type: "success"
             });
 

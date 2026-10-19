@@ -1,28 +1,33 @@
 import { useEffect, useState, useMemo } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import PredictionServices from "../services/predictions.services";
 import UsersServices from "../services/users.services";
 import { useLoader } from "../context/LoaderContext";
+import { useAlert } from "../context/AlertContext";
 import { getFlagEmoji } from "../utils/helpers";
 import SessionTabs from "../components/predictions/SessionTabs";
 import PredictionComparisonTable from "../components/predictions/PredictionComparisonTable";
 import BackButton from "../components/BackButton";
 import "../assets/styles/predictionHistory.css";
 
+const normalizeSessionType = (type) => (type === "qualy" ? "qualifying" : type);
+
 function PredictionHistory() {
     const { userId: routeUserId } = useParams();
     const location = useLocation();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [history, setHistory] = useState([]);
     const [selectedCircuitId, setSelectedCircuitId] = useState(null);
     const [selectedSessionType, setSelectedSessionType] = useState(null);
-    const [year, setYear] = useState(new Date().getFullYear());
+    const [year, setYear] = useState(Number(searchParams.get("year")) || new Date().getFullYear());
     const [searchTerm, setSearchTerm] = useState("");
     const [user, setUser] = useState(null);
     const [userStats, setUserStats] = useState(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1200);
     const { showLoader, hideLoader } = useLoader();
+    const { showAlert } = useAlert();
 
     const isOwnHistory = !routeUserId;
     const otherUserName = userStats
@@ -74,9 +79,12 @@ function PredictionHistory() {
                 if (statsData) setUserStats(statsData);
 
                 if (historyData.length > 0) {
-                    setSelectedCircuitId(historyData[0].circuit._id);
-                    const firstCircuit = historyData[0];
-                    const firstSession = firstCircuit.sessions.find(s => s.results?.length > 0 || s.prediction) || firstCircuit.sessions[0];
+                    const urlCircuit = historyData.find(h => h.circuit._id === searchParams.get("gp"));
+                    const firstCircuit = urlCircuit || historyData[0];
+                    setSelectedCircuitId(firstCircuit.circuit._id);
+                    const urlSessionType = normalizeSessionType(searchParams.get("session"));
+                    const urlSession = urlCircuit && firstCircuit.sessions.find(s => normalizeSessionType(s.type) === urlSessionType);
+                    const firstSession = urlSession || firstCircuit.sessions.find(s => s.results?.length > 0 || s.prediction) || firstCircuit.sessions[0];
                     setSelectedSessionType(firstSession?.type || "race");
                 }
             } catch (err) {
@@ -104,6 +112,46 @@ function PredictionHistory() {
         return currentCircuit.sessions.find(s => s.type === selectedSessionType);
     }, [currentCircuit, selectedSessionType]);
 
+    // Refleja el GP y la sesión visibles en la URL para poder compartirla
+    const buildParams = (circuitId, sessionType) => {
+        const params = new URLSearchParams({ gp: circuitId });
+        if (sessionType) params.set("session", sessionType);
+        if (year !== new Date().getFullYear()) params.set("year", year);
+        return params;
+    };
+
+    const handleSessionSelect = (sessionType) => {
+        setSelectedSessionType(sessionType);
+        if (selectedCircuitId) setSearchParams(buildParams(selectedCircuitId, sessionType), { replace: true });
+    };
+
+    const handleShare = async (includeSession) => {
+        if (!currentCircuit) return;
+        const params = buildParams(currentCircuit.circuit._id, includeSession ? selectedSessionType : null);
+        const url = `${window.location.origin}/prediction-history/${routeUserId || user?._id}?${params.toString()}`;
+        try {
+            if (navigator.share) {
+                await navigator.share({ title: `GrandPick | ${currentCircuit.circuit.gp_name}`, url });
+            } else {
+                await navigator.clipboard.writeText(url);
+                showAlert("Link copiado al portapapeles", "success");
+            }
+        } catch (err) {
+            if (err?.name !== "AbortError") showAlert("No se pudo compartir el link", "danger");
+        }
+    };
+
+    const shareButtons = (
+        <div className="d-flex gap-2 justify-content-end mb-2">
+            <button type="button" className="btn btn-outline-light btn-sm" onClick={() => handleShare(true)} disabled={!selectedSessionType}>
+                Compartir sesión
+            </button>
+            <button type="button" className="btn btn-outline-light btn-sm" onClick={() => handleShare(false)}>
+                Compartir GP
+            </button>
+        </div>
+    );
+
     const handleCircuitClick = (circuitId) => {
         setSelectedCircuitId(circuitId);
         const circuit = history.find(h => h.circuit._id === circuitId);
@@ -111,6 +159,7 @@ function PredictionHistory() {
             // Elegir una sesión por defecto razonable para el circuito seleccionado
             const bestSession = circuit.sessions.find(s => s.results?.length > 0 || s.prediction) || circuit.sessions[0];
             setSelectedSessionType(bestSession?.type || "race");
+            setSearchParams(buildParams(circuitId, bestSession?.type), { replace: true });
         }
         // Abrir drawer en celular
         if (window.innerWidth < 1200) {
@@ -248,10 +297,11 @@ function PredictionHistory() {
                                                 </div>
                                             </div>
 
+                                            {shareButtons}
                                             <SessionTabs
                                                 sessions={currentCircuit.sessions}
                                                 selectedSessionType={selectedSessionType}
-                                                onSelect={setSelectedSessionType}
+                                                onSelect={handleSessionSelect}
                                             />
 
                                             <PredictionComparisonTable session={currentSession} />
@@ -267,10 +317,11 @@ function PredictionHistory() {
                         <div className="history-detail">
                             {currentCircuit ? (
                                 <>
+                                    {shareButtons}
                                     <SessionTabs
                                         sessions={currentCircuit.sessions}
                                         selectedSessionType={selectedSessionType}
-                                        onSelect={setSelectedSessionType}
+                                        onSelect={handleSessionSelect}
                                     />
 
                                     <PredictionComparisonTable session={currentSession} />

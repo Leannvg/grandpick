@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAlert } from "../context/AlertContext";
 import UsersServices from "../services/users.services.js";
 
@@ -10,6 +10,7 @@ export default function ProtectedRoute({
 }) {
 
   const { showAlert } = useAlert();
+  const location = useLocation();
 
   if (!isAuthenticated) {
     showAlert(
@@ -17,7 +18,7 @@ export default function ProtectedRoute({
       "warning",
       false
     );
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace state={{ from: `${location.pathname}${location.search}` }} />;
   }
 
   if (adminOnly && !isAdmin) {

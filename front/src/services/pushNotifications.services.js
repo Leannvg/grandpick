@@ -100,7 +100,8 @@ export const onForegroundMessage = (navigate) => {
         // Si el usuario quiere redirección automática cuando llega un mensaje de resultados
         if (payload.data?.link?.startsWith("/results") || payload.notification?.title?.toLowerCase().includes("resultado")) {
             if (navigate) {
-                navigate("/prediction-history");
+                const link = payload.data?.link;
+                navigate(link?.startsWith("/prediction-history") ? link : "/prediction-history");
             }
         } else {
             alert(`${payload.notification.title}: ${payload.notification.body}`);

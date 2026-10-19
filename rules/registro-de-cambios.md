@@ -2,6 +2,13 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-19 · Links propios por GP y sesión en el historial de predicciones
+
+- El historial refleja GP/sesión/año en la URL (`?gp=&session=&year=`), con botones para compartir sesión o GP completo.
+- La notificación de resultados cargados enlaza al GP y sesión correspondientes.
+- Al entrar a una ruta protegida sin sesión, el login vuelve a la URL original.
+- Detalle en `features/links-historial-predicciones.md`.
+
 ## 2026-10-12 · Labels de selects (overflow-visible) sin esquinas redondeadas
 
 - Los `.gp-input-label` normalmente se ven redondeados porque `.gp-input-group`

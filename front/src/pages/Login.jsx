@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import * as authServices from "../services/auth.services.js";
 import * as helpers from "../utils/helpers.js";
 import { useAlert } from "./../context/AlertContext.jsx";
@@ -11,13 +11,17 @@ function Login({ onLogin }) {
   const [password, setPassword] = useState("");
   const [errorsForm, setErrors] = useState({});
   const { showAlert } = useAlert();
+  const location = useLocation();
+  const redirectTo = typeof location.state?.from === "string" && location.state.from.startsWith("/")
+    ? location.state.from
+    : "/";
 
   function onSubmit(event) {
     event.preventDefault();
     authServices
       .login(email, password)
       .then(({ user, token }) => {
-        onLogin(user, token);
+        onLogin(user, token, redirectTo);
         showAlert(`Bienvenido/a ${user.name}!`, "success");
       })
       .catch((error) => {

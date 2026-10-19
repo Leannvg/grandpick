@@ -119,7 +119,7 @@ function App() {
     };
   }, [userId]);
 
-  function onLogin(user, token) {
+  function onLogin(user, token, redirectTo = '/') {
     setAutenticado(true);
     setUserId(user._id);
 
@@ -132,7 +132,7 @@ function App() {
 
     localStorage.setItem('auth-token', token);
 
-    navigate('/');
+    navigate(redirectTo);
   }
 
 
