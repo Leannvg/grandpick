@@ -2,6 +2,11 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-19 · Historial: links compartidos abren el detalle en mobile y compartir copia al portapapeles
+
+- Mobile: al entrar con `?gp=` válido se abre el drawer con el GP/sesión (antes mostraba solo la lista).
+- Los botones "Compartir sesión/GP" copian el link directo al portapapeles (sin `navigator.share`), con el mismo estilo que el botón del ranking.
+
 ## 2026-10-19 · Links propios por GP y sesión en el historial de predicciones
 
 - El historial refleja GP/sesión/año en la URL (`?gp=&session=&year=`), con botones para compartir sesión o GP completo.

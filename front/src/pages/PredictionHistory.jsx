@@ -86,6 +86,8 @@ function PredictionHistory() {
                     const urlSession = urlCircuit && firstCircuit.sessions.find(s => normalizeSessionType(s.type) === urlSessionType);
                     const firstSession = urlSession || firstCircuit.sessions.find(s => s.results?.length > 0 || s.prediction) || firstCircuit.sessions[0];
                     setSelectedSessionType(firstSession?.type || "race");
+                    // En mobile el detalle vive en el drawer: abrirlo si llegamos con un GP en la URL
+                    if (urlCircuit && window.innerWidth < 1200) setIsDrawerOpen(true);
                 }
             } catch (err) {
                 console.error("Error loading history:", err);
@@ -130,23 +132,32 @@ function PredictionHistory() {
         const params = buildParams(currentCircuit.circuit._id, includeSession ? selectedSessionType : null);
         const url = `${window.location.origin}/prediction-history/${routeUserId || user?._id}?${params.toString()}`;
         try {
-            if (navigator.share) {
-                await navigator.share({ title: `GrandPick | ${currentCircuit.circuit.gp_name}`, url });
-            } else {
-                await navigator.clipboard.writeText(url);
-                showAlert("Link copiado al portapapeles", "success");
-            }
-        } catch (err) {
-            if (err?.name !== "AbortError") showAlert("No se pudo compartir el link", "danger");
+            await navigator.clipboard.writeText(url);
+            showAlert("Link copiado al portapapeles", "success");
+        } catch {
+            showAlert("No se pudo copiar el link", "danger");
         }
     };
 
     const shareButtons = (
         <div className="d-flex gap-2 justify-content-end mb-2">
-            <button type="button" className="btn btn-outline-light btn-sm" onClick={() => handleShare(true)} disabled={!selectedSessionType}>
+            <button
+                type="button"
+                className="btn btn-outline-light btn-sm d-inline-flex align-items-center gap-2"
+                onClick={() => handleShare(true)}
+                disabled={!selectedSessionType}
+                title="Copiar link de esta sesión"
+            >
+                <i className="bi bi-share-fill me-2"></i>
                 Compartir sesión
             </button>
-            <button type="button" className="btn btn-outline-light btn-sm" onClick={() => handleShare(false)}>
+            <button
+                type="button"
+                className="btn btn-outline-light btn-sm d-inline-flex align-items-center gap-2"
+                onClick={() => handleShare(false)}
+                title="Copiar link de este Gran Premio"
+            >
+                <i className="bi bi-share-fill me-2"></i>
                 Compartir GP
             </button>
         </div>
