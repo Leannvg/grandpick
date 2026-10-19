@@ -23,3 +23,6 @@ En pantallas < 1200px el detalle vive en el drawer: al cargar con un `gp` válid
 ## Botones de compartir
 - Solo se muestran en el historial propio (`isOwnHistory`); en el de otro usuario no aparecen.
 - En el drawer mobile (fondo claro) usan la clase `history-share-drawer` (fondo `#0d1b2a`, texto blanco) porque el `btn-outline-light` blanco no se veía. En desktop mantienen `btn-outline-light`.
+
+## Scroll de la lista
+Al cargar con un `gp` válido en la URL, la lista lateral (`.history-sidebar`) se desplaza para centrar la card del GP seleccionado (se ajusta `scrollTop` del contenedor, no el de la página; solo en la carga inicial, los clicks manuales no mueven la lista).

@@ -3,6 +3,11 @@
 Orden cronológico inverso (lo más nuevo arriba).
 
 
+## 2026-10-19 · Historial: la lista hace scroll al GP del link
+
+- Al abrir un link con `?gp=`, la lista lateral se centra en la card del GP seleccionado en vez de empezar desde arriba.
+
+
 ## 2026-10-19 · Historial: compartir solo en el historial propio y botones visibles en mobile
 
 - Los botones "Compartir sesión/GP" ya no aparecen al ver el historial de otro usuario.

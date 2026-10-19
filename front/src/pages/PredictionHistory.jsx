@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { useParams, useLocation, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import PredictionServices from "../services/predictions.services";
@@ -28,6 +28,8 @@ function PredictionHistory() {
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1200);
     const { showLoader, hideLoader } = useLoader();
     const { showAlert } = useAlert();
+    const sidebarRef = useRef(null);
+    const scrollToSelectedRef = useRef(false);
 
     const isOwnHistory = !routeUserId;
     const otherUserName = userStats
@@ -86,6 +88,7 @@ function PredictionHistory() {
                     const urlSession = urlCircuit && firstCircuit.sessions.find(s => normalizeSessionType(s.type) === urlSessionType);
                     const firstSession = urlSession || firstCircuit.sessions.find(s => s.results?.length > 0 || s.prediction) || firstCircuit.sessions[0];
                     setSelectedSessionType(firstSession?.type || "race");
+                    scrollToSelectedRef.current = !!urlCircuit;
                     // En mobile el detalle vive en el drawer: abrirlo si llegamos con un GP en la URL
                     if (urlCircuit && window.innerWidth < 1200) setIsDrawerOpen(true);
                 }
@@ -97,6 +100,17 @@ function PredictionHistory() {
         }
         loadData();
     }, [year, routeUserId]);
+
+    // Al llegar por link, centrar en la lista el GP seleccionado (solo en la carga inicial)
+    useEffect(() => {
+        if (!scrollToSelectedRef.current || !selectedCircuitId) return;
+        const sidebar = sidebarRef.current;
+        const card = sidebar?.querySelector(`[data-circuit-id="${selectedCircuitId}"]`);
+        if (!card) return;
+        sidebar.scrollTop += card.getBoundingClientRect().top - sidebar.getBoundingClientRect().top
+            - (sidebar.clientHeight - card.offsetHeight) / 2;
+        scrollToSelectedRef.current = false;
+    }, [history, selectedCircuitId]);
 
     const filteredHistory = useMemo(() => {
         return history.filter(item =>
@@ -237,7 +251,7 @@ function PredictionHistory() {
                             </div>
                         </div>
 
-                        <aside className="history-sidebar">
+                        <aside className="history-sidebar" ref={sidebarRef}>
                             {filteredHistory.map((item) => {
                                 const isSelected = selectedCircuitId === item.circuit._id;
                                 const isFinished = item.sessions.every(s => s.state === "Finalizado");
@@ -246,6 +260,7 @@ function PredictionHistory() {
                                 return (
                                     <div
                                         key={item.circuit._id}
+                                        data-circuit-id={item.circuit._id}
                                         className={`history-circuit-card ${isSelected ? 'is-selected' : ''}`}
                                         onClick={() => handleCircuitClick(item.circuit._id)}
                                     >
