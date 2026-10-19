@@ -244,6 +244,12 @@
     white-space: nowrap;
     color: #e8eef4;
     font-size: 12px;
+    /* Es hijo flex de .cmp-head__name: sin esto, el ancho mínimo automático
+       de un texto con white-space:nowrap es el del texto completo (nunca
+       se corta), así que con un nombre largo (ej. "Mariela Rimasa...")
+       empuja toda la fila/tabla a desbordar en vez de truncarse — de ahí
+       el scroll horizontal de toda la página en mobile. */
+    min-width: 0;
 }
 
 .cmp-head__name--me .cmp-head__name-label { color: var(--color-login); }
@@ -281,6 +287,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    /* mismo motivo que .cmp-head__name-label: sin min-width:0 el texto no
+       se trunca de verdad, empuja la fila a desbordar */
+    min-width: 0;
 }
 
 .cmp-driver .name strong { text-transform: uppercase; font-weight: 800; }

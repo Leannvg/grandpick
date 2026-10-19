@@ -2,6 +2,21 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-19 · Tabla de comparación: scroll horizontal con nombres largos
+
+- Bug reportado con captura: en mobile, con un nombre de usuario largo
+  (ej. "Mariela Rimasa..."), toda la página quedaba con scroll horizontal.
+- Causa: `.cmp-head__name-label` y `.cmp-driver .name` tienen
+  `white-space: nowrap` para truncar con elipsis, pero son hijos flex sin
+  `min-width: 0` — por default, el ancho mínimo automático de un hijo flex
+  con texto `nowrap` es el del texto completo (nunca se corta), así que un
+  nombre largo empujaba la fila/columna a desbordar en vez de truncarse,
+  y de ahí el scroll horizontal de toda la página.
+- Arreglo: `min-width: 0` en los dos (`predictionCompare.css`). Verificado
+  montando la tabla aislada con un nombre largo a 390px de ancho: sin el
+  fix desbordaba, con el fix trunca a "Mariela..." y no hay scroll a nivel
+  página.
+
 ## 2026-10-19 · Tabla de comparación: alto fijo, columna Real angosta y scroll de fondo
 
 - **Tabla siempre de 10 filas**: antes `PredictionComparisonTable` usaba la
