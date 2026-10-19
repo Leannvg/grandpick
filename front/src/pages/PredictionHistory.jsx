@@ -139,8 +139,8 @@ function PredictionHistory() {
         }
     };
 
-    const shareButtons = (
-        <div className="d-flex gap-2 justify-content-end mb-2">
+    const renderShareButtons = (inDrawer = false) => isOwnHistory && (
+        <div className={`d-flex gap-2 justify-content-end mb-2 ${inDrawer ? "history-share-drawer" : ""}`}>
             <button
                 type="button"
                 className="btn btn-outline-light btn-sm d-inline-flex align-items-center gap-2"
@@ -308,7 +308,7 @@ function PredictionHistory() {
                                                 </div>
                                             </div>
 
-                                            {shareButtons}
+                                            {renderShareButtons(true)}
                                             <SessionTabs
                                                 sessions={currentCircuit.sessions}
                                                 selectedSessionType={selectedSessionType}
@@ -328,7 +328,7 @@ function PredictionHistory() {
                         <div className="history-detail">
                             {currentCircuit ? (
                                 <>
-                                    {shareButtons}
+                                    {renderShareButtons()}
                                     <SessionTabs
                                         sessions={currentCircuit.sessions}
                                         selectedSessionType={selectedSessionType}

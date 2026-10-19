@@ -19,3 +19,7 @@ El endpoint ya oculta `prediction` de otros usuarios hasta que la sesión está 
 
 ## Mobile
 En pantallas < 1200px el detalle vive en el drawer: al cargar con un `gp` válido en la URL el drawer se abre automáticamente (sin `gp` se muestra la lista).
+
+## Botones de compartir
+- Solo se muestran en el historial propio (`isOwnHistory`); en el de otro usuario no aparecen.
+- En el drawer mobile (fondo claro) usan la clase `history-share-drawer` (fondo `#0d1b2a`, texto blanco) porque el `btn-outline-light` blanco no se veía. En desktop mantienen `btn-outline-light`.

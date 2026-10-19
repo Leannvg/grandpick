@@ -102,3 +102,22 @@
     overflow-y: auto;
     padding: 0 10px 16px;
 }
+
+/* Botones de compartir dentro del drawer mobile (fondo claro): el outline-light blanco no se ve */
+.history-share-drawer {
+    padding: 0 10px;
+}
+
+.history-share-drawer .btn {
+    background-color: #0d1b2a;
+    border-color: #0d1b2a;
+    color: #fff;
+}
+
+.history-share-drawer .btn:hover,
+.history-share-drawer .btn:active,
+.history-share-drawer .btn:focus-visible {
+    background-color: #1b2f47;
+    border-color: #1b2f47;
+    color: #fff;
+}

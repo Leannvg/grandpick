@@ -2,6 +2,11 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+
+## 2026-10-19 · Historial: compartir solo en el historial propio y botones visibles en mobile
+
+- Los botones "Compartir sesión/GP" ya no aparecen al ver el historial de otro usuario.
+- En el drawer mobile los botones usan fondo `#0d1b2a` (`.history-share-drawer`) para verse sobre el fondo claro.
 ## 2026-10-19 · Historial: links compartidos abren el detalle en mobile y compartir copia al portapapeles
 
 - Mobile: al entrar con `?gp=` válido se abre el drawer con el GP/sesión (antes mostraba solo la lista).
