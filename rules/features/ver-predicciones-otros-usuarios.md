@@ -199,3 +199,29 @@ Cambios finales:
   `.prediction-comparison-table--compare`, `.col-other-pred`,
   `.cell-wrong` (`predictionHistory.css` — la tabla sin `otherSession`,
   usada por "Mi Historial", no los usaba).
+
+## Ajustes posteriores (2026-10-19)
+
+- **Modal en blanco mientras carga**: `LoaderSpinner` pinta su contenedor
+  de blanco sólido a tamaño completo (pensado para los paneles claros del
+  admin, sus otros usuarios) y tapaba la card oscura del modal mientras
+  esperaba la respuesta. `.loader-spinner-container` pasa a transparente
+  solo dentro de `.gp-modal-card`/`.gp-compare-drawer`
+  (`predictionCompare.css`), sin tocar el componente compartido.
+- **Tabla siempre de 10 filas**: antes variaba según la cantidad de
+  posiciones de la sesión elegida (3/8/10), así que la tabla se achicaba o
+  agrandaba al cambiar de pestaña. Ahora siempre 10 (la cantidad de Race);
+  las posiciones sin dato para esa sesión quedan en blanco.
+- **Columna "Real" angosta en mobile**: ahí siempre muestra trigrama, no
+  necesita repartirse el ancho en partes iguales con las columnas de
+  predicción — ancho fijo (`grid-template-columns: 20px 62px 1fr 1fr`
+  dentro de `.gp-compare-drawer-body`), el resto queda para los nombres +
+  píldoras de puntos. Desktop no cambia (ahí "Real" muestra el nombre
+  completo).
+- **Scroll de fondo saltaba al top al abrir en mobile**: `.body-scroll-lock`
+  fija el `<body>` sin compensar el scroll previo (bug compartido por
+  todos sus usos — `Nav.jsx`, `PredictionHistory.jsx`,
+  `InformationPage.jsx`, `LoaderCar.jsx` — no tocados, corregido solo
+  acá). Se guarda `window.scrollY` en `body.style.top` mientras el
+  bottom-sheet está abierto y se restaura con `window.scrollTo` al
+  cerrarlo.

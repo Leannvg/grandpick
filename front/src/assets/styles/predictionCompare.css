@@ -362,3 +362,15 @@
     font-size: 12px;
     padding: 8px 12px;
 }
+
+/* La columna "Real" acá siempre muestra trigrama (3 letras + barra, nunca
+   el nombre completo, ver .name-tri/.name-full arriba), así que no
+   necesita repartirse el ancho en partes iguales con las columnas de
+   predicción — se le da un ancho fijo chico y el resto queda para
+   {myLabel}/{otherLabel}, que sí necesitan lugar para la píldora de
+   puntos. En desktop sigue a 1fr porque ahí "Real" muestra el nombre
+   completo del piloto. */
+.gp-compare-drawer-body .cmp-head.is-compact,
+.gp-compare-drawer-body .cmp-row.is-compact {
+    grid-template-columns: 20px 62px 1fr 1fr;
+}

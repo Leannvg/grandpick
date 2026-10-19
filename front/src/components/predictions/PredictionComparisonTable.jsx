@@ -76,7 +76,13 @@ function PredictionComparisonTable({ session, otherSession = null, otherLabel = 
     const compareMode = !!otherSession;
 
     if (compareMode) {
-        const rows = Array.from({ length }).map((_, idx) => {
+        // Siempre 10 filas (la cantidad que tiene Race, la sesión con más
+        // posiciones), sin importar cuántas tenga la sesión elegida: así la
+        // tabla mide siempre lo mismo y no se achica/agranda cada vez que
+        // se cambia de pestaña (Qualy tiene 3, Sprint 8). Las posiciones
+        // que no existen en esa sesión quedan en blanco ("-"), ya las
+        // maneja `CompareDriverCell`/`CompareMiniPts` cuando no hay dato.
+        const rows = Array.from({ length: 10 }).map((_, idx) => {
             const pos = idx + 1;
             const real = session?.results?.find(r => r.position === pos);
             const pred = session?.prediction?.find(p => p.position === pos);

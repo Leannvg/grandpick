@@ -77,14 +77,31 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // .body-scroll-lock pone position:fixed en el body sin compensar el
+    // scroll previo, así que fijarlo lo "resetea" visualmente al top de la
+    // página. Se guarda el scroll actual en body.style.top (desplazado en
+    // negativo) mientras está fijo, y se restaura con window.scrollTo al
+    // destrabarlo.
     useEffect(() => {
         if (show && !isDesktop) {
+            const scrollY = window.scrollY;
+            document.body.style.top = `-${scrollY}px`;
             document.body.classList.add("body-scroll-lock");
         } else {
+            const lockedScrollY = document.body.style.top;
             document.body.classList.remove("body-scroll-lock");
+            document.body.style.top = "";
+            if (lockedScrollY) {
+                window.scrollTo(0, -parseInt(lockedScrollY, 10));
+            }
         }
         return () => {
+            const lockedScrollY = document.body.style.top;
             document.body.classList.remove("body-scroll-lock");
+            document.body.style.top = "";
+            if (lockedScrollY) {
+                window.scrollTo(0, -parseInt(lockedScrollY, 10));
+            }
         };
     }, [show, isDesktop]);
 

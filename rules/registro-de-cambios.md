@@ -2,6 +2,32 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-19 · Tabla de comparación: alto fijo, columna Real angosta y scroll de fondo
+
+- **Tabla siempre de 10 filas**: antes `PredictionComparisonTable` usaba la
+  cantidad de posiciones de la sesión elegida (3 en Qualy, 8 en Sprint, 10
+  en Race), así que la tabla se achicaba o agrandaba cada vez que se
+  cambiaba de pestaña. En modo comparación ahora siempre renderiza 10 filas
+  (la cantidad de Race); las posiciones que no existen en la sesión elegida
+  quedan en blanco ("-"), ya lo manejaban `CompareDriverCell`/
+  `CompareMiniPts` cuando no hay dato para esa posición.
+- **Columna "Real" más angosta en mobile**: ahí siempre muestra trigrama (3
+  letras + barra de color, nunca el nombre completo), así que no necesita
+  repartirse el ancho en partes iguales con las columnas de predicción —
+  pasa a un ancho fijo chico (`.gp-compare-drawer-body .cmp-head.is-compact`/
+  `.cmp-row.is-compact`, `grid-template-columns: 20px 62px 1fr 1fr`), y el
+  resto queda para `{myLabel}`/`{otherLabel}`, que necesitan lugar para la
+  píldora de puntos. En desktop sigue igual (ahí "Real" muestra el nombre
+  completo).
+- **Scroll de fondo saltaba al top en mobile**: `.body-scroll-lock` pone
+  `position: fixed` en el `<body>` sin compensar el scroll previo, así que
+  fijarlo "resetea" visualmente la página al top (bug compartido por todos
+  los usos de esa clase: `Nav.jsx`, `PredictionHistory.jsx`,
+  `InformationPage.jsx`, `LoaderCar.jsx` — no se tocaron, se corrigió solo
+  acá). `FloatingPredictionCompare` ahora guarda `window.scrollY` en
+  `body.style.top` (negativo) mientras el bottom-sheet está abierto, y lo
+  restaura con `window.scrollTo` al cerrarlo.
+
 ## 2026-10-19 · Modal de comparación en blanco mientras carga
 
 - Bug reportado con captura: al abrir el modal de comparación, mientras
