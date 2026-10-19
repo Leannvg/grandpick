@@ -2,6 +2,22 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-19 · Modal de comparación en blanco mientras carga
+
+- Bug reportado con captura: al abrir el modal de comparación, mientras
+  carga se veía un rectángulo blanco en vez de la card oscura.
+- Reproducido montando el componente aislado con una demora artificial en
+  la carga (no se pudo probar logueado contra datos reales). Causa real:
+  `LoaderSpinner` (`components/LoaderSpinner.jsx`) pinta su contenedor de
+  blanco sólido y en tamaño 100% del padre (pensado para los paneles
+  claros del admin, únicos otros usuarios del componente) — tapaba por
+  completo la card oscura mientras se esperaba la respuesta de las dos
+  predicciones.
+- Arreglo: `.loader-spinner-container` pasa a transparente solo dentro de
+  `.gp-modal-card`/`.gp-compare-drawer` (`predictionCompare.css`), sin
+  tocar el componente compartido (lo siguen usando paneles claros del
+  admin sin cambios).
+
 ## 2026-10-18 · Rediseño oscuro del modal de comparación de predicciones
 
 - Iterado primero como mockup local (HTML/CSS/JS aislado en el scratchpad,

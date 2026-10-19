@@ -9,6 +9,18 @@
    profile.css: fondo sólido + tarjetas rgba(255,255,255,.045), acentos
    --color-stat-sprint/qualy/race). */
 
+/* LoaderSpinner (components/LoaderSpinner.jsx) pinta su contenedor de
+   blanco sólido (`.loader-spinner-container`) — pensado para los paneles
+   claros del admin, que es donde se usa en el resto del sitio. Acá tapaba
+   por completo el fondo oscuro del modal mientras carga, mostrando un
+   rectángulo blanco en vez de la card. Se lo hace transparente solo en
+   este contexto oscuro (el aro del spinner ya se ve bien sobre fondo
+   oscuro, no hace falta tocar el componente compartido). */
+.gp-modal-card .loader-spinner-container,
+.gp-compare-drawer .loader-spinner-container {
+    background-color: transparent;
+}
+
 /* Envoltorio del modal desktop: separado de .gp-modal-card (que tiene
    overflow-y:auto para scrollear la tabla larga) para que la cruz de cerrar,
    posicionada semi-afuera de la esquina superior derecha con offset
