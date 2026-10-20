@@ -45,7 +45,7 @@ desktop). Se extrajo a dos componentes reutilizables:
 | Componente | Ruta | Props | Notas |
 |---|---|---|---|
 | `SessionTabs` | `front/src/components/predictions/SessionTabs.jsx` | `sessions`, `selectedSessionType`, `onSelect` | Exporta también `getSessionButtonStatus(session)` (antes vivía duplicada en `PredictionHistory.jsx`). |
-| `PredictionComparisonTable` | `front/src/components/predictions/PredictionComparisonTable.jsx` | `session`, `otherSession?`, `otherLabel?` | Sin `otherSession` (historial): ficha oscura `cmp-*` de 4 columnas (# | Tu predicción | Resultado real | Puntos)\| Real \| predicción con píldora de puntos), mismo lenguaje visual que la comparación; ver `links-historial-predicciones.md`. Con `otherSession`: 6 columnas, orden **Pos \| Resultado real \| Tu predicción \| Puntos \| Predicción de {otherLabel} \| Puntos** — el resultado real va primero (después de Pos) y los puntos de cada usuario quedan pegados a la derecha de su propia columna de predicción. Cada predicción errada se marca en rojo de forma **individual** (`.cell-wrong` en esa celda puntual), nunca la fila completa, para no confundir cuando un usuario acierta y el otro no en la misma posición. |
+| `PredictionComparisonTable` | `front/src/components/predictions/PredictionComparisonTable.jsx` | `session`, `otherSession?`, `otherLabel?` | Sin `otherSession` (historial): ficha oscura `cmp-*` de 4 columnas (# | Tu predicción | Resultado real | Puntos), mismo\| Real \| predicción con píldora de puntos), mismo lenguaje visual que la comparación; ver `links-historial-predicciones.md`. Con `otherSession`: 6 columnas, orden **Pos \| Resultado real \| Tu predicción \| Puntos \| Predicción de {otherLabel} \| Puntos** — el resultado real va primero (después de Pos) y los puntos de cada usuario quedan pegados a la derecha de su propia columna de predicción. Cada predicción errada se marca en rojo de forma **individual** (`.cell-wrong` en esa celda puntual), nunca la fila completa, para no confundir cuando un usuario acierta y el otro no en la misma posición. |
 
 `PredictionHistory.jsx` ahora usa `<SessionTabs />` + `<PredictionComparisonTable session={currentSession} />` en los dos lugares donde antes estaba duplicado el JSX (sin `otherSession`, por lo que el resultado es visualmente idéntico al anterior).
 
@@ -158,7 +158,7 @@ Cambios finales:
   quién era).
 - **Tabla oscura de 4 columnas** (`#` / Resultado real / `{myLabel}` /
   `{otherLabel}`) en vez de la tabla blanca de 6 (`#` / Resultado real /
-  Predicción / Puntos / Predicción del otro / Puntos): los puntos de cada
+  Predicción / Puntos / Predicción del otro / Puntos), mismo: los puntos de cada
   predicción van como píldora pegada al piloto pronosticado
   (`.cmp-mini-pts`), no en una columna aparte — así entra sin scroll
   horizontal en mobile y no hay que ir y volver para comparar contra el
