@@ -397,3 +397,47 @@
 .gp-compare-drawer-body .cmp-row.is-compact {
     grid-template-columns: 20px 70px 1fr 1fr;
 }
+
+/* =====================================================================
+   Historial (PredictionComparisonTable sin `otherSession`): misma ficha
+   oscura que la comparación, con 3 columnas (# | Real | predicción).
+   Fondo sólido porque en mobile el drawer del historial es claro y el
+   rgba translúcido de .cmp-table-scroll no se vería.
+   ===================================================================== */
+.cmp-table-scroll--history {
+    background: #0c141d;
+    color: #e8eef4;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
+}
+
+.cmp-head.is-solo,
+.cmp-row.is-solo {
+    display: grid;
+    grid-template-columns: 26px 1fr 1fr;
+    align-items: center;
+    gap: 8px;
+}
+
+@media (max-width: 1200px) {
+    /* Drawer del historial: trigrama en vez de nombre completo */
+    .history-detail .cmp-driver .name-full { display: none; }
+    .history-detail .cmp-driver .name-tri { display: inline; }
+
+    .history-detail .cmp-table-scroll--history {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        margin: 0 10px 10px;
+    }
+
+    .history-detail .cmp-row,
+    .history-detail .cmp-head {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    .history-detail .cmp-head.is-solo,
+    .history-detail .cmp-row.is-solo {
+        grid-template-columns: 20px 70px 1fr;
+    }
+}

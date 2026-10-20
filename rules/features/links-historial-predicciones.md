@@ -29,3 +29,6 @@ Al cargar con un `gp` válido en la URL, la lista lateral (`.history-sidebar`) s
 
 ## Abrir mi propio link
 `isOwnHistory = !routeUserId || routeUserId === user._id`: si el `userId` de la URL es el del usuario logueado, se muestra como historial propio ("Mi Historial", botones de compartir, sin resumen ni "Volver al ranking" y sin pedir stats). Para cualquier otro usuario se ve como historial ajeno, sin botones de compartir.
+
+## Diseño de la tabla
+La tabla del historial usa el mismo diseño oscuro que la comparación del ranking por GP (`PredictionComparisonTable`, clases `cmp-*`, 3 columnas sin la del otro usuario). Estilos propios del historial en `predictionCompare.css` (`.cmp-table-scroll--history`, `.is-solo`, y reglas `.history-detail` bajo 1200px para el drawer mobile).
