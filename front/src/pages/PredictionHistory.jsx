@@ -7,6 +7,7 @@ import { useLoader } from "../context/LoaderContext";
 import { useAlert } from "../context/AlertContext";
 import { getFlagEmoji } from "../utils/helpers";
 import SessionTabs from "../components/predictions/SessionTabs";
+import GpCard from "../components/predictions/GpCard";
 import PredictionComparisonTable from "../components/predictions/PredictionComparisonTable";
 import BackButton from "../components/BackButton";
 import "../assets/styles/predictionHistory.css";
@@ -318,10 +319,7 @@ function PredictionHistory() {
                                         <>
                                             <div className="drawer-header-mobile">
                                                 <div className="drawer-handle"></div>
-                                                <div className="history-gp-title">
-                                                    <span className="emoji-flag me-2">{getFlagEmoji(currentCircuit.circuit.country)}</span>
-                                                    {currentCircuit.circuit.gp_name}
-                                                </div>
+                                                <GpCard circuit={currentCircuit.circuit} dateStart={currentCircuit.date_gp_start} dateEnd={currentCircuit.date_gp_end} />
                                             </div>
 
                                             {renderShareButtons(true)}

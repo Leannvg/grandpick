@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { useModalPhase } from "../hooks/useModalPhase";
 import PredictionServices from "../services/predictions.services";
 import { getSessionButtonStatus } from "./predictions/SessionTabs";
+import GpCard from "./predictions/GpCard";
 import PredictionComparisonTable from "./predictions/PredictionComparisonTable";
 import LoaderSpinner from "./LoaderSpinner";
 import { useEscapeKey } from "../hooks/useEscapeKey";
-import { getFlagEmoji, formatRaceDate } from "../utils/helpers";
+
 import "../assets/styles/predictionHistory.css";
 import "../assets/styles/predictionCompare.css";
 
@@ -152,9 +153,6 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
     const hasNoData = !loading && !error && (!myCircuitData || !otherCircuitData);
     const circuitData = myCircuitData || otherCircuitData;
     const circuit = circuitData?.circuit || null;
-    const circuitDateLabel = circuitData
-        ? formatRaceDate(circuitData.date_gp_start, circuitData.date_gp_end)
-        : null;
 
     // Deslizar para cerrar (solo desde el tirador/encabezado del drawer en mobile)
     const [dragY, setDragY] = useState(0);
@@ -177,33 +175,7 @@ function FloatingPredictionCompare({ show, onClose, myUserId, myLabel = "Vos", o
         else setDragY(0);
     };
 
-    // Card con el dato del GP (mismo criterio visual que .cal-card__row del
-    // calendario, con fondo oscuro para no desentonar con el resto del
-    // modal): bandera + nombre del GP + circuito, y la fecha aparte. Separa
-    // "8-10" de "OCTUBRE" porque formatRaceDate devuelve las dos partes en
-    // un solo string ("8-10 OCTUBRE") y acá van en dos líneas.
-    const [dateDay, ...dateMonthParts] = (circuitDateLabel || "").split(" ");
-    const dateMonth = dateMonthParts.join(" ");
-
-    const gpCard = circuit && (
-        <div className="cmp-gp-card">
-            <div className="cmp-gp-card__info">
-                <div className="cmp-gp-card__loc">
-                    <span className="emoji-flag">{getFlagEmoji(circuit.country)}</span>
-                    <span className="cmp-gp-card__country">{circuit.gp_name}</span>
-                </div>
-                {circuit.circuit_name && (
-                    <p className="cmp-gp-card__circuit">{circuit.circuit_name}</p>
-                )}
-            </div>
-            {circuitDateLabel && circuitDateLabel !== "N/A" && (
-                <div className="cmp-gp-card__date">
-                    <span className="d">{dateDay}</span>
-                    <span className="m">{dateMonth}</span>
-                </div>
-            )}
-        </div>
-    );
+    const gpCard = <GpCard circuit={circuit} dateStart={circuitData?.date_gp_start} dateEnd={circuitData?.date_gp_end} />;
 
     const body = (
         <>

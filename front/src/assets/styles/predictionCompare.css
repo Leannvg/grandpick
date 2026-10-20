@@ -480,8 +480,33 @@
 .history-detail .history-session-tab--qualifying.is-selected { border-color: var(--color-stat-qualy); }
 .history-detail .history-session-tab--race.is-selected { border-color: var(--color-stat-race); }
 
+/* Desktop: pilotos del historial (predicción y resultado real) a 16px */
+@media (min-width: 1201px) {
+    .history-detail .cmp-driver .name { font-size: 16px; }
+}
+
 @media (max-width: 1200px) {
-    /* Drawer del historial: trigrama en vez de nombre completo */
+    /* Drawer del historial oscuro (como el bottom-sheet de la comparación) */
+    .history-detail {
+        background: #0c141d !important;
+    }
+
+    .history-detail .drawer-handle { background: rgba(255, 255, 255, .25); }
+
+    .history-detail .drawer-header-mobile {
+        align-items: stretch;
+        padding: 10px 10px 12px;
+        margin-bottom: 0;
+        border-bottom: 0;
+    }
+
+    .history-detail .drawer-header-mobile .drawer-handle { align-self: center; }
+    .history-detail .cmp-gp-card { min-height: 52px; margin-bottom: 0; }
+    .history-detail .cmp-gp-card__date { width: 86px; }
+
+    .history-detail .cmp-table-scroll--history { background: rgba(255, 255, 255, .045); box-shadow: none; }
+
+    /* Trigrama en vez de nombre completo en vez de nombre completo */
     .history-detail .cmp-driver .name-full { display: none; }
     .history-detail .cmp-driver .name-tri { display: inline; }
 
@@ -505,12 +530,12 @@
 
     /* Le ganan a los !important del media query mobile de predictionHistory.css */
     .history-detail .history-session-tab {
-        background: #0c141d !important;
+        background: rgba(255, 255, 255, .06) !important;
         box-shadow: none !important;
         border: 1px solid rgba(255, 255, 255, .14) !important;
     }
 
-    .history-detail .history-session-tab.is-selected { background: #14212f !important; }
+    .history-detail .history-session-tab.is-selected { background: rgba(255, 255, 255, .1) !important; }
     .history-detail .history-session-tab--sprint.is-selected { border: 1px solid var(--color-stat-sprint) !important; }
     .history-detail .history-session-tab--qualifying.is-selected { border: 1px solid var(--color-stat-qualy) !important; }
     .history-detail .history-session-tab--race.is-selected { border: 1px solid var(--color-stat-race) !important; }

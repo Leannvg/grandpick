@@ -2,6 +2,11 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-20 · Historial: mobile oscuro, card del GP y letra de 16px en desktop
+
+- Desktop: pilotos de predicción y resultado real a 16px.
+- Mobile: drawer oscuro; el título del GP pasa a `GpCard` (misma card que la comparación del ranking, extraída de `FloatingPredictionCompare`); botones de compartir blancos de nuevo.
+
 ## 2026-10-20 · Historial: tablas con el diseño de la comparación por GP
 
 - `PredictionComparisonTable` sin `otherSession` pasa a la ficha oscura `cmp-*`, igual que la comparación del ranking por GP, manteniendo las columnas `#`, `Tu predicción`, `Resultado real` y `Puntos` (píldora por fila; en el historial ajeno la columna se llama `Predicción`). Siempre 10 filas.

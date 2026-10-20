@@ -32,3 +32,9 @@ Al cargar con un `gp` válido en la URL, la lista lateral (`.history-sidebar`) s
 
 ## Diseño de la tabla
 La tabla del historial usa el mismo diseño oscuro que la comparación del ranking por GP (`PredictionComparisonTable`, clases `cmp-*`) pero conserva sus 4 columnas: `#`, `Tu predicción` (`Predicción` si es el historial de otro usuario), `Resultado real` y `Puntos` (píldora por fila). Las pestañas SPRINT/QUALY/RACE (`SessionTabs`) también son oscuras, con puntito y borde del color de la sesión; mantienen fecha y puntos. Estilos propios del historial en `predictionCompare.css` (`.cmp-table-scroll--history`, `.is-solo`, `.history-session-tab--*`, y reglas `.history-detail` bajo 1200px para el drawer mobile).
+
+## Ajustes de diseño (mobile oscuro y GP)
+- Desktop: los pilotos de `Tu predicción` y `Resultado real` van a 16px (`.history-detail .cmp-driver .name`, solo > 1200px).
+- Mobile: el drawer del historial es oscuro (`#0c141d`), igual que el bottom-sheet de la comparación; las pestañas y la tabla usan fondo `rgba(255,255,255,.06/.045)`.
+- El título del GP del drawer pasa a la card `GpCard` (bandera, GP, circuito y fecha), la misma de la comparación del ranking por GP.
+- Los botones de compartir vuelven a `btn-outline-light` (blancos) porque el fondo del drawer ahora es oscuro; se eliminó el override `#0d1b2a`.
