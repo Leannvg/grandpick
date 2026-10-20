@@ -542,3 +542,18 @@
 
     .history-detail .history-session-tab .session-type-name { font-size: 1rem !important; }
 }
+
+/* Lista de GPs del historial (.history-circuit-card): estilo oscuro, igual que
+   las pestañas y la tabla del detalle. Se mantiene el bloque verde de puntos. */
+.history-sidebar .history-circuit-card {
+    background: #0c141d;
+    border: 1px solid rgba(255, 255, 255, .08);
+}
+
+.history-sidebar .history-circuit-card .history-gp-name { color: #e8eef4; }
+.history-sidebar .history-circuit-card .history-card-circuit { color: #8fa3b5; }
+
+.history-sidebar .history-circuit-card.is-selected {
+    background: #14212f;
+    border-color: #4a90e2;
+}

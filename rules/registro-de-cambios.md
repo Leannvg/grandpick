@@ -2,6 +2,10 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-20 · Historial: lista de GPs en estilo oscuro
+
+- Las cards de la lista de Grandes Premios (`.history-circuit-card`) pasan a fondo oscuro (`#0c141d`, seleccionada `#14212f` con borde azul), con texto claro; se mantiene el bloque verde de puntos. Estilos en `predictionCompare.css`.
+
 ## 2026-10-20 · Historial mobile: columnas Tu predicción y Resultado real del mismo ancho
 
 - La grilla mobile de la tabla pasa de `20px 1fr 70px 44px` a `20px 1fr 1fr 44px`: las dos columnas de pilotos miden lo mismo (antes Tu predicción acumulaba el espacio sobrante).
