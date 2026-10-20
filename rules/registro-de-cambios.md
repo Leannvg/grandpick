@@ -4,8 +4,9 @@ Orden cronológico inverso (lo más nuevo arriba).
 
 ## 2026-10-20 · Historial: tablas con el diseño de la comparación por GP
 
-- `PredictionComparisonTable` sin `otherSession` pasa a la ficha oscura `cmp-*` (3 columnas: # / Real / predicción con píldora de puntos y total en el encabezado), igual que la comparación del ranking por GP. Siempre 10 filas.
-- Nombre de la columna: "Vos" en el historial propio (celeste); el nombre del usuario en el ajeno. En mobile (drawer) los pilotos van con trigrama.
+- `PredictionComparisonTable` sin `otherSession` pasa a la ficha oscura `cmp-*`, igual que la comparación del ranking por GP, manteniendo las columnas `#`, `Tu predicción`, `Resultado real` y `Puntos` (píldora por fila; en el historial ajeno la columna se llama `Predicción`). Siempre 10 filas.
+- Las pestañas SPRINT/QUALY/RACE (`SessionTabs`) también pasan al estilo oscuro (puntito y borde del color de la sesión; mantienen fecha y puntos).
+- En mobile (drawer) los pilotos van con trigrama.
 - Se eliminó `DriverCell` y el layout claro de 4 columnas; el CSS viejo (`.prediction-comparison-table`, `.table-*`, `.col-*`) quedó sin uso.
 
 ## 2026-10-20 · Historial: abrir mi propio link compartido se ve como historial propio
