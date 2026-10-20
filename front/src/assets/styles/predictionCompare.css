@@ -525,7 +525,7 @@
 
     .history-detail .cmp-head.is-solo,
     .history-detail .cmp-row.is-solo {
-        grid-template-columns: 20px 1fr 70px 44px;
+        grid-template-columns: 20px 1fr 1fr 44px;
     }
 
     /* Le ganan a los !important del media query mobile de predictionHistory.css */

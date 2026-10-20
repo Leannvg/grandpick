@@ -35,6 +35,6 @@ La tabla del historial usa el mismo diseño oscuro que la comparación del ranki
 
 ## Ajustes de diseño (mobile oscuro y GP)
 - Desktop: los pilotos de `Tu predicción` y `Resultado real` van a 16px (`.history-detail .cmp-driver .name`, solo > 1200px).
-- Mobile: el drawer del historial es oscuro (`#0c141d`), igual que el bottom-sheet de la comparación; las pestañas y la tabla usan fondo `rgba(255,255,255,.06/.045)`.
+- Mobile: columnas `#` 20px, `Tu predicción` y `Resultado real` 1fr cada una (mismo ancho), `Puntos` 44px. El drawer del historial es oscuro (`#0c141d`), igual que el bottom-sheet de la comparación; las pestañas y la tabla usan fondo `rgba(255,255,255,.06/.045)`.
 - El título del GP del drawer pasa a la card `GpCard` (bandera, GP, circuito y fecha), la misma de la comparación del ranking por GP.
 - Los botones de compartir vuelven a `btn-outline-light` (blancos) porque el fondo del drawer ahora es oscuro; se eliminó el override `#0d1b2a`.

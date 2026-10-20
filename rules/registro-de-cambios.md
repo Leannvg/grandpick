@@ -2,6 +2,10 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-20 · Historial mobile: columnas Tu predicción y Resultado real del mismo ancho
+
+- La grilla mobile de la tabla pasa de `20px 1fr 70px 44px` a `20px 1fr 1fr 44px`: las dos columnas de pilotos miden lo mismo (antes Tu predicción acumulaba el espacio sobrante).
+
 ## 2026-10-20 · Historial: mobile oscuro, card del GP y letra de 16px en desktop
 
 - Desktop: pilotos de predicción y resultado real a 16px.
