@@ -41,3 +41,6 @@ La tabla del historial usa el mismo diseño oscuro que la comparación del ranki
 
 ## Lista de GPs oscura
 Las cards de la lista lateral (`.history-sidebar .history-circuit-card`) usan el mismo fondo oscuro que las pestañas y la tabla (`#0c141d`; seleccionada `#14212f` con borde `#4a90e2`), con texto `#e8eef4` / `#8fa3b5`.
+
+## Banda de autor (drawer mobile, historial ajeno)
+En el drawer mobile, cuando `!isOwnHistory`, se muestra `.history-owner-banner` ("Predicciones de {nombre}") bajo la card del GP, en el lugar donde irían los botones de compartir. El nombre sale de `otherUserName` (stats del usuario o `location.state`). En desktop no hace falta: el encabezado de la página ya lo indica.

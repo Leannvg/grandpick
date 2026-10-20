@@ -2,6 +2,10 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-20 · Historial mobile: banda con el nombre del usuario en historial ajeno
+
+- En el drawer mobile, al ver el historial de otro usuario, aparece una banda "Predicciones de {nombre}" (`.history-owner-banner`) bajo la card del GP para no confundirlo con el propio.
+
 ## 2026-10-20 · Historial: lista de GPs en estilo oscuro
 
 - Las cards de la lista de Grandes Premios (`.history-circuit-card`) pasan a fondo oscuro (`#0c141d`, seleccionada `#14212f` con borde azul), con texto claro; se mantiene el bloque verde de puntos. Estilos en `predictionCompare.css`.

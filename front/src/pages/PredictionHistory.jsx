@@ -322,6 +322,12 @@ function PredictionHistory() {
                                                 <GpCard circuit={currentCircuit.circuit} dateStart={currentCircuit.date_gp_start} dateEnd={currentCircuit.date_gp_end} />
                                             </div>
 
+                                            {!isOwnHistory && (
+                                                <div className="history-owner-banner">
+                                                    <i className="bi bi-person-fill"></i>
+                                                    <span>Predicciones de <strong>{otherUserName || "otro usuario"}</strong></span>
+                                                </div>
+                                            )}
                                             {renderShareButtons(true)}
                                             <SessionTabs
                                                 sessions={currentCircuit.sessions}

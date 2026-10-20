@@ -557,3 +557,29 @@
     background: #14212f;
     border-color: #4a90e2;
 }
+
+/* Banda de autor en el drawer mobile del historial ajeno: deja claro de quién
+   son las predicciones (el encabezado de la página queda tapado por el drawer). */
+.history-owner-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 10px 10px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #e8eef4;
+    background: rgba(255, 255, 255, .045);
+    border-left: 3px solid #4a90e2;
+    border-radius: var(--radius-general);
+}
+
+.history-owner-banner i { color: #4a90e2; flex-shrink: 0; }
+
+.history-owner-banner span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.history-owner-banner strong { font-weight: 800; }
