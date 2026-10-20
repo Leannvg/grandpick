@@ -1,3 +1,5 @@
+import "../../assets/styles/predictionCompare.css";
+
 const QUALY_POINTS_ADJUST_CUTOFF = new Date('2026-05-03T00:00:00Z');
 
 /**
@@ -37,8 +39,8 @@ function CompareDriverCell({ item, wrong = false }) {
     );
 }
 
-function CompareMiniPts({ pts }) {
-    if (pts === null) return <span className="cmp-mini-pts empty">-</span>;
+function CompareMiniPts({ pts, empty = null }) {
+    if (pts === null) return empty ? <span className="cmp-points-empty">{empty}</span> : <span className="cmp-mini-pts empty">-</span>;
     return <span className={`cmp-mini-pts ${pts > 0 ? 'match' : 'mismatch'}`}>{pts}</span>;
 }
 
@@ -47,17 +49,18 @@ function CompareMiniPts({ pts }) {
  * reutilizada en PredictionHistory y en el modal de comparación entre dos
  * usuarios (FloatingPredictionCompare).
  *
- * - Sin `otherSession` (historial): 3 columnas (Pos | Real | {myLabel}), con
- *   los puntos de cada predicción como píldora pegada al piloto y el total de
- *   la sesión junto al nombre en el encabezado. `isMine` resalta el nombre en
- *   celeste (historial propio); en el historial de otro usuario va neutro.
+ * - Sin `otherSession` (historial): 4 columnas (# | Tu predicción | Resultado
+ *   real | Puntos), con los puntos de cada fila como píldora en su propia
+ *   columna. `isMine` define el título de la columna de predicción: "Tu
+ *   predicción" en el historial propio, "Predicción" en el de otro usuario.
  * - Con `otherSession` + `otherLabel` (comparación): 4 columnas (Pos | Real |
- *   {myLabel} | {otherLabel}).
+ *   {myLabel} | {otherLabel}), con los puntos pegados al piloto y el total de
+ *   cada usuario junto a su nombre.
  *
- * Cada predicción errada marca de rojo toda su celda (piloto + píldora), no la
- * fila completa. Siempre 10 filas (las que tiene Race, la sesión con más
- * posiciones) para que la tabla mida lo mismo al cambiar de pestaña; las
- * posiciones que no existen en esa sesión quedan en blanco ("-").
+ * Cada predicción errada marca de rojo toda su celda, no la fila completa.
+ * Siempre 10 filas (las que tiene Race, la sesión con más posiciones) para que
+ * la tabla mida lo mismo al cambiar de pestaña; las posiciones que no existen
+ * en esa sesión quedan en blanco ("-").
  */
 function PredictionComparisonTable({ session, otherSession = null, otherLabel = null, myLabel = "Vos", isMine = true }) {
     const compareMode = !!otherSession;
@@ -85,6 +88,35 @@ function PredictionComparisonTable({ session, otherSession = null, otherLabel = 
     const myTotal = rows.reduce((sum, r) => sum + (r.myPts || 0), 0);
     const otherTotal = rows.reduce((sum, r) => sum + (r.otherPts || 0), 0);
     const layout = compareMode ? "is-compact" : "is-solo";
+
+    if (!compareMode) {
+        return (
+            <div className="cmp-table-scroll cmp-table-scroll--history">
+                <div className="cmp-table is-solo">
+                    <div className="cmp-head is-solo">
+                        <div className="cmp-pos">#</div>
+                        <div className="cmp-head__name cmp-head__name--me">
+                            <span className="cmp-head__name-label">{isMine ? "Tu predicción" : "Predicción"}</span>
+                        </div>
+                        <div className="cmp-real-cell">Resultado real</div>
+                        <div className="cmp-points-cell">Puntos</div>
+                    </div>
+                    {rows.map(r => (
+                        <div key={r.pos} className="cmp-row is-solo">
+                            <div className="cmp-pos">{r.pos}</div>
+                            <div className={`cmp-cell-pred ${r.predWrong ? "is-wrong" : ""}`}>
+                                <CompareDriverCell item={r.pred} wrong={r.predWrong} />
+                            </div>
+                            <div className="cmp-real-cell"><CompareDriverCell item={r.real} /></div>
+                            <div className="cmp-points-cell">
+                                <CompareMiniPts pts={r.myPts} empty="-" />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={`cmp-table-scroll ${compareMode ? "" : "cmp-table-scroll--history"}`}>

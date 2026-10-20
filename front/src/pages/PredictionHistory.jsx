@@ -331,7 +331,7 @@ function PredictionHistory() {
                                                 onSelect={handleSessionSelect}
                                             />
 
-                                            <PredictionComparisonTable session={currentSession} myLabel={isOwnHistory ? "Vos" : (otherUserName || "Usuario")} isMine={isOwnHistory} />
+                                            <PredictionComparisonTable session={currentSession} isMine={isOwnHistory} />
                                         </>
                                     )}
                                 </motion.main>
@@ -351,7 +351,7 @@ function PredictionHistory() {
                                         onSelect={handleSessionSelect}
                                     />
 
-                                    <PredictionComparisonTable session={currentSession} myLabel={isOwnHistory ? "Vos" : (otherUserName || "Usuario")} isMine={isOwnHistory} />
+                                    <PredictionComparisonTable session={currentSession} isMine={isOwnHistory} />
                                 </>
                             ) : (
                                 <div className="no-selection-message">

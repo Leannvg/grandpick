@@ -40,7 +40,7 @@ function SessionTabs({ sessions = [], selectedSessionType, onSelect }) {
                 return (
                     <button
                         key={type}
-                        className={`history-session-tab status-${status} ${isSelected ? 'is-selected' : ''}`}
+                        className={`history-session-tab history-session-tab--${type} status-${status} ${isSelected ? 'is-selected' : ''}`}
                         onClick={(e) => {
                             e.stopPropagation();
                             if (status === 'finished') onSelect(type);
