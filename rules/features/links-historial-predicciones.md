@@ -26,3 +26,6 @@ En pantallas < 1200px el detalle vive en el drawer: al cargar con un `gp` válid
 
 ## Scroll de la lista
 Al cargar con un `gp` válido en la URL, la lista lateral (`.history-sidebar`) se desplaza para centrar la card del GP seleccionado (se ajusta `scrollTop` del contenedor, no el de la página; solo en la carga inicial, los clicks manuales no mueven la lista).
+
+## Abrir mi propio link
+`isOwnHistory = !routeUserId || routeUserId === user._id`: si el `userId` de la URL es el del usuario logueado, se muestra como historial propio ("Mi Historial", botones de compartir, sin resumen ni "Volver al ranking" y sin pedir stats). Para cualquier otro usuario se ve como historial ajeno, sin botones de compartir.

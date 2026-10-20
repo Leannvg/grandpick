@@ -30,8 +30,9 @@ function PredictionHistory() {
     const { showAlert } = useAlert();
     const sidebarRef = useRef(null);
     const scrollToSelectedRef = useRef(false);
-
-    const isOwnHistory = !routeUserId;
+    // Un link compartido con mi propio id (/prediction-history/<mi id>) es mi historial
+    // Un link compartido con mi propio id es mi historial (sin esperar a tener `user`, que carga async)
+    const isOwnHistory = !routeUserId || routeUserId === user?._id;
     const otherUserName = userStats
         ? `${userStats.name} ${userStats.last_name || ''}`.trim()
         : (location.state?.name ? `${location.state.name} ${location.state.last_name || ''}`.trim() : null);
@@ -70,7 +71,7 @@ function PredictionHistory() {
                 const targetUserId = routeUserId || userData._id;
                 const [historyData, statsData] = await Promise.all([
                     PredictionServices.findHistoryByUser(targetUserId, year),
-                    routeUserId
+                    routeUserId && routeUserId !== userData._id
                         ? UsersServices.getUserStats(targetUserId).catch(err => {
                             console.error("Error loading user stats:", err);
                             return null;

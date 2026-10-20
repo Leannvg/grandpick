@@ -3,6 +3,11 @@
 Orden cronológico inverso (lo más nuevo arriba).
 
 
+## 2026-10-20 · Historial: abrir mi propio link compartido se ve como historial propio
+
+- Si el `userId` de `/prediction-history/:userId` coincide con el usuario logueado, la pantalla muestra "Mi Historial" con los botones de compartir (antes se veía como historial ajeno).
+- Para otros usuarios no cambia: "Historial de <nombre>" sin botones de compartir.
+
 ## 2026-10-19 · Historial: la lista hace scroll al GP del link
 
 - Al abrir un link con `?gp=`, la lista lateral se centra en la card del GP seleccionado en vez de empezar desde arriba.
