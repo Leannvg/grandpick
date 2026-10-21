@@ -2,6 +2,20 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-21 · Nuevo agente auditor de SEO y primera auditoría de posicionamiento
+
+- Se crea el agente `seo-auditor` (`.claude/agents/seo-auditor.md`) para
+  revisar posicionamiento web/SEO y mantener `rules/seo.md` como documento
+  vivo. A diferencia del auditor de seguridad, este documento no es
+  sensible y se puede compartir sin problema.
+- Primera auditoría: GrandPick es una SPA pura (sin SSR), sin meta
+  description/Open Graph/Twitter Card, sin `robots.txt` ni `sitemap.xml`,
+  con el mismo `<title>` estático en todas las páginas, y sin
+  code-splitting por ruta (todo el bundle, incluidas las páginas de
+  admin, se manda de una sola vez). Se priorizan 4 "quick wins" de
+  impacto alto y esfuerzo bajo. Ver `rules/seo.md` para el detalle y el
+  checklist. No se modificó código en esta pasada, solo se documentó.
+
 ## 2026-10-19 · Tabla de comparación: scroll horizontal fijo en mobile (causa real)
 
 - El fix anterior (nombres largos) no era la causa completa: el usuario
