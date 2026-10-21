@@ -1,0 +1,6 @@
+# Documentación de seguridad que se mantiene local por el momento
+# (lista hallazgos explotables; no se sube al repo hasta decidir cómo
+# compartirla de forma segura).
+rules/seguridad.md
+.claude/agents/security-auditor.md
+rules/politica-privacidad-terminos-borrador.md

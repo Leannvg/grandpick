@@ -15,6 +15,7 @@ negocio y el historial de cambios.
 | [diseno.md](./diseno.md) | Sistema de diseño: tokens CSS, patrón de tablas, navegación. |
 | [componentes.md](./componentes.md) | Catálogo de componentes, contexts y hooks del front, con props y notas de reuso. |
 | [logica.md](./logica.md) | Modelo de datos (MongoDB) y reglas de negocio (puntos, carreras, etc.). |
+| [seo.md](./seo.md) | Auditoría de SEO/posicionamiento web (meta tags, robots.txt/sitemap, rendimiento, quick wins). |
 | [registro-de-cambios.md](./registro-de-cambios.md) | Changelog cronológico de features y ajustes. |
 | [features/](./features/) | Un documento por feature con el detalle de implementación. |
 
