@@ -2,6 +2,10 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-23 · Barra de usuario del historial: pegada al header sin hueco
+
+- La barra sticky quedaba separada del header en su posición natural (scroll 0 o drawer abierto) por el `margin-top` de `.main-content` (40px; 15px en <=991px) y el padding de `.prediction-history-page` (20px en <=1200px). Se anula con `margin-top` negativo por breakpoint (-40 / -60 / -35px) y un `margin-bottom: 24px` para mantener el aire con el contenido.
+
 ## 2026-10-23 · Historial ajeno: barra fija con el nombre del usuario
 
 - Al ver el historial de otro usuario aparece una barra pegada bajo el header (`.history-viewing-bar`, "Viendo las predicciones de {nombre}"), visible al scrollear y con el drawer abierto, en mobile y desktop. Reemplaza la banda `.history-owner-banner` del drawer.

@@ -587,8 +587,17 @@
 
 .history-viewing-bar strong { font-weight: 800; }
 
-/* En mobile .prediction-history-page tiene padding-top: 20px; la barra lo anula
-   para quedar pegada al header también cuando el body está bloqueado (drawer abierto). */
+/* La barra queda pegada al header (sticky) al scrollear, pero en su posición
+   natural (scroll 0, o body bloqueado con el drawer abierto) hay un hueco: el
+   margin-top de .main-content (40px; 15px en <=991px) más el padding-top de
+   .prediction-history-page (20px en <=1200px). Margen negativo = ese hueco, para que
+   esté pegada al header en ambos casos. Si cambian esos valores, ajustar acá. */
+.history-viewing-bar { margin-top: -40px; margin-bottom: 24px; }
+
 @media (max-width: 1200px) {
-    .history-viewing-bar { margin-top: -20px; }
+    .history-viewing-bar { margin-top: -60px; }
+}
+
+@media (max-width: 991px) {
+    .history-viewing-bar { margin-top: -35px; }
 }
