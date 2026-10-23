@@ -31,12 +31,21 @@ function PredictionHistory() {
     const { showAlert } = useAlert();
     const sidebarRef = useRef(null);
     const scrollToSelectedRef = useRef(false);
+    const [headerH, setHeaderH] = useState(0);
     // Un link compartido con mi propio id (/prediction-history/<mi id>) es mi historial
     // Un link compartido con mi propio id es mi historial (sin esperar a tener `user`, que carga async)
     const isOwnHistory = !routeUserId || routeUserId === user?._id;
     const otherUserName = userStats
         ? `${userStats.name} ${userStats.last_name || ''}`.trim()
         : (location.state?.name ? `${location.state.name} ${location.state.last_name || ''}`.trim() : null);
+
+    // Alto del header sticky del sitio: la barra del usuario se pega justo debajo
+    useEffect(() => {
+        const measureHeader = () => setHeaderH(document.querySelector(".site-header")?.offsetHeight || 0);
+        measureHeader();
+        window.addEventListener("resize", measureHeader);
+        return () => window.removeEventListener("resize", measureHeader);
+    }, []);
 
     useEffect(() => {
         const handleResize = () => setIsDesktop(window.innerWidth >= 1200);
@@ -203,6 +212,12 @@ function PredictionHistory() {
 
     return (
         <div className="prediction-history-page page-wrapper">
+            {!isOwnHistory && (
+                <div className="history-viewing-bar" style={{ top: headerH }}>
+                    <i className="bi bi-person-fill"></i>
+                    <span>Viendo las predicciones de <strong>{otherUserName || "otro usuario"}</strong></span>
+                </div>
+            )}
             <section className="page-section container">
                 {!isOwnHistory && <BackButton to="/ranking" text="Volver al ranking" />}
                 <header className="page-header text-center">
@@ -322,12 +337,6 @@ function PredictionHistory() {
                                                 <GpCard circuit={currentCircuit.circuit} dateStart={currentCircuit.date_gp_start} dateEnd={currentCircuit.date_gp_end} />
                                             </div>
 
-                                            {!isOwnHistory && (
-                                                <div className="history-owner-banner">
-                                                    <i className="bi bi-person-fill"></i>
-                                                    <span>Predicciones de <strong>{otherUserName || "otro usuario"}</strong></span>
-                                                </div>
-                                            )}
                                             {renderShareButtons(true)}
                                             <SessionTabs
                                                 sessions={currentCircuit.sessions}

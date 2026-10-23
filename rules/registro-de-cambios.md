@@ -2,6 +2,10 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-23 · Historial ajeno: barra fija con el nombre del usuario
+
+- Al ver el historial de otro usuario aparece una barra pegada bajo el header (`.history-viewing-bar`, "Viendo las predicciones de {nombre}"), visible al scrollear y con el drawer abierto, en mobile y desktop. Reemplaza la banda `.history-owner-banner` del drawer.
+
 ## 2026-10-20 · Historial mobile: banda con el nombre del usuario en historial ajeno
 
 - En el drawer mobile, al ver el historial de otro usuario, aparece una banda "Predicciones de {nombre}" (`.history-owner-banner`) bajo la card del GP para no confundirlo con el propio.
