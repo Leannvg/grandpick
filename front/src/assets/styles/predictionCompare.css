@@ -558,28 +558,37 @@
     border-color: #4a90e2;
 }
 
-/* Banda de autor en el drawer mobile del historial ajeno: deja claro de quién
-   son las predicciones (el encabezado de la página queda tapado por el drawer). */
-.history-owner-banner {
+/* Barra fija con el nombre del usuario dueño del historial (solo historial
+   ajeno). Sticky bajo el header del sitio (top se setea por JS con su alto),
+   por encima del overlay del drawer (1000) y por debajo del drawer (2050),
+   que arranca a 150px: header + barra tienen que sumar menos que eso. */
+.history-viewing-bar {
+    position: sticky;
+    z-index: 2040;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    margin: 0 10px 10px;
-    padding: 8px 12px;
+    padding: 8px 16px;
     font-size: 13px;
     color: #e8eef4;
-    background: rgba(255, 255, 255, .045);
-    border-left: 3px solid #4a90e2;
-    border-radius: var(--radius-general);
+    background: #0c141d;
+    border-bottom: 2px solid #4a90e2;
 }
 
-.history-owner-banner i { color: #4a90e2; flex-shrink: 0; }
+.history-viewing-bar i { color: #4a90e2; flex-shrink: 0; }
 
-.history-owner-banner span {
+.history-viewing-bar span {
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.history-owner-banner strong { font-weight: 800; }
+.history-viewing-bar strong { font-weight: 800; }
+
+/* En mobile .prediction-history-page tiene padding-top: 20px; la barra lo anula
+   para quedar pegada al header también cuando el body está bloqueado (drawer abierto). */
+@media (max-width: 1200px) {
+    .history-viewing-bar { margin-top: -20px; }
+}
