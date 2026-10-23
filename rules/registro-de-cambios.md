@@ -2,6 +2,10 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-23 · Barra de usuario del historial en amarillo
+
+- `.history-viewing-bar` pasa de azul oscuro (se confundía con el nav y las cards de GP) a amarillo (`--color-stat-sprint`) con texto oscuro, para que se distinga como "estás viendo el historial de otro".
+
 ## 2026-10-23 · Barra de usuario del historial: pegada al header sin hueco
 
 - La barra sticky quedaba separada del header en su posición natural (scroll 0 o drawer abierto) por el `margin-top` de `.main-content` (40px; 15px en <=991px) y el padding de `.prediction-history-page` (20px en <=1200px). Se anula con `margin-top` negativo por breakpoint (-40 / -60 / -35px) y un `margin-bottom: 24px` para mantener el aire con el contenido.
