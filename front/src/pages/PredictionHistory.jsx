@@ -32,6 +32,7 @@ function PredictionHistory() {
     const sidebarRef = useRef(null);
     const scrollToSelectedRef = useRef(false);
     const [headerH, setHeaderH] = useState(0);
+    const [dataLoaded, setDataLoaded] = useState(false);
     // Un link compartido con mi propio id (/prediction-history/<mi id>) es mi historial
     // Un link compartido con mi propio id es mi historial (sin esperar a tener `user`, que carga async)
     const isOwnHistory = !routeUserId || routeUserId === user?._id;
@@ -74,6 +75,7 @@ function PredictionHistory() {
     useEffect(() => {
         async function loadData() {
             showLoader();
+            setDataLoaded(false);
             setUserStats(null);
             try {
                 const userData = await UsersServices.getUserProfile();
@@ -106,6 +108,7 @@ function PredictionHistory() {
             } catch (err) {
                 console.error("Error loading history:", err);
             } finally {
+                setDataLoaded(true);
                 hideLoader();
             }
         }
@@ -212,8 +215,9 @@ function PredictionHistory() {
 
     return (
         <div className="prediction-history-page page-wrapper">
-            {!isOwnHistory && (
-                <div className="history-viewing-bar" style={{ top: headerH }}>
+            {/* Recién con los datos cargados: antes no se sabe de quién es el historial ni el nombre, y durante la carga el layout cambia de margen. Con el drawer mobile abierto queda tapado, ahí lo reemplaza la banda del drawer. */}
+            {dataLoaded && !isOwnHistory && (
+                <div className={`history-viewing-bar ${isDrawerOpen && !isDesktop ? "is-hidden" : ""}`} style={{ top: headerH }}>
                     <i className="bi bi-person-fill"></i>
                     <span>Viendo las predicciones de <strong>{otherUserName || "otro usuario"}</strong></span>
                 </div>
@@ -337,6 +341,12 @@ function PredictionHistory() {
                                                 <GpCard circuit={currentCircuit.circuit} dateStart={currentCircuit.date_gp_start} dateEnd={currentCircuit.date_gp_end} />
                                             </div>
 
+                                            {!isOwnHistory && (
+                                                <div className="history-owner-banner">
+                                                    <i className="bi bi-person-fill"></i>
+                                                    <span>Predicciones de <strong>{otherUserName || "otro usuario"}</strong></span>
+                                                </div>
+                                            )}
                                             {renderShareButtons(true)}
                                             <SessionTabs
                                                 sessions={currentCircuit.sessions}

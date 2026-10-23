@@ -44,3 +44,7 @@ Las cards de la lista lateral (`.history-sidebar .history-circuit-card`) usan el
 
 ## Barra fija de usuario (historial ajeno)
 Cuando `!isOwnHistory` se muestra `.history-viewing-bar` ("Viendo las predicciones de {nombre}") como primer hijo de `.prediction-history-page`, `position: sticky` justo bajo el header del sitio (`top` = alto de `.site-header`, medido por JS en `headerH` y actualizado en `resize`), fondo amarillo (`--color-stat-sprint`) con texto oscuro para distinguirla del nav y de las cards oscuras, `z-index: 2040` (sobre el overlay del drawer, bajo el drawer a 2050). Queda visible al scrollear la lista y con el drawer abierto, en mobile y desktop. Reemplaza la banda `.history-owner-banner` del drawer. El nombre sale de `otherUserName` (stats o `location.state`). Header + barra deben sumar menos que el `top: 150px` del drawer.
+
+### Carga y drawer mobile
+- La barra solo se renderiza con `dataLoaded` (no durante el loader).
+- En mobile con el drawer abierto la barra se oculta (`.is-hidden`, visibility) porque el drawer la tapa; el nombre se muestra en `.history-owner-banner` dentro del drawer (amarilla, bajo la card del GP).

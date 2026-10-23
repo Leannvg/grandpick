@@ -2,6 +2,11 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-23 · Barra de usuario: sin carga y banda en el drawer mobile
+
+- La barra `.history-viewing-bar` solo se muestra con los datos ya cargados (`dataLoaded`): durante el loader no aparece (antes se veía el hueco y el texto "otro usuario" sin nombre).
+- Mobile: con el drawer abierto la barra queda tapada (header + barra > `top: 150px` del drawer), así que se oculta (`is-hidden`) y vuelve la banda `.history-owner-banner` dentro del drawer, ahora en amarillo como la barra.
+
 ## 2026-10-23 · Barra de usuario del historial en amarillo
 
 - `.history-viewing-bar` pasa de azul oscuro (se confundía con el nav y las cards de GP) a amarillo (`--color-stat-sprint`) con texto oscuro, para que se distinga como "estás viendo el historial de otro".

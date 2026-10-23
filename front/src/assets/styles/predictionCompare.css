@@ -601,3 +601,32 @@
 @media (max-width: 991px) {
     .history-viewing-bar { margin-top: -35px; }
 }
+
+/* Con el drawer mobile abierto la barra queda tapada: se oculta (visibility, para no
+   mover el layout) y el nombre lo muestra la banda de adentro del drawer. */
+.history-viewing-bar.is-hidden { visibility: hidden; }
+
+/* Banda con el nombre del usuario dentro del drawer mobile (historial ajeno).
+   Mismo amarillo que .history-viewing-bar. */
+.history-owner-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 10px 10px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #0c141d;
+    background: var(--color-stat-sprint);
+    border-radius: var(--radius-general);
+}
+
+.history-owner-banner i { flex-shrink: 0; }
+
+.history-owner-banner span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.history-owner-banner strong { font-weight: 800; }
