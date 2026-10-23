@@ -2,7 +2,10 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
-<<<<<<< HEAD
+## 2026-10-23 · Historial ajeno: barra fija con el nombre del usuario
+
+- Al ver el historial de otro usuario aparece una barra pegada bajo el header (`.history-viewing-bar`, "Viendo las predicciones de {nombre}"), visible al scrollear y con el drawer abierto, en mobile y desktop. Reemplaza la banda `.history-owner-banner` del drawer.
+
 ## 2026-10-21 · Nuevo agente auditor de SEO y primera auditoría de posicionamiento
 
 - Se crea el agente `seo-auditor` (`.claude/agents/seo-auditor.md`) para
@@ -16,11 +19,6 @@ Orden cronológico inverso (lo más nuevo arriba).
   admin, se manda de una sola vez). Se priorizan 4 "quick wins" de
   impacto alto y esfuerzo bajo. Ver `rules/seo.md` para el detalle y el
   checklist. No se modificó código en esta pasada, solo se documentó.
-=======
-## 2026-10-23 · Historial ajeno: barra fija con el nombre del usuario
-
-- Al ver el historial de otro usuario aparece una barra pegada bajo el header (`.history-viewing-bar`, "Viendo las predicciones de {nombre}"), visible al scrollear y con el drawer abierto, en mobile y desktop. Reemplaza la banda `.history-owner-banner` del drawer.
->>>>>>> julieta
 
 ## 2026-10-20 · Historial mobile: banda con el nombre del usuario en historial ajeno
 
