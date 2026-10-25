@@ -46,6 +46,25 @@
     align-items: stretch;
     min-height: 80px;
     background: #F3F3F3;
+    cursor: pointer;
+    transition: filter .15s var(--cal-ease);
+}
+
+/* Toda la fila abre/cierra el panel (antes solo el reloj, que algunos
+   usuarios no identificaban como botón y tocaban la fecha en su lugar). */
+.cal-card__row:hover,
+.cal-card__row:focus-within {
+    filter: brightness(1.06);
+}
+
+.cal-card__row:active {
+    filter: brightness(.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cal-card__row {
+        transition: none;
+    }
 }
 
 .cal-card__rail {
@@ -420,8 +439,15 @@
     }
 }
 
-/* Duración de la sesión (valores aproximados por tipo) */
+/* Duración de la sesión (valores aproximados por tipo). Ancho fijo para que
+   los pills queden alineados entre sí ("60 MIN." vs "2 HS." vs "35 MIN."). */
 .cal-session__dur {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 66px;
+    box-sizing: border-box;
+    flex-shrink: 0;
     font-size: .66rem;
     font-weight: 700;
     letter-spacing: .5px;

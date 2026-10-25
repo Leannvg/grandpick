@@ -2,6 +2,24 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-24 · Calendario: pills de duración alineados y orden ojo/check
+
+- `cal-session__dur` pasa a ancho fijo (66px, `inline-flex` centrado) para que
+  "35 MIN.", "60 MIN." y "2 HS." queden alineados entre sí en vez de variar
+  con el largo del texto.
+- En la columna derecha de cada sesión el orden pasa a ser ojo (ver mi
+  predicción) → check (finalizada) → pill de duración, de izquierda a
+  derecha.
+
+## 2026-10-24 · Calendario: toda la fila abre el panel de horarios
+
+- Un usuario reportó que no se daba cuenta de que el reloj era un botón y
+  tocaba la fecha (la parte de color) esperando que reaccionara. Se movió el
+  `onClick` del botón del reloj a toda la fila (`cal-card__row`); el reloj
+  sigue siendo el control accesible (sin `onClick` propio, el click nativo
+  burbujea), así que el teclado sigue funcionando igual. Se agregó un hover
+  / active (`filter: brightness`) en toda la fila como refuerzo visual.
+
 ## 2026-10-24 · Calendario: marca de sesión finalizada y botón a mi predicción
 
 - Cada sesión del panel de horarios (`CalendarCard.jsx`) ya pasada muestra una
