@@ -2,6 +2,21 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-24 · Fix: etiqueta de sesión incorrecta en el gap de desempate del ranking por GP
+
+- `getGrandPrixRanking` (`back/services/predictions.services.js`) calculaba
+  una sola etiqueta de sesión por GP (`QUALY`, `SPRINT`, etc., la de la
+  última sesión con resultados) y la usaba para **todo** líder de grupo
+  empatado, aunque ese usuario no hubiera predicho esa sesión y su fecha
+  mostrada viniera del fallback (su predicción más temprana del GP, de otra
+  sesión). Resultado: usuarios aparecían etiquetados "QUALY" en el ranking
+  cuando su empate era en realidad por una predicción de sprint.
+- Ahora cada usuario lleva su propio `sessionLabel`, calculado según de qué
+  sesión viene realmente su `date_prediction` (la de desempate oficial si
+  la predijo, o la de su predicción más temprana si no). Ver
+  `rules/logica.md`. No probado en vivo todavía (sin sprint este finde);
+  revisar en el próximo GP con fin de semana sprint.
+
 ## 2026-10-23 · Barra de usuario: sin carga y banda en el drawer mobile
 
 - La barra `.history-viewing-bar` solo se muestra con los datos ya cargados (`dataLoaded`): durante el loader no aparece (antes se veía el hueco y el texto "otro usuario" sin nombre).
