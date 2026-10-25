@@ -33,7 +33,15 @@ Son solo informativos: no generan predicciones, puntos ni notificaciones.
     la clasificación de `Races` anterior al sprint.
   - Grupo «Clasificación y carrera»: clasificación y carrera.
 - Sin datos de prácticas, el grupo «Prácticas» no aparece.
-- Ver `rules/features/` y `rules/componentes.md` (`CalendarCard`).
+- Cada sesión ya pasada (comparando `it.iso` contra la hora actual, no contra
+  `state`) muestra una marca ✓ junto al nombre, para todos los grupos
+  (incluidas prácticas). Las sesiones predecibles (clasificación, sprint,
+  carrera — no prácticas ni SQ, que no generan `Predictions`) con predicción
+  propia del usuario logueado suman un botón que linkea a
+  `/prediction-history?gp=<circuitId>&session=<type>`. `Calendar.jsx` arma el
+  mapa de predicciones con `PredictionsServices.findHistoryByUser` solo si hay
+  `auth-token` en `localStorage` (la página es pública, sin login no se pide
+  nada). Ver `rules/componentes.md` (`CalendarCard`).
 
 ## Pendiente
 

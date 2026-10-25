@@ -2,6 +2,18 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-24 · Calendario: marca de sesión finalizada y botón a mi predicción
+
+- Cada sesión del panel de horarios (`CalendarCard.jsx`) ya pasada muestra una
+  marca ✓ junto al nombre (prácticas incluidas, es solo informativo).
+- Las sesiones predecibles (clasificación, sprint, carrera) con predicción
+  propia del usuario logueado suman un botón que lleva a
+  `/prediction-history?gp=<circuitId>&session=<type>` (la vista de
+  comparación que ya existía para el historial). `Calendar.jsx` arma el mapa
+  de predicciones con `findHistoryByUser` solo si hay sesión iniciada; es una
+  página pública, así que sin login no se pide nada. Ver
+  `rules/features/practicas.md` y `rules/componentes.md`.
+
 ## 2026-10-24 · Fix: etiqueta de sesión incorrecta en el gap de desempate del ranking por GP
 
 - `getGrandPrixRanking` (`back/services/predictions.services.js`) calculaba

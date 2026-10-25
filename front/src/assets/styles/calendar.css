@@ -355,6 +355,42 @@
     opacity: .7;
 }
 
+/* Marca de sesión ya finalizada (no usa opacity en .cal-session: pelea con el
+   fill-mode de la animación de entrada cal-row-in, que fija opacity:1). */
+.cal-session__past-icon {
+    margin-left: 6px;
+    font-size: .78rem;
+    color: #7ad694;
+    vertical-align: 1px;
+}
+
+.cal-session__end {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cal-session__predict-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .14);
+    color: #fff;
+    font-size: .85rem;
+    transition: background-color .2s var(--cal-ease), color .2s var(--cal-ease), transform .2s var(--cal-ease);
+}
+
+.cal-session__predict-btn:hover,
+.cal-session__predict-btn:focus-visible {
+    background: #fff;
+    color: var(--cal-ink);
+    transform: scale(1.05);
+}
+
 /* Entrada escalonada de las filas al abrir (solo fade) */
 @keyframes cal-row-in {
     from { opacity: 0; }

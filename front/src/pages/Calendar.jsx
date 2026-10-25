@@ -7,6 +7,8 @@ import { getCountries } from "../services/countries.services";
 import Reveal from "../components/Reveal";
 import CalendarCard from "../components/calendar/CalendarCard";
 import practiceSessionsServices from "../services/practiceSessions.services";
+import UsersServices from "../services/users.services";
+import PredictionsServices from "../services/predictions.services";
 
 const MONTHS = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
 const pad2 = (n) => String(n).padStart(2, "0");
@@ -15,7 +17,32 @@ function Calendar() {
     const [races, setRaces] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(-1);
     const [practicesList, setPracticesList] = useState([]);
+    const [predictionsByRaceId, setPredictionsByRaceId] = useState({});
     const { showLoader, hideLoader } = useLoader();
+
+    // Para marcar qué sesiones ya tienen predicción mía y poder linkear a esa
+    // predicción. Página pública: si no hay sesión iniciada, no se pide nada.
+    const loadUserPredictions = useCallback(async () => {
+        if (!localStorage.getItem("auth-token")) {
+            setPredictionsByRaceId({});
+            return;
+        }
+        try {
+            const currentYear = new Date().getFullYear();
+            const userData = await UsersServices.getUserProfile();
+            const historyData = await PredictionsServices.findHistoryByUser(userData._id, currentYear);
+            const map = {};
+            historyData.forEach((gp) => {
+                gp.sessions.forEach((s) => {
+                    if (s.prediction) map[s._id] = true;
+                });
+            });
+            setPredictionsByRaceId(map);
+        } catch (err) {
+            console.error("Error cargando mis predicciones para el calendario:", err);
+            setPredictionsByRaceId({});
+        }
+    }, []);
 
     const loadRaces = useCallback(async (isSilent = false) => {
         if (!isSilent) showLoader();
@@ -99,6 +126,7 @@ function Calendar() {
 
     useEffect(() => {
         loadRaces();
+        loadUserPredictions();
 
         let currentSocket = null;
         const handleRacesUpdated = () => loadRaces(true);
@@ -114,7 +142,7 @@ function Calendar() {
                 currentSocket.off("races:updated", handleRacesUpdated);
             }
         };
-    }, [loadRaces]);
+    }, [loadRaces, loadUserPredictions]);
 
     function getStatus(index) {
         if (currentIndex === -1) return "finished";
@@ -163,6 +191,7 @@ function Calendar() {
                 dayLabel={formatDayRange(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}
                 monthLabel={formatMonthShort(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}
                 practices={practicesList.filter((p) => String(p.id_circuit) === String(race.id_circuit?._id || race.id_circuit || race.circuit?._id))}
+                predictionsByRaceId={predictionsByRaceId}
             />
         </Reveal>
     );

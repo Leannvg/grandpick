@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { DateTime } from "luxon";
 import { getFlagEmoji } from "../../utils/helpers";
 import "../../assets/styles/calendar.css";
@@ -24,14 +25,18 @@ function buildSchedule(sessions, practices = []) {
     const sqList = practices.filter((p) => p.name === "SQ");
     const hasSq = sqList.length > 0;
 
+    // predictable: true solo para sesiones que viven en Races (tienen Predictions
+    // asociadas por raceId). Prácticas y SQ (de Practice_Sessions) son informativas,
+    // no se puede predecir ahí — ver "¿Qué se puede calcular?" en rules/logica.md.
     const items = sessions.flatMap((s) => {
         const type = normalizeType(s.points_system?.type);
         const millis = DateTime.fromISO(s.date_race).toMillis();
-        if (type === "sprint") return [{ id: s._id, iso: s.date_race, group: "sprint", label: "Sprint", dur: DURATION.sprint, race: false }];
+        const base = { id: s._id, iso: s.date_race, sessionType: s.points_system?.type, predictable: true };
+        if (type === "sprint") return [{ ...base, group: "sprint", label: "Sprint", dur: DURATION.sprint, race: false }];
         if (type === "qualy" && hasSprint && millis < sprintMillis)
-            return hasSq ? [] : [{ id: s._id, iso: s.date_race, group: "sprint", label: "Clasificación sprint", dur: DURATION.qualySprint, race: false }];
-        if (type === "qualy") return [{ id: s._id, iso: s.date_race, group: "main", label: "Clasificación", dur: DURATION.qualyMain, race: false }];
-        return [{ id: s._id, iso: s.date_race, group: "main", label: "Carrera", dur: DURATION.race, race: true }];
+            return hasSq ? [] : [{ ...base, group: "sprint", label: "Clasificación sprint", dur: DURATION.qualySprint, race: false }];
+        if (type === "qualy") return [{ ...base, group: "main", label: "Clasificación", dur: DURATION.qualyMain, race: false }];
+        return [{ ...base, group: "main", label: "Carrera", dur: DURATION.race, race: true }];
     });
 
     const sqItems = sqList.map((p) => ({
@@ -41,6 +46,7 @@ function buildSchedule(sessions, practices = []) {
         label: "Clasificación sprint",
         dur: DURATION.qualySprint,
         race: false,
+        predictable: false,
     }));
 
     const practiceItems = practices.filter((p) => p.name !== "SQ").map((p) => ({
@@ -50,6 +56,7 @@ function buildSchedule(sessions, practices = []) {
         label: `Práctica ${p.name.replace("FP", "")}`,
         dur: DURATION.practice,
         race: false,
+        predictable: false,
     }));
 
     const sprintItems = [...items.filter((i) => i.group === "sprint"), ...sqItems]
@@ -77,11 +84,12 @@ function formatSessionTime(iso, zone) {
     };
 }
 
-function CalendarCard({ race, roundNumber, status, dayLabel, monthLabel, practices = [] }) {
+function CalendarCard({ race, roundNumber, status, dayLabel, monthLabel, practices = [], predictionsByRaceId = {} }) {
     const [isOpen, setIsOpen] = useState(false);
     const [zoneMode, setZoneMode] = useState("mine");
 
     const circuitZone = race.circuit?.timezone || "UTC";
+    const circuitId = race.circuit?._id;
     const sessions = [...race.sessions].sort(
         (a, b) => DateTime.fromISO(a.date_race).toMillis() - DateTime.fromISO(b.date_race).toMillis()
     );
@@ -157,20 +165,36 @@ function CalendarCard({ race, roundNumber, status, dayLabel, monthLabel, practic
                                 </div>
                                 {g.items.map((it, i) => {
                                     const t = formatSessionTime(it.iso, zoneMode === "mine" ? "local" : circuitZone);
+                                    const isPast = DateTime.fromISO(it.iso) <= DateTime.now();
+                                    const hasPrediction = it.predictable && !!predictionsByRaceId[it.id];
                                     return (
-                                        <div className="cal-session" key={it.id} style={{ "--i": gi * 3 + i + 1 }}>
+                                        <div className={`cal-session ${isPast ? "is-past" : ""}`} key={it.id} style={{ "--i": gi * 3 + i + 1 }}>
                                             <div className="cal-session__date">
                                                 <span className="cal-session__dow">{t.dow}</span>
                                                 <span className="cal-session__dnum">{t.day}</span>
                                             </div>
                                             <span className="cal-session__sep" aria-hidden="true"></span>
                                             <div className="cal-session__main">
-                                                <span className="cal-session__name">{it.label}</span>
+                                                <span className="cal-session__name">
+                                                    {it.label}
+                                                    {isPast && <i className="bi bi-check2-circle cal-session__past-icon" title="Sesión finalizada"></i>}
+                                                </span>
                                                 <span className="cal-session__time">
                                                     <i className="bi bi-clock"></i>{t.time}
                                                 </span>
                                             </div>
-                                            <span className={`cal-session__dur ${it.race ? "is-race" : it.label === "Sprint" ? "is-sprint" : ""}`}>{it.dur}</span>
+                                            <div className="cal-session__end">
+                                                <span className={`cal-session__dur ${it.race ? "is-race" : it.label === "Sprint" ? "is-sprint" : ""}`}>{it.dur}</span>
+                                                {hasPrediction && circuitId && (
+                                                    <Link
+                                                        to={`/prediction-history?gp=${circuitId}&session=${it.sessionType}`}
+                                                        className="cal-session__predict-btn"
+                                                        title="Ver mi predicción"
+                                                    >
+                                                        <i className="bi bi-eye-fill"></i>
+                                                    </Link>
+                                                )}
+                                            </div>
                                         </div>
                                     );
                                 })}
