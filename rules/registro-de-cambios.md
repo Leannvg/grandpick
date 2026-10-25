@@ -2,6 +2,16 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-25 · Calendario: el ícono del toggle pasa de reloj a flecha
+
+- Con toda la fila clickeable (cambio del día anterior), el reloj que antes
+  era el único control quedaba como un ícono suelto sin relación obvia con
+  "esto se expande". Se reemplaza por una flecha (`bi-chevron-down`) que
+  rota 180° al abrir — el símbolo estándar de expandir/contraer, y un glifo
+  único en vez de clock+X se ve más liviano repetido en cada card del
+  calendario. El tema "reloj = horarios" ya está cubierto por los íconos de
+  reloj de cada sesión dentro del panel abierto.
+
 ## 2026-10-24 · Calendario: pills de duración alineados y orden ojo/check
 
 - `cal-session__dur` pasa a ancho fijo (66px, `inline-flex` centrado) para que

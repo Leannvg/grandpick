@@ -121,10 +121,9 @@ function CalendarCard({ race, roundNumber, status, dayLabel, monthLabel, practic
                     className="cal-card__toggle"
                     aria-expanded={isOpen}
                     aria-controls={panelId}
-                    aria-label={isOpen ? "Cerrar horarios" : "Ver horarios"}
+                    aria-label={isOpen ? "Ocultar horarios" : "Mostrar horarios"}
                 >
-                    <span className="cal-card__ico cal-card__ico--clock"><i className="bi bi-clock"></i></span>
-                    <span className="cal-card__ico cal-card__ico--close"><i className="bi bi-x-lg"></i></span>
+                    <i className="bi bi-chevron-down cal-card__chevron"></i>
                 </button>
 
                 <div className={`cal-card__date is-${status}`}>

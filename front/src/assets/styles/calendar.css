@@ -149,7 +149,11 @@
     letter-spacing: .4px;
 }
 
-/* Reloj: gira a X al abrir */
+/* Indicador de expandir/contraer: solo señala que la fila completa es
+   clickeable (ver .cal-card__row), no es el único control. Flecha en vez de
+   reloj: con toda la fila clickeable un reloj se leía como decoración; la
+   flecha es el símbolo estándar de "esto se expande", y al repetirse en
+   cada card del calendario un glifo simple lee mejor que uno compuesto. */
 .cal-card__toggle {
     position: relative;
     width: 34px;
@@ -167,19 +171,9 @@
     outline-offset: -4px;
 }
 
-.cal-card__ico {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    transition: transform .35s var(--cal-ease), opacity .25s ease;
-}
-
-.cal-card__ico--close {
-    opacity: 0;
-    transform: rotate(-90deg) scale(.6);
+.cal-card__chevron {
+    font-size: 15px;
+    transition: transform .3s var(--cal-ease);
 }
 
 .cal-card.is-open .cal-card__toggle {
@@ -187,14 +181,8 @@
     color: #495057;
 }
 
-.cal-card.is-open .cal-card__ico--clock {
-    opacity: 0;
-    transform: rotate(90deg) scale(.6);
-}
-
-.cal-card.is-open .cal-card__ico--close {
-    opacity: 1;
-    transform: none;
+.cal-card.is-open .cal-card__chevron {
+    transform: rotate(180deg);
 }
 
 /* Fecha y estado */
