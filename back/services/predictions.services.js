@@ -433,14 +433,25 @@ export async function getGrandPrixRanking(circuitId, year) {
         }
 
         const tiebreakerSessionId = tiebreakerSession ? tiebreakerSession._id.toString() : null;
-        let tiebreakerSessionName = 'SESSION';
-        if (tiebreakerSession && tiebreakerSession.points_system) {
-            const ps = await db.collection("Points_System").findOne({ _id: new ObjectId(tiebreakerSession.points_system) });
-            if (ps && ps.type) {
-                tiebreakerSessionName = ps.type.toUpperCase();
-            }
+
+        // Mapa de sesión -> etiqueta (QUALY, SPRINT, RACE, etc.), para poder mostrar
+        // la sesión real de la que viene la fecha de cada usuario, no solo la del
+        // desempate "oficial" (ver uso de sessionLabel más abajo).
+        const pointsSystemIds = [...new Set(races.map(r => r.points_system?.toString()).filter(Boolean))];
+        const pointsSystems = pointsSystemIds.length > 0
+            ? await db.collection("Points_System").find({ _id: { $in: pointsSystemIds.map(id => new ObjectId(id)) } }).toArray()
+            : [];
+        const pointsSystemMap = new Map(pointsSystems.map(p => [p._id.toString(), p]));
+
+        function sessionLabelFor(race) {
+            const ps = race?.points_system ? pointsSystemMap.get(race.points_system.toString()) : null;
+            if (!ps || !ps.type) return 'SESSION';
+            const label = ps.type.toUpperCase();
+            return label === 'QUALIFYING' ? 'QUALY' : label;
         }
-        if (tiebreakerSessionName === 'QUALIFYING') tiebreakerSessionName = 'QUALY';
+
+        const raceSessionLabelMap = new Map(races.map(r => [r._id.toString(), sessionLabelFor(r)]));
+        const tiebreakerSessionName = raceSessionLabelMap.get(tiebreakerSessionId) || 'SESSION';
 
         const raceIds = races.map(r => r._id);
 
@@ -457,6 +468,7 @@ export async function getGrandPrixRanking(circuitId, year) {
                     userId: pred.userId,
                     totalPoints: 0,
                     earliestDate: pred.date_prediction,
+                    earliestRaceId: pred.raceId.toString(),
                     tiebreakerDate: null,
                     predictionsCount: 0
                 };
@@ -468,6 +480,7 @@ export async function getGrandPrixRanking(circuitId, year) {
                 userStats[uid].tiebreakerDate = pred.date_prediction;
             } else if (new Date(pred.date_prediction) < new Date(userStats[uid].earliestDate)) {
                 userStats[uid].earliestDate = pred.date_prediction;
+                userStats[uid].earliestRaceId = pred.raceId.toString();
             }
         }
 
@@ -479,6 +492,12 @@ export async function getGrandPrixRanking(circuitId, year) {
             const user = userMap.get(stat.userId.toString());
             const datePrediction = stat.tiebreakerDate || stat.earliestDate;
             const hasTiebreaker = !!stat.tiebreakerDate;
+            // Etiqueta de la sesión real de la que viene datePrediction: si el usuario
+            // predijo la sesión de desempate oficial, es esa; si no, es la de su
+            // predicción más temprana (fallback), que puede ser otra sesión distinta.
+            const sessionLabel = hasTiebreaker
+                ? tiebreakerSessionName
+                : (raceSessionLabelMap.get(stat.earliestRaceId) || 'SESSION');
 
             return {
                 _id: stat.userId.toString(),
@@ -489,6 +508,7 @@ export async function getGrandPrixRanking(circuitId, year) {
                 points: stat.totalPoints,
                 date_prediction: datePrediction,
                 hasTiebreaker: hasTiebreaker,
+                sessionLabel: sessionLabel,
                 predictionsCount: stat.predictionsCount
             };
         });
@@ -542,7 +562,7 @@ export async function getGrandPrixRanking(circuitId, year) {
                         month: '2-digit',
                         year: '2-digit'
                     });
-                    entry.gap = `${dateStr} - ${timeStr} (${tiebreakerSessionName})`;
+                    entry.gap = `${dateStr} - ${timeStr} (${entry.sessionLabel})`;
                 } else {
                     // Persona subsiguiente en el grupo de desempate
                     const entryDate = new Date(entry.date_prediction);

@@ -104,6 +104,17 @@ constructores hasta que se complete manualmente.
 - Ranking por **sesión individual** (no por GP ni por temporada):
   `updateSessionRanking(raceId)` en `points.services.js`, guarda `rank`/
   `totalPlayers` en cada `Users_Points`. Ver `rules/features/estadisticas-perfil.md`.
+- Desempate del ranking **por Gran Premio** (modo `grand_prix` de
+  `Ranking.jsx`): `getGrandPrixRanking(circuitId, year)` en
+  `back/services/predictions.services.js`. Entre empatados en puntos, gana
+  quien predijo antes la sesión "de desempate" (la última sesión del GP con
+  `results` cargados; si ninguna tiene resultados, la última sesión del fin
+  de semana). Si un usuario no predijo esa sesión, se usa su predicción más
+  temprana del GP como fallback. La etiqueta que se muestra junto al gap
+  (`QUALY`, `SPRINT`, etc.) refleja la sesión real de la que viene esa fecha
+  por usuario (`sessionLabel`), no siempre la sesión "oficial" de desempate
+  — antes mostraba siempre esta última aunque la fecha del usuario viniera
+  del fallback de otra sesión (bug corregido 2026-10-24).
 
 ### Temporada vigente (título del podio del Home)
 `utils/helpers.js` → `getSeasonYear(currentYearRaces, now)`: devuelve el año actual
