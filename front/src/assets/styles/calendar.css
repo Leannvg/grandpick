@@ -355,21 +355,17 @@
     opacity: .7;
 }
 
-/* Marca de sesión ya finalizada (no usa opacity en .cal-session: pelea con el
-   fill-mode de la animación de entrada cal-row-in, que fija opacity:1). */
-.cal-session__past-icon {
-    margin-left: 6px;
-    font-size: .78rem;
-    color: #7ad694;
-    vertical-align: 1px;
-}
-
 .cal-session__end {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
+/* Botones redondos de la columna derecha: finalizada (check) y ver mi
+   predicción (ojo), mismo tamaño/forma, distinto acento de color.
+   No usan opacity en .cal-session: pelea con el fill-mode de la animación
+   de entrada cal-row-in, que fija opacity:1. */
+.cal-session__past-btn,
 .cal-session__predict-btn {
     display: inline-flex;
     align-items: center;
@@ -378,10 +374,18 @@
     height: 28px;
     flex-shrink: 0;
     border-radius: 50%;
-    background: rgba(255, 255, 255, .14);
-    color: #fff;
     font-size: .85rem;
     transition: background-color .2s var(--cal-ease), color .2s var(--cal-ease), transform .2s var(--cal-ease);
+}
+
+.cal-session__past-btn {
+    background: rgba(122, 214, 148, .18);
+    color: #7ad694;
+}
+
+.cal-session__predict-btn {
+    background: rgba(255, 255, 255, .14);
+    color: #fff;
 }
 
 .cal-session__predict-btn:hover,

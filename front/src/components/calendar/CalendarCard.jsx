@@ -175,16 +175,17 @@ function CalendarCard({ race, roundNumber, status, dayLabel, monthLabel, practic
                                             </div>
                                             <span className="cal-session__sep" aria-hidden="true"></span>
                                             <div className="cal-session__main">
-                                                <span className="cal-session__name">
-                                                    {it.label}
-                                                    {isPast && <i className="bi bi-check2-circle cal-session__past-icon" title="Sesión finalizada"></i>}
-                                                </span>
+                                                <span className="cal-session__name">{it.label}</span>
                                                 <span className="cal-session__time">
                                                     <i className="bi bi-clock"></i>{t.time}
                                                 </span>
                                             </div>
                                             <div className="cal-session__end">
-                                                <span className={`cal-session__dur ${it.race ? "is-race" : it.label === "Sprint" ? "is-sprint" : ""}`}>{it.dur}</span>
+                                                {isPast && (
+                                                    <span className="cal-session__past-btn" title="Sesión finalizada">
+                                                        <i className="bi bi-check2"></i>
+                                                    </span>
+                                                )}
                                                 {hasPrediction && circuitId && (
                                                     <Link
                                                         to={`/prediction-history?gp=${circuitId}&session=${it.sessionType}`}
@@ -194,6 +195,7 @@ function CalendarCard({ race, roundNumber, status, dayLabel, monthLabel, practic
                                                         <i className="bi bi-eye-fill"></i>
                                                     </Link>
                                                 )}
+                                                <span className={`cal-session__dur ${it.race ? "is-race" : it.label === "Sprint" ? "is-sprint" : ""}`}>{it.dur}</span>
                                             </div>
                                         </div>
                                     );
