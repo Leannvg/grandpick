@@ -8,6 +8,8 @@ chico ("Reservas" / `PILOTOS SUPLENTES`) + grilla de cards.
 - Card = `DriverCardMobile` sin número y con imagen genérica
   (`front/src/assets/icons/suplente.png`, igual para todos). Datos mostrados:
   nombre completo, escudería (logo), nacionalidad y trigrama.
+- Header de la sección con el estilo estándar de títulos (`page-header` + `section-title`).
+- Los pilotos titulares también usan esta misma card (`DriverCardMobile`) en desktop; el diseño horizontal anterior (`DriverCardDesktop`) quedó comentado en `Drivers.jsx`.
 - Tags de la card del mismo ancho (el del más ancho) y contenido centrado
   (`.reserve-card .driver-tags-vertical` en grilla).
 - Estilos al final de `assets/styles/components.css` (`.reserve-*`).

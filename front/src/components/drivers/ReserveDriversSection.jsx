@@ -6,9 +6,9 @@ const ReserveDriversSection = ({ drivers = [] }) => {
 
     return (
         <section className="reserve-section">
-            <header className="reserve-header">
+            <header className="page-header reserve-header">
                 <p className="section-label">Reservas</p>
-                <h2 className="reserve-title">PILOTOS SUPLENTES</h2>
+                <h2 className="section-title">PILOTOS SUPLENTES</h2>
                 <p className="section-subtitle">Siempre listos para entrar a la pista</p>
             </header>
 

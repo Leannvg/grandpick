@@ -2,6 +2,11 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-27 · Pilotos: todas las cards con el diseño de DriverCardMobile
+
+- `pages/Drivers.jsx` usa `DriverCardMobile` en todos los anchos (el uso de `DriverCardDesktop` y la detección de ancho quedan comentados, no borrados). La grilla pasa a `.drivers-cards-grid` (flex centrado, cards de 300px) en vez de `.drivers-grid`.
+- El título `PILOTOS SUPLENTES` usa el estilo estándar de títulos de página (`page-header` + `section-title`), no uno propio.
+
 ## 2026-10-26 · Pilotos suplentes en /drivers (mock de 3)
 
 - Nueva sección `PILOTOS SUPLENTES` debajo de la grilla de pilotos, con cards basadas en `DriverCardMobile` (sin número, imagen genérica). Datos mock de 3 suplentes hasta cargarlos desde el panel. Ver [features/pilotos-suplentes.md](./features/pilotos-suplentes.md).

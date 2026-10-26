@@ -2318,30 +2318,24 @@ input[type="time"].form-control {
 /* ===== Pilotos suplentes (sección secundaria de /drivers) ===== */
 .reserve-section {
   margin-top: 48px;
-  padding-top: 40px;
+  padding-top: 0;
   padding-bottom: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-.reserve-header { margin-bottom: 24px; }
-
-.reserve-title {
-  font-size: 26px;
-  font-weight: 700;
-  color: white;
-  margin: 0;
+.reserve-header .section-title {
+  font-size: var(--title-size);
+  font-weight: 300;
 }
 
-@media (min-width: 1200px) {
-  .reserve-title { font-size: 30px; }
-}
-
-/* Grilla de cards (300px fijos, centradas) */
-.reserve-grid {
+/* Grilla de cards (300px fijos, centradas). Usada por pilotos y suplentes */
+.reserve-grid,
+.drivers-cards-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 24px;
+  padding: 20px 0;
 }
 
 /* Card: sin número, tags a la derecha, imagen genérica encuadrada */

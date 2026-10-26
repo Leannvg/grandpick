@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLoader } from "../context/LoaderContext";
-import DriverCardDesktop from "../components/drivers/DriverCardDesktop";
+// import DriverCardDesktop from "../components/drivers/DriverCardDesktop"; // diseño anterior (desktop), reemplazado por DriverCardMobile
 import DriverCardMobile from "../components/drivers/DriverCardMobile";
 import ReserveDriversSection from "../components/drivers/ReserveDriversSection";
 import Reveal from "../components/Reveal";
@@ -11,7 +11,7 @@ function Drivers() {
   const [drivers, setDrivers] = useState([]);
   const [reserveDrivers, setReserveDrivers] = useState([]);
   const { showLoader, hideLoader } = useLoader();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+  // const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
   useEffect(() => {
     showLoader();
@@ -47,12 +47,13 @@ function Drivers() {
         hideLoader();
       });
 
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    // Diseño anterior (desktop vs mobile): ya no hace falta detectar el ancho
+    // const handleResize = () => {
+    //   setIsMobile(window.innerWidth < 768);
+    // };
+    //
+    // window.addEventListener("resize", handleResize);
+    // return () => window.removeEventListener("resize", handleResize);
   }, []);
 
 
@@ -65,14 +66,16 @@ function Drivers() {
           <p className="section-subtitle">Los verdaderos protagonistas de la pista</p>
         </header>
 
-        <div className="drivers-grid">
+        <div className="drivers-cards-grid">
           {drivers.map((driver, index) => (
             <Reveal key={driver._id.$oid} delay={Math.min(index * 0.05, 0.4)}>
+              <DriverCardMobile driver={driver} />
+              {/* Diseño anterior (desktop):
               {isMobile ? (
                 <DriverCardMobile driver={driver} />
               ) : (
                 <DriverCardDesktop driver={driver} />
-              )}
+              )} */}
             </Reveal>
           ))}
         </div>
