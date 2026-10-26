@@ -2349,15 +2349,15 @@ input[type="time"].form-control {
   display: block;
 }
 
-/* Tags del mismo ancho (el del más ancho) y contenido centrado */
-.reserve-card .driver-tags-vertical {
+/* Tags de las cards de piloto del mismo ancho (el del más ancho) y contenido centrado */
+.driver-tags-vertical {
   display: grid;
   grid-template-columns: auto;
   justify-items: stretch;
   align-items: stretch;
 }
 
-.reserve-card .driver-tags-vertical > .tag-vertical {
+.driver-tags-vertical > .tag-vertical {
   display: flex;
   align-items: center;
   justify-content: center;

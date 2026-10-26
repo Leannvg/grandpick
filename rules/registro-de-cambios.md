@@ -2,6 +2,10 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-27 · Tags de las cards de piloto del mismo ancho
+
+- La regla de tags iguales y centrados (antes solo en `.reserve-card`) pasa a `.driver-tags-vertical` en `components.css`: aplica a todas las cards `DriverCardMobile` (titulares en `/drivers`, `TeamDetail` y suplentes). La bandera ya no queda más angosta que los demás tags.
+
 ## 2026-10-27 · Pilotos: todas las cards con el diseño de DriverCardMobile
 
 - `pages/Drivers.jsx` usa `DriverCardMobile` en todos los anchos (el uso de `DriverCardDesktop` y la detección de ancho quedan comentados, no borrados). La grilla pasa a `.drivers-cards-grid` (flex centrado, cards de 300px) en vez de `.drivers-grid`.
