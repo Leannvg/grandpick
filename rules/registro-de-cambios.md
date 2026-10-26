@@ -2,6 +2,14 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-26 · Pilotos suplentes en /drivers (mock de 3)
+
+- Nueva sección `PILOTOS SUPLENTES` debajo de la grilla de pilotos, con cards basadas en `DriverCardMobile` (sin número, imagen genérica). Datos mock de 3 suplentes hasta cargarlos desde el panel. Ver [features/pilotos-suplentes.md](./features/pilotos-suplentes.md).
+
+## 2026-10-26 · CountryDisplay: bandera sin margen cuando no hay nombre
+
+- `components/CountryDisplay.jsx`: la clase `me-1` del emoji solo se aplica con `showName` (separa bandera y nombre). Con `showName={false}` (tags de las cards de pilotos, filas del perfil) la bandera ya no queda corrida a la izquierda y se centra dentro de su tag.
+
 ## 2026-10-25 · Calendario: el ícono del toggle pasa de reloj a flecha
 
 - Con toda la fila clickeable (cambio del día anterior), el reloj que antes

@@ -7,7 +7,7 @@ const CountryDisplay = ({ iso2, showName = true, className = "" }) => {
 
     return (
         <span className={`country-display ${className}`} title={name}>
-            <span className="emoji-flag me-1">{emoji}</span>
+            <span className={`emoji-flag${showName ? " me-1" : ""}`}>{emoji}</span>
             {showName && <span className="country-name">{loading ? "..." : name}</span>}
         </span>
     );

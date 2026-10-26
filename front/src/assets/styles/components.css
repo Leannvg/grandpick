@@ -2314,3 +2314,58 @@ input[type="time"].form-control {
     from { transform: translateY(0); }
     to { transform: translateY(100%); }
 }
+
+/* ===== Pilotos suplentes (sección secundaria de /drivers) ===== */
+.reserve-section {
+  margin-top: 48px;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.reserve-header { margin-bottom: 24px; }
+
+.reserve-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+@media (min-width: 1200px) {
+  .reserve-title { font-size: 30px; }
+}
+
+/* Grilla de cards (300px fijos, centradas) */
+.reserve-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+
+/* Card: sin número, tags a la derecha, imagen genérica encuadrada */
+.reserve-card .driver-top-overlay-vertical { justify-content: flex-end; }
+
+.reserve-card .driver-photo-vertical {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  display: block;
+}
+
+/* Tags del mismo ancho (el del más ancho) y contenido centrado */
+.reserve-card .driver-tags-vertical {
+  display: grid;
+  grid-template-columns: auto;
+  justify-items: stretch;
+  align-items: stretch;
+}
+
+.reserve-card .driver-tags-vertical > .tag-vertical {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

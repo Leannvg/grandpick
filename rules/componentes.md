@@ -66,7 +66,7 @@ correspondiente (ruta, props, para qué sirve, notas de reuso).
 | `SearchableSelect` | `components/SearchableSelect.jsx` | `options` (objetos con `_id` + `name`/`gp_name`/`full_name`), `value`, `onChange`, `isInvalid`, `inputId`, `isDisabled`, `isDriver`, `placeholder`, `getOptionDisabled` | Select con búsqueda (react-select) + soporte de emoji de bandera y color de equipo. Base de todos los selects ricos. |
 | `CountrySelect` | `components/CountrySelect.jsx` | `countryFunction`, `defaultValue`, `isInvalid`, `error`, `hideLabel`, `inputId` | Select de países (usa API externa + `SearchableSelect`). |
 | `CitySelect` | `components/CitySelect.jsx` | `cityFunction`, `country`, `defaultValue`, `isInvalid`, `error`, `hideLabel` | Select de ciudades/estados dependiente de `country`. |
-| `CountryDisplay` | `components/CountryDisplay.jsx` | `iso2`, `showName`, `className` | Muestra bandera emoji + nombre de país (read-only). Usa `useCountry`. |
+| `CountryDisplay` | `components/CountryDisplay.jsx` | `iso2`, `showName`, `className` | Muestra bandera emoji + nombre de país (read-only). Usa `useCountry`. El margen `me-1` de la bandera solo se aplica con `showName` (sin nombre la bandera queda centrada en su contenedor). |
 
 ## Formularios de dominio (panel admin)
 
@@ -102,6 +102,8 @@ Todos comparten la firma: `initialData`, `onSubmit`, `submitLabel`, `isEdit`, `e
 |---|---|---|---|
 | `DriverCardDesktop` | `components/drivers/DriverCardDesktop.jsx` | `driver` | Card de piloto (grid desktop en `/drivers`). |
 | `DriverCardMobile` | `components/drivers/DriverCardMobile.jsx` | `driver`, `teamLogo` | Card de piloto (mobile). |
+| `ReserveDriverCard` | `components/drivers/ReserveDriverCard.jsx` | `driver` (`full_name`, `trigram`, `country`, `team_info`) | Card de piloto suplente: igual a `DriverCardMobile` sin número y con imagen genérica `suplente.png`. |
+| `ReserveDriversSection` | `components/drivers/ReserveDriversSection.jsx` | `drivers` | Sección "PILOTOS SUPLENTES" (divisor + header + grilla). No renderiza nada si `drivers` está vacío. Usada al final de `Drivers.jsx`. |
 
 ## Predicciones (historial y comparación)
 

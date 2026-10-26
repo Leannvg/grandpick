@@ -1,0 +1,25 @@
+# Pilotos suplentes (en `/drivers`)
+
+Sección secundaria al final de la pantalla de Pilotos: línea divisoria + header
+chico ("Reservas" / `PILOTOS SUPLENTES`) + grilla de cards.
+
+## Diseño
+
+- Card = `DriverCardMobile` sin número y con imagen genérica
+  (`front/src/assets/icons/suplente.png`, igual para todos). Datos mostrados:
+  nombre completo, escudería (logo), nacionalidad y trigrama.
+- Tags de la card del mismo ancho (el del más ancho) y contenido centrado
+  (`.reserve-card .driver-tags-vertical` en grilla).
+- Estilos al final de `assets/styles/components.css` (`.reserve-*`).
+
+## Estado de los datos
+
+**Mock temporal**: `pages/Drivers.jsx` arma 3 suplentes fijos con los 3
+primeros equipos cargados (`// TODO` para reemplazar por datos del panel de
+control). Si no hay equipos, la sección no se renderiza.
+
+## Archivos
+
+- `components/drivers/ReserveDriverCard.jsx`
+- `components/drivers/ReserveDriversSection.jsx` (prop `drivers`)
+- `pages/Drivers.jsx`
