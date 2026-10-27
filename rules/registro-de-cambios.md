@@ -11,6 +11,22 @@ Orden cronológico inverso (lo más nuevo arriba).
 - `pages/Drivers.jsx` usa `DriverCardMobile` en todos los anchos (el uso de `DriverCardDesktop` y la detección de ancho quedan comentados, no borrados). La grilla pasa a `.drivers-cards-grid` (flex centrado, cards de 300px) en vez de `.drivers-grid`.
 - El título `PILOTOS SUPLENTES` usa el estilo estándar de títulos de página (`page-header` + `section-title`), no uno propio.
 
+## 2026-10-26 · Laboratorio de diseño (front/lab.html)
+
+- Nuevo catálogo visual local: tokens, iconografía, componentes reales
+  (importados tal cual, no copias), patrones de página, animaciones,
+  librerías usadas y una grilla con las pantallas reales en vivo
+  (`<iframe>` al mismo dev server). Pensado para encontrar inconsistencias
+  de diseño entre pantallas y evitar reinventar algo que ya existe.
+- Entry point HTML separado (`front/lab.html` + `front/src/lab/`), fuera
+  del `input` de build de Vite por defecto — nunca se empaqueta ni se
+  publica, solo accesible local con `npm run dev` →
+  `localhost:5173/lab.html`. Se commitea igual (no es local-only como
+  `rules/seguridad.md`; decisión explícita: versionado pero sin publicar).
+- Detalle técnico completo (por qué no impacta el build, qué partes son
+  datos hardcodeados a mantener a mano, el gotcha de `position: relative`
+  en los contenedores "specimen") en `rules/estructura.md`.
+
 ## 2026-10-26 · Pilotos suplentes en /drivers (mock de 3)
 
 - Nueva sección `PILOTOS SUPLENTES` debajo de la grilla de pilotos, con cards basadas en `DriverCardMobile` (sin número, imagen genérica). Datos mock de 3 suplentes hasta cargarlos desde el panel. Ver [features/pilotos-suplentes.md](./features/pilotos-suplentes.md).

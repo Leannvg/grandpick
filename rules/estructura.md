@@ -48,6 +48,38 @@ routes/  ->  middleware/  ->  controllers/  ->  services/  ->  MongoDB
 | `hooks/` | `usePagination`, `useCountry`, `useRedirectToTab`. |
 | `assets/styles/` | CSS por vista + `globals.css` (tokens y layout base). |
 | `utils/` | `helpers.js` (fechas, flags, parseo de errores), `cloudinary.js`. |
+| `lab/` | Laboratorio de diseño (catálogo de componentes/tokens/patrones). Ver sección propia abajo. |
+
+## Laboratorio de diseño (`front/lab.html` + `front/src/lab/`)
+
+Catálogo visual de lo que ya existe en el proyecto (tokens, iconografía,
+componentes reales, patrones de página, animaciones, librerías y una grilla
+de las pantallas reales en vivo), para detectar inconsistencias de diseño y
+evitar reinventar algo que ya está hecho. Entry point HTML separado
+(`lab.html`, junto a `index.html`), con su propio `main.jsx` en `src/lab/`.
+
+- **Cero impacto en producción**: `vite build` solo procesa el `input` por
+  defecto (`index.html`); al no estar `lab.html` declarado en
+  `build.rollupOptions.input` (no lo está, `vite.config.js` no lo toca),
+  Vite nunca lo empaqueta ni lo copia a `dist/`. Solo es accesible
+  localmente corriendo `npm run dev` → `http://localhost:5173/lab.html`.
+  No está en `.gitignore`: se commitea como cualquier otro archivo, pero
+  nunca se publica.
+- Importa los componentes/estilos **reales** del proyecto (no son copias):
+  `Podium`, `CalendarCard`, `SubmitButton`, `FloatingDialog`, `LoaderCar`,
+  `PasswordInput`, etc., con datos de muestra locales. Si cambia el
+  componente real, esta vista cambia sola.
+- La sección "Pantallas" muestra las rutas reales en `<iframe>` (mismo
+  origen, mismo dev server), escaladas con `transform: scale()` — no son
+  capturas, así que tampoco se desactualizan.
+- Datos hardcodeados en `src/lab/data/` (tokens, íconos usados, librerías):
+  son una fotografía manual, no se generan solos. Si se agrega un token,
+  ícono o librería nueva de uso recurrente, sumarla ahí también.
+- Al armar un componente nuevo con estado que depende de posicionamiento
+  CSS (`position: absolute` respecto al ancestro más cercano, como
+  `LoaderSpinner`), el contenedor "specimen" del lab necesita
+  `position: relative` — ya está puesto a nivel de `.lab-specimen-stage` en
+  `lab.css`, pero tenerlo en cuenta si se arma un contenedor nuevo.
 
 ## Agentes de Claude Code (nivel proyecto)
 
