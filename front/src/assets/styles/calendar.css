@@ -368,11 +368,12 @@
     gap: 8px;
 }
 
-/* Botones redondos de la columna derecha: finalizada (check) y ver mi
-   predicción (ojo), mismo tamaño/forma, distinto acento de color.
+/* Círculo de la columna derecha de cada sesión: finalizada es un estado (no
+   clickea), ver mi predicción es un botón real — por eso llevan nombres y
+   tratamientos distintos, aunque compartan tamaño/forma.
    No usan opacity en .cal-session: pelea con el fill-mode de la animación
    de entrada cal-row-in, que fija opacity:1. */
-.cal-session__past-btn,
+.cal-session__status-badge,
 .cal-session__predict-btn {
     display: inline-flex;
     align-items: center;
@@ -382,24 +383,28 @@
     flex-shrink: 0;
     border-radius: 50%;
     font-size: .85rem;
-    transition: background-color .2s var(--cal-ease), color .2s var(--cal-ease), transform .2s var(--cal-ease);
 }
 
-.cal-session__past-btn {
+.cal-session__status-badge {
     background: rgba(122, 214, 148, .18);
     color: #7ad694;
 }
 
+/* Botón real: mismo azul que .submit-btn / .btn-row-action (la familia de
+   botón circular con ícono del resto del sitio), relleno sólido porque,
+   como .submit-btn, vive sobre un fondo oscuro (el panel del calendario) —
+   el contorno de .btn-row-action es solo para filas blancas, donde un
+   relleno compite con el texto. Ver rules/diseno.md. */
 .cal-session__predict-btn {
-    background: rgba(255, 255, 255, .14);
+    background: #4c86b7;
     color: #fff;
+    transition: filter .2s var(--cal-ease), transform .2s var(--cal-ease);
 }
 
 .cal-session__predict-btn:hover,
 .cal-session__predict-btn:focus-visible {
-    background: #fff;
-    color: var(--cal-ink);
-    transform: scale(1.05);
+    filter: brightness(1.12);
+    transform: scale(1.08);
 }
 
 /* Entrada escalonada de las filas al abrir (solo fade) */

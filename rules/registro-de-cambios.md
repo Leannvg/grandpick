@@ -11,6 +11,35 @@ Orden cronológico inverso (lo más nuevo arriba).
 - `pages/Drivers.jsx` usa `DriverCardMobile` en todos los anchos (el uso de `DriverCardDesktop` y la detección de ancho quedan comentados, no borrados). La grilla pasa a `.drivers-cards-grid` (flex centrado, cards de 300px) en vez de `.drivers-grid`.
 - El título `PILOTOS SUPLENTES` usa el estilo estándar de títulos de página (`page-header` + `section-title`), no uno propio.
 
+## 2026-10-26 · Botones circulares: calendario alineado a .submit-btn/.btn-row-action + limpieza de CSS muerta
+
+- Auditoría completa de consistencia visual (vía el laboratorio nuevo): el
+  hallazgo más visible era que el botón "ver mi predicción" del calendario
+  (`.cal-session__predict-btn`) no compartía color con el resto de los
+  botones circulares del sitio (`.submit-btn`, `.btn-row-action`). Ahora
+  usa el mismo azul `#4c86b7`, relleno sólido (vive sobre el panel oscuro
+  del calendario, mismo criterio que `.submit-btn`). El check de "sesión
+  finalizada" se separa en su propia clase `.cal-session__status-badge`
+  (no es un botón, es un indicador de estado — no debía estar en la misma
+  familia que el botón real).
+- `rules/diseno.md` documenta por primera vez la regla completa de esta
+  familia (relleno sólido en fondo oscuro, contorno en fila blanca) y
+  corrige un dato que estaba mal (`.btn-row-action` estaba documentado como
+  "círculo sólido" con hover `#357abd`, que no existe en ningún CSS real —
+  en el código siempre fue contorno).
+- Limpieza: `.btn-general`, `.btn-add`, `.btn-confirm`, `.btn-delete`,
+  `.btn-edit` (`globals.css`), `.gp-btn-submit` (`globals.css`) y
+  `.close-schedule-btn` (`components.css`) se borran — CSS sin un solo uso
+  en ningún `.jsx` del proyecto (confirmado con grep antes de tocar nada).
+  Eran una segunda/tercera familia de botón "fantasma" que alguien podría
+  haber copiado pensando que era la convención vigente.
+- También se agrega a `rules/diseno.md` una regla de "cuándo usar
+  bottom-sheet vs. modal centrado" (la pauta es la densidad del contenido,
+  no el ancho de pantalla) y se deja anotado — sin tocar código — que
+  `.prediction-comparison-table` es una segunda familia de tabla distinta
+  de `ranking-*` (grid vs. `<table>`, otro azul de header), pendiente de
+  una pasada aparte más grande.
+
 ## 2026-10-26 · Laboratorio de diseño (front/lab.html)
 
 - Nuevo catálogo visual local: tokens, iconografía, componentes reales

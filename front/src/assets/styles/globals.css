@@ -249,35 +249,6 @@ p {
   color: var(--color-confirm);
 }
 
-/* BOTONES BÁSICOS                        */
-.btn-general {
-  padding: 10px 18px;
-  border-radius: var(--radius-general);
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-add {
-  background-color: var(--color-add);
-  color: #fff;
-}
-
-.btn-confirm {
-  background-color: var(--color-confirm);
-  color: #fff;
-}
-
-.btn-delete {
-  background-color: var(--color-delete);
-  color: #fff;
-}
-
-.btn-edit {
-  background-color: var(--color-edit);
-  color: #000;
-}
-
 .nr-cta {
   background: var(--color-accent);
   padding: 6px 2px;
@@ -621,29 +592,6 @@ p {
   width: 120px;
 }
 
-.gp-btn-submit {
-  background-color: #4a76a8;
-  color: #fff;
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.2s;
-}
-
-.gp-btn-submit:hover:not(:disabled) {
-  background-color: #365b84;
-}
-
-.gp-btn-submit:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
 /* Íconos Bootstrap Icons: la caja del <i> mide exactamente el glifo (sin strut
    de texto ni el extra del ::before alineado a la línea base) */
 .bi {

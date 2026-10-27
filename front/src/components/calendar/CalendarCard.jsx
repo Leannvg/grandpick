@@ -189,7 +189,7 @@ function CalendarCard({ race, roundNumber, status, dayLabel, monthLabel, practic
                                                     </Link>
                                                 )}
                                                 {isPast && (
-                                                    <span className="cal-session__past-btn" title="Sesión finalizada">
+                                                    <span className="cal-session__status-badge" title="Sesión finalizada">
                                                         <i className="bi bi-check2"></i>
                                                     </span>
                                                 )}

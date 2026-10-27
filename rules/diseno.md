@@ -46,6 +46,15 @@ usar contenedor flex con `align-items: center; justify-content: center`.
 Todas las tablas de datos "tipo campeonato" reutilizan estas clases para mantener
 armonía. **No crear tablas nuevas desde cero**: reutilizar o extender.
 
+**Pendiente de decidir (auditoría 2026-10-26, no tocado todavía):** la tabla
+de comparación de predicciones (`.prediction-comparison-table` y compañía,
+en `predictionHistory.css`/`predictionCompare.css`) es una familia CSS
+**distinta** de `ranking-*` — grid en vez de `<table>`, header azul `#4a90e2`
+(no `#5c8ab3`), radio `8px` (no `12px`). Mismo concepto (tabla de datos tipo
+campeonato) resuelto dos veces. Unificarlas es un cambio más grande
+(estructura HTML distinta, varios archivos) — no se tocó en esta pasada;
+queda para una pasada aparte cuando se decida encarar.
+
 | Clase | Rol |
 |---|---|
 | `.ranking-card` | Contenedor con overflow oculto |
@@ -58,7 +67,7 @@ armonía. **No crear tablas nuevas desde cero**: reutilizar o extender.
 | `.ranking-empty-state` | Fila de "sin resultados" |
 | `.emoji-flag` | Banderas emoji (fuente Twemoji) |
 | `.w-50px`, `.w-120px`, `.h-38px` | Utilidades de tamaño ya definidas |
-| `.btn-row-action` | Ícono dentro de `.user-info` (junto al nombre): en modo `global` va al historial del usuario (`bi-clock-history`); en modo `grand_prix` abre `FloatingPredictionCompare` (`bi-arrow-left-right`). Círculo sólido azul con ícono blanco (`#4c86b7`, hover `#357abd`) — mismo diseño que el botón circular de confirmar (`.submit-btn`/`SubmitButton`, usado en login/registro/predicciones). |
+| `.btn-row-action` | Ícono dentro de `.user-info` (junto al nombre): en modo `global` va al historial del usuario (`bi-clock-history`); en modo `grand_prix` abre `FloatingPredictionCompare` (`bi-arrow-left-right`). Círculo de **contorno** azul (`#4c86b7`, fondo transparente, hover `rgba(76,134,183,.12)` + `scale(1.1)`) — ver la familia de botón circular con ícono más abajo. |
 
 ## Podio (`Podium`, estilos en `assets/styles/podium.css`)
 
@@ -225,6 +234,24 @@ no `framer-motion`, ver `useModalPhase` en [componentes.md](./componentes.md#hoo
 para cerrar. Se cierra por arrastre o tocando el overlay; sin botón ni cruz
 de cerrar explícita (la cruz flotante de desktop no aplica acá).
 
+**Cuándo usar bottom-sheet vs. modal centrado (`FloatingDialog`)**: la pauta
+no es "mobile = bottom-sheet", es la **densidad del contenido**.
+
+- **Modal centrado** (`.gp-modal-card`, `FloatingDialog`/`FloatingEditProfile`/
+  `FloatingChangePassword`): para confirmar una acción o un formulario corto
+  (pocos campos, sin tabla). Funciona igual en mobile y desktop, no necesita
+  convertirse en drawer.
+- **Bottom-sheet** (`PredictionHistory.jsx` a nivel página,
+  `FloatingPredictionCompare` a nivel modal): para contenido **tabular o
+  denso** que en mobile no entra cómodo en un modal centrado chico — una
+  tabla de comparación, una lista con detalle. El patrón ya existe hecho dos
+  veces (reutilizar las clases de `predictionHistory.css`, no reinventar un
+  tercer drawer con su propio gesto/overlay/tirador).
+- Si aparece un tercer caso de "necesito mostrar algo denso en mobile", usar
+  una de estas dos family, no crear una nueva. Si ninguna encaja, para antes
+  de escribir CSS nueva y charlarlo (actualizar esta sección con el criterio
+  que se decida).
+
 ### Tablas del panel admin
 
 Usan otra familia: `.admin-table`, `.admin-table-container`, `.admin-status-pill`,
@@ -258,6 +285,33 @@ soporta `disabled` (`opacity: 0.6; cursor: not-allowed`) — usarlo mientras un
 submit async está en curso (ver `Register.jsx`) para evitar doble envío, en
 vez de agregar un loader de pantalla completa (`LoaderCar` es para cargas de
 datos en página, no para acciones de auth de un solo request).
+
+## Botón circular con ícono (familia, antes no estaba escrita como regla)
+
+Mismo azul (`#4c86b7`) y la misma forma (círculo) en los tres usos; lo que
+cambia es **relleno sólido vs. contorno, según el fondo de abajo**:
+
+- **Relleno sólido, ícono blanco** cuando el botón vive sobre un fondo
+  oscuro/de color (`--color-body`, paneles, etc.): `.submit-btn` (56px,
+  confirmar formularios de auth/predicción) y `.cal-session__predict-btn`
+  (28px, "ver mi predicción" en el panel oscuro del calendario).
+- **Contorno, fondo transparente** cuando el botón vive sobre una fila
+  **blanca** (una tabla `ranking-table`, por ejemplo): `.btn-row-action`
+  (28px). Un relleno sólido ahí compite visualmente con el texto negro de la
+  fila — por eso es la única excepción deliberada, no un descuido.
+- 28px es el tamaño para acciones secundarias/dentro de una fila; 56px para
+  la acción primaria de una pantalla (hay una sola por página). No inventar
+  un tercer tamaño o un tono de azul distinto para un botón circular nuevo:
+  sumarlo a esta familia.
+- Hover: el contorno aclara el relleno (`rgba(76,134,183,.12)`) y escala
+  (`scale(1.1)`); el relleno sólido aclara con `filter: brightness(1.12)` y
+  escala un poco menos (`scale(1.08)`, el salto se nota más con más masa de
+  color). Ninguno usa el azul `#357abd` (estaba documentado acá por error,
+  no existe en ningún CSS real).
+- No confundir con un **badge de estado** (ej. `.cal-session__status-badge`,
+  el check verde de "sesión finalizada" en el calendario): mismo tamaño/forma
+  de círculo por prolijidad visual, pero no es clickeable ni es parte de
+  esta familia — es información, no una acción.
 
 ## Navegación (`front/src/components/Nav.jsx`)
 
