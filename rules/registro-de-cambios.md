@@ -2,6 +2,22 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-26 · Laboratorio de diseño (front/lab.html)
+
+- Nuevo catálogo visual local: tokens, iconografía, componentes reales
+  (importados tal cual, no copias), patrones de página, animaciones,
+  librerías usadas y una grilla con las pantallas reales en vivo
+  (`<iframe>` al mismo dev server). Pensado para encontrar inconsistencias
+  de diseño entre pantallas y evitar reinventar algo que ya existe.
+- Entry point HTML separado (`front/lab.html` + `front/src/lab/`), fuera
+  del `input` de build de Vite por defecto — nunca se empaqueta ni se
+  publica, solo accesible local con `npm run dev` →
+  `localhost:5173/lab.html`. Se commitea igual (no es local-only como
+  `rules/seguridad.md`; decisión explícita: versionado pero sin publicar).
+- Detalle técnico completo (por qué no impacta el build, qué partes son
+  datos hardcodeados a mantener a mano, el gotcha de `position: relative`
+  en los contenedores "specimen") en `rules/estructura.md`.
+
 ## 2026-10-25 · Calendario: el ícono del toggle pasa de reloj a flecha
 
 - Con toda la fila clickeable (cambio del día anterior), el reloj que antes
