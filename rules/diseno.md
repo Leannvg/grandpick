@@ -62,14 +62,22 @@ usar contenedor flex con `align-items: center; justify-content: center`.
 Todas las tablas de datos "tipo campeonato" reutilizan estas clases para mantener
 armonía. **No crear tablas nuevas desde cero**: reutilizar o extender.
 
-**Pendiente de decidir (auditoría 2026-10-26, no tocado todavía):** la tabla
-de comparación de predicciones (`.prediction-comparison-table` y compañía,
-en `predictionHistory.css`/`predictionCompare.css`) es una familia CSS
-**distinta** de `ranking-*` — grid en vez de `<table>`, header azul `#4a90e2`
-(no `#5c8ab3`), radio `8px` (no `12px`). Mismo concepto (tabla de datos tipo
-campeonato) resuelto dos veces. Unificarlas es un cambio más grande
-(estructura HTML distinta, varios archivos) — no se tocó en esta pasada;
-queda para una pasada aparte cuando se decida encarar.
+**Corrección (auditoría 2026-10-26):** la nota anterior decía que
+`.prediction-comparison-table` (`predictionHistory.css`) era una segunda
+familia de tabla duplicando `ranking-*`. Era CSS **muerta** — ninguna clase
+de ese bloque (`.prediction-comparison-table`, `.table-header`, `.table-row`,
+`.col-pos/pred/real/points`, `.driver-color-bar`, `.driver-name`,
+`.no-selection-message`) se aplicaba en ningún `.jsx`; se borró. El
+componente real de comparación (`PredictionComparisonTable.jsx`) usa la
+familia `cmp-*` de `predictionCompare.css`, que **no** es una tabla "tipo
+campeonato" — es una tarjeta oscura con grid para mostrar 10 filas de
+piloto-predicho/piloto-real con puntos pegados a cada celda, reutilizada
+en el historial y en el modal de comparación entre usuarios; ya usa
+`var(--radius-general)` y un `box-shadow` casi idéntico al de
+`ranking-table`. Es una familia aparte a propósito (vive sobre fondo oscuro
+de modal/panel, no sobre la página clara), no una inconsistencia — no se
+tocó. Lo único que sí estaba desalineado era el radio de `ranking-table`
+(`12px` hardcodeado en vez del token): pasa a `var(--radius-general)`.
 
 | Clase | Rol |
 |---|---|

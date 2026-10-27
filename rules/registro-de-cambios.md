@@ -2,6 +2,32 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-26 · Auditoría de tablas: CSS muerta de predictionHistory.css + radio de ranking-table
+
+- La "segunda familia de tabla" anotada en la pasada de colores
+  (`.prediction-comparison-table` y compañía, en `predictionHistory.css`)
+  resultó ser **CSS sin un solo uso real** — mismo patrón que ya había
+  aparecido con los botones y el chip del Home: el componente real
+  (`PredictionComparisonTable.jsx`) usa otra familia (`cmp-*`,
+  `predictionCompare.css`) que nunca se había revisado. Se borra el bloque
+  muerto completo (`.prediction-comparison-table`, `.table-header`,
+  `.table-row`, `.col-pos/pred/real/points`, `.driver-color-bar`,
+  `.driver-name`, `.no-selection-message`, más sus overrides dentro del
+  `@media (max-width: 1200px)`), confirmando antes con grep que ninguna
+  clase se usaba en ningún `.jsx` y verificando balance de llaves antes de
+  escribir.
+- `cmp-*` (la familia real de comparación) no es una tabla "tipo
+  campeonato" — es una tarjeta oscura con grid para la comparación
+  predicción/resultado, pensada para vivir sobre fondo de modal/panel, no
+  sobre la página clara. Ya comparte bastante con `ranking-table` (mismo
+  `box-shadow`, ya usa `var(--radius-general)`): es una familia aparte a
+  propósito, no una inconsistencia — queda documentado en
+  `rules/diseno.md`, no se tocó.
+- Lo único que sí estaba desalineado: `.ranking-table`/
+  `.ranking-table-container` tenían `border-radius: 12px` hardcodeado en
+  vez de `var(--radius-general)` (6px) — se corrige. Afecta Ranking y
+  Standings (comparten `ranking.css`).
+
 ## 2026-10-26 · Auditoría de colores: tokens duplicados, chip de sesión del Home
 
 - `--color-circuit`/`--color-login` y `--color-stat-race`/`--color-next` eran
