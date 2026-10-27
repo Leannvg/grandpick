@@ -2,6 +2,30 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-26 · Auditoría de colores: tokens duplicados, chip de sesión del Home
+
+- `--color-circuit`/`--color-login` y `--color-stat-race`/`--color-next` eran
+  pares de tokens con el mismo valor exacto y nombres distintos — ahora uno
+  apunta al otro (`var(...)`), un solo valor fuente, se mantienen los dos
+  nombres en los call sites. Un hardcode suelto en `admin.css` (`#d40000`)
+  pasa a usar `var(--color-next)`.
+- El chip "QUALIFYING/SPRINT/RACE" de la barra del Home (`NextRaceCTA.jsx`,
+  `.nr-cta__round`) mostraba el tipo de sesión en texto plano sin color —
+  existía CSS para colorearlo (`.session-qualy/.session-sprint/.session-race`
+  en `.nr-cta__session-tag`) pero **nunca estaba conectado al componente
+  real** (ninguna de esas clases se aplicaba en el JSX, y además eran otra
+  paleta sin relación con el resto del sitio). Se borró ese CSS muerto y se
+  conectó el color real (`--color-stat-qualy/sprint/race`, los mismos
+  tokens que usa el calendario y el historial) directo en `.nr-cta__round`
+  vía un modificador `--qualy`/`--sprint`/`--race` calculado en
+  `NextRaceCTA.jsx`.
+- `#9D1422` (rojo de formularios inválidos/alertas de error, usado igual 3
+  veces sin variable) pasa a `--color-error`.
+- Revisado y dejado como está a propósito (anotado en `rules/diseno.md`):
+  el rojo de acento del panel admin (`#e1310c`, familia propia ya
+  documentada) y la paleta de grises tipo Tailwind de `information.css`
+  (rediseñar esas pantallas es un cambio más grande, no un swap de color).
+
 ## 2026-10-27 · Tags de las cards de piloto del mismo ancho
 
 - La regla de tags iguales y centrados (antes solo en `.reserve-card`) pasa a `.driver-tags-vertical` en `components.css`: aplica a todas las cards `DriverCardMobile` (titulares en `/drivers`, `TeamDetail` y suplentes). La bandera ya no queda más angosta que los demás tags.

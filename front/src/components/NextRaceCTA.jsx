@@ -96,6 +96,12 @@ function NextRaceCTA() {
 
     if (!race) return null;
 
+    // Mismas 3 claves que el chip de sesión del calendario/historial
+    // (qualy/sprint/race), para colorear igual en todo el sitio.
+    const sessionType = race.points_system?.type === "qualifying"
+        ? "qualy"
+        : (race.points_system?.type || "race");
+
     return (
         <section className="nr-cta">
             <div className="nr-cta__container container">
@@ -111,7 +117,7 @@ function NextRaceCTA() {
                     </div>
 
                     <div className="nr-cta__meta">
-                        <span className="nr-cta__round">{race.points_system?.type?.toUpperCase() || "RACE"}</span>
+                        <span className={`nr-cta__round nr-cta__round--${sessionType}`}>{race.points_system?.type?.toUpperCase() || "RACE"}</span>
 
                         {status.isInProgress && (
                             <span className="nr-cta__session-tag">

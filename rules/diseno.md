@@ -11,12 +11,28 @@ Base visual: tema oscuro azulado, tipografía `Akshar`, Bootstrap 5 para grilla.
 | `--color-dark-blue` | `#081D2B` | Header, superficies oscuras |
 | `--color-container-bg` | `#0A2434` | Contenedores |
 | `--color-red` | `#E10600` | Acento rojo genérico (labels, checkbox admin, badge "VS") |
-| `--color-next` | `#D40000` | "Próxima carrera", chips de sesión Race |
-| `--color-login` | `#7AB3DE` | Botón login / circuitos |
+| `--color-next` | `#D40000` | "Próxima carrera", estados "upcoming". `--color-stat-race` apunta a este mismo token (mismo rojo, dos nombres según el contexto del call site) — cambiar el valor acá, no en los dos lugares. |
+| `--color-login` | `#7AB3DE` | Botón login. `--color-circuit` apunta a este mismo token (mismo azul, dos nombres). |
 | `--color-logout` | `#E85F5F` | Botón logout |
+| `--color-error` | `#9D1422` | Formularios inválidos y alertas de error (`.is-invalid`, `.invalid-feedback`, `.global-alert.alert-danger`) |
 | `--color-pos1/2/3` | `#DDBF4A` / `#D8D8D8` / `#D89762` | Podio en tablas (oro/plata/bronce) |
-| `--color-stat-qualy/sprint/race` | `#E6E6E6` / `#FFCD56` / `#D40000` | Chips por tipo de sesión |
-| `--radius-general` | `6px` | Radio de bordes estándar. Antes era responsive (2px hasta 992px, 6px en desktop); desde 2026-10-17 queda fijo en 6px en todas las resoluciones (a pedido). |
+| `--color-stat-qualy/sprint/race` | `#E6E6E6` / `#FFCD56` / `#D40000` | Chips por tipo de sesión — usar siempre estos tres, no inventar una paleta nueva para "qualy/sprint/race" en una pantalla nueva (pasó con el chip del Home, ver changelog 2026-10-26). |
+| `--radius-general` | `6px` | Radio de bordes estándar. Antes era responsive (2px hasta 992px, 6px en desktop); desde 2026-10-17 queda fijo en 6px en todas las resoluciones (a pedido). **Nota (auditoría 2026-10-26):** en la práctica conviven muchos valores sueltos (8px/4px/12px/10px aparecen más que 6px) — no se migró en esta pasada, queda para una revisión de radios aparte. |
+
+**Revisado en la auditoría de colores (2026-10-26), dejado como está a
+propósito:**
+- `#e1310c` (rojo de acento del panel admin — tab activo, borde de fila
+  "próxima") se usa consistente dentro de `admin.css`, que ya es su propia
+  familia documentada más abajo ("Tablas del panel admin"). No es la misma
+  inconsistencia que el chip del Home (ahí el problema era un mismo
+  concepto con dos paletas en pantallas públicas distintas).
+- La paleta de grises tipo Tailwind/slate (`#f8fafc`, `#f1f5f9`, `#e2e8f0`,
+  `#cbd5e1`, `#0f172a`, etc.) vive casi toda en `information.css` (páginas
+  "Cómo jugar" / "Guía de F1" / "F1 TV"), con fuga leve a `admin.css`. Es un
+  sistema visual propio y autocontenido (cards claras sobre fondo oscuro,
+  pensado para lectura larga) más que una inconsistencia — unificarlo con
+  el resto implicaría rediseñar esas pantallas, no solo cambiar un color.
+  Queda anotado, no se tocó.
 
 ## Iconos (Bootstrap Icons, CDN en `index.html`)
 

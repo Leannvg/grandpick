@@ -677,14 +677,14 @@ li.gp-nav-dropdown.is-active .gp-dropdown-toggle::after {
 }
 
 .gp-input-group.is-invalid {
-    border: 3px solid #9d1422 !important;
+    border: 3px solid var(--color-error) !important;
     border-radius: 8px 8px 0 0 !important;
     border-bottom: none !important;
 }
 
 .gp-input-group-container .invalid-feedback {
     display: block;
-    background-color: #9d1422;
+    background-color: var(--color-error);
     color: #fff;
     text-align: left;
     padding: 8px 16px;
@@ -2171,8 +2171,7 @@ input[type="time"].form-control {
 }
 
 .global-alert.alert-danger {
-    background-color: #9d1422;
-    ;
+    background-color: var(--color-error);
 }
 
 .global-alert.alert-warning {

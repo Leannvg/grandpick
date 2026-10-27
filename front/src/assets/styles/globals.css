@@ -121,6 +121,8 @@ body {
   --color-dark-blue: #081D2B;
   --color-footer: #272727;
   --color-login: #7AB3DE;
+  /* --color-circuit es el mismo azul con otro nombre (histórico): queda
+     como alias, no se borra para no tener que tocar sus call sites. */
   --color-logout: #E85F5F;
   --color-red: #E10600;
   --color-pos1: #DDBF4A;
@@ -129,18 +131,23 @@ body {
   --color-disabled: #727272;
   --color-soon: #812E9A;
   --color-next: #D40000;
+  /* --color-stat-race apunta acá más abajo: mismo rojo, dos nombres
+     (uno para "próxima carrera/urgente", otro para el chip de sesión
+     Race) — se mantienen los dos nombres por claridad en cada call site,
+     pero el valor vive en un solo lugar. */
   --color-add: #1B6C3A;
+  --color-error: #9D1422;
   --color-zero: #B64141;
   --color-row-wrong: #FFE3E3;
   --color-row-empty: #CFCFCF;
   --color-table-disabled: #D9D9D9;
   --color-confirm: #417AAF;
   --color-placeholder: #BEBEBE;
-  --color-circuit: #7AB3DE;
+  --color-circuit: var(--color-login);
   --color-label-disabled: #B8B8B8;
   --color-stat-qualy: #E6E6E6;
   --color-stat-sprint: #FFCD56;
-  --color-stat-race: #D40000;
+  --color-stat-race: var(--color-next);
   --color-container-bg: #0A2434;
   --color-edit: #FFC621;
   --color-delete: #ED535F;
@@ -310,11 +317,32 @@ p {
 
 .nr-cta__round {
   background: #0b2a3d;
+  color: #fff;
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.5px;
+}
+
+/* Mismos tokens que el chip de sesión del calendario/historial
+   (--color-stat-qualy/sprint/race): esta pastilla mostraba el tipo de
+   sesión en texto plano, sin color — ya existía CSS para colorearla
+   (con otra paleta, sin relación) pero nunca estaba conectada al
+   componente real (NextRaceCTA.jsx). */
+.nr-cta__round--qualy {
+  background: var(--color-stat-qualy);
+  color: #000;
+}
+
+.nr-cta__round--sprint {
+  background: var(--color-stat-sprint);
+  color: #000;
+}
+
+.nr-cta__round--race {
+  background: var(--color-stat-race);
+  color: #fff;
 }
 
 .nr-cta__date {
@@ -378,21 +406,6 @@ p {
   font-weight: 600;
   display: inline-flex;
   align-items: center;
-}
-
-.nr-cta__session-tag.session-qualy {
-  background-color: #f1c40f;
-  color: #000;
-}
-
-.nr-cta__session-tag.session-sprint {
-  background-color: #e67e22;
-  color: #fff;
-}
-
-.nr-cta__session-tag.session-race {
-  background-color: #e74c3c;
-  color: #fff;
 }
 
 .live-indicator {

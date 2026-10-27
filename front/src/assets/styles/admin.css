@@ -309,8 +309,8 @@
 
 .pill-upcoming {
   background-color: #ffe8e4;
-  color: #d40000;
-  border: 1px solid #d40000;
+  color: var(--color-next);
+  border: 1px solid var(--color-next);
 }
 
 .pill-current {
