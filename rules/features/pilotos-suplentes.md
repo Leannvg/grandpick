@@ -1,7 +1,8 @@
-# Pilotos suplentes (en `/drivers`)
+# Pilotos suplentes (en `/drivers` y en el detalle de escudería)
 
-Sección secundaria al final de la pantalla de Pilotos: línea divisoria + header
-chico ("Reservas" / `PILOTOS SUPLENTES`) + grilla de cards.
+Sección secundaria al final de la pantalla de Pilotos (`/drivers`) y del
+detalle de escudería (`/teams/:id`): línea divisoria + header chico
+("Reservas" / `PILOTOS SUPLENTES`) + grilla de cards.
 
 ## Diseño
 
@@ -15,16 +16,18 @@ chico ("Reservas" / `PILOTOS SUPLENTES`) + grilla de cards.
 
 ## Estado de los datos
 
-Datos reales: `pages/Drivers.jsx` separa titulares de suplentes según el
+Datos reales en las dos pantallas: separan titulares de suplentes según el
 campo `role` del piloto (`"titular"` vs. cualquier otro valor, incluido sin
 asignar todavía) — asignado desde la pantalla "Asignaciones" del admin, ver
 `rules/logica.md` y `rules/componentes.md` (`Assignments`). Si no hay
 suplentes (ningún piloto activo con `role` distinto de `"titular"`), la
-sección no se renderiza.
+sección no se renderiza. `TeamDetail.jsx` aplica el mismo filtro de
+`active === true` que `Drivers.jsx` para ambas listas (titulares y
+suplentes) antes de separarlas.
 
 ## Archivos
 
 - `components/drivers/ReserveDriverCard.jsx`
-- `components/drivers/ReserveDriversSection.jsx` (prop `drivers`)
-- `pages/TeamDetail.jsx` (panel `PILOTOS SUPLENTES` con 2 mocks y `// TODO`)
+- `components/drivers/ReserveDriversSection.jsx` (prop `drivers`, usado solo en `Drivers.jsx`)
 - `pages/Drivers.jsx`
+- `pages/TeamDetail.jsx` (arma titulares/suplentes a mano, sin `ReserveDriversSection`, para ocultar la sección vacía igual)

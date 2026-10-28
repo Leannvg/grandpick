@@ -2,6 +2,22 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-27 · Detalle de escudería: pilotos suplentes reales (reemplaza el mock)
+
+- `pages/TeamDetail.jsx` (mergeado en paralelo con el mock de
+  `PILOTOS SUPLENTES` con 2 nombres fijos y `// TODO`) pasa a usar el campo
+  `role` real, mismo criterio que `Drivers.jsx`: titular = `role ===
+  "titular"`, todo lo demás (suplente o sin asignar) se muestra como
+  suplente. La sección "PILOTOS" (titulares) ahora también filtra por
+  `role` — antes mostraba a todos los pilotos del equipo sin distinción,
+  lo que habría duplicado pilotos entre las dos secciones. Ambas listas
+  filtran `active === true`, igual que `Drivers.jsx`. La sección
+  "PILOTOS SUPLENTES" se oculta si no hay ninguno (no usa
+  `ReserveDriversSection`, arma el `if` a mano para el mismo efecto).
+- Probado contra producción: McLaren/Mercedes/Red Bull/etc. ya tienen
+  titulares asignados desde Asignaciones; Red Bull tiene a Yuki Tsunoda
+  como suplente real y aparece correctamente en la sección.
+
 ## 2026-10-27 · Pilotos: ABM solo de datos + Titular/Suplente real en Asignaciones
 
 - `DriverForm.jsx` (alta/edición de piloto) pierde el campo Escudería —

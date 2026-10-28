@@ -33,11 +33,15 @@ function TeamDetail() {
 
     if (!team) return null;
 
-    // TODO: reemplazar por los suplentes de la escudería cargados desde la base de datos
-    const reserveDrivers = [
-        { _id: "reserve-mock-0", full_name: "Ayumu Iwasa", trigram: "IWA", country: "JP" },
-        { _id: "reserve-mock-1", full_name: "Frederik Vesti", trigram: "VES", country: "DK" },
-    ].map(driver => ({ ...driver, team_info: team }));
+    // Mismo criterio que la pantalla pública de Pilotos (pages/Drivers.jsx):
+    // titular = role "titular"; todo lo demás (suplente o sin asignar
+    // todavía desde Asignaciones) se muestra como suplente, para que un
+    // piloto no desaparezca de la ficha de la escudería.
+    const activeDrivers = (team.drivers || []).filter(driver => driver.active === true);
+    const titularDrivers = activeDrivers.filter(driver => driver.role === "titular");
+    const reserveDrivers = activeDrivers
+        .filter(driver => driver.role !== "titular")
+        .map(driver => ({ ...driver, team_info: team }));
 
     return (
         <div className="team-detail-page page-wrapper">
@@ -87,7 +91,7 @@ function TeamDetail() {
                 <section className="team-drivers">
                     <h2 className="team-drivers-title">PILOTOS</h2>
                     <div className="team-drivers-article">
-                        {team.drivers && team.drivers.map((driver) => (
+                        {titularDrivers.map((driver) => (
                             <DriverCardMobile
                                 key={driver._id}
                                 driver={{ ...driver, team_info: team }}
@@ -97,14 +101,16 @@ function TeamDetail() {
                     </div>
                 </section>
 
-                <section className="team-drivers">
-                    <h2 className="team-drivers-title">PILOTOS SUPLENTES</h2>
-                    <div className="team-drivers-article">
-                        {reserveDrivers.map((driver) => (
-                            <ReserveDriverCard key={driver._id} driver={driver} />
-                        ))}
-                    </div>
-                </section>
+                {reserveDrivers.length > 0 && (
+                    <section className="team-drivers">
+                        <h2 className="team-drivers-title">PILOTOS SUPLENTES</h2>
+                        <div className="team-drivers-article">
+                            {reserveDrivers.map((driver) => (
+                                <ReserveDriverCard key={driver._id} driver={driver} />
+                            ))}
+                        </div>
+                    </section>
+                )}
             </section>
         </div>
     );
