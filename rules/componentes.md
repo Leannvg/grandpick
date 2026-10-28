@@ -102,7 +102,7 @@ Todos comparten la firma: `initialData`, `onSubmit`, `submitLabel`, `isEdit`, `e
 |---|---|---|---|
 | `DriverCardDesktop` | `components/drivers/DriverCardDesktop.jsx` | `driver` | Card de piloto (grid desktop en `/drivers`). |
 | `DriverCardMobile` | `components/drivers/DriverCardMobile.jsx` | `driver`, `teamLogo` | Card de piloto (mobile). |
-| `ReserveDriverCard` | `components/drivers/ReserveDriverCard.jsx` | `driver` (`full_name`, `trigram`, `country`, `team_info`) | Card de piloto suplente: igual a `DriverCardMobile` sin número y con imagen genérica `suplente.png`. |
+| `ReserveDriverCard` | `components/drivers/ReserveDriverCard.jsx` | `driver` (`full_name`, `trigram`, `country`, `team_info`) | Card de piloto suplente: igual a `DriverCardMobile` sin número y con imagen genérica `suplente.png`. Usada en `Drivers.jsx` (vía `ReserveDriversSection`) y `TeamDetail.jsx`. |
 | `ReserveDriversSection` | `components/drivers/ReserveDriversSection.jsx` | `drivers` | Sección "PILOTOS SUPLENTES" (divisor + header + grilla). No renderiza nada si `drivers` está vacío. Usada al final de `Drivers.jsx`. |
 
 ## Predicciones (historial y comparación)

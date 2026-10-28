@@ -2,6 +2,10 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-27 · Pilotos suplentes en el detalle de escudería (mock)
+
+- `pages/TeamDetail.jsx`: nuevo panel `PILOTOS SUPLENTES` bajo `PILOTOS`, con el mismo markup/estilo (`team-drivers*`) y las cards `ReserveDriverCard`. Datos mock de 2 suplentes con `// TODO` para cargarlos desde la base de datos. `.team-drivers-article` pasa a `flex-wrap: wrap`.
+
 ## 2026-10-26 · Auditoría de tablas: CSS muerta de predictionHistory.css + radio de ranking-table
 
 - La "segunda familia de tabla" anotada en la pasada de colores
