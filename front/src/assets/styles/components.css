@@ -1621,6 +1621,7 @@ input[type="time"].form-control {
 
     .team-drivers-article {
         display: flex;
+        flex-wrap: wrap;
         gap: 24px;
         justify-content: center;
     }

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import teamsServices from "../services/teams.services";
 import DriverCardMobile from "../components/drivers/DriverCardMobile";
+import ReserveDriverCard from "../components/drivers/ReserveDriverCard";
 import { useLoader } from "../context/LoaderContext";
 import API_URL from "../services/api";
 import { getFlagEmoji } from "../utils/helpers";
@@ -31,6 +32,12 @@ function TeamDetail() {
     }, [id]);
 
     if (!team) return null;
+
+    // TODO: reemplazar por los suplentes de la escudería cargados desde la base de datos
+    const reserveDrivers = [
+        { _id: "reserve-mock-0", full_name: "Ayumu Iwasa", trigram: "IWA", country: "JP" },
+        { _id: "reserve-mock-1", full_name: "Frederik Vesti", trigram: "VES", country: "DK" },
+    ].map(driver => ({ ...driver, team_info: team }));
 
     return (
         <div className="team-detail-page page-wrapper">
@@ -86,6 +93,15 @@ function TeamDetail() {
                                 driver={{ ...driver, team_info: team }}
                                 teamLogo={team.img_iso || team.img}
                             />
+                        ))}
+                    </div>
+                </section>
+
+                <section className="team-drivers">
+                    <h2 className="team-drivers-title">PILOTOS SUPLENTES</h2>
+                    <div className="team-drivers-article">
+                        {reserveDrivers.map((driver) => (
+                            <ReserveDriverCard key={driver._id} driver={driver} />
                         ))}
                     </div>
                 </section>

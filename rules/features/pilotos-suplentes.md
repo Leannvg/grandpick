@@ -23,4 +23,5 @@ control). Si no hay equipos, la sección no se renderiza.
 
 - `components/drivers/ReserveDriverCard.jsx`
 - `components/drivers/ReserveDriversSection.jsx` (prop `drivers`)
+- `pages/TeamDetail.jsx` (panel `PILOTOS SUPLENTES` con 2 mocks y `// TODO`)
 - `pages/Drivers.jsx`
