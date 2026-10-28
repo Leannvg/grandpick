@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import CountrySelect from "./../CountrySelect.jsx";
-import TeamsServices from "./../../services/teams.services.js";
-import SearchableSelect from "./../SearchableSelect.jsx";
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../../utils/cloudinary.js";
 import SubmitButton from "./../SubmitButton.jsx";
 
@@ -16,15 +14,9 @@ function DriverForm({
   const [trigram, setTrigram] = useState(initialData.trigram || "");
   const [country, setCountry] = useState(initialData.country || "");
   const [number, setNumber] = useState(initialData.number || "");
-  const [team, setTeam] = useState(initialData.team || "");
-  const [allTeams, setAllTeams] = useState([]);
   const [imageFile, setImageFile] = useState(null);
   const [currentImage, setCurrentImage] = useState(initialData.img || "");
   const [previewUrl, setPreviewUrl] = useState("");
-
-  useEffect(() => {
-    TeamsServices.findAllTeams().then((teams) => setAllTeams(teams));
-  }, []);
 
   useEffect(() => {
     if (isEdit && initialData && Object.keys(initialData).length > 0) {
@@ -32,7 +24,6 @@ function DriverForm({
       setTrigram(initialData.trigram || "");
       setCountry(initialData.country || "");
       setNumber(initialData.number || "");
-      setTeam(initialData.team || "");
       setCurrentImage(initialData.img || "");
     }
   }, [initialData, isEdit]);
@@ -63,7 +54,6 @@ function DriverForm({
       trigram,
       country,
       number,
-      team,
       img: currentImage,
     };
 
@@ -163,7 +153,7 @@ function DriverForm({
                 className="form-control bg-white"
                 value={number}
                 onChange={(e) => setNumber(e.target.value)}
-                placeholder="Número del piloto"
+                placeholder="Número del piloto (opcional)"
               />
             </div>
             {errorsForm.number && (
@@ -173,9 +163,9 @@ function DriverForm({
         </div>
       </div>
 
-      {/* Fila 3: País */}
+      {/* Fila 3: País (la escudería se asigna desde Asignaciones, no acá) */}
       <div className="row">
-        <div className="col-12 col-md-6 mb-md-0">
+        <div className="col-12">
           <div className="gp-input-group-container">
             <div className={`gp-input-group overflow-visible ${errorsForm.country ? "is-invalid" : ""}`}>
               <label className="gp-input-label gp-input-label-sm" htmlFor="field-pas-4">País</label>
@@ -191,27 +181,6 @@ function DriverForm({
             </div>
             {errorsForm.country && (
               <div className="invalid-feedback d-block text-start mt-1">{errorsForm.country}</div>
-            )}
-          </div>
-        </div>
-
-        {/* Fila 3b: Escudería */}
-        <div className="col-12 col-md-6">
-          <div className="gp-input-group-container">
-            <div className={`gp-input-group overflow-visible ${errorsForm.team ? "is-invalid" : ""}`}>
-              <label className="gp-input-label gp-input-label-sm" htmlFor="field-escudera-5">Escudería</label>
-              <div className="flex-fill">
-                <SearchableSelect inputId="field-escudera-5"
-                  options={allTeams}
-                  value={team}
-                  onChange={(opt) => setTeam(opt ? opt.value : "")}
-                  placeholder="Seleccioná la escudería"
-                  isInvalid={!!errorsForm.team}
-                />
-              </div>
-            </div>
-            {errorsForm.team && (
-              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.team}</div>
             )}
           </div>
         </div>

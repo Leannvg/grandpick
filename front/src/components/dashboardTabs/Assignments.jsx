@@ -7,6 +7,17 @@ import { useDialog } from "../../context/DialogContext.jsx";
 import SearchableSelect from "../SearchableSelect.jsx";
 import LoaderSpinner from "../LoaderSpinner.jsx";
 
+const ROLE_OPTIONS = [
+  { _id: "titular", name: "Titular" },
+  { _id: "suplente", name: "Suplente" },
+];
+
+// "Sin asignar" (role ausente/null) cuenta como suplente para el límite de
+// titulares, pero se muestra distinto en el select para que el admin note
+// que todavía no lo definió.
+const normalizeRole = (driver) =>
+  driver.role === "titular" ? "titular" : (driver.role === "suplente" ? "suplente" : null);
+
 function TeamsDriversAdmin({ searchTerm = "" }) {
   const [teams, setTeams] = useState([]);
   const [drivers, setDrivers] = useState([]);
@@ -27,13 +38,14 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
           DriversServices.findAll()
         ]);
 
-        const activeDrivers = driversData.filter((d) => d.active !== false);
-
+        // Acá se muestran todos los pilotos, incluidos los deshabilitados
+        // (a diferencia del roster público/los selects de predicción, que
+        // siguen filtrando por `active`).
         setTeams(teamsData);
-        setDrivers(activeDrivers);
+        setDrivers(driversData);
         setOriginalDrivers(driversData);
 
-        validateTeams(activeDrivers);
+        validateTeams(driversData);
       } catch (err) {
         console.error("Error cargando datos:", err);
       } finally {
@@ -45,16 +57,16 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
   }, []);
 
   const validateTeams = (driversList) => {
-    const teamCounts = {};
+    const titularCounts = {};
 
     driversList.forEach((d) => {
-      if (d.active !== false && d.team) {
-        teamCounts[d.team] = (teamCounts[d.team] || 0) + 1;
+      if (d.team && normalizeRole(d) === "titular") {
+        titularCounts[d.team] = (titularCounts[d.team] || 0) + 1;
       }
     });
 
-    const overLimit = Object.keys(teamCounts).filter(
-      (team) => teamCounts[team] > 2
+    const overLimit = Object.keys(titularCounts).filter(
+      (team) => titularCounts[team] > 2
     );
 
     setInvalidTeams(overLimit);
@@ -62,7 +74,17 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
 
   const handleChangeTeam = (driverId, newTeamId) => {
     const updated = drivers.map((d) =>
-      d._id === driverId ? { ...d, team: newTeamId } : d
+      // Sin equipo no hay rol posible: se limpia junto con la escudería.
+      d._id === driverId ? { ...d, team: newTeamId, role: newTeamId ? d.role : null } : d
+    );
+
+    setDrivers(updated);
+    validateTeams(updated);
+  };
+
+  const handleChangeRole = (driverId, newRole) => {
+    const updated = drivers.map((d) =>
+      d._id === driverId ? { ...d, role: newRole } : d
     );
 
     setDrivers(updated);
@@ -78,7 +100,7 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
     try {
       const modifiedDrivers = drivers.filter((driver) => {
         const original = originalDrivers.find((d) => d._id === driver._id);
-        return original && original.team !== driver.team;
+        return original && (original.team !== driver.team || normalizeRole(original) !== normalizeRole(driver));
       });
 
       if (modifiedDrivers.length === 0) {
@@ -97,16 +119,19 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
 
       setSaving(true);
 
-      await Promise.all(
-        modifiedDrivers.map((driver) =>
-          DriversServices.editDashboardDriver(driver._id, { team: driver.team })
-        )
+      await DriversServices.updateDriverAssignments(
+        modifiedDrivers.map((driver) => ({
+          driverId: driver._id,
+          team: driver.team || null,
+          role: normalizeRole(driver),
+        }))
       );
 
       showAlert("Asignaciones actualizadas correctamente", "success");
       redirectToTab("Asignaciones");
     } catch (err) {
       console.error(err);
+      showAlert(err.message || "No se pudieron guardar las asignaciones.", "danger", true);
     } finally {
       setSaving(false);
     }
@@ -140,6 +165,7 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
                 <th className="sticky-col col-piloto">Piloto</th>
                 <th>Escudería actual</th>
                 <th>Cambiar a</th>
+                <th>Estado</th>
               </tr>
             </thead>
             <tbody>
@@ -176,9 +202,21 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
                       />
                       {isInvalid && (
                         <div className="text-danger small mt-1">
-                          Este equipo supera el límite de 2 pilotos.
+                          Este equipo supera el límite de 2 titulares.
                         </div>
                       )}
+                    </td>
+
+                    <td className="col-role-select">
+                      <SearchableSelect
+                        options={ROLE_OPTIONS}
+                        value={normalizeRole(driver) || ""}
+                        onChange={(selected) =>
+                          handleChangeRole(driver._id, selected ? selected.value : null)
+                        }
+                        isDisabled={!driver.team}
+                        placeholder={driver.team ? "Sin asignar" : "Sin equipo"}
+                      />
                     </td>
                   </tr>
                 );

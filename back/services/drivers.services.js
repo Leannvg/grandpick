@@ -73,28 +73,32 @@ export async function createDriver(driver) {
 }
 
 
+/**
+ * Normaliza el valor de `team` que llega de un form/payload a `ObjectId | null`.
+ * Compartido por `updateDriver` y `updateDriverAssignments`.
+ */
+function normalizeTeamValue(teamVal) {
+    if (teamVal === null || teamVal === undefined || teamVal === "") {
+        return null;
+    }
+    if (teamVal instanceof ObjectId) {
+        return teamVal;
+    }
+    if (typeof teamVal === "string") {
+        if (!ObjectId.isValid(teamVal)) {
+            throw new Error("El ID del equipo no es válido.");
+        }
+        return new ObjectId(teamVal);
+    }
+    return null;
+}
+
 export async function updateDriver(driverId, newDriver) {
     try {
         const db = await connectDB();
 
         if (newDriver.hasOwnProperty("team")) {
-            const teamVal = newDriver.team;
-
-            if (teamVal === null || teamVal === undefined || teamVal === "") {
-                newDriver.team = null;
-            } else {
-                if (typeof teamVal === "string") {
-                    if (!ObjectId.isValid(teamVal)) {
-                        throw new Error("El ID del equipo no es válido.");
-                    }
-                    newDriver.team = new ObjectId(teamVal);
-                } else if (teamVal instanceof ObjectId) {
-                    // ya es ObjectId
-                } else {
-                    // valor inesperado: borrar / setear a null o lanzar error
-                    newDriver.team = null;
-                }
-            }
+            newDriver.team = normalizeTeamValue(newDriver.team);
         }
 
         const result = await db.collection("Drivers").updateOne(
@@ -114,6 +118,85 @@ export async function updateDriver(driverId, newDriver) {
 }
 
 
+
+/**
+ * Guarda en lote los cambios de la pantalla de Asignaciones (team + role por
+ * piloto). Antes de escribir nada, valida el estado resultante completo
+ * (snapshot actual + cambios propuestos) contra la regla de negocio: un
+ * equipo no puede tener más de 2 pilotos con role "titular" a la vez.
+ *
+ * No es una transacción multi-documento (el proyecto no usa sessions de
+ * Mongo en ningún otro lado) — el pre-chequeo sobre un snapshot único cubre
+ * el caso real (un admin guardando varios cambios juntos desde esta misma
+ * pantalla); dos admins guardando en el mismo instante exacto queda fuera
+ * de alcance, igual que estaba antes de este cambio (la ruta anterior no
+ * validaba nada en absoluto).
+ *
+ * @param {Array<{driverId: string, team: string|null, role: string|null}>} updates
+ */
+export async function updateDriverAssignments(updates) {
+    try {
+        const db = await connectDB();
+
+        const allDrivers = await db.collection("Drivers").find({}).toArray();
+        const byId = new Map(allDrivers.map((d) => [d._id.toString(), d]));
+
+        const normalizedUpdates = updates.map((u) => {
+            if (!byId.has(u.driverId)) {
+                throw new Error(`No se encontró ningún piloto con el ID ${u.driverId}.`);
+            }
+            return {
+                driverId: u.driverId,
+                team: normalizeTeamValue(u.team),
+                role: u.role || null,
+            };
+        });
+        const updatesById = new Map(normalizedUpdates.map((u) => [u.driverId, u]));
+
+        // Estado resultante: snapshot actual + cambios propuestos superpuestos.
+        const resulting = allDrivers.map((d) => {
+            const change = updatesById.get(d._id.toString());
+            return {
+                team: change ? change.team : (d.team ?? null),
+                role: change ? change.role : (d.role ?? null),
+            };
+        });
+
+        const titularCounts = new Map();
+        resulting.forEach(({ team, role }) => {
+            if (team && role === "titular") {
+                const key = team.toString();
+                titularCounts.set(key, (titularCounts.get(key) || 0) + 1);
+            }
+        });
+
+        const overLimitTeamIds = [...titularCounts.entries()]
+            .filter(([, count]) => count > 2)
+            .map(([teamId]) => teamId);
+
+        if (overLimitTeamIds.length > 0) {
+            const teams = await db.collection("Teams").find({
+                _id: { $in: overLimitTeamIds.map((id) => new ObjectId(id)) }
+            }).toArray();
+            const names = teams.map((t) => t.name).join(", ");
+            const err = new Error(`No puede haber más de 2 titulares en: ${names}.`);
+            err.status = 400;
+            throw err;
+        }
+
+        for (const update of normalizedUpdates) {
+            await db.collection("Drivers").updateOne(
+                { _id: new ObjectId(update.driverId) },
+                { $set: { team: update.team, role: update.role } }
+            );
+        }
+
+        return { message: "Asignaciones actualizadas exitosamente." };
+    } catch (err) {
+        console.error("Error al actualizar asignaciones de pilotos:", err);
+        throw err;
+    }
+}
 
 export async function deleteDriver(driverId) {
     try {

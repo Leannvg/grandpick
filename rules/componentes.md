@@ -75,7 +75,7 @@ Todos comparten la firma: `initialData`, `onSubmit`, `submitLabel`, `isEdit`, `e
 | Componente | Ruta | Notas |
 |---|---|---|
 | `TeamForm` | `components/dashboardForms/TeamForm.jsx` | Alta/edición de escudería. |
-| `DriverForm` | `components/dashboardForms/DriverForm.jsx` | Alta/edición de piloto. |
+| `DriverForm` | `components/dashboardForms/DriverForm.jsx` | Alta/edición de piloto: solo datos propios (nombre, trigrama, número opcional, país, imagen). Sin campo de escudería — eso se maneja en `Assignments`. |
 | `CircuitForm` | `components/dashboardForms/CircuitForm.jsx` | Alta/edición de circuito. |
 | `RaceForm` | `components/dashboardForms/RaceForm.jsx` | Fin de semana de carrera (multi-sesión). Props: `initialData`, `onSave`, `submitText`, `action`, `race_types`. |
 | `PredictionsForm` | `components/PredictionsForm.jsx` | `points`, `race_types`, `onDriverChange`. Grilla de posiciones piloto↔posición (predicción / carga de resultados). |
@@ -84,12 +84,12 @@ Todos comparten la firma: `initialData`, `onSubmit`, `submitLabel`, `isEdit`, `e
 
 | Componente | Ruta | Props | Para qué sirve |
 |---|---|---|---|
-| `DriversTable` | `components/dashboardTabs/DriversTable.jsx` | `drivers`, `onEdit`, `onDelete`, `onToggle`, `pageSize` | Tabla admin de pilotos. Familia `admin-table`. |
+| `DriversTable` | `components/dashboardTabs/DriversTable.jsx` | `drivers`, `onEdit`, `onDelete`, `pageSize` | Tabla admin de pilotos. Familia `admin-table`. Sin columna Estado ni habilitar/deshabilitar (se sacó del admin; `enableDriver`/`disableDriver` siguen en el backend sin UI). |
 | `TeamsTable` | `components/dashboardTabs/TeamsTable.jsx` | `teams`, `onEdit`, `onDelete`, `pageSize` | Tabla admin de escuderías. |
 | `CircuitsTable` | `components/dashboardTabs/CircuitsTable.jsx` | `circuits`, `onEdit`, `onDelete`, `pageSize` | Tabla admin de circuitos. |
 | `RacesTable` | `components/dashboardTabs/RacesTable.jsx` | `races`, `onEdit`, `onDelete`, `pageSize` | Tabla admin de carreras. |
 | `UsersTable` | `components/dashboardTabs/UsersTable.jsx` | `users`, `onToggleBlock`, `pageSize` | Tabla admin de usuarios. |
-| `Assignments` | `components/dashboardTabs/Assignments.jsx` | `searchTerm` | Asignación pilotos↔escuderías. |
+| `Assignments` (`TeamsDriversAdmin`) | `components/dashboardTabs/Assignments.jsx` | `searchTerm` | Único lugar donde se gestiona piloto↔escudería: columna "Cambiar a" (equipo) + columna "Estado" (Titular/Suplente). Máximo 2 titulares por equipo (sin límite de pilotos totales); el servidor valida esto también (`PATCH /api/dashboard/drivers/assignments`), no solo el cliente. Muestra todos los pilotos, incluidos los deshabilitados. Ver `rules/logica.md`. |
 | `NotificationsTab` | `components/dashboardTabs/NotificationsTab.jsx` | `users` | Envío de notificaciones desde el admin. |
 
 > **Tablas públicas** (Ranking, Clasificación): no hay componente de tabla

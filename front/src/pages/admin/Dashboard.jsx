@@ -370,50 +370,6 @@ function Dashboard() {
     }
   };
 
-  const handleToggleDriver = async (driver) => {
-    try {
-
-      if (!driver.active && driver.team_info && driver.team_info._id) {
-
-        const activeDriversInTeam = drivers.filter(
-          (d) =>
-            d.team_info &&
-            d.team_info._id === driver.team_info._id &&
-            d.active !== false &&
-            d._id !== driver._id
-        );
-
-        if (activeDriversInTeam.length >= 2) {
-          showAlert(`No podés habilitar a "${driver.full_name}" porque el equipo "${driver.team_info.name}" ya tiene 2 pilotos activos.`, "danger", true);
-          return;
-        }
-      }
-
-      const action = driver.active ? "Deshabilitar" : "Habilitar";
-
-      const confirmed = await confirmDialog({
-        title: `¿Deseás ${action.toLowerCase()} al piloto "${driver.full_name}"?`,
-        message: "Esta acción cambiará el estado del piloto, pero no será eliminado de nuestros registros.",
-        confirmText: `${action}`,
-        cancelText: "Cancelar",
-        confirmVariant: `${(action === 'Deshabilitar') ? 'danger' : 'success'}`,
-      });
-      if (!confirmed) return;
-
-      if (driver.active) {
-        await DriversServices.disableDriver(driver._id);
-        showAlert(`Piloto deshabilitado correctamente`, "success");
-      } else {
-        await DriversServices.enableDriver(driver._id);
-        showAlert(`Piloto habilitado correctamente`, "success");
-      }
-
-      fetchDrivers();
-    } catch (err) {
-      console.error("Error al cambiar estado del piloto:", err);
-    }
-  };
-
   const renderTabContent = () => {
     switch (activeTab) {
       case TABS.RACES:
@@ -429,7 +385,6 @@ function Dashboard() {
             drivers={filterData(drivers, ["full_name", "trigram", "country", "number", "team_info.name"])}
             onEdit={handleEdit}
             onDelete={handleDelete}
-            onToggle={handleToggleDriver}
             pageSize={pageSize}
           />
         );

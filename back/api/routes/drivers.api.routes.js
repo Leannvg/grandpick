@@ -40,6 +40,15 @@ router.route('/api/drivers/:driverId')
         driversApiControllers.editById
     );
 
+// Antes que "/api/dashboard/drivers/:driverId": si no, Express matchea
+// "assignments" como :driverId y nunca llega a esta ruta.
+router.route("/api/dashboard/drivers/assignments")
+    .patch(
+        autenticado,
+        admin,
+        driversApiControllers.updateAssignments
+    );
+
 router.route("/api/dashboard/drivers/:driverId")
     .patch(
         autenticado,

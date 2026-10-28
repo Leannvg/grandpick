@@ -2,6 +2,38 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-27 · Pilotos: ABM solo de datos + Titular/Suplente real en Asignaciones
+
+- `DriverForm.jsx` (alta/edición de piloto) pierde el campo Escudería —
+  la relación piloto↔equipo se maneja únicamente desde Asignaciones. El
+  número de piloto pasa a ser opcional (antes era obligatorio en el
+  schema del backend, `driverSchema`).
+- `DriversTable.jsx` (admin Pilotos) pierde la columna Estado y el botón
+  de habilitar/deshabilitar. `DriversServices.enableDriver`/`disableDriver`
+  y las rutas backend siguen existiendo, solo que sin ninguna UI que las
+  dispare por ahora.
+- `Assignments.jsx` (pantalla "Asignaciones", ya existía) suma una columna
+  Estado (Titular/Suplente) por piloto. La regla cambia de "máximo 2
+  pilotos por equipo" a "máximo 2 **titulares** por equipo" — un equipo
+  puede tener cualquier cantidad de pilotos. Antes el guardado no validaba
+  nada en el servidor (`PATCH /api/dashboard/drivers/:driverId` sin
+  middleware); ahora el guardado usa un endpoint nuevo en lote
+  (`PATCH /api/dashboard/drivers/assignments`) que valida el estado
+  resultante completo antes de escribir nada — la UI sigue mostrando un
+  aviso rápido, pero el servidor es la fuente de verdad. También muestra
+  pilotos deshabilitados (antes los ocultaba).
+- `Drivers.jsx` (pantalla pública) deja de mostrar 3 suplentes mockeados a
+  mano — separa titulares/suplentes reales por el campo `role` del piloto.
+  Los pilotos existentes (ninguno tiene `role` cargado todavía, confirmado
+  contra producción) se muestran como suplentes hasta que un admin les
+  asigne el rol.
+- Detalle completo del modelo de datos (`role` nuevo en `Drivers`, por qué
+  `team` nunca se tocaba en el alta, la regla de los 2 titulares) en
+  `rules/logica.md`. Fuera de alcance, anotado pero no tocado: código
+  muerto en `teams.services.js: findTeamWithDrivers`, y un bug preexistente
+  en `predictions.services.js: getUserPredictionHistory` que muestra el
+  equipo actual del piloto en vez del histórico.
+
 ## 2026-10-27 · Pilotos suplentes en el detalle de escudería (mock)
 
 - `pages/TeamDetail.jsx`: nuevo panel `PILOTOS SUPLENTES` bajo `PILOTOS`, con el mismo markup/estilo (`team-drivers*`) y las cards `ReserveDriverCard`. Datos mock de 2 suplentes con `// TODO` para cargarlos desde la base de datos. `.team-drivers-article` pasa a `flex-wrap: wrap`.

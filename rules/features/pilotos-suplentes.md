@@ -15,9 +15,12 @@ chico ("Reservas" / `PILOTOS SUPLENTES`) + grilla de cards.
 
 ## Estado de los datos
 
-**Mock temporal**: `pages/Drivers.jsx` arma 3 suplentes fijos con los 3
-primeros equipos cargados (`// TODO` para reemplazar por datos del panel de
-control). Si no hay equipos, la sección no se renderiza.
+Datos reales: `pages/Drivers.jsx` separa titulares de suplentes según el
+campo `role` del piloto (`"titular"` vs. cualquier otro valor, incluido sin
+asignar todavía) — asignado desde la pantalla "Asignaciones" del admin, ver
+`rules/logica.md` y `rules/componentes.md` (`Assignments`). Si no hay
+suplentes (ningún piloto activo con `role` distinto de `"titular"`), la
+sección no se renderiza.
 
 ## Archivos
 
