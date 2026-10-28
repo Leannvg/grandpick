@@ -2,6 +2,19 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-28 · Laboratorio: pestaña "Cambios" (bitácora de consistencia visual)
+
+- Nueva solapa, primera de la lista, en `front/lab.html`
+  (`src/lab/sections/ChangelogSection.jsx` + `src/lab/data/changelog.js`):
+  resumen corto de la limpieza de consistencia visual (botones, colores,
+  tablas, espaciados) que viene desde que se creó el laboratorio, para que
+  Leandro y Julieta tengan el mismo contexto sin leer este changelog
+  completo. Sembrada con 6 entradas retroactivas (calendario, nacimiento
+  del lab, botones, colores, tablas, hoy).
+- **Nueva regla** (`CLAUDE.md`, sección "Después de cada cambio"): todo
+  cambio de diseño/consistencia visual suma también una entrada ahí,
+  arriba de todo — además de la entrada normal en este changelog.
+
 ## 2026-10-27 · Prolijidad visual: solo titulares en listados de escudería/pilotos
 
 - `pages/Teams.jsx` (listado público de escuderías): la lista de pilotos por

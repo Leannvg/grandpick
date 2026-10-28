@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ChangelogSection from "./sections/ChangelogSection.jsx";
 import TokensSection from "./sections/TokensSection.jsx";
 import IconsSection from "./sections/IconsSection.jsx";
 import ComponentsSection from "./sections/ComponentsSection.jsx";
@@ -8,6 +9,7 @@ import LibrariesSection from "./sections/LibrariesSection.jsx";
 import ScreensSection from "./sections/ScreensSection.jsx";
 
 const SECTIONS = [
+  { id: "changelog", label: "Cambios", icon: "bi-clock-history", Component: ChangelogSection },
   { id: "tokens", label: "Tokens", icon: "bi-palette-fill", Component: TokensSection },
   { id: "icons", label: "Iconografía", icon: "bi-stars", Component: IconsSection },
   { id: "components", label: "Componentes", icon: "bi-grid-3x3-gap-fill", Component: ComponentsSection },

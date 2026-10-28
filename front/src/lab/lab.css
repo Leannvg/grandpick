@@ -356,3 +356,52 @@ html, body {
   padding: 1px 5px;
   border-radius: 4px;
 }
+
+/* Cambios (bitácora) */
+.lab-changelog {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 760px;
+}
+
+.lab-changelog-entry {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.lab-changelog-entry:last-child {
+  border-bottom: none;
+}
+
+.lab-changelog-date {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  opacity: .55;
+  padding-top: 2px;
+}
+
+.lab-changelog-title {
+  font-size: .98rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.lab-changelog-summary {
+  font-size: .84rem;
+  line-height: 1.55;
+  opacity: .82;
+  margin: 0;
+}
+
+@media (max-width: 560px) {
+  .lab-changelog-entry {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}

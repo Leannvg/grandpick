@@ -80,6 +80,15 @@ evitar reinventar algo que ya está hecho. Entry point HTML separado
   `LoaderSpinner`), el contenedor "specimen" del lab necesita
   `position: relative` — ya está puesto a nivel de `.lab-specimen-stage` en
   `lab.css`, pero tenerlo en cuenta si se arma un contenedor nuevo.
+- **Pestaña "Cambios"** (primera solapa, `src/lab/sections/ChangelogSection.jsx`
+  + `src/lab/data/changelog.js`): bitácora corta de la limpieza de
+  consistencia visual (botones, colores, tablas, etc.), para que Leandro y
+  Julieta arranquen con el mismo contexto sin leer
+  `rules/registro-de-cambios.md` completo (que registra todo el proyecto,
+  no solo esta cruzada puntual). **Regla** (también en `CLAUDE.md`): cada
+  cambio de diseño/consistencia visual suma una entrada nueva en
+  `changelog.js`, arriba de todo (orden cronológico inverso). Entrada:
+  `{ date, title, summary }` — 2-3 líneas de qué cambió y por qué.
 
 ## Agentes de Claude Code (nivel proyecto)
 

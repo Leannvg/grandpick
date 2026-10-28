@@ -19,6 +19,13 @@ Monorepo: `back/` (API Node + Express + MongoDB nativo), `front/` (React + Vite)
    - anotar la entrada en `rules/registro-de-cambios.md`
    - si se creó un componente/hook/context nuevo, sumarlo a `rules/componentes.md`
    - si cambió diseño / estructura / lógica transversal, actualizar ese doc
+   - **si el cambio es de diseño/consistencia visual** (botones, colores,
+     tablas, espaciados, radios, sombras, etc.), sumar también una entrada
+     corta en `front/src/lab/data/changelog.js` (pestaña "Cambios" del
+     laboratorio de diseño, `front/lab.html` — ver `rules/estructura.md`),
+     arriba de todo. Es la bitácora que usan Leandro y Julieta para
+     mantenerse al tanto de esta limpieza puntual sin leer todo el
+     changelog del proyecto.
 4. **Commits en español**, imperativo corto. Terminar con la línea de
    `Co-Authored-By` que indique la sesión.
 5. **Git**: usar la cuenta vinculada a la carpeta. **No commitear ni pushear
