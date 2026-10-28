@@ -164,33 +164,16 @@ function TeamsDriversAdmin({ searchTerm = "" }) {
               <tr>
                 <th className="sticky-col col-piloto">Piloto</th>
                 <th>Escudería actual</th>
-                <th>Cambiar a</th>
                 <th>Estado</th>
               </tr>
             </thead>
             <tbody>
               {filteredDrivers.map((driver) => {
-                const currentTeam = teams.find((t) => t._id === driver.team) || null;
                 const isInvalid = driver.team && invalidTeams.includes(driver.team);
 
                 return (
                   <tr key={driver._id} className={isInvalid ? "table-danger" : ""}>
                     <td className="sticky-col col-piloto">{driver.full_name}</td>
-
-                    <td>
-                      {currentTeam ? (
-                        <div className="d-flex align-items-center">
-                          <span className="me-2">{currentTeam.name}</span>
-                          {isInvalid && (
-                            <span className="badge bg-danger">
-                              ⚠️ Excedido
-                            </span>
-                          )}
-                        </div>
-                      ) : (
-                        <span className="text-muted italic">Sin escudería</span>
-                      )}
-                    </td>
 
                     <td className="col-team-select">
                       <SearchableSelect

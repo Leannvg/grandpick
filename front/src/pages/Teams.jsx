@@ -57,7 +57,9 @@ function Teams() {
                             <div className="team-list-info">
                                 <h2 className="team-name">{team.name}</h2>
 
-                                {team.drivers && team.drivers.map((driver) => (
+                                {team.drivers && team.drivers
+                                    .filter((driver) => driver.active === true && driver.role === "titular")
+                                    .map((driver) => (
                                     <div className="team-driver" key={driver._id}>
 
                                         <img src={helmet} alt="Helmet" className="helmet-icon" /> {driver.full_name}

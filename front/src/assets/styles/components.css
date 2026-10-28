@@ -1070,11 +1070,11 @@ input[type="time"].form-control {
 .team-list-card {
     background: var(--color-container-bg);
     border-radius: 12px;
-    padding: 14px 18px;
+    padding: 10px 18px;
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
     position: relative;
     overflow: hidden;
 }

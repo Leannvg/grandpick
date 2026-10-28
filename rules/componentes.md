@@ -85,11 +85,11 @@ Todos comparten la firma: `initialData`, `onSubmit`, `submitLabel`, `isEdit`, `e
 | Componente | Ruta | Props | Para qué sirve |
 |---|---|---|---|
 | `DriversTable` | `components/dashboardTabs/DriversTable.jsx` | `drivers`, `onEdit`, `onDelete`, `pageSize` | Tabla admin de pilotos. Familia `admin-table`. Sin columna Estado ni habilitar/deshabilitar (se sacó del admin; `enableDriver`/`disableDriver` siguen en el backend sin UI). |
-| `TeamsTable` | `components/dashboardTabs/TeamsTable.jsx` | `teams`, `onEdit`, `onDelete`, `pageSize` | Tabla admin de escuderías. |
+| `TeamsTable` | `components/dashboardTabs/TeamsTable.jsx` | `teams`, `onEdit`, `onDelete`, `pageSize` | Tabla admin de escuderías. Columna Pilotos: solo titulares (`role === "titular"`), trigrama en vez de nombre completo (nombre completo en el `title` del pill, al hover), acento `border-left` con el color de la escudería (`t.color`). |
 | `CircuitsTable` | `components/dashboardTabs/CircuitsTable.jsx` | `circuits`, `onEdit`, `onDelete`, `pageSize` | Tabla admin de circuitos. |
 | `RacesTable` | `components/dashboardTabs/RacesTable.jsx` | `races`, `onEdit`, `onDelete`, `pageSize` | Tabla admin de carreras. |
 | `UsersTable` | `components/dashboardTabs/UsersTable.jsx` | `users`, `onToggleBlock`, `pageSize` | Tabla admin de usuarios. |
-| `Assignments` (`TeamsDriversAdmin`) | `components/dashboardTabs/Assignments.jsx` | `searchTerm` | Único lugar donde se gestiona piloto↔escudería: columna "Cambiar a" (equipo) + columna "Estado" (Titular/Suplente). Máximo 2 titulares por equipo (sin límite de pilotos totales); el servidor valida esto también (`PATCH /api/dashboard/drivers/assignments`), no solo el cliente. Muestra todos los pilotos, incluidos los deshabilitados. Ver `rules/logica.md`. |
+| `Assignments` (`TeamsDriversAdmin`) | `components/dashboardTabs/Assignments.jsx` | `searchTerm` | Único lugar donde se gestiona piloto↔escudería: columna "Escudería actual" (select de equipo — sin columna de texto plano aparte, sería repetitivo) + columna "Estado" (Titular/Suplente). Máximo 2 titulares por equipo (sin límite de pilotos totales); el servidor valida esto también (`PATCH /api/dashboard/drivers/assignments`), no solo el cliente. Muestra todos los pilotos, incluidos los deshabilitados. Ver `rules/logica.md`. |
 | `NotificationsTab` | `components/dashboardTabs/NotificationsTab.jsx` | `users` | Envío de notificaciones desde el admin. |
 
 > **Tablas públicas** (Ranking, Clasificación): no hay componente de tabla

@@ -2,6 +2,23 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-27 · Prolijidad visual: solo titulares en listados de escudería/pilotos
+
+- `pages/Teams.jsx` (listado público de escuderías): la lista de pilotos por
+  card ahora filtra `role === "titular"` (antes mostraba a todos, suplentes
+  incluidos). Cards más compactas: `padding` de `.team-list-card` baja de
+  `14px 18px` a `10px 18px`, `margin-bottom` de `20px` a `14px`.
+- `components/dashboardTabs/TeamsTable.jsx` (admin Escuderías): columna
+  Pilotos, mismo filtro de solo titulares. Los pills pasan de nombre
+  completo a trigrama (nombre completo queda en el `title`, al hover) y
+  suman un acento `border-left` con el color de la escudería (`t.color`).
+  `.pill-driver` deja de tener ancho fijo de 140px (ya no hace falta con
+  trigramas de 3 letras).
+- `components/dashboardTabs/Assignments.jsx`: se saca la columna
+  "Escudería actual" (texto plano) — quedaba repetida con el select de al
+  lado, que ya muestra el valor actual. Ese select pasa a llamarse
+  "Escudería actual" (antes "Cambiar a").
+
 ## 2026-10-27 · Detalle de escudería: pilotos suplentes reales (reemplaza el mock)
 
 - `pages/TeamDetail.jsx` (mergeado en paralelo con el mock de

@@ -35,20 +35,24 @@ export default function TeamsTable({ teams, onEdit, onDelete, pageSize }) {
                   <td>{t.power_unit}</td>
 
                   <td>
-                    {t.drivers && t.drivers.length > 0 ? (
-                      t.drivers
-                        .filter(d => d.active !== false)
-                        .map((driver) => (
-                          <span
-                            key={driver._id || driver}
-                            className="admin-status-pill pill-driver me-1"
-                          >
-                            {driver.full_name || driver}
-                          </span>
-                        ))
-                    ) : (
-                      <span className="admin-status-pill pill-driver me-1">Sin pilotos</span>
-                    )}
+                    {(() => {
+                      const titulares = (t.drivers || []).filter(
+                        d => d.active !== false && d.role === "titular"
+                      );
+                      if (titulares.length === 0) {
+                        return <span className="admin-status-pill pill-driver me-1">Sin titulares</span>;
+                      }
+                      return titulares.map((driver) => (
+                        <span
+                          key={driver._id || driver}
+                          className="admin-status-pill pill-driver me-1"
+                          style={{ borderLeftColor: t.color || "#ced4da" }}
+                          title={driver.full_name}
+                        >
+                          {driver.trigram || driver.full_name}
+                        </span>
+                      ));
+                    })()}
                   </td>
 
                   <td>
