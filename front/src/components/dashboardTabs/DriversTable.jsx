@@ -1,7 +1,7 @@
 import { usePagination } from "./../../hooks/usePagination.js";
 import CountryDisplay from "../CountryDisplay.jsx";
 
-export default function DriversTable({ drivers, onEdit, onDelete, onToggle, pageSize }) {
+export default function DriversTable({ drivers, onEdit, onDelete, pageSize }) {
   const {
     page,
     pageSize: currentPageSize,
@@ -23,7 +23,6 @@ export default function DriversTable({ drivers, onEdit, onDelete, onToggle, page
                 <th>Número</th>
                 <th>País</th>
                 <th>Escudería</th>
-                <th>Estado</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -38,13 +37,6 @@ export default function DriversTable({ drivers, onEdit, onDelete, onToggle, page
                     <CountryDisplay iso2={d.country} />
                   </td>
                   <td>{d.team_info?.name || "Sin escudería"}</td>
-                  <td>
-                    {d.active ? (
-                      <span className="admin-status-pill pill-enabled">Habilitado</span>
-                    ) : (
-                      <span className="admin-status-pill pill-disabled">Deshabilitado</span>
-                    )}
-                  </td>
 
                   <td className="admin-actions">
                     <button className="btn-admin-action btn-admin-edit" onClick={() => onEdit(d._id)}>
@@ -52,13 +44,6 @@ export default function DriversTable({ drivers, onEdit, onDelete, onToggle, page
                     </button>
                     <button className="btn-admin-action btn-admin-delete" onClick={() => onDelete(d._id, d.full_name)}>
                       <i className="bi bi-trash-fill"></i>
-                    </button>
-                    <button
-                      onClick={() => onToggle(d)}
-                      className={`btn-admin-action ${d.active ? "btn-admin-disable" : "btn-admin-enable"}`}
-                      title={d.active ? "Deshabilitar" : "Habilitar"}
-                    >
-                      <i className={`bi ${d.active ? "bi-person-x-fill" : "bi-person-check-fill"}`}></i>
                     </button>
                   </td>
                 </tr>

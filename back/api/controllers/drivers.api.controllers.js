@@ -1,5 +1,6 @@
 import * as driversServices from './../../services/drivers.services.js'
 import { resolveImage } from '../../middleware/helpers.middleware.js'
+import { driverAssignmentsSchema } from '../../schemas/schemas.js'
 
 export async function findAll(req, res) {
   let drivers = await driversServices.findAllDrivers()
@@ -76,6 +77,26 @@ export async function create(req, res, next) {
   }
 }
 
+
+export async function updateAssignments(req, res, next) {
+  try {
+    const updates = await driverAssignmentsSchema.validate(req.body.updates, { abortEarly: false });
+    const result = await driversServices.updateDriverAssignments(updates);
+    res.status(200).json(result);
+  } catch (err) {
+    if (err.name === "ValidationError") {
+      const formatted = {};
+      err.inner.forEach(e => {
+        formatted[e.path] = e.message;
+      });
+      return res.status(400).json({ message: "Datos de asignación inválidos.", errors: formatted });
+    }
+    if (err.status === 400) {
+      return res.status(400).json({ message: err.message });
+    }
+    next(err);
+  }
+}
 
 export async function deleteById(req, res) {
   const driverId = req.params.driverId;

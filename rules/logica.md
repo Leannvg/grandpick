@@ -6,15 +6,41 @@ Base MongoDB `GrandPick`. Referencias entre colecciones por `ObjectId`.
 
 ### `Drivers`
 ```
-_id, full_name, number (string), country (ISO2), trigram (3 letras),
-img (Cloudinary), active (bool), team (ObjectId -> Teams | null)
+_id, full_name, number (string, opcional), country (ISO2), trigram (3 letras),
+img (Cloudinary), active (bool), team (ObjectId -> Teams | null),
+role ("titular" | "suplente" | ausente)
 ```
+`team` y `role` se gestionan **únicamente** desde `Assignments.jsx` (pantalla
+"Asignaciones" del admin) — el alta/edición de piloto (`DriverForm.jsx`) es
+solo datos propios del piloto, no toca ninguno de los dos. Regla de negocio:
+un equipo puede tener cualquier cantidad de pilotos, pero **nunca más de 2
+con `role: "titular"` a la vez** — se valida tanto en el cliente
+(`Assignments.jsx`) como en el servidor
+(`PATCH /api/dashboard/drivers/assignments` →
+`updateDriverAssignments`, `back/services/drivers.services.js`), que revisa
+el estado resultante completo antes de guardar nada. Un piloto sin `role`
+(ninguno todavía, ver migración abajo) o con `"suplente"` cuenta igual para
+ese límite (ninguno de los dos es titular). `active` es un campo aparte
+(habilitado/deshabilitado, sin UI en el admin desde este cambio — ver
+`rules/registro-de-cambios.md`) y no debe confundirse con `role`: un
+suplente deshabilitado sigue sin aparecer en el roster público ni en los
+selects de predicción, independientemente de su `role`.
+
+**Migración**: no hay script — los pilotos cargados antes de este campo
+simplemente no tienen `role`. Se tratan como suplentes en todos lados hasta
+que un admin les asigne `role` explícitamente desde Asignaciones.
 
 ### `Teams`
 ```
 _id, name (corto), full_team_name, chief, power_unit, world_championships,
-country, city, color (HEX), logo, isologo, drivers: [ObjectId -> Drivers]
+country, city, color (HEX), logo, isologo
 ```
+El array `drivers` que devuelven `findAllTeams`/`findTeamById` **no es un
+campo guardado en el documento** — se arma al vuelo con un `$lookup` inverso
+(`Drivers` donde `team == Teams._id`). Existe una función vieja,
+`findTeamWithDrivers` (`back/services/teams.services.js`), que sí asume un
+array `drivers` guardado en Team — es código muerto, ninguna ruta la llama;
+no replicar ese patrón.
 
 ### `Circuits`
 ```

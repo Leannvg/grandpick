@@ -82,14 +82,30 @@ export const driverSchema = yup.object({
     .length(3, "Debe tener exactamente 3 letras"),
   country: yup.string()
     .required("La nacionalidad es requerida"),
+  // Opcional: el ABM de pilotos ya no asigna escudería (eso se mueve a
+  // Asignaciones), así que un piloto nuevo puede no tener número todavía.
   number: yup.number()
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
     .typeError("Debe ser un número")
     .min(1, "El número debe ser mayor que 0")
     .max(99, "El número no puede ser mayor a 99")
-    .required("El número es requerido"),
+    .nullable(),
   img: yup.string()
     .required("La imagen es requerida"),
 }).noUnknown();
+
+/* Guardado en lote de Asignaciones (team + role por piloto). Validado acá
+   porque la ruta /api/dashboard/drivers/assignments no usa el middleware
+   genérico de un solo driver. */
+export const driverAssignmentItemSchema = yup.object({
+  driverId: yup.string().required("Falta el id del piloto"),
+  team: yup.string().nullable(),
+  role: yup.string().nullable().oneOf(["titular", "suplente", null], "Estado inválido"),
+}).noUnknown();
+
+export const driverAssignmentsSchema = yup.array()
+  .of(driverAssignmentItemSchema)
+  .min(1, "No hay cambios para guardar");
 
 
 /* =====================

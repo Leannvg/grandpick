@@ -17,28 +17,27 @@ function Drivers() {
     showLoader();
     TeamsServices.findAllTeams()
       .then((teams) => {
-        const activeDriversOrdered = teams.flatMap(team =>
-          (team.drivers || [])
-            .filter(driver => driver.active === true)
-            .map(driver => ({
-              ...driver,
-              team_id: driver.team_id || driver.team || team._id,
-              team_info: team
-            }))
+        const activeDrivers = (team) => (team.drivers || [])
+          .filter(driver => driver.active === true)
+          .map(driver => ({
+            ...driver,
+            team_id: driver.team_id || driver.team || team._id,
+            team_info: team
+          }));
+
+        // Titular: role === "titular". Todo lo demás (role "suplente" o sin
+        // asignar todavía, ver Asignaciones en el admin) se muestra como
+        // suplente, para que un piloto no desaparezca de la pantalla pública
+        // mientras un admin le termina de cargar el rol.
+        const titulares = teams.flatMap(team =>
+          activeDrivers(team).filter(driver => driver.role === "titular")
+        );
+        const suplentes = teams.flatMap(team =>
+          activeDrivers(team).filter(driver => driver.role !== "titular")
         );
 
-        setDrivers(activeDriversOrdered);
-
-        // TODO: reemplazar por los suplentes cargados desde el panel de control
-        const mocks = [
-          { full_name: "Ayumu Iwasa", trigram: "IWA", country: "JP" },
-          { full_name: "Frederik Vesti", trigram: "VES", country: "DK" },
-          { full_name: "Felipe Drugovich", trigram: "DRU", country: "BR" },
-        ];
-        setReserveDrivers(
-          mocks.map((m, i) => ({ ...m, _id: `reserve-mock-${i}`, team_info: teams[i] }))
-            .filter(m => m.team_info)
-        );
+        setDrivers(titulares);
+        setReserveDrivers(suplentes);
       })
       .catch(err => {
         console.error("Error loading drivers:", err);

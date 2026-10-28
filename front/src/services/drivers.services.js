@@ -59,6 +59,14 @@ async function editDashboardDriver(id, driver){
     });
 }
 
+async function updateDriverAssignments(updates){
+    return apiFetch("/api/dashboard/drivers/assignments", {
+        method: 'PATCH',
+        body: JSON.stringify({ updates }),
+        headers: { "Content-type": "application/json" }
+    });
+}
+
 export default {
     findAll,
     find: findAll,
@@ -75,5 +83,6 @@ export default {
     checkDriverUsedInRaces,
     enableDriver,
     disableDriver,
-    editDashboardDriver
+    editDashboardDriver,
+    updateDriverAssignments
 }
