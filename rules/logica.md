@@ -22,9 +22,24 @@ el estado resultante completo antes de guardar nada. Un piloto sin `role`
 (ninguno todavía, ver migración abajo) o con `"suplente"` cuenta igual para
 ese límite (ninguno de los dos es titular). `active` es un campo aparte
 (habilitado/deshabilitado, sin UI en el admin desde este cambio — ver
-`rules/registro-de-cambios.md`) y no debe confundirse con `role`: un
-suplente deshabilitado sigue sin aparecer en el roster público ni en los
-selects de predicción, independientemente de su `role`.
+`rules/registro-de-cambios.md`) y no debe confundirse con `role`: un piloto
+deshabilitado no aparece en el roster público ni en ningún selector,
+independientemente de su `role`.
+
+**Quién se puede predecir vs. quién puede aparecer en un resultado** (son
+reglas distintas, no confundir):
+- **Predecir** (`pages/Predictions.jsx`, el selector público de pilotos):
+  solo titulares activos (`active === true && role === "titular"`). Un
+  suplente no es seleccionable para predecir, aunque esté activo — la idea
+  es que antes de cada GP, si hay un reemplazo real, el admin actualiza los
+  roles en Asignaciones (marca titular al que corre esa carrera) y así el
+  selector de predicción queda alineado solo. Si una predicción vieja quedó
+  con un piloto que después pasó a suplente, el selector igual la muestra
+  (no la rompe), solo no deja elegirlo de nuevo.
+- **Cargar resultado real** (`components/PredictionsForm.jsx`, usado por
+  `RaceForm.jsx` en el admin): cualquier piloto activo, titular o suplente
+  — ahí se registra quién corrió de verdad, no una predicción, así que un
+  suplente que efectivamente corrió tiene que poder cargarse como resultado.
 
 **Migración**: no hay script — los pilotos cargados antes de este campo
 simplemente no tienen `role`. Se tratan como suplentes en todos lados hasta

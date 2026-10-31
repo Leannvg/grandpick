@@ -334,7 +334,7 @@ function Predictions() {
                     onChange={(selected) => handleChange(index, selected?.value || "")}
                     isDisabled={isClosed}
                     options={drivers
-                      .filter((d) => d.active === true || d._id === driverId)
+                      .filter((d) => (d.active === true && d.role === "titular") || d._id === driverId)
                       .map((d) => ({
                         _id: d._id,
                         name: d.full_name,

@@ -2,6 +2,20 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-10-31 · Fix: predicciones solo con pilotos titulares
+
+- `pages/Predictions.jsx`: el selector de piloto para predecir filtraba
+  solo por `active`, así que dejaba elegir también a los suplentes — no
+  era la intención (el selector de predicción debe reflejar quién corre
+  de verdad ese GP). Ahora filtra `active === true && role === "titular"`.
+  Si una predicción vieja quedó con un piloto que después pasó a suplente,
+  sigue mostrándose (no se rompe), solo no se puede volver a elegir.
+- **No se tocó** `components/PredictionsForm.jsx` (carga de resultados
+  reales en el admin, `RaceForm.jsx`): ahí sí tiene que poder elegirse
+  cualquier piloto activo, titular o suplente — registra quién corrió de
+  verdad, no una predicción. Ver `rules/logica.md` para la regla completa
+  (quién se puede predecir vs. quién puede aparecer en un resultado).
+
 ## 2026-10-28 · Laboratorio: pestaña "Cambios" (bitácora de consistencia visual)
 
 - Nueva solapa, primera de la lista, en `front/lab.html`
