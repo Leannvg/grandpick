@@ -287,7 +287,7 @@ async function removeFcmToken(req, res) {
 
 async function sendTestPush(req, res) {
   try {
-    const { userId, title, body } = req.body;
+    const { userId, title, body, link } = req.body;
     const user = await UsersServices.getUserById(userId);
 
     if (!user || !user.fcmTokens || user.fcmTokens.length === 0) {
@@ -297,7 +297,7 @@ async function sendTestPush(req, res) {
     const { sendPushNotification } = await import("../../services/fcm.services.js");
 
     const promises = user.fcmTokens.map(token =>
-      sendPushNotification(token, { title, body })
+      sendPushNotification(token, { title, body }, link ? { link } : {})
     );
 
     await Promise.all(promises);

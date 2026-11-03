@@ -2,6 +2,32 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-03 · Fix: tocar una notificación push ahora abre la app
+
+- **Causa**: el backend (`back/services/fcm.services.js`) mandaba la ruta
+  destino de cada push en un campo propio, `data.link` (ej.
+  `{ link: "/predictions" }`), pero nunca en `webpush.fcmOptions.link`. El
+  service worker (`front/public/firebase-messaging-sw.js`) no define su
+  propio `notificationclick`, así que el que corre es el que instala solo
+  el SDK de Firebase al instanciarse ahí — y ese **solo** mira
+  `fcmOptions.link`/`notification.click_action`, nunca `data.link`. Como
+  nunca encontraba nada, no abría ni enfocaba ninguna ventana: tocar la
+  notificación solo la cerraba.
+- **Fix**: `sendPushNotification`/`sendPushToMultipleTokens` ahora arman
+  también `webpush.fcmOptions.link` (URL absoluta, `FRONT_URL` + la ruta de
+  `data.link`, mismo patrón que ya usa `mail.services.js` para el link de
+  reset de contraseña). No hizo falta tocar nada del frontend/service
+  worker: con ese campo presente, el manejador de click que ya trae el SDK
+  de Firebase se encarga de abrir o enfocar la app solo.
+- De paso, `sendTestPush` (endpoint admin de prueba) ahora acepta un `link`
+  opcional en el body, para poder mandarse una notificación de prueba con
+  destino real y probar el fix en un celular.
+- No se tocó `onForegroundMessage` (notificación con la app ya abierta): su
+  comportamiento de redirigir solo para links de historial/resultados es
+  intencional, documentado en
+  `rules/features/links-historial-predicciones.md` — no es el caso que se
+  reportó.
+
 ## 2026-11-03 · Páginas de Política de Privacidad y Términos y Condiciones
 
 - Nuevas rutas públicas `/privacidad` (`pages/Privacy.jsx`) y `/terminos`
