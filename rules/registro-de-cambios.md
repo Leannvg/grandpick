@@ -12,6 +12,9 @@ Orden cronológico inverso (lo más nuevo arriba).
 - Las ilustraciones (cargadas) están en `front/src/assets/podium/pos1.png`,
   `pos2.png`, `pos3.png` (`import.meta.glob`; si falta una, se ve el fondo
   oscuro de respaldo). `Podium` sigue en `Standings.jsx`.
+- Ajuste: ilustraciones ancladas arriba (`object-position: center 8%`) para
+  que no se corte el casco, y rectángulos de foto/puntos más chicos (12% de
+  ancho en mobile, 17% en desktop).
 
 ## 2026-10-31 · Fix: predicciones solo con pilotos titulares
 
