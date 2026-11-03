@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import * as tokenServices from '../../services/token.services.js'
 import { resolveImage } from '../../middleware/helpers.middleware.js'
 import * as MailService from '../../services/mail.services.js'
+import { updateGlobalRanking } from '../../services/points.services.js'
 
 function getAll(req, res) {
 
@@ -39,6 +40,12 @@ async function addNew(req, res) {
     };
 
     const newUser = await UsersServices.createUser(user);
+
+    // Para que el usuario nuevo aparezca en el ranking global sin esperar a la próxima
+    // carga de resultados (ver back/services/points.services.js). No se awaitea: no debe
+    // demorar ni romper la respuesta de registro si falla.
+    updateGlobalRanking().catch(err => console.error("Error refrescando ranking tras registro:", err));
+
     res.status(200).json(newUser);
 
   } catch (err) {

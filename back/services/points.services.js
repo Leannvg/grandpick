@@ -44,6 +44,40 @@ export async function updateGlobalRanking() {
         }
     }));
     if (ops.length > 0) await db.collection("Users").bulkWrite(ops);
+
+    // Snapshot liviano con los campos de display que necesita la tabla de ranking global
+    // (front/src/pages/Ranking.jsx, front/src/pages/Home.jsx), ya ordenado, para que esas
+    // pantallas no tengan que volver a correr getAllUsersWithStats() ni reordenar en el cliente.
+    const entries = sorted.map((u, i) => ({
+        _id: u._id,
+        name: u.name,
+        last_name: u.last_name,
+        country: u.country,
+        img_user: u.img_user,
+        stats: {
+            points: { total: u.stats?.points?.total || 0 },
+            successes: { total: u.stats?.successes?.total || 0 },
+            predictions: { total: u.stats?.predictions?.total || 0 },
+        },
+        globalRank: i + 1,
+    }));
+    await db.collection("Ranking_Snapshot").updateOne(
+        { _id: "global" },
+        { $set: { entries, updatedAt: new Date() } },
+        { upsert: true }
+    );
+}
+
+// Lee el snapshot ya ordenado (ver updateGlobalRanking). Si todavía no existe (primer arranque,
+// antes de cualquier carga de resultados), lo genera una vez y lo vuelve a leer.
+export async function getGlobalRankingSnapshot() {
+    const db = await connectDB();
+    let snapshot = await db.collection("Ranking_Snapshot").findOne({ _id: "global" });
+    if (!snapshot) {
+        await updateGlobalRanking();
+        snapshot = await db.collection("Ranking_Snapshot").findOne({ _id: "global" });
+    }
+    return snapshot?.entries || [];
 }
 
 // Ranking de UNA sesión puntual (ej. "tu posición en la clasificación de Austria"). Se guarda en el

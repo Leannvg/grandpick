@@ -2,6 +2,47 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-03 · Performance: ranking global lento + sin caché al cambiar de modo
+
+- **Causa**: `GET /api/users-stats` → `getAllUsersWithStats()`
+  (`back/services/users.services.js`) recalculaba todas las estadísticas de
+  todos los usuarios en cada visita (loop secuencial con 2 queries más por
+  usuario, sin índices) — lo llamaban tanto `pages/Ranking.jsx` (modo global)
+  como `pages/Home.jsx` (podio), y ninguno cacheaba nada, así que cambiar de
+  modo y volver repetía la demora. Ese mismo cálculo ya se hacía una vez por
+  carga de resultados (`updateGlobalRanking()`) pero solo se guardaba
+  `ranking_position`/`ranking_total` (para la ficha de un piloto), nada que
+  sirviera para la tabla completa.
+- **Backend**: `updateGlobalRanking()` ahora también guarda un snapshot
+  liviano y ya ordenado en una colección nueva, `Ranking_Snapshot`
+  (`{ _id: "global", entries, updatedAt }`), leído por
+  `getGlobalRankingSnapshot()` y expuesto en `GET /api/ranking/global`
+  (pública, sin `autenticado` — mismo criterio que `/api/ranking/circuit/...`).
+  Se dispara también (sin awaitear) al registrarse un usuario nuevo, para que
+  no quede afuera del ranking hasta la próxima carga de resultados. Se
+  agregaron índices (`Predictions.userId/raceId`, `Users_Points.userId/raceId`)
+  en `db.services.js: connectDB()`. **No se tocó** `/api/users-stats` ni
+  `getAllUsersWithStats`/`getUserWithStats` (sin consumidores conocidos en el
+  front tras este cambio, pero la ruta pública queda por si algo externo la usa).
+- **Frontend**: `Ranking.jsx` y `Home.jsx` ahora usan
+  `UsersServices.getGlobalRanking()` y ya no reordenan nada client-side (se
+  elimina la tercera copia del desempate, que en `Home.jsx` estaba incompleta
+  — no hacía el countback de `bestScores`, así que el podio podía mostrar un
+  orden distinto al de Ranking entre usuarios empatados; queda corregido de
+  paso). Se agregó caché en memoria a nivel de módulo (mismo patrón que
+  `countries.services.js`, sin `localStorage`) para el ranking global y para
+  `PredictionsServices.getGrandPrixRanking()` (keyed por circuito+año), así
+  alternar entre modos en la misma sesión no vuelve a pedir ni recalcular
+  nada. Ver `rules/estructura.md` (patrón de caché) y `rules/logica.md`
+  (desempate del ranking global).
+- Verificado en vivo contra la base de producción: `GET /api/ranking/global`
+  responde en ~0.085 s vs. ~5.2 s de `GET /api/users-stats` para la misma
+  base de usuarios.
+- Relevamiento de otras pantallas: `findDriversStandings`/
+  `findConstructorsStandings` (Clasificación) y las pestañas del admin
+  también recalculan todo sin caché al revisitarlas, pero contra queries
+  baratas (sin N+1) — no generan una demora comparable, quedan sin tocar.
+
 ## 2026-10-31 · Fix: predicciones solo con pilotos titulares
 
 - `pages/Predictions.jsx`: el selector de piloto para predecir filtraba

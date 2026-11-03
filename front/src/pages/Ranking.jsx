@@ -115,48 +115,14 @@ function Ranking() {
                 setProfile(profile);
 
                 if (mode === "global") {
-                    const data = await UsersServices.getAllUsersStats();
-                    const sortedData = [...data].sort((a, b) => {
-                        const pointsA = a.stats?.points?.total || 0;
-                        const pointsB = b.stats?.points?.total || 0;
-                        if (pointsB !== pointsA) return pointsB - pointsA;
-
-                        const successesA = a.stats?.successes?.total || 0;
-                        const successesB = b.stats?.successes?.total || 0;
-                        if (successesB !== successesA) return successesB - successesA;
-
-                        const avgA = a.stats?.predictions?.total > 0 ? pointsA / a.stats.predictions.total : 0;
-                        const avgB = b.stats?.predictions?.total > 0 ? pointsB / b.stats.predictions.total : 0;
-                        if (avgB !== avgA) return avgB - avgA;
-
-                        // COUNTBACK: Desempate por mejores fines de semana (estilo F1)
-                        const scoresA = a.stats?.bestScores || [];
-                        const scoresB = b.stats?.bestScores || [];
-                        const maxLength = Math.max(scoresA.length, scoresB.length);
-
-                        for (let i = 0; i < maxLength; i++) {
-                            const scoreA = scoresA[i] || 0;
-                            const scoreB = scoresB[i] || 0;
-                            if (scoreA !== scoreB) {
-                                return scoreB - scoreA;
-                            }
-                        }
-
-                        return 0; // Empate absoluto
-                    }).map((item, index) => ({
-                        ...item,
-                        globalRank: index + 1
-                    }));
-
-                    setStats(sortedData);
+                    // Ya viene ordenado por el backend (back/services/points.services.js:
+                    // updateGlobalRanking), no hace falta reordenar en el cliente.
+                    const data = await UsersServices.getGlobalRanking();
+                    setStats(data);
 
                     if (profile) {
-                        const userFound = sortedData.find(u => u._id === profile._id);
-                        if (userFound) {
-                            setCurrentUserStat(userFound);
-                        } else {
-                            setCurrentUserStat(null);
-                        }
+                        const userFound = data.find(u => u._id === profile._id);
+                        setCurrentUserStat(userFound || null);
                     }
                 } else if (mode === "grand_prix") {
                     if (!selectedCircuitId) {
