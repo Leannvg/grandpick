@@ -1,0 +1,33 @@
+/* Páginas legales (Privacidad, Términos). La card y la tipografía de párrafo/
+   lista/strong ya las da information.css; esto es solo lo que falta para un
+   documento con subtítulos numerados, que information.css no necesita porque
+   sus "body" nunca usan h2/h3. */
+
+.legal-page__card {
+    max-width: 760px;
+    margin: 2rem auto 0;
+    text-align: left;
+}
+
+.legal-page__updated {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 1.5rem;
+}
+
+.legal-page .info-section__body h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 2rem 0 1rem;
+}
+
+.legal-page .info-section__body h2:first-child {
+    margin-top: 0;
+}
+
+.legal-page__footer-link {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f1f5f9;
+}

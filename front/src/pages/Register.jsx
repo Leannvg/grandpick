@@ -166,6 +166,12 @@ function Register() {
               autoComplete="new-password"
             />
 
+            <p className="register-legal-note">
+              Al crear tu cuenta aceptás los{" "}
+              <Link to="/terminos">Términos y Condiciones</Link> y la{" "}
+              <Link to="/privacidad">Política de Privacidad</Link>.
+            </p>
+
             <button className="submit-btn" type="submit" aria-label="Crear cuenta" disabled={isSubmitting}>
               <svg
                 className="icon-submit"

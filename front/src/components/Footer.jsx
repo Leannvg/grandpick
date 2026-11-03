@@ -42,6 +42,14 @@ function Footer() {
                         </ul>
                     </div>
 
+                    <div className="footer-column">
+                        <h2>LEGAL</h2>
+                        <ul className="footer-nav">
+                            <li><Link to="/privacidad">Política de Privacidad</Link></li>
+                            <li><Link to="/terminos">Términos y Condiciones</Link></li>
+                        </ul>
+                    </div>
+
                     <div className="footer-column footer-logo-col">
                         <Link to="/">
                             <img src={logo} alt="GRANDPICK" className="footer-logo" />

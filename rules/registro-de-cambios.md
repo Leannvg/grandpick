@@ -2,6 +2,28 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-03 · Páginas de Política de Privacidad y Términos y Condiciones
+
+- Nuevas rutas públicas `/privacidad` (`pages/Privacy.jsx`) y `/terminos`
+  (`pages/Terms.jsx`), a partir de un borrador de texto ya preparado
+  previamente.
+- Nuevo `components/LegalPageLayout.jsx`: shell compartido por las dos
+  páginas (layout estándar + card/tipografía de `information.css`, sin el
+  tabs/sidebar/drawer de `InformationPage`, porque acá cada página es un
+  solo documento). CSS propio chico en `assets/styles/legal.css` (subtítulos
+  numerados dentro del body, que `information.css` no necesitaba hasta
+  ahora).
+- `Footer.jsx`: nueva columna "LEGAL" con los dos links (grid pasa de 5 a 6
+  columnas en desktop, `footer.css`).
+- `Register.jsx`: frase de consentimiento con links a ambas páginas, arriba
+  del botón de crear cuenta (el borrador lo pedía explícitamente).
+- **Placeholders resueltos para publicar** (el borrador los dejaba
+  marcados como `[ajustar]`): mail de contacto `grandpick.app@gmail.com`,
+  edad mínima 13 años. Las secciones sobre proveedor de publicidad quedan
+  con lenguaje condicional (todavía no hay proveedor elegido). **Sigue
+  siendo un borrador razonable, no un texto revisado por un abogado** — ver
+  la advertencia en el `.md` local si se retoma este tema.
+
 ## 2026-11-03 · Podio de usuarios con nuevo diseño (UserPodium)
 
 - Nuevo `components/UserPodium.jsx` + `assets/styles/user-podium.css`, usado en

@@ -34,6 +34,8 @@ import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
 import InformationPage from "./pages/InformationPage";
 import Glossary from "./components/Glossary";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 
 // Data
@@ -230,6 +232,8 @@ function App() {
                   subtitle="¿Arrancás desde boxes o ya venís con experiencia en pista? Acá encontrás todo lo que necesitás"
                 />
               } />
+              <Route path="/privacidad" element={<Privacy />} />
+              <Route path="/terminos" element={<Terms />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           )}
