@@ -10,7 +10,7 @@ import { getFlagEmoji } from "../utils/helpers";
 import { usePagination } from "../hooks/usePagination";
 import { getCountries } from "../services/countries.services";
 import SearchableSelect from "../components/SearchableSelect";
-import Podium from "../components/Podium";
+import UserPodium from "../components/UserPodium";
 import FloatingPredictionCompare from "../components/FloatingPredictionCompare";
 import "../assets/styles/ranking.css";
 
@@ -431,7 +431,7 @@ function Ranking() {
                             transition={{ duration: reduceMotion ? 0 : 0.3, ease: "easeInOut" }}
                             style={{ overflow: "hidden" }}
                         >
-                            <Podium key={`${mode}-${selectedCircuitId}-${selectedYear}`} entries={podiumEntries} />
+                            <UserPodium key={`${mode}-${selectedCircuitId}-${selectedYear}`} entries={podiumEntries} />
                         </motion.div>
                     )}
                 </AnimatePresence>

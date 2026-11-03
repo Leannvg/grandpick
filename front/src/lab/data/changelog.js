@@ -9,6 +9,12 @@
 // corta: fecha, título, 2-3 líneas de qué cambió y por qué.
 export const DESIGN_CHANGELOG = [
   {
+    date: "2026-11-03",
+    title: "Podio de usuarios con nuevo diseño",
+    summary:
+      "El podio del ranking de usuarios (global, por GP y Home) pasa a una card ilustrada por puesto, con foto y puntos en rectángulos a la derecha y bandera + nombre completo abajo (componente UserPodium). Los podios de Standings siguen con el diseño anterior.",
+  },
+  {
     date: "2026-10-28",
     title: "Prolijidad: solo titulares en listados de escudería/pilotos",
     summary:

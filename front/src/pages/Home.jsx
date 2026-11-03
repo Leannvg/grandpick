@@ -6,7 +6,7 @@ import { getFlagEmoji, getSeasonYear } from "../utils/helpers";
 import API_URL from "../services/api";
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../utils/cloudinary.js";
 import InstallAppBanner from '../components/InstallAppBanner';
-import Podium from '../components/Podium';
+import UserPodium from '../components/UserPodium';
 import Reveal from '../components/Reveal';
 import '../assets/styles/home.css';
 
@@ -282,7 +282,7 @@ const Home = () => {
                         <h2 className="ranking__title">PUNTUACIÓN GLOBAL TEMPORADA {seasonYear}</h2>
 
                         {!loading && (
-                            <Podium
+                            <UserPodium
                                 entries={top3.map((u) => ({
                                     id: u._id,
                                     rank: u.globalRank,

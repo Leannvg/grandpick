@@ -2,6 +2,17 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-03 · Podio de usuarios con nuevo diseño (UserPodium)
+
+- Nuevo `components/UserPodium.jsx` + `assets/styles/user-podium.css`, usado en
+  `pages/Ranking.jsx` (global y por GP) y `pages/Home.jsx`. Card tipo piloto:
+  ilustración de fondo distinta por puesto, puesto arriba a la izquierda, foto
+  de perfil y puntos en rectángulos a la derecha, franja inferior con bandera
+  emoji + nombre completo. Con confeti y brillo en loop (los de `podium.css`).
+- Las ilustraciones (cargadas) están en `front/src/assets/podium/pos1.png`,
+  `pos2.png`, `pos3.png` (`import.meta.glob`; si falta una, se ve el fondo
+  oscuro de respaldo). `Podium` sigue en `Standings.jsx`.
+
 ## 2026-10-28 · Laboratorio: pestaña "Cambios" (bitácora de consistencia visual)
 
 - Nueva solapa, primera de la lista, en `front/lab.html`
