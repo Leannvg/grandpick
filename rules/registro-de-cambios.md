@@ -15,6 +15,8 @@ Orden cronológico inverso (lo más nuevo arriba).
 - Ajuste: ilustraciones ancladas arriba (`object-position: center 8%`) para
   que no se corte el casco, y rectángulos de foto/puntos más chicos (12% de
   ancho en mobile, 17% en desktop).
+- Ilustraciones `pos1-3.png` reemplazadas por una versión apaisada (4:3) con
+  fondo liso dorado / plateado / bronce.
 
 ## 2026-10-31 · Fix: predicciones solo con pilotos titulares
 
