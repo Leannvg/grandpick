@@ -64,7 +64,8 @@ Orden cronológico inverso (lo más nuevo arriba).
   que no se corte el casco, y rectángulos de foto/puntos más chicos (12% de
   ancho en mobile, 17% en desktop).
 - Ilustraciones `pos1-3.png` reemplazadas por una versión apaisada (4:3) con
-  fondo liso dorado / plateado / bronce.
+  fondo liso dorado / plateado / bronce. Luego se reemplazaron de nuevo por
+  la misma versión 4:3 pero con las ondas de pista tono sobre tono de fondo.
 
 ## 2026-11-03 · Performance: ranking global lento + sin caché al cambiar de modo
 
