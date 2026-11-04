@@ -89,6 +89,17 @@ evitar reinventar algo que ya está hecho. Entry point HTML separado
   cambio de diseño/consistencia visual suma una entrada nueva en
   `changelog.js`, arriba de todo (orden cronológico inverso). Entrada:
   `{ date, title, summary }` — 2-3 líneas de qué cambió y por qué.
+- **Pestaña "Prototipos"** (`src/lab/sections/PrototypesSection.jsx`):
+  distinta de las demás — esas documentan patrones/componentes ya
+  aprobados y reales; acá vive diseño **en evaluación todavía**, con datos
+  mock (no pega contra el backend) y sin ningún componente de producción
+  importándolo. Es el espacio para iterar un rediseño visual grande antes
+  de decidir qué pasa al diseño real — regla acordada con el usuario:
+  cambios de diseño con riesgo visual/de layout se prueban acá primero, no
+  se suben a `main` directo. Los assets de muestra (fotos, etc.) viven en
+  `src/lab/assets/` y se commitean igual que el resto del laboratorio
+  (cero impacto en producción, pero así Julieta ve la misma foto de
+  muestra sin pedirla).
 
 ## Agentes de Claude Code (nivel proyecto)
 

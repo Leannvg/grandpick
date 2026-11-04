@@ -2,6 +2,37 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-04 · Nueva regla: rediseños visuales grandes primero en el laboratorio
+
+- Se revirtió de producción el botón de horarios desplegables del banner de
+  Home (commit `05e34e0`, agregado el 2026-11-03) — se había subido a
+  `main` sin pasar primero por el laboratorio, y el usuario pidió sacarlo
+  de producción. El código no se perdió (sigue en el historial de git),
+  pero el banner de Home vuelve a su versión anterior.
+- **Regla nueva** (acordada con el usuario, sumada también a
+  `rules/estructura.md`): los rediseños visuales grandes o con riesgo de
+  layout (no los fixes/ajustes chicos de todos los días) se prototipan
+  primero en el laboratorio (`front/lab.html`, pestaña nueva
+  "Prototipos" — ver abajo) y recién se deciden/suben a producción una vez
+  aprobados.
+- Primer uso de esa pestaña: prototipo del banner de próxima carrera con
+  foto de fondo por Gran Premio (reemplazaría a `NextRaceCTA.jsx`), con
+  datos mock y una foto de muestra (`src/lab/assets/australia.jpg`). Incluye
+  el botón de horarios desplegables reintegrado ahí, con datos mock —
+  mismo mecanismo que se había revertido de producción, pero ahora vive
+  solo en el laboratorio hasta que se apruebe el diseño completo.
+- **Bug de layout encontrado y corregido durante el prototipado** (anotado
+  para no repetirlo si se arma algo parecido en el diseño real): poner
+  `overflow: hidden` en el contenedor que también tiene el botón solapado
+  de horarios rompe el área de click del botón (el centro del botón queda
+  justo en el borde del recorte). Y si la foto de fondo (`inset: 0`) vive
+  en el mismo contenedor que crece al abrir el panel de horarios, la foto
+  se estira para cubrir también el panel. Solución: la foto/overlay/título
+  van en un sub-contenedor de altura fija, separado del panel de horarios
+  (que sigue en flujo normal, afuera); el recorte de esquinas redondeadas
+  va en las capas de fondo, no en el contenedor que tiene el botón
+  solapado.
+
 ## 2026-11-03 · Fix: tocar una notificación push ahora abre la app
 
 - **Causa**: el backend (`back/services/fcm.services.js`) mandaba la ruta

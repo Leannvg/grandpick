@@ -1,0 +1,235 @@
+/* Prototipo "banner con foto por GP" — SOLO laboratorio, no es CSS de
+   producción. Prefijo gp-hero-proto para no chocar con nada real.
+   Reusa .cal-* (calendar.css) para las filas de horarios, y los mismos
+   tokens de color que ya existen (--color-accent, --cal-panel, --cal-ease). */
+
+/* .gp-hero-proto = wrapper externo (solo agrupa hero + panel de horarios).
+   .gp-hero-proto__hero = la parte con la foto, altura fija (min-height),
+   separada del panel de horarios a propósito: si el fondo (inset:0) viviera
+   en el mismo contenedor que crece al abrir el panel, la foto se estira
+   para cubrir también el panel (confirmado probándolo). */
+.gp-hero-proto__hero {
+  /* ojo: overflow NO va acá (aunque las esquinas redondeadas lo pidan) —
+     el botón solapado de horarios sobresale del borde inferior y necesita
+     poder recibir clicks ahí; con overflow:hidden en este contenedor el
+     centro del botón queda justo en el borde de recorte y el hit-test le
+     falla (confirmado probando en el laboratorio). El recorte/redondeo va
+     en las capas de fondo (bg/overlay) en vez de acá. */
+  position: relative;
+  min-height: 460px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #fff;
+  text-align: center;
+}
+
+.gp-hero-proto__bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.gp-hero-proto__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+}
+
+.gp-hero-proto__hero.gp-hero-proto--fallback .gp-hero-proto__bg {
+  background: linear-gradient(135deg, var(--color-accent, #3975A2), var(--color-dark-blue, #081D2B));
+}
+
+.gp-hero-proto__overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, rgba(5, 15, 25, .35) 0%, rgba(5, 15, 25, .55) 45%, rgba(5, 15, 25, .88) 100%);
+}
+
+.gp-hero-proto__content {
+  position: relative;
+  padding: 28px 20px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.gp-hero-proto__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+  opacity: .92;
+}
+
+.gp-hero-proto__flag {
+  font-size: 1.1rem;
+}
+
+.gp-hero-proto__sep {
+  opacity: .5;
+}
+
+.gp-hero-proto__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.gp-hero-proto__round {
+  background: var(--color-stat-qualy, #FFCD56);
+  color: #000;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+}
+
+.gp-hero-proto__title {
+  font-size: 2.6rem;
+  line-height: .95;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -.5px;
+  margin: 6px 0 14px;
+  max-width: 680px;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .4);
+}
+
+.gp-hero-proto__cta {
+  background: #fff;
+  color: #0b2a3d;
+  font-weight: 700;
+  font-size: .85rem;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 11px 26px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform .2s ease, background-color .2s ease;
+}
+
+.gp-hero-proto__cta:hover {
+  background: var(--color-accent, #3975A2);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.gp-hero-proto__countdown {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 4px;
+  z-index: 1;
+}
+
+.gp-hero-proto__time {
+  width: 46px;
+  padding: 6px 4px;
+  text-align: center;
+  background: rgba(11, 42, 61, .75);
+  backdrop-filter: blur(2px);
+  border-radius: 8px;
+}
+
+.gp-hero-proto__time-value {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.gp-hero-proto__time-label {
+  display: block;
+  font-size: 9px;
+  opacity: .85;
+  margin-top: 2px;
+}
+
+/* Botón solapado + panel de horarios: mismo mecanismo que se había armado
+   para NextRaceCTA (grid-template-rows 0fr/1fr), reusa el panel oscuro y
+   las filas de calendar.css (.cal-session*, .cal-card__group-title, .cal-zone). */
+.gp-hero-proto__schedule-toggle {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #0b2a3d;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .35);
+  z-index: 2;
+  transition: background-color .3s var(--cal-ease, ease);
+}
+
+.gp-hero-proto__schedule-toggle:hover {
+  background: var(--color-accent, #3975A2);
+}
+
+.gp-hero-proto__schedule-chevron {
+  font-size: 13px;
+  transition: transform .3s var(--cal-ease, ease);
+}
+
+.gp-hero-proto.is-open .gp-hero-proto__schedule-chevron {
+  transform: rotate(180deg);
+}
+
+.gp-hero-proto__schedule-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .4s var(--cal-ease, ease);
+}
+
+.gp-hero-proto.is-open .gp-hero-proto__schedule-wrap {
+  grid-template-rows: 1fr;
+}
+
+.gp-hero-proto__schedule-panel {
+  min-height: 0;
+  overflow: hidden;
+  background: var(--cal-panel, #3f4a55);
+  text-align: left;
+}
+
+.gp-hero-proto__schedule-inner {
+  padding: 22px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+@media (max-width: 600px) {
+  .gp-hero-proto__title {
+    font-size: 1.9rem;
+  }
+
+  .gp-hero-proto__countdown {
+    position: static;
+    margin-top: 10px;
+    justify-content: center;
+  }
+
+  .gp-hero-proto__content {
+    padding-top: 56px;
+  }
+}
