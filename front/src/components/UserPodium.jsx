@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Confetti from "./Confetti";
-import { getFlagEmoji } from "../utils/helpers";
+import CountryDisplay from "./CountryDisplay";
 import { getImageUrl, CLOUDINARY_DEFAULTS } from "../utils/cloudinary.js";
 import "../assets/styles/podium.css";
 import "../assets/styles/user-podium.css";
@@ -70,21 +70,23 @@ const UserPodium = ({ entries = [] }) => {
                             />
                         )}
                         <span className="user-podium__rank">{entry.rank}<sup>º</sup></span>
-                        <div className="user-podium__side">
+                        <CountryDisplay
+                            iso2={entry.country}
+                            showName={false}
+                            className="tag-vertical user-podium__tag"
+                        />
+                        <div className="user-podium__footer">
                             <img
-                                className="user-podium__box user-podium__avatar"
-                                src={getImageUrl(entry.img || CLOUDINARY_DEFAULTS.PROFILE, 200, "profile")}
+                                className="user-podium__avatar"
+                                src={getImageUrl(entry.img || CLOUDINARY_DEFAULTS.PROFILE, 100, "profile")}
                                 alt={`${entry.firstName} ${entry.lastName}`}
                             />
-                            <span className="user-podium__box user-podium__points">
-                                <strong>{entry.points}</strong> pts
-                            </span>
-                        </div>
-                        <div className="user-podium__footer">
-                            <span className="emoji-flag user-podium__flag">{getFlagEmoji(entry.country)}</span>
                             <p className="user-podium__name">
                                 {entry.firstName} <strong>{entry.lastName}</strong>
                             </p>
+                            <span className="user-podium__points">
+                                <strong>{entry.points}</strong> pts
+                            </span>
                         </div>
                     </motion.div>
                 );

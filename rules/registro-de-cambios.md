@@ -95,6 +95,10 @@ Orden cronológico inverso (lo más nuevo arriba).
 - Ilustraciones `pos1-3.png` reemplazadas por una versión apaisada (4:3) con
   fondo liso dorado / plateado / bronce. Luego se reemplazaron de nuevo por
   la misma versión 4:3 pero con las ondas de pista tono sobre tono de fondo.
+- Reordenado: tag de país arriba a la derecha (`CountryDisplay` + `.tag-vertical`,
+  como las cards de piloto); franja inferior = foto de perfil chica (32px) ·
+  nombre completo · puntos a la derecha (número grande + "PTS", como en
+  Standings). Desaparece el rectángulo de foto/puntos de la derecha.
 
 ## 2026-11-03 · Performance: ranking global lento + sin caché al cambiar de modo
 

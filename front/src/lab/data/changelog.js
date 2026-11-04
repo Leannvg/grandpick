@@ -10,6 +10,12 @@
 export const DESIGN_CHANGELOG = [
   {
     date: "2026-11-03",
+    title: "Podio de usuarios: tag de país arriba y foto + nombre + puntos abajo",
+    summary:
+      "En el podio de usuarios, la bandera pasa a un tag arriba a la derecha (igual que en las cards de piloto) y la franja inferior queda: foto de perfil chica · nombre apellido · puntos a la derecha, con el estilo de Standings (número grande + PTS).",
+  },
+  {
+    date: "2026-11-03",
     title: "Banner de próxima carrera: horarios del fin de semana desplegables",
     summary:
       "NextRaceCTA (banner del Home) suma un botón circular solapado al borde inferior que despliega hacia abajo el desglose completo de sesiones del GP del contador (prácticas, clasificación, sprint, carrera), reusando el mismo componente y panel oscuro que ya usaba el Calendario (ScheduleGroups, extraído de CalendarCard para no duplicar el markup).",
