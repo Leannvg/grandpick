@@ -2,6 +2,35 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-03 · Banner de próxima carrera: horarios del fin de semana
+
+- `NextRaceCTA.jsx` (banner del Home) suma un botón circular solapado al
+  borde inferior del banner que despliega hacia abajo el desglose completo
+  de sesiones del GP que está en el contador (prácticas, clasificación,
+  sprint, carrera) — antes el banner solo mostraba el tipo de sesión más
+  próxima, sin el resto del fin de semana.
+- Para no duplicar el markup del calendario, se extrajo
+  `components/calendar/ScheduleGroups.jsx` (switch "Mi tiempo / Tiempo de
+  circuito" + grupos + filas de sesión) de `CalendarCard.jsx`, y la lógica
+  de armado de grupos a `utils/schedule.js` (`buildSchedule`,
+  `normalizeType`, `formatSessionTime`, `DOW`, `DURATION`). `CalendarCard`
+  ahora consume ambos — mismo comportamiento de antes, verificado que no
+  cambió nada visualmente en el Calendario.
+- `NextRaceCTA` trae las sesiones del GP completo con
+  `RacesServices.findByCircuitAndYear(circuitId, year)` (ya existía, usada
+  antes solo en el admin) y las prácticas con
+  `practiceSessionsServices.findAll({ year, circuitId })`, en vez de pedir
+  todo el año como hace `Calendar.jsx` — alcanza con un solo GP acá. También
+  arma `predictionsByRaceId` igual que `Calendar.jsx` (solo si hay
+  `auth-token`), para mostrar el botón de "ver mi predicción" en sesiones ya
+  predichas.
+- El panel reusa el mismo fondo oscuro (`--cal-panel`) y la misma animación
+  `grid-template-rows` que el calendario — probado que no hay diferencia
+  real de comportamiento entre esa técnica y `max-height` (un artefacto
+  visual que apareció durante las pruebas resultó ser exclusivo de la
+  emulación de dispositivo de la herramienta de testing, no algo que vea un
+  usuario real).
+
 ## 2026-11-03 · Fix: tocar una notificación push ahora abre la app
 
 - **Causa**: el backend (`back/services/fcm.services.js`) mandaba la ruta

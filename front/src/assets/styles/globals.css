@@ -480,6 +480,73 @@ p {
   gap: 8px;
 }
 
+/* Desglose de horarios del fin de semana, igual que el calendario (ver
+   components/calendar/ScheduleGroups.jsx y assets/styles/calendar.css, de
+   donde salen --cal-panel/--cal-ease y las clases .cal-zone/.cal-session*
+   usadas adentro del panel). Botón solapado en el borde inferior del banner,
+   panel se despliega hacia abajo con el mismo truco de grid-template-rows. */
+.nr-cta__schedule-toggle {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #0b2a3d;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .35);
+  z-index: 1;
+  transition: background-color .3s var(--cal-ease, ease);
+}
+
+.nr-cta__schedule-toggle:hover,
+.nr-cta__schedule-toggle:focus-visible {
+  background: var(--color-accent);
+}
+
+.nr-cta__schedule-toggle:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.nr-cta__schedule-chevron {
+  font-size: 13px;
+  transition: transform .3s var(--cal-ease, ease);
+}
+
+.nr-cta.is-open .nr-cta__schedule-chevron {
+  transform: rotate(180deg);
+}
+
+.nr-cta__schedule-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .4s var(--cal-ease, ease);
+}
+
+.nr-cta.is-open .nr-cta__schedule-wrap {
+  grid-template-rows: 1fr;
+}
+
+.nr-cta__schedule-panel {
+  min-height: 0;
+  overflow: hidden;
+  background: var(--cal-panel, #3f4a55);
+}
+
+.nr-cta__schedule-inner {
+  padding: 22px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 @media (min-width: 768px) {
   :root {
     --title-size: 50px;
