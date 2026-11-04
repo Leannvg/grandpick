@@ -18,6 +18,7 @@ correspondiente (ruta, props, para qué sirve, notas de reuso).
 | `ProtectedRoute` | `components/ProtectedRoute.jsx` | `children`, `isAuthenticated`, `isAdmin`, `adminOnly` | Wrapper de rutas privadas en `App.jsx`. Redirige a login o home. |
 | `Glossary` | `components/Glossary.jsx` | — | Panel flotante de glosario (solo autenticado). Data en `data/glosary.json`. |
 | `InfoSection` | `components/InfoSection.jsx` | `body`, `images`, `tabs` | Render de contenido de las páginas de información/tutoriales. |
+| `LegalPageLayout` | `components/LegalPageLayout.jsx` | `eyebrow`, `title`, `subtitle`, `lastUpdated`, `children` | Shell para páginas de texto legal largo (Privacidad, Términos): layout estándar de página + card/tipografía de `information.css`, sin el tabs/sidebar/drawer de `InformationPage` (acá hay un solo documento por página). Usado por `pages/Privacy.jsx` y `pages/Terms.jsx`. |
 | `NextRaceCTA` | `components/NextRaceCTA.jsx` | — | Barra/CTA de la próxima carrera. Consume `races.services`. La pastilla de tipo de sesión (`.nr-cta__round`) lleva un modificador `--qualy`/`--sprint`/`--race` con los mismos tokens `--color-stat-*` que el resto del sitio. |
 | `InstallAppBanner` | `components/InstallAppBanner.jsx` | — | Banner PWA "instalar app". |
 | `AuthListener` | `components/AuthListener.jsx` | — | Escucha eventos `auth:logout` globales. Sin UI. |

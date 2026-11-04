@@ -2,6 +2,54 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-03 · Fix: tocar una notificación push ahora abre la app
+
+- **Causa**: el backend (`back/services/fcm.services.js`) mandaba la ruta
+  destino de cada push en un campo propio, `data.link` (ej.
+  `{ link: "/predictions" }`), pero nunca en `webpush.fcmOptions.link`. El
+  service worker (`front/public/firebase-messaging-sw.js`) no define su
+  propio `notificationclick`, así que el que corre es el que instala solo
+  el SDK de Firebase al instanciarse ahí — y ese **solo** mira
+  `fcmOptions.link`/`notification.click_action`, nunca `data.link`. Como
+  nunca encontraba nada, no abría ni enfocaba ninguna ventana: tocar la
+  notificación solo la cerraba.
+- **Fix**: `sendPushNotification`/`sendPushToMultipleTokens` ahora arman
+  también `webpush.fcmOptions.link` (URL absoluta, `FRONT_URL` + la ruta de
+  `data.link`, mismo patrón que ya usa `mail.services.js` para el link de
+  reset de contraseña). No hizo falta tocar nada del frontend/service
+  worker: con ese campo presente, el manejador de click que ya trae el SDK
+  de Firebase se encarga de abrir o enfocar la app solo.
+- De paso, `sendTestPush` (endpoint admin de prueba) ahora acepta un `link`
+  opcional en el body, para poder mandarse una notificación de prueba con
+  destino real y probar el fix en un celular.
+- No se tocó `onForegroundMessage` (notificación con la app ya abierta): su
+  comportamiento de redirigir solo para links de historial/resultados es
+  intencional, documentado en
+  `rules/features/links-historial-predicciones.md` — no es el caso que se
+  reportó.
+
+## 2026-11-03 · Páginas de Política de Privacidad y Términos y Condiciones
+
+- Nuevas rutas públicas `/privacidad` (`pages/Privacy.jsx`) y `/terminos`
+  (`pages/Terms.jsx`), a partir de un borrador de texto ya preparado
+  previamente.
+- Nuevo `components/LegalPageLayout.jsx`: shell compartido por las dos
+  páginas (layout estándar + card/tipografía de `information.css`, sin el
+  tabs/sidebar/drawer de `InformationPage`, porque acá cada página es un
+  solo documento). CSS propio chico en `assets/styles/legal.css` (subtítulos
+  numerados dentro del body, que `information.css` no necesitaba hasta
+  ahora).
+- `Footer.jsx`: nueva columna "LEGAL" con los dos links (grid pasa de 5 a 6
+  columnas en desktop, `footer.css`).
+- `Register.jsx`: frase de consentimiento con links a ambas páginas, arriba
+  del botón de crear cuenta (el borrador lo pedía explícitamente).
+- **Placeholders resueltos para publicar** (el borrador los dejaba
+  marcados como `[ajustar]`): mail de contacto `grandpick.app@gmail.com`,
+  edad mínima 13 años. Las secciones sobre proveedor de publicidad quedan
+  con lenguaje condicional (todavía no hay proveedor elegido). **Sigue
+  siendo un borrador razonable, no un texto revisado por un abogado** — ver
+  la advertencia en el `.md` local si se retoma este tema.
+
 ## 2026-11-03 · Podio de usuarios con nuevo diseño (UserPodium)
 
 - Nuevo `components/UserPodium.jsx` + `assets/styles/user-podium.css`, usado en
@@ -17,6 +65,47 @@ Orden cronológico inverso (lo más nuevo arriba).
   ancho en mobile, 17% en desktop).
 - Ilustraciones `pos1-3.png` reemplazadas por una versión apaisada (4:3) con
   fondo liso dorado / plateado / bronce.
+
+## 2026-11-03 · Performance: ranking global lento + sin caché al cambiar de modo
+
+- **Causa**: `GET /api/users-stats` → `getAllUsersWithStats()`
+  (`back/services/users.services.js`) recalculaba todas las estadísticas de
+  todos los usuarios en cada visita (loop secuencial con 2 queries más por
+  usuario, sin índices) — lo llamaban tanto `pages/Ranking.jsx` (modo global)
+  como `pages/Home.jsx` (podio), y ninguno cacheaba nada, así que cambiar de
+  modo y volver repetía la demora. Ese mismo cálculo ya se hacía una vez por
+  carga de resultados (`updateGlobalRanking()`) pero solo se guardaba
+  `ranking_position`/`ranking_total` (para la ficha de un piloto), nada que
+  sirviera para la tabla completa.
+- **Backend**: `updateGlobalRanking()` ahora también guarda un snapshot
+  liviano y ya ordenado en una colección nueva, `Ranking_Snapshot`
+  (`{ _id: "global", entries, updatedAt }`), leído por
+  `getGlobalRankingSnapshot()` y expuesto en `GET /api/ranking/global`
+  (pública, sin `autenticado` — mismo criterio que `/api/ranking/circuit/...`).
+  Se dispara también (sin awaitear) al registrarse un usuario nuevo, para que
+  no quede afuera del ranking hasta la próxima carga de resultados. Se
+  agregaron índices (`Predictions.userId/raceId`, `Users_Points.userId/raceId`)
+  en `db.services.js: connectDB()`. **No se tocó** `/api/users-stats` ni
+  `getAllUsersWithStats`/`getUserWithStats` (sin consumidores conocidos en el
+  front tras este cambio, pero la ruta pública queda por si algo externo la usa).
+- **Frontend**: `Ranking.jsx` y `Home.jsx` ahora usan
+  `UsersServices.getGlobalRanking()` y ya no reordenan nada client-side (se
+  elimina la tercera copia del desempate, que en `Home.jsx` estaba incompleta
+  — no hacía el countback de `bestScores`, así que el podio podía mostrar un
+  orden distinto al de Ranking entre usuarios empatados; queda corregido de
+  paso). Se agregó caché en memoria a nivel de módulo (mismo patrón que
+  `countries.services.js`, sin `localStorage`) para el ranking global y para
+  `PredictionsServices.getGrandPrixRanking()` (keyed por circuito+año), así
+  alternar entre modos en la misma sesión no vuelve a pedir ni recalcular
+  nada. Ver `rules/estructura.md` (patrón de caché) y `rules/logica.md`
+  (desempate del ranking global).
+- Verificado en vivo contra la base de producción: `GET /api/ranking/global`
+  responde en ~0.085 s vs. ~5.2 s de `GET /api/users-stats` para la misma
+  base de usuarios.
+- Relevamiento de otras pantallas: `findDriversStandings`/
+  `findConstructorsStandings` (Clasificación) y las pestañas del admin
+  también recalculan todo sin caché al revisitarlas, pero contra queries
+  baratas (sin N+1) — no generan una demora comparable, quedan sin tocar.
 
 ## 2026-10-31 · Fix: predicciones solo con pilotos titulares
 

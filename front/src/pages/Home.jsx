@@ -18,25 +18,10 @@ const Home = () => {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const data = await UsersServices.getAllUsersStats();
-                const sortedData = [...data].sort((a, b) => {
-                    const pointsA = a.stats?.points?.total || 0;
-                    const pointsB = b.stats?.points?.total || 0;
-                    if (pointsB !== pointsA) return pointsB - pointsA;
-
-                    const successesA = a.stats?.successes?.total || 0;
-                    const successesB = b.stats?.successes?.total || 0;
-                    if (successesB !== successesA) return successesB - successesA;
-
-                    const avgA = a.stats?.predictions?.total > 0 ? pointsA / a.stats.predictions.total : 0;
-                    const avgB = b.stats?.predictions?.total > 0 ? pointsB / b.stats.predictions.total : 0;
-                    return avgB - avgA;
-                }).map((item, index) => ({
-                    ...item,
-                    globalRank: index + 1
-                }));
-
-                setStats(sortedData.slice(0, 10));
+                // Ya viene ordenado por el backend (mismo snapshot que usa Ranking.jsx en modo
+                // global, back/services/points.services.js: updateGlobalRanking).
+                const data = await UsersServices.getGlobalRanking();
+                setStats(data.slice(0, 10));
             } catch (error) {
                 console.error("Error al cargar el ranking en Home:", error);
             } finally {

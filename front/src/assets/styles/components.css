@@ -821,6 +821,17 @@ input[type="time"].form-control {
     color: #b0b0b0;
 }
 
+.register-legal-note {
+    font-size: 13px;
+    color: #6b7280;
+    text-align: center;
+    margin: 20px auto 0;
+}
+
+.register-legal-note a {
+    color: #4c86b7;
+}
+
 .submit-btn {
     margin: 32px auto 0;
     width: 56px;

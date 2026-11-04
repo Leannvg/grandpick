@@ -43,6 +43,24 @@ async function getAllUsersStats() {
     return apiFetch("/api/users-stats");
 }
 
+// Caché en memoria a nivel de módulo (mismo idioma que countries.services.js, sin localStorage:
+// estos datos cambian durante el fin de semana de carrera y no debe sobrevivir a días con la
+// pestaña cerrada). Se limpia sola en cada F5, lo que alcanza como invalidación.
+let cachedGlobalRankingPromise = null;
+
+async function getGlobalRanking() {
+    if (cachedGlobalRankingPromise) return cachedGlobalRankingPromise;
+    cachedGlobalRankingPromise = apiFetch("/api/ranking/global").catch((err) => {
+        cachedGlobalRankingPromise = null;
+        throw err;
+    });
+    return cachedGlobalRankingPromise;
+}
+
+function invalidateGlobalRankingCache() {
+    cachedGlobalRankingPromise = null;
+}
+
 async function blockUser(id) {
     return apiFetch(`/api/users/${id}/block`, {
         method: 'POST',
@@ -63,6 +81,8 @@ export default {
     getUserProfile,
     getUserStats,
     getAllUsersStats,
+    getGlobalRanking,
+    invalidateGlobalRankingCache,
     blockUser,
     unblockUser,
     updateSecurity

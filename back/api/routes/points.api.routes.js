@@ -9,4 +9,7 @@ router.route('/api/points')
         autenticado,
         pointsApiControllers.findAll)
 
+router.route('/api/ranking/global')
+    .get(pointsApiControllers.getGlobalRanking)
+
 export default router

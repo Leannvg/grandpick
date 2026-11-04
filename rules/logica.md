@@ -136,12 +136,27 @@ constructores hasta que se complete manualmente.
   `type`), así que nunca se aplicó. Sin corregir — ver
   `rules/features/estadisticas-perfil.md`.
 - Desempate del ranking global (estilo F1 / countback): puntos totales →
-  aciertos → promedio por predicción → mejores fines de semana. Vive duplicado en
-  dos lugares: `front/src/pages/Ranking.jsx` (lo calcula al mostrar la tabla) y
-  `back/services/points.services.js` → `compareForRanking()` (lo recalcula una vez
-  por carga de resultados y lo guarda en `Users.ranking_position`, para que la
-  ficha de piloto lo lea sin recorrer a todos los usuarios en cada visita). Si se
-  cambia el desempate, actualizar los dos.
+  aciertos → promedio por predicción → mejores fines de semana. Un solo lugar:
+  `back/services/points.services.js` → `compareForRanking()`. Se recalcula una
+  vez por carga de resultados de carrera (`updateGlobalRanking()`, llamada desde
+  `updatePointsAfterRace`) y también una vez por alta de usuario nuevo (desde
+  `UsersApiController.addNew`, sin awaitear, para que no quede afuera del
+  ranking hasta la próxima carga de resultados). Persiste dos cosas: 
+  `ranking_position`/`ranking_total` en cada `Users` (lo lee la ficha de un
+  piloto, para no recorrer a todos los usuarios en cada visita a un perfil) y un
+  snapshot ya ordenado con los campos de display en
+  `Ranking_Snapshot` (`{ _id: "global", entries, updatedAt }`), que se lee con
+  `getGlobalRankingSnapshot()` desde `GET /api/ranking/global`. Ese endpoint es
+  el que consumen tanto `front/src/pages/Ranking.jsx` (modo global) como
+  `front/src/pages/Home.jsx` (podio) — ninguno de los dos reordena nada en el
+  cliente, ambos muestran siempre el mismo orden para usuarios empatados.
+  **Antes** (hasta 2026-11) el ranking global se recalculaba entero
+  (`getAllUsersWithStats()`, con N+1 de queries por usuario) en cada visita a
+  `Ranking.jsx`/`Home.jsx` vía `GET /api/users-stats` — causaba una demora
+  grande y se repetía en cada cambio de pestaña. Esa ruta sigue existiendo
+  (sin consumidores conocidos en el front) por si algo externo la usa, pero
+  ya no la llama ninguna pantalla. Si se cambia el desempate, solo hay que
+  tocar `compareForRanking()`.
 - Ranking por **sesión individual** (no por GP ni por temporada):
   `updateSessionRanking(raceId)` en `points.services.js`, guarda `rank`/
   `totalPlayers` en cada `Users_Points`. Ver `rules/features/estadisticas-perfil.md`.

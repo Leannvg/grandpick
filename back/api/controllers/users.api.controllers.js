@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import * as tokenServices from '../../services/token.services.js'
 import { resolveImage } from '../../middleware/helpers.middleware.js'
 import * as MailService from '../../services/mail.services.js'
+import { updateGlobalRanking } from '../../services/points.services.js'
 
 function getAll(req, res) {
 
@@ -39,6 +40,12 @@ async function addNew(req, res) {
     };
 
     const newUser = await UsersServices.createUser(user);
+
+    // Para que el usuario nuevo aparezca en el ranking global sin esperar a la próxima
+    // carga de resultados (ver back/services/points.services.js). No se awaitea: no debe
+    // demorar ni romper la respuesta de registro si falla.
+    updateGlobalRanking().catch(err => console.error("Error refrescando ranking tras registro:", err));
+
     res.status(200).json(newUser);
 
   } catch (err) {
@@ -280,7 +287,7 @@ async function removeFcmToken(req, res) {
 
 async function sendTestPush(req, res) {
   try {
-    const { userId, title, body } = req.body;
+    const { userId, title, body, link } = req.body;
     const user = await UsersServices.getUserById(userId);
 
     if (!user || !user.fcmTokens || user.fcmTokens.length === 0) {
@@ -290,7 +297,7 @@ async function sendTestPush(req, res) {
     const { sendPushNotification } = await import("../../services/fcm.services.js");
 
     const promises = user.fcmTokens.map(token =>
-      sendPushNotification(token, { title, body })
+      sendPushNotification(token, { title, body }, link ? { link } : {})
     );
 
     await Promise.all(promises);

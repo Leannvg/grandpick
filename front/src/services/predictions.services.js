@@ -24,8 +24,28 @@ async function findHistoryByUser(userId, year) {
     return apiFetch(`/api/users/${userId}/predictions-history?year=${year}`);
 }
 
+// Caché en memoria a nivel de módulo, keyed por circuito+año (mismo idioma que
+// countries.services.js / users.services.js:getGlobalRanking).
+const cachedGrandPrixRankingPromises = {};
+
 async function getGrandPrixRanking(circuitId, year) {
-    return apiFetch(`/api/ranking/circuit/${circuitId}/year/${year}`);
+    const key = `${circuitId}_${year}`;
+    if (cachedGrandPrixRankingPromises[key]) return cachedGrandPrixRankingPromises[key];
+
+    cachedGrandPrixRankingPromises[key] = apiFetch(`/api/ranking/circuit/${circuitId}/year/${year}`)
+        .catch((err) => {
+            delete cachedGrandPrixRankingPromises[key];
+            throw err;
+        });
+    return cachedGrandPrixRankingPromises[key];
+}
+
+function invalidateGrandPrixRankingCache(circuitId, year) {
+    if (circuitId && year) {
+        delete cachedGrandPrixRankingPromises[`${circuitId}_${year}`];
+    } else {
+        Object.keys(cachedGrandPrixRankingPromises).forEach((k) => delete cachedGrandPrixRankingPromises[k]);
+    }
 }
 
 export default {
@@ -33,5 +53,6 @@ export default {
     editPrediction,
     findPredictionByUserAndRace,
     findHistoryByUser,
-    getGrandPrixRanking
+    getGrandPrixRanking,
+    invalidateGrandPrixRankingCache
 }

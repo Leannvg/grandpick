@@ -115,3 +115,10 @@ nombre de arriba.
 - Imágenes servidas desde Cloudinary vía `getImageUrl()`.
 - Datos de países desde API externa `countrystatecity.in`, cacheados en
   `localStorage` (`useCountry` / `getCountries`).
+- Datos que cambian poco pero no son estáticos (ranking global, ranking por
+  Gran Premio) se cachean en memoria a nivel de módulo (una promesa guardada
+  en una variable del archivo de servicio, sin `localStorage`: se limpia sola
+  en cada F5, que alcanza como invalidación sin arriesgar mostrar algo de
+  días atrás). Patrón: `UsersServices.getGlobalRanking()` /
+  `PredictionsServices.getGrandPrixRanking()` (este último keyed por
+  `circuitId_año`). Ver `rules/logica.md` (desempate del ranking global).

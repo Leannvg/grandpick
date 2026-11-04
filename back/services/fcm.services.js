@@ -25,6 +25,13 @@ export const initFirebase = () => {
     }
 };
 
+// URL que abre/enfoca Firebase al tocar la notificación (webpush.fcmOptions.link,
+// no el data.link propio): el SW del proyecto no define su propio notificationclick,
+// pero como instancia firebase.messaging() (ver front/public/firebase-messaging-sw.js),
+// el SDK instala el suyo y solo mira este campo (o notification.click_action). Tiene
+// que ser una URL absoluta, no una ruta relativa.
+const buildClickLink = (data) => `${process.env.FRONT_URL}${data?.link || "/"}`;
+
 /**
  * Envía una notificación a un token específico
  */
@@ -37,6 +44,9 @@ export const sendPushNotification = async (token, notification, data = {}) => {
         webpush: {
             notification: {
                 icon: 'https://grandpick.vercel.app/icons/GP-192x192.png'
+            },
+            fcmOptions: {
+                link: buildClickLink(data)
             }
         },
         data: data,
@@ -71,6 +81,9 @@ export const sendPushToMultipleTokens = async (tokens, notification, data = {}) 
         webpush: {
             notification: {
                 icon: 'https://grandpick.vercel.app/icons/GP-192x192.png'
+            },
+            fcmOptions: {
+                link: buildClickLink(data)
             }
         },
         data: data,
