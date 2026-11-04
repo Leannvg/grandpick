@@ -1,8 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import racesServices from "../services/races.services";
+import practiceSessionsServices from "../services/practiceSessions.services";
+import UsersServices from "../services/users.services";
+import PredictionsServices from "../services/predictions.services";
 import * as countriesServices from "../services/countries.services";
 import { formatRaceDate, getFlagEmoji, computeRaceState } from "../utils/helpers";
+import { buildSchedule } from "../utils/schedule";
+import ScheduleGroups from "./calendar/ScheduleGroups";
 import { onSocketReady } from "../socket";
 
 function NextRaceCTA() {
@@ -15,6 +20,11 @@ function NextRaceCTA() {
         seconds: "00"
     });
     const [status, setStatus] = useState({ isClosed: false, isInProgress: false, canPredict: false, isPreWindow: false });
+    const [scheduleOpen, setScheduleOpen] = useState(false);
+    const [zoneMode, setZoneMode] = useState("mine");
+    const [sessions, setSessions] = useState([]);
+    const [practices, setPractices] = useState([]);
+    const [predictionsByRaceId, setPredictionsByRaceId] = useState({});
 
     async function fetchNextRace() {
         try {
@@ -94,6 +104,66 @@ function NextRaceCTA() {
         return () => clearInterval(interval);
     }, [race]);
 
+    // Horarios del fin de semana completo del GP en el contador (no solo la sesión
+    // actual/próxima que trae findCurrentOrNext): mismo desglose que usa el calendario.
+    useEffect(() => {
+        const circuitId = race?.circuit?._id;
+        if (!circuitId) {
+            setSessions([]);
+            setPractices([]);
+            return;
+        }
+        const year = new Date(race.date_gp_start).getFullYear();
+
+        racesServices.findByCircuitAndYear(circuitId, year)
+            .then((data) => setSessions(data?.race_types || []))
+            .catch((err) => {
+                console.error("Error al cargar sesiones del GP para el contador:", err);
+                setSessions([]);
+            });
+
+        practiceSessionsServices.findAll({ year, circuitId })
+            .then(setPractices)
+            .catch((err) => {
+                console.error("Error al cargar prácticas del GP para el contador:", err);
+                setPractices([]);
+            });
+    }, [race?.circuit?._id, race?.date_gp_start]);
+
+    // Para marcar en el desglose qué sesiones ya tiene predichas el usuario (mismo
+    // criterio que Calendar.jsx). Página pública: sin sesión iniciada, no se pide nada.
+    useEffect(() => {
+        if (!localStorage.getItem("auth-token")) {
+            setPredictionsByRaceId({});
+            return;
+        }
+        const year = race?.date_gp_start ? new Date(race.date_gp_start).getFullYear() : new Date().getFullYear();
+
+        UsersServices.getUserProfile()
+            .then((profile) => PredictionsServices.findHistoryByUser(profile._id, year))
+            .then((historyData) => {
+                const map = {};
+                historyData.forEach((gp) => {
+                    gp.sessions.forEach((s) => {
+                        if (s.prediction) map[s._id] = true;
+                    });
+                });
+                setPredictionsByRaceId(map);
+            })
+            .catch((err) => {
+                console.error("Error al cargar mis predicciones para el contador:", err);
+                setPredictionsByRaceId({});
+            });
+    }, [race?.date_gp_start]);
+
+    const groups = useMemo(
+        () => buildSchedule(
+            [...sessions].sort((a, b) => new Date(a.date_race) - new Date(b.date_race)),
+            practices
+        ),
+        [sessions, practices]
+    );
+
     if (!race) return null;
 
     // Mismas 3 claves que el chip de sesión del calendario/historial
@@ -102,8 +172,13 @@ function NextRaceCTA() {
         ? "qualy"
         : (race.points_system?.type || "race");
 
+    const circuitZone = race.circuit?.timezone || "UTC";
+    const circuitId = race.circuit?._id;
+    const hasSchedule = groups.length > 0;
+    const schedulePanelId = "nr-cta-schedule";
+
     return (
-        <section className="nr-cta">
+        <section className={`nr-cta ${scheduleOpen ? "is-open" : ""}`}>
             <div className="nr-cta__container container">
                 <div className="nr-cta__info">
                     <div className="nr-cta__country">
@@ -155,6 +230,36 @@ function NextRaceCTA() {
                     </div>
                 </div>
             </div>
+
+            {hasSchedule && (
+                <>
+                    <button
+                        type="button"
+                        className="nr-cta__schedule-toggle"
+                        onClick={() => setScheduleOpen((v) => !v)}
+                        aria-expanded={scheduleOpen}
+                        aria-controls={schedulePanelId}
+                        aria-label={scheduleOpen ? "Ocultar horarios del fin de semana" : "Ver horarios del fin de semana"}
+                    >
+                        <i className="bi bi-chevron-down nr-cta__schedule-chevron"></i>
+                    </button>
+
+                    <div className="nr-cta__schedule-wrap" id={schedulePanelId}>
+                        <div className="nr-cta__schedule-panel">
+                            <div className="nr-cta__schedule-inner container">
+                                <ScheduleGroups
+                                    groups={groups}
+                                    zoneMode={zoneMode}
+                                    setZoneMode={setZoneMode}
+                                    circuitZone={circuitZone}
+                                    circuitId={circuitId}
+                                    predictionsByRaceId={predictionsByRaceId}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
         </section>
     );
 }
