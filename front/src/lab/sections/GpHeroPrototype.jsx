@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "../../assets/styles/calendar.css";
 import "./gpHero.css";
 import australiaPhoto from "../assets/australia.jpg";
 
@@ -52,6 +51,49 @@ function GpHeroPrototype({ withPhoto = true }) {
             <span className="gp-hero-proto__time-value">41</span>
             <span className="gp-hero-proto__time-label">SEG.</span>
           </div>
+
+          {/* Pedido: el desplegable de horarios va pegado al contador,
+              tomando su mismo ancho (no todo el ancho del banner) — por eso
+              vive adentro de .gp-hero-proto__countdown en vez de ser un
+              panel aparte a lo ancho de toda la sección. */}
+          <button
+            type="button"
+            className="gp-hero-proto__schedule-toggle"
+            onClick={() => setScheduleOpen((v) => !v)}
+            aria-expanded={scheduleOpen}
+            aria-label={scheduleOpen ? "Ocultar horarios" : "Ver horarios del fin de semana"}
+          >
+            <i className="bi bi-chevron-down gp-hero-proto__schedule-chevron"></i>
+          </button>
+
+          <div className="gp-hero-proto__schedule-dropdown">
+            <div className="gp-hero-proto__schedule-inner">
+              <div className="gp-hero-proto__zone-compact" role="group" aria-label="Zona horaria">
+                <button type="button" className="is-active">
+                  <i className="bi bi-person-fill"></i>Mi tiempo
+                </button>
+                <button type="button">
+                  <i className="bi bi-geo-alt-fill"></i>Tiempo de circuito
+                </button>
+              </div>
+
+              {MOCK_SCHEDULE.map((g) => (
+                <div className="gp-hero-proto__sched-group" key={g.group}>
+                  <div className="gp-hero-proto__sched-group-title">
+                    <i className={`bi ${g.icon}`}></i>{g.group}
+                  </div>
+                  {g.items.map((it) => (
+                    <div className="gp-hero-proto__sched-row" key={it.label}>
+                      <span className="gp-hero-proto__sched-label">{it.label}</span>
+                      <span className={`gp-hero-proto__sched-time ${it.isRace ? "is-race" : ""}`}>
+                        {it.dow} {it.day} · {it.time}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="gp-hero-proto__content">
@@ -71,51 +113,6 @@ function GpHeroPrototype({ withPhoto = true }) {
           <a href="#" className="gp-hero-proto__cta" onClick={(e) => e.preventDefault()}>
             Ver circuito
           </a>
-        </div>
-
-        <button
-          type="button"
-          className="gp-hero-proto__schedule-toggle"
-          onClick={() => setScheduleOpen((v) => !v)}
-          aria-expanded={scheduleOpen}
-          aria-label={scheduleOpen ? "Ocultar horarios" : "Ver horarios del fin de semana"}
-        >
-          <i className="bi bi-chevron-down gp-hero-proto__schedule-chevron"></i>
-        </button>
-      </div>
-
-      <div className="gp-hero-proto__schedule-wrap">
-        <div className="gp-hero-proto__schedule-panel">
-          <div className="gp-hero-proto__schedule-inner">
-            <div className="cal-zone" role="group" aria-label="Zona horaria">
-              <button type="button" className="is-active"><i className="bi bi-person-fill"></i>Mi tiempo</button>
-              <button type="button"><i className="bi bi-geo-alt-fill"></i>Tiempo de circuito</button>
-            </div>
-
-            {MOCK_SCHEDULE.map((g) => (
-              <div className="cal-card__group" key={g.group}>
-                <div className="cal-card__group-title">
-                  <i className={`bi ${g.icon}`}></i>{g.group}
-                </div>
-                {g.items.map((it) => (
-                  <div className="cal-session" key={it.label}>
-                    <div className="cal-session__date">
-                      <span className="cal-session__dow">{it.dow}</span>
-                      <span className="cal-session__dnum">{it.day}</span>
-                    </div>
-                    <span className="cal-session__sep" aria-hidden="true"></span>
-                    <div className="cal-session__main">
-                      <span className="cal-session__name">{it.label}</span>
-                      <span className="cal-session__time"><i className="bi bi-clock"></i>{it.time}</span>
-                    </div>
-                    <div className="cal-session__end">
-                      <span className={`cal-session__dur ${it.isRace ? "is-race" : ""}`}>{it.dur}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>

@@ -32,6 +32,13 @@ Orden cronológico inverso (lo más nuevo arriba).
   (que sigue en flujo normal, afuera); el recorte de esquinas redondeadas
   va en las capas de fondo, no en el contenedor que tiene el botón
   solapado.
+- **Ajuste pedido tras ver el prototipo**: el desplegable de horarios no
+  va más a todo el ancho del banner — ahora abre pegado al contador
+  numérico, con su mismo ancho (`left:0; right:0` relativo al contenedor
+  del contador, que ya estaba `position:absolute` y queda de ancla).
+  Flota como un dropdown sobre la foto (no empuja el layout del banner),
+  con filas compactas (nombre + día/hora en una sola columna angosta) en
+  vez de las filas anchas del calendario, que no entraban en ese ancho.
 
 ## 2026-11-03 · Fix: tocar una notificación push ahora abre la app
 

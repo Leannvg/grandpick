@@ -126,13 +126,18 @@
   transform: translateY(-1px);
 }
 
+/* El contador es también el ancla del desplegable de horarios (botón +
+   panel viven adentro, ver JSX): position:absolute lo ubica arriba a la
+   derecha de la foto Y sirve de contenedor posicionado para sus hijos
+   absolutos, así el panel toma exactamente el mismo ancho que el contador
+   en vez de desplegarse a todo el ancho del banner. */
 .gp-hero-proto__countdown {
   position: absolute;
   top: 20px;
   right: 20px;
   display: flex;
   gap: 4px;
-  z-index: 1;
+  z-index: 3;
 }
 
 .gp-hero-proto__time {
@@ -158,16 +163,19 @@
   margin-top: 2px;
 }
 
-/* Botón solapado + panel de horarios: mismo mecanismo que se había armado
-   para NextRaceCTA (grid-template-rows 0fr/1fr), reusa el panel oscuro y
-   las filas de calendar.css (.cal-session*, .cal-card__group-title, .cal-zone). */
+/* Botón solapado al borde inferior DEL CONTADOR (no de todo el banner) +
+   dropdown angosto, mismo ancho que el contador (ver comentario arriba de
+   .gp-hero-proto__countdown). Sigue el mismo truco grid-template-rows
+   0fr/1fr que ya se usaba, pero ahora flota sobre la foto en vez de
+   empujar el layout — por eso el dropdown es position:absolute, no un
+   bloque en flujo normal. */
 .gp-hero-proto__schedule-toggle {
   position: absolute;
   left: 50%;
   bottom: 0;
   transform: translate(-50%, 50%);
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: none;
   background: #0b2a3d;
@@ -186,7 +194,7 @@
 }
 
 .gp-hero-proto__schedule-chevron {
-  font-size: 13px;
+  font-size: 12px;
   transition: transform .3s var(--cal-ease, ease);
 }
 
@@ -194,28 +202,105 @@
   transform: rotate(180deg);
 }
 
-.gp-hero-proto__schedule-wrap {
+.gp-hero-proto__schedule-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  /* mismo ancho que .gp-hero-proto__countdown automáticamente, por el
+     left/right:0 relativo a ese contenedor */
+  margin-top: 18px;
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows .4s var(--cal-ease, ease);
+  z-index: 1;
 }
 
-.gp-hero-proto.is-open .gp-hero-proto__schedule-wrap {
+.gp-hero-proto.is-open .gp-hero-proto__schedule-dropdown {
   grid-template-rows: 1fr;
 }
 
-.gp-hero-proto__schedule-panel {
+.gp-hero-proto__schedule-inner {
   min-height: 0;
   overflow: hidden;
   background: var(--cal-panel, #3f4a55);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
   text-align: left;
-}
-
-.gp-hero-proto__schedule-inner {
-  padding: 22px 20px 16px;
+  padding: 14px 12px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
+}
+
+.gp-hero-proto__zone-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+
+.gp-hero-proto__zone-compact button {
+  border: 0;
+  background: rgba(255, 255, 255, .08);
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 600;
+  padding: 6px 8px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color .2s var(--cal-ease, ease), color .2s var(--cal-ease, ease);
+}
+
+.gp-hero-proto__zone-compact button.is-active {
+  background: #fff;
+  color: var(--cal-ink, #0f2a44);
+}
+
+.gp-hero-proto__sched-group {
+  margin-bottom: 4px;
+}
+
+.gp-hero-proto__sched-group-title {
+  font-size: .62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  opacity: .7;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 8px 0 4px;
+}
+
+.gp-hero-proto__sched-row {
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+
+.gp-hero-proto__sched-group-title + .gp-hero-proto__sched-row {
+  border-top: none;
+}
+
+.gp-hero-proto__sched-label {
+  font-size: .76rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.gp-hero-proto__sched-time {
+  font-size: .68rem;
+  color: rgba(255, 255, 255, .7);
+  margin-top: 1px;
+}
+
+.gp-hero-proto__sched-time.is-race {
+  color: #FF8A80;
+  font-weight: 700;
 }
 
 @media (max-width: 600px) {
@@ -224,12 +309,24 @@
   }
 
   .gp-hero-proto__countdown {
-    position: static;
-    margin-top: 10px;
-    justify-content: center;
+    top: 12px;
+    right: 12px;
+  }
+
+  .gp-hero-proto__time {
+    width: 36px;
+    padding: 4px 2px;
+  }
+
+  .gp-hero-proto__time-value {
+    font-size: 13px;
+  }
+
+  .gp-hero-proto__time-label {
+    font-size: 7px;
   }
 
   .gp-hero-proto__content {
-    padding-top: 56px;
+    padding-top: 72px;
   }
 }
