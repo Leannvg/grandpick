@@ -39,11 +39,14 @@
 }
 
 /* Tag de país arriba a la derecha (mismo `.tag-vertical` de las cards de piloto) */
-.user-podium__tag {
+.user-podium__item .user-podium__tag {
   position: absolute;
   top: 12px;
   right: 12px;
   z-index: 1;
+  min-height: 34px;
+  padding: 6px 12px;
+  font-size: 1.5rem; /* el emoji de la bandera hereda este tamaño */
 }
 
 .user-podium__avatar {
