@@ -16,12 +16,6 @@ export const DESIGN_CHANGELOG = [
   },
   {
     date: "2026-11-03",
-    title: "Banner de próxima carrera: horarios del fin de semana desplegables",
-    summary:
-      "NextRaceCTA (banner del Home) suma un botón circular solapado al borde inferior que despliega hacia abajo el desglose completo de sesiones del GP del contador (prácticas, clasificación, sprint, carrera), reusando el mismo componente y panel oscuro que ya usaba el Calendario (ScheduleGroups, extraído de CalendarCard para no duplicar el markup).",
-  },
-  {
-    date: "2026-11-03",
     title: "Podio de usuarios con nuevo diseño",
     summary:
       "El podio del ranking de usuarios (global, por GP y Home) pasa a una card ilustrada por puesto, con foto y puntos en rectángulos a la derecha y bandera + nombre completo abajo (componente UserPodium). Los podios de Standings siguen con el diseño anterior.",
