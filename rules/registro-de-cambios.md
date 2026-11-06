@@ -2,6 +2,19 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-06 · Laboratorio: hueco entre breakpoints donde la fecha chocaba con el contador
+
+- Reportado con captura en una resolución intermedia (~700-800px, tablet):
+  el arreglo anterior (fecha oculta + contador angosto) cortaba en
+  `max-width: 600px`, pero el `.nr-cta` real recién agranda el contador y
+  la fecha en su propio breakpoint de `min-width: 768px` — quedaba un
+  hueco entre 600 y 768px donde la fecha ya estaba en tamaño grande
+  chocando con el contador. Se extendió el breakpoint propio a
+  `max-width: 767px` para que empalme exacto con el de producción, sin
+  hueco. Verificado en 700px, 767px (fecha oculta, contador chico) y
+  768px (fecha visible, contador grande de producción, ya con espacio de
+  sobra) — transición limpia en el límite exacto.
+
 ## 2026-11-06 · Laboratorio: se descarta el apilado, contador angosto + fecha oculta en mobile
 
 - El apilado de la entrada anterior (info arriba, contador abajo) ocupaba

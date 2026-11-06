@@ -281,13 +281,19 @@
   .gp-hero-proto__content {
     padding-top: 90px;
   }
+}
 
-  /* Primer intento (apilar info/contador) ocupaba demasiado alto en mobile
-     — se descartó. En su lugar: se achica el contador (menos ancho/gap por
-     caja) para liberarle espacio a la info, y se oculta la fecha
-     (06-08 NOVIEMBRE es secundario, "próxima carrera" ya da el contexto),
-     dejando solo bandera + nombre de país en una sola fila. Scopeado a
-     .gp-hero-proto__topbar para no tocar el .nr-cta real. */
+/* Primer intento (apilar info/contador) ocupaba demasiado alto en mobile
+   — se descartó. En su lugar: se achica el contador (menos ancho/gap por
+   caja) para liberarle espacio a la info, y se oculta la fecha
+   (06-08 NOVIEMBRE es secundario, "próxima carrera" ya da el contexto),
+   dejando solo bandera + nombre de país en una sola fila. Scopeado a
+   .gp-hero-proto__topbar para no tocar el .nr-cta real.
+   Hasta 767px (no 600px): el .nr-cta real agranda contador/fecha recién
+   en su propio breakpoint de min-width:768px — si acá cortábamos antes
+   (600px), quedaba un hueco donde la fecha ya estaba en tamaño grande
+   chocando con el contador (reportado con capturas en ~700px de ancho). */
+@media (max-width: 767px) {
   .gp-hero-proto__topbar .nr-cta__date {
     display: none;
   }
