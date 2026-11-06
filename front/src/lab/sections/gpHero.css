@@ -58,64 +58,26 @@
   gap: 10px;
 }
 
-/* Barra transparente arriba de la foto: info del GP a la izquierda,
-   contador a la derecha — mismo contenido/orden que NextRaceCTA.jsx hoy
-   (.nr-cta__info / .nr-cta__countdown), sin fondo sólido. */
+/* Barra transparente arriba de la foto: literalmente el mismo markup/clases
+   que NextRaceCTA.jsx usa hoy (.nr-cta__container > .nr-cta__info +
+   .nr-cta__countdown, de globals.css) — por eso no hay reglas propias para
+   la info/el contador/la pastilla acá, vienen todas de globals.css. Lo
+   único que agrega este bloque es la posición (flotando sobre la foto) y
+   el padding, copiado del `.nr-cta` real (que no se puede usar tal cual
+   porque trae background sólido). */
 .gp-hero-proto__topbar {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   z-index: 3;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 18px 20px;
-  text-align: left;
+  padding: 6px 2px;
 }
 
-.gp-hero-proto__info {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-}
-
-.gp-hero-proto__top {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  font-size: .85rem;
-  font-weight: 700;
-  letter-spacing: .3px;
-  position: relative;
-  padding-bottom: 6px;
-}
-
-.gp-hero-proto__top::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: rgba(255, 255, 255, .6);
-}
-
-.gp-hero-proto__flag {
-  font-size: 1.1rem;
-}
-
-.gp-hero-proto__round {
-  align-self: flex-start;
-  background: var(--color-stat-qualy, #FFCD56);
-  color: #000;
-  padding: 3px 10px;
-  border-radius: 4px;
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .5px;
+@media (min-width: 768px) {
+  .gp-hero-proto__topbar {
+    padding: 8px 50px;
+  }
 }
 
 .gp-hero-proto__title {
@@ -151,41 +113,11 @@
   transform: translateY(-1px);
 }
 
-/* El contador es también el ancla del desplegable de horarios (botón +
-   panel viven adentro, ver JSX): position:relative (ya alcanza, ahora que
-   el contador es un hijo flex de .gp-hero-proto__topbar en vez de ir
-   posicionado solo) sirve de contenedor para sus hijos absolutos, así el
-   panel toma exactamente el mismo ancho que el contador en vez de
+/* El contador (.nr-cta__countdown, real) es también el ancla del
+   desplegable de horarios (botón + panel viven adentro, ver JSX) — recibe
+   position:relative por inline style en el JSX (no se toca globals.css),
+   así el panel toma exactamente el mismo ancho que el contador en vez de
    desplegarse a todo el ancho del banner. */
-.gp-hero-proto__countdown {
-  position: relative;
-  display: flex;
-  gap: 4px;
-  flex-shrink: 0;
-}
-
-.gp-hero-proto__time {
-  width: 46px;
-  padding: 6px 4px;
-  text-align: center;
-  background: rgba(11, 42, 61, .75);
-  backdrop-filter: blur(2px);
-  border-radius: 8px;
-}
-
-.gp-hero-proto__time-value {
-  display: block;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-.gp-hero-proto__time-label {
-  display: block;
-  font-size: 9px;
-  opacity: .85;
-  margin-top: 2px;
-}
 
 /* Botón solapado al borde inferior DEL CONTADOR (no de todo el banner) +
    dropdown angosto, mismo ancho que el contador (ver comentario arriba de
@@ -325,23 +257,6 @@
 @media (max-width: 600px) {
   .gp-hero-proto__title {
     font-size: 1.9rem;
-  }
-
-  .gp-hero-proto__topbar {
-    padding: 12px;
-  }
-
-  .gp-hero-proto__time {
-    width: 36px;
-    padding: 4px 2px;
-  }
-
-  .gp-hero-proto__time-value {
-    font-size: 13px;
-  }
-
-  .gp-hero-proto__time-label {
-    font-size: 7px;
   }
 
   .gp-hero-proto__content {

@@ -17,6 +17,20 @@ Orden cronológico inverso (lo más nuevo arriba).
     qué información iba a mostrar) — ahora es un ícono de calendario
     (`bi-calendar-week`), que cambia a flecha hacia arriba cuando está
     abierto (señal de "cerrar").
+- **Ajuste de fidelidad visual**: la barra transparente (info + contador)
+  pasó de ser una aproximación hecha a mano (clases propias del prototipo,
+  `gp-hero-proto__info`/`__top`/`__round`/etc.) a **reusar literalmente las
+  clases reales** de `NextRaceCTA.jsx` (`.nr-cta__container`,
+  `.nr-cta__info`, `.nr-cta__country`, `.nr-cta__round--qualy`,
+  `.nr-cta__countdown`, `.nr-cta__time`, todas de `globals.css`, ahora
+  importado en el prototipo). Así queda pixel-igual a la barra que corre
+  hoy en producción, no una aproximación — el usuario pidió exactamente
+  esto tras comparar una captura del prototipo contra una de la web
+  real. El único CSS propio del prototipo para esta barra es
+  `.gp-hero-proto__topbar`, que solo la posiciona flotando sobre la foto
+  (con el mismo padding que usa `.nr-cta` real) — al no usar la clase
+  `.nr-cta` en sí (que trae el fondo celeste sólido), queda transparente
+  sin necesidad de ninguna otra regla.
 
 ## 2026-11-04 · Nueva regla: rediseños visuales grandes primero en el laboratorio
 
