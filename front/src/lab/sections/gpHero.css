@@ -281,4 +281,20 @@
   .gp-hero-proto__content {
     padding-top: 90px;
   }
+
+  /* Pedido: en mobile angosto, con un nombre de país largo, la fecha se
+     cortaba en dos renglones por falta de ancho (info + contador peleando
+     el mismo row). Se apilan: info arriba a todo el ancho (nunca le falta
+     espacio), contador abajo centrado — mismo patrón que ya usa el resto
+     del sitio para "contexto arriba, número grande abajo" en mobile.
+     Scopeado a .gp-hero-proto__topbar para no tocar el .nr-cta real. */
+  .gp-hero-proto__topbar .nr-cta__container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .gp-hero-proto__topbar .nr-cta__countdown {
+    justify-content: center;
+  }
 }

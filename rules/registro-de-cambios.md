@@ -2,6 +2,18 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-06 · Laboratorio: la barra de info se apila en mobile angosto
+
+- Con un nombre de país largo (ej. "AUSTRALIA" + fecha), en mobile angosto
+  la info y el contador competían por el mismo renglón y la fecha se
+  cortaba en dos líneas. Se agregó un breakpoint (`max-width: 600px`,
+  scopeado a `.gp-hero-proto__topbar .nr-cta__container` para no tocar el
+  `.nr-cta` real) que apila la barra: info arriba a todo el ancho (nunca
+  le falta espacio), contador centrado abajo — mismo patrón de "contexto
+  arriba, número grande abajo" que ya se usa en otras partes del sitio en
+  mobile. Verificado simulando un ancho real de celular (sin la columna
+  angosta que le roba espacio el propio panel del laboratorio).
+
 ## 2026-11-06 · Laboratorio: pulso en el botón de horarios para que se note que es clickeable
 
 - El botón de horarios (ícono de calendario) no se distinguía como botón
