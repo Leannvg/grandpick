@@ -176,6 +176,7 @@ function GpHeroPrototype({ withPhoto = true }) {
                   aria-label={scheduleOpen ? "Ocultar horarios" : "Ver horarios del fin de semana"}
                 >
                   <i className={`bi ${scheduleOpen ? "bi-chevron-up" : "bi-calendar-week"} gp-hero-proto__schedule-chevron`}></i>
+                  <span>Horarios</span>
                 </button>
 
                 {!isMobile && (

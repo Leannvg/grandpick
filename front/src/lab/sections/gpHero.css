@@ -128,15 +128,19 @@
    (reportado al probarlo). */
 /* Pedido: que se note que es un botón — reusa la misma animación de pulso
    que ya usa .nr-cta__action ("Predecir ahora", @keyframes cta-pulse en
-   globals.css) en vez de inventar una nueva, + color de acento en vez del
-   navy oscuro que se mimetizaba con las cajas del contador. Se pausa el
-   pulso mientras está abierto (el ícono de flecha arriba ya avisa).
+   globals.css) en vez de inventar una nueva. Se pausa el pulso mientras
+   está abierto (el ícono de flecha arriba ya avisa).
    Círculo centrado descartado (reportado que se veía descentrado — el
    contador real no es perfectamente simétrico en todos los anchos, así
    que centrar algo angosto encima quedaba inconsistente): ahora ocupa
    todo el ancho del contador (left:0/right:0 en vez de left:50%+transform),
    mismo radio que las cajas del contador (.nr-cta__time, 8px) para que
-   se lea como parte del mismo bloque. De paso gana área de toque. */
+   se lea como parte del mismo bloque. De paso gana área de toque.
+   Color de acento sólido descartado después (se veía "muy pleno" de
+   celeste, pidieron algo más liviano) — ahora vidrio translúcido (blanco
+   bajo opacidad + blur), mismo lenguaje visual que el resto del banner
+   flotando sobre la foto. Y en vez de solo el ícono perdido en el medio
+   de un botón grande, se le suma el texto "Horarios" al lado. */
 .gp-hero-proto__schedule-toggle {
   position: absolute;
   left: 0;
@@ -144,16 +148,22 @@
   top: 100%;
   margin-top: 8px;
   width: auto;
-  height: 30px;
+  height: 32px;
   border-radius: 8px;
-  border: none;
-  background: var(--color-accent, #3975A2);
+  border: 1px solid rgba(255, 255, 255, .22);
+  background: rgba(255, 255, 255, .12);
+  backdrop-filter: blur(6px);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 7px;
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .3px;
+  text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
   z-index: 2;
   transition: background-color .3s var(--cal-ease, ease), transform .3s var(--cal-ease, ease);
   animation: cta-pulse 2s infinite ease-in-out;
@@ -164,8 +174,7 @@
 }
 
 .gp-hero-proto__schedule-toggle:hover {
-  background: #fff;
-  color: var(--color-accent, #3975A2);
+  background: rgba(255, 255, 255, .22);
   transform: scale(1.03);
   animation-play-state: paused;
 }

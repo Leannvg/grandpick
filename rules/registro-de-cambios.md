@@ -2,6 +2,16 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-06 · Laboratorio: botón de horarios en vidrio translúcido + texto
+
+- La barra ancho-contador del botón de horarios se veía "muy pleno" de
+  celeste sólido, y con solo el ícono quedaba como un botón grande vacío.
+  Se cambió a vidrio translúcido (fondo blanco a baja opacidad + blur,
+  borde sutil) en vez del color de acento sólido — mismo lenguaje visual
+  que el resto de la barra, flotando sobre la foto — y se le sumó el
+  texto "Horarios" al lado del ícono, en mayúsculas como el resto de los
+  textos cortos del banner (ej. QUALIFYING).
+
 ## 2026-11-06 · Laboratorio: horarios en bandeja mobile + botón de calendario en barra
 
 - **Pedido**: que en mobile los horarios se abran en la misma "bandeja"
