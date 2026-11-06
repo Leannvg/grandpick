@@ -2,6 +2,17 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-06 · Laboratorio: pulso en el botón de horarios para que se note que es clickeable
+
+- El botón de horarios (ícono de calendario) no se distinguía como botón
+  sobre la foto — se pidió una técnica para llamar la atención. Se reusó
+  la misma animación de pulso que ya tiene `.nr-cta__action` ("Predecir
+  ahora" en el banner real, `@keyframes cta-pulse` de `globals.css`) en
+  vez de crear una nueva, más el color de acento (`--color-accent`) en
+  vez del navy oscuro que se mimetizaba con las cajas del contador. El
+  pulso se pausa mientras el desplegable está abierto (el ícono de flecha
+  arriba ya indica el estado).
+
 ## 2026-11-06 · Laboratorio: barra de datos transparente sobre la foto + ícono del desplegable
 
 - Ajustes pedidos tras ver el prototipo del banner de GP con foto
