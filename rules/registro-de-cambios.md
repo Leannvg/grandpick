@@ -2,7 +2,18 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
-## 2026-11-06 · Laboratorio: la barra de info se apila en mobile angosto
+## 2026-11-06 · Laboratorio: se descarta el apilado, contador angosto + fecha oculta en mobile
+
+- El apilado de la entrada anterior (info arriba, contador abajo) ocupaba
+  demasiado alto en mobile — el usuario lo probó y no le gustó. Se
+  reemplaza por una solución que mantiene todo en una sola fila: se oculta
+  la fecha (`06–08 NOVIEMBRE`, dato secundario — el contexto de "próxima
+  carrera" ya está implícito) y se achican las cajas del contador (de 42px
+  a 32px de ancho, menos gap, fuente más chica) para liberarle espacio a
+  la info. Solo bandera + nombre de país quedan visibles en esa fila.
+  Scopeado a `.gp-hero-proto__topbar` para no tocar `.nr-cta` real.
+
+## 2026-11-06 · Laboratorio: la barra de info se apila en mobile angosto (descartado, ver entrada de arriba)
 
 - Con un nombre de país largo (ej. "AUSTRALIA" + fecha), en mobile angosto
   la info y el contador competían por el mismo renglón y la fecha se
