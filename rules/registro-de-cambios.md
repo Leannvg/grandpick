@@ -2,6 +2,28 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-06 · Laboratorio: horarios en bandeja mobile + botón de calendario en barra
+
+- **Pedido**: que en mobile los horarios se abran en la misma "bandeja"
+  (bottom-sheet) que ya usa el resto del sitio (comparación de
+  predicciones, historial), no en el desplegable angosto pegado al botón.
+  `GpHeroPrototype.jsx` ahora detecta mobile (`<768px`, mismo corte que ya
+  usa el resto del prototipo) y en ese caso reusa el cascarón real
+  completo: overlay + tirador + `.gp-compare-drawer*` de
+  `predictionHistory.css`, las animaciones `--css`/`@keyframes` de
+  `components.css`, y los hooks `useModalPhase`/`useEscapeKey` — mismo
+  patrón (incluido el gesto de arrastrar para cerrar) que
+  `FloatingPredictionCompare.jsx`. El contenido de horarios (mock) se
+  extrajo a una sola variable (`scheduleBody`) para no duplicarlo entre el
+  desplegable de desktop y la bandeja de mobile. En desktop no cambia
+  nada: sigue el desplegable angosto pegado al contador.
+- **Pedido aparte**: el botón de calendario (círculo) se veía descentrado
+  en algunas resoluciones — el contador real no es perfectamente simétrico
+  en todos los anchos. Se cambió de círculo a una barra del mismo ancho
+  que el contador (mismo radio que sus cajas, 8px), que de paso gana área
+  de toque en mobile. Se mantiene en desktop también (desplegable sigue
+  igual, solo cambia la forma del botón que lo abre/cierra).
+
 ## 2026-11-06 · Laboratorio: hueco entre breakpoints donde la fecha chocaba con el contador
 
 - Reportado con captura en una resolución intermedia (~700-800px, tablet):

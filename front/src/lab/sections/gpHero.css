@@ -130,16 +130,22 @@
    que ya usa .nr-cta__action ("Predecir ahora", @keyframes cta-pulse en
    globals.css) en vez de inventar una nueva, + color de acento en vez del
    navy oscuro que se mimetizaba con las cajas del contador. Se pausa el
-   pulso mientras está abierto (el ícono de flecha arriba ya avisa). */
+   pulso mientras está abierto (el ícono de flecha arriba ya avisa).
+   Círculo centrado descartado (reportado que se veía descentrado — el
+   contador real no es perfectamente simétrico en todos los anchos, así
+   que centrar algo angosto encima quedaba inconsistente): ahora ocupa
+   todo el ancho del contador (left:0/right:0 en vez de left:50%+transform),
+   mismo radio que las cajas del contador (.nr-cta__time, 8px) para que
+   se lea como parte del mismo bloque. De paso gana área de toque. */
 .gp-hero-proto__schedule-toggle {
   position: absolute;
-  left: 50%;
+  left: 0;
+  right: 0;
   top: 100%;
   margin-top: 8px;
-  transform: translateX(-50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  width: auto;
+  height: 30px;
+  border-radius: 8px;
   border: none;
   background: var(--color-accent, #3975A2);
   color: #fff;
@@ -160,7 +166,7 @@
 .gp-hero-proto__schedule-toggle:hover {
   background: #fff;
   color: var(--color-accent, #3975A2);
-  transform: translateX(-50%) scale(1.08);
+  transform: scale(1.03);
   animation-play-state: paused;
 }
 
@@ -314,4 +320,20 @@
   .gp-hero-proto__topbar .nr-cta__time-label {
     font-size: 8px;
   }
+}
+
+/* Bandeja de horarios en mobile (bottom-sheet): pedido explícito de
+   reusar la misma bandeja que ya usa el resto del sitio (comparación de
+   predicciones, historial) en vez de un desplegable propio pegado al
+   botón. El cascarón (.history-drawer-overlay / .drawer-handle /
+   .gp-compare-drawer*) y las animaciones (.gp-drawer-overlay--css /
+   .gp-compare-drawer--css, con sus @keyframes) son 100% reusados de
+   predictionHistory.css / components.css — acá solo el título propio,
+   porque esta bandeja no tiene una GpCard (no es una comparación). */
+.gp-hero-proto__drawer-title {
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-align: center;
 }

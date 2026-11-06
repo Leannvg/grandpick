@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useModalPhase } from "../../hooks/useModalPhase";
+import { useEscapeKey } from "../../hooks/useEscapeKey";
 import "../../assets/styles/globals.css";
+import "../../assets/styles/components.css";
+import "../../assets/styles/predictionHistory.css";
 import "./gpHero.css";
 import australiaPhoto from "../assets/australia.jpg";
 
@@ -26,6 +30,91 @@ const MOCK_SCHEDULE = [
  */
 function GpHeroPrototype({ withPhoto = true }) {
   const [scheduleOpen, setScheduleOpen] = useState(false);
+  // Pedido: en mobile, los horarios se abren en la misma "bandeja" (bottom
+  // sheet) que ya usa el resto del sitio (comparación de predicciones,
+  // historial), no en un desplegable pegado al botón — reusa el mismo
+  // cascarón (.history-drawer-overlay / .drawer-handle / .gp-compare-drawer*
+  // de predictionHistory.css + las animaciones --css de components.css) y
+  // el mismo patrón de useModalPhase/useEscapeKey/drag-to-close que
+  // FloatingPredictionCompare.jsx. En desktop sigue el desplegable angosto
+  // de siempre, pegado al contador.
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  useEscapeKey(scheduleOpen, () => setScheduleOpen(false));
+  const phase = useModalPhase(scheduleOpen);
+
+  useEffect(() => {
+    if (scheduleOpen && isMobile) {
+      const scrollY = window.scrollY;
+      document.body.style.top = `-${scrollY}px`;
+      document.body.classList.add("body-scroll-lock");
+    } else {
+      const lockedScrollY = document.body.style.top;
+      document.body.classList.remove("body-scroll-lock");
+      document.body.style.top = "";
+      if (lockedScrollY) window.scrollTo(0, -parseInt(lockedScrollY, 10));
+    }
+    return () => {
+      document.body.classList.remove("body-scroll-lock");
+      document.body.style.top = "";
+    };
+  }, [scheduleOpen, isMobile]);
+
+  // Deslizar para cerrar la bandeja (mismo gesto que FloatingPredictionCompare.jsx)
+  const [dragY, setDragY] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const dragStartRef = useRef(0);
+
+  const onDragStart = (e) => {
+    dragStartRef.current = e.clientY;
+    setDragging(true);
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const onDragMove = (e) => {
+    if (!dragging) return;
+    setDragY(Math.max(0, e.clientY - dragStartRef.current));
+  };
+  const onDragEnd = () => {
+    if (!dragging) return;
+    setDragging(false);
+    if (dragY > 100) setScheduleOpen(false);
+    else setDragY(0);
+  };
+
+  const scheduleBody = (
+    <>
+      <div className="gp-hero-proto__zone-compact" role="group" aria-label="Zona horaria">
+        <button type="button" className="is-active">
+          <i className="bi bi-person-fill"></i>Mi tiempo
+        </button>
+        <button type="button">
+          <i className="bi bi-geo-alt-fill"></i>Tiempo de circuito
+        </button>
+      </div>
+
+      {MOCK_SCHEDULE.map((g) => (
+        <div className="gp-hero-proto__sched-group" key={g.group}>
+          <div className="gp-hero-proto__sched-group-title">
+            <i className={`bi ${g.icon}`}></i>{g.group}
+          </div>
+          {g.items.map((it) => (
+            <div className="gp-hero-proto__sched-row" key={it.label}>
+              <span className="gp-hero-proto__sched-label">{it.label}</span>
+              <span className={`gp-hero-proto__sched-time ${it.isRace ? "is-race" : ""}`}>
+                {it.dow} {it.day} · {it.time}
+              </span>
+            </div>
+          ))}
+        </div>
+      ))}
+    </>
+  );
 
   return (
     <div className={`gp-hero-proto ${scheduleOpen ? "is-open" : ""}`}>
@@ -89,34 +178,13 @@ function GpHeroPrototype({ withPhoto = true }) {
                   <i className={`bi ${scheduleOpen ? "bi-chevron-up" : "bi-calendar-week"} gp-hero-proto__schedule-chevron`}></i>
                 </button>
 
-                <div className="gp-hero-proto__schedule-dropdown">
-                  <div className="gp-hero-proto__schedule-inner">
-                    <div className="gp-hero-proto__zone-compact" role="group" aria-label="Zona horaria">
-                      <button type="button" className="is-active">
-                        <i className="bi bi-person-fill"></i>Mi tiempo
-                      </button>
-                      <button type="button">
-                        <i className="bi bi-geo-alt-fill"></i>Tiempo de circuito
-                      </button>
+                {!isMobile && (
+                  <div className="gp-hero-proto__schedule-dropdown">
+                    <div className="gp-hero-proto__schedule-inner">
+                      {scheduleBody}
                     </div>
-
-                    {MOCK_SCHEDULE.map((g) => (
-                      <div className="gp-hero-proto__sched-group" key={g.group}>
-                        <div className="gp-hero-proto__sched-group-title">
-                          <i className={`bi ${g.icon}`}></i>{g.group}
-                        </div>
-                        {g.items.map((it) => (
-                          <div className="gp-hero-proto__sched-row" key={it.label}>
-                            <span className="gp-hero-proto__sched-label">{it.label}</span>
-                            <span className={`gp-hero-proto__sched-time ${it.isRace ? "is-race" : ""}`}>
-                              {it.dow} {it.day} · {it.time}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    ))}
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
@@ -128,6 +196,39 @@ function GpHeroPrototype({ withPhoto = true }) {
           </a>
         </div>
       </div>
+
+      {isMobile && phase !== "closed" && (
+        <>
+          <div
+            className={`history-drawer-overlay is-open gp-drawer-overlay--css ${phase === "closing" ? "is-closing" : ""}`}
+            onClick={() => setScheduleOpen(false)}
+          />
+          <div
+            className={`gp-compare-drawer gp-compare-drawer--css ${phase === "closing" ? "is-closing" : ""} ${dragging ? "is-dragging" : ""}`}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Horarios del fin de semana"
+            style={{ transform: `translateY(${dragY}px)` }}
+          >
+            <div
+              style={{ touchAction: "none" }}
+              onPointerDown={onDragStart}
+              onPointerMove={onDragMove}
+              onPointerUp={onDragEnd}
+              onPointerCancel={onDragEnd}
+            >
+              <div className="drawer-handle"></div>
+              <div className="gp-compare-drawer-header">
+                <p className="gp-hero-proto__drawer-title">Gran Premio de Australia</p>
+              </div>
+            </div>
+
+            <div className="gp-compare-drawer-body">
+              {scheduleBody}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
