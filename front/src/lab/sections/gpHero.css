@@ -192,13 +192,16 @@
 .gp-hero-proto__schedule-dropdown {
   position: absolute;
   top: 100%;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
   /* Antes left:0/right:0 (mismo ancho que el contador, ~270-290px): al
      sumar las filas reales (.cal-session, grid de 4 columnas con fecha +
      nombre + hora + pill de duración) quedaba demasiado angosto y todo se
-     amontonaba/cortaba (reportado). Ancho fijo más cómodo, anclado al
-     borde derecho del contador (no al izquierdo) para que no se vaya
-     fuera de la foto en los GPs con menos ancho disponible a la derecha. */
+     amontonaba/cortaba. Ancho fijo más cómodo (340px), centrado respecto
+     al contador/botón en vez de anclado a un borde: antes, anclado al
+     borde derecho, todo el sobrante asomaba solo para la izquierda y se
+     veía desalineado (reportado); centrado sobresale parejo de los dos
+     lados, se lee como un flyout a propósito. */
   width: 340px;
   max-width: calc(100vw - 40px);
   margin-top: 44px;

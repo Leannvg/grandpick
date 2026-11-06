@@ -2,6 +2,16 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-06 · Laboratorio: desplegable de desktop centrado en vez de anclado a un borde
+
+- El ensanche a 340px del desplegable (entrada anterior) había quedado
+  anclado al borde derecho del contador (`right: 0`) — todo el sobrante
+  de ancho asomaba solo para la izquierda y se veía desalineado/corrido
+  respecto al botón (reportado con captura). Se centra en cambio
+  (`left: 50%` + `transform: translateX(-50%)`, mismo truco que se usó
+  antes para el botón circular): sobresale parejo de los dos lados, se
+  lee como un flyout a propósito en vez de un error de posicionamiento.
+
 ## 2026-11-06 · Laboratorio: la solapa de horarios pasa a reusar el markup real del calendario
 
 - **Pedido**: "le faltan datos, hacerlo igual al del calendario" — la
