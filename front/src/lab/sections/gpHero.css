@@ -192,10 +192,15 @@
 .gp-hero-proto__schedule-dropdown {
   position: absolute;
   top: 100%;
-  left: 0;
   right: 0;
-  /* mismo ancho que .gp-hero-proto__countdown automáticamente, por el
-     left/right:0 relativo a ese contenedor */
+  /* Antes left:0/right:0 (mismo ancho que el contador, ~270-290px): al
+     sumar las filas reales (.cal-session, grid de 4 columnas con fecha +
+     nombre + hora + pill de duración) quedaba demasiado angosto y todo se
+     amontonaba/cortaba (reportado). Ancho fijo más cómodo, anclado al
+     borde derecho del contador (no al izquierdo) para que no se vaya
+     fuera de la foto en los GPs con menos ancho disponible a la derecha. */
+  width: 340px;
+  max-width: calc(100vw - 40px);
   margin-top: 44px;
   max-height: 0;
   overflow: hidden;
@@ -218,75 +223,13 @@
   gap: 2px;
 }
 
-.gp-hero-proto__zone-compact {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  margin-bottom: 8px;
-}
-
-.gp-hero-proto__zone-compact button {
-  border: 0;
-  background: rgba(255, 255, 255, .08);
-  color: #fff;
-  font-size: .68rem;
-  font-weight: 600;
-  padding: 6px 8px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: background-color .2s var(--cal-ease, ease), color .2s var(--cal-ease, ease);
-}
-
-.gp-hero-proto__zone-compact button.is-active {
-  background: #fff;
-  color: var(--cal-ink, #0f2a44);
-}
-
-.gp-hero-proto__sched-group {
-  margin-bottom: 4px;
-}
-
-.gp-hero-proto__sched-group-title {
-  font-size: .62rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .4px;
-  opacity: .7;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin: 8px 0 4px;
-}
-
-.gp-hero-proto__sched-row {
-  display: flex;
-  flex-direction: column;
-  padding: 5px 0;
-  border-top: 1px solid rgba(255, 255, 255, .08);
-}
-
-.gp-hero-proto__sched-group-title + .gp-hero-proto__sched-row {
-  border-top: none;
-}
-
-.gp-hero-proto__sched-label {
-  font-size: .76rem;
-  font-weight: 700;
-  color: #fff;
-}
-
-.gp-hero-proto__sched-time {
-  font-size: .68rem;
-  color: rgba(255, 255, 255, .7);
-  margin-top: 1px;
-}
-
-.gp-hero-proto__sched-time.is-race {
-  color: #FF8A80;
-  font-weight: 700;
-}
+/* Pedido: "hacerlo igual al del calendario" — se reusan las clases reales
+   de CalendarCard.jsx (.cal-zone, .cal-card__group*, .cal-session*, de
+   calendar.css) en vez de una aproximación propia (como ya se hizo con la
+   barra de info/contador). Acá no queda CSS propio para el contenido de
+   la solapa, solo el "cascarón" (.gp-hero-proto__schedule-inner para el
+   desplegable de desktop, .gp-hero-proto__drawer-title para la bandeja de
+   mobile) — ver más abajo y en GpHeroPrototype.jsx. */
 
 @media (max-width: 600px) {
   .gp-hero-proto__title {

@@ -2,6 +2,28 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-06 · Laboratorio: la solapa de horarios pasa a reusar el markup real del calendario
+
+- **Pedido**: "le faltan datos, hacerlo igual al del calendario" — la
+  solapa (desplegable de desktop y bandeja de mobile) mostraba una
+  versión simplificada de cada sesión (solo nombre + "VIE 06 · 12:30" en
+  texto plano), sin el día/número grande, el ícono de reloj, la pill de
+  duración ni la marca de sesión finalizada que sí tiene el calendario
+  real (`CalendarCard.jsx`). Se reemplazó el markup propio
+  (`.gp-hero-proto__sched-*`) por las clases reales de `calendar.css`
+  (`.cal-zone`, `.cal-card__group*`, `.cal-session*`) tal cual —
+  mismo patrón ya aplicado antes a la barra de info/contador (pixel-igual
+  al real en vez de una aproximación). El toggle de zona horaria también
+  pasa de clases propias a `.cal-zone` real.
+- El desplegable de desktop, antes atado al ancho angosto del contador
+  (~270-290px), se agrandó a 340px fijo (anclado al borde derecho, no al
+  izquierdo) porque la grilla de 4 columnas de `.cal-session` no entraba
+  en ese ancho y todo se amontonaba/cortaba. La bandeja de mobile no
+  necesitó el ajuste: ya usa el ancho completo de pantalla.
+- `MOCK_SCHEDULE` suma `isPast` (solo en Práctica 1, de muestra) para
+  mostrar la marca de sesión finalizada — en la implementación real sale
+  de comparar la fecha contra ahora, como ya hace `CalendarCard.jsx`.
+
 ## 2026-11-06 · Laboratorio: botón de horarios en vidrio translúcido + texto
 
 - La barra ancho-contador del botón de horarios se veía "muy pleno" de

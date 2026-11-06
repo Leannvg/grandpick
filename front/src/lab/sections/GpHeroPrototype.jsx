@@ -4,15 +4,21 @@ import { useEscapeKey } from "../../hooks/useEscapeKey";
 import "../../assets/styles/globals.css";
 import "../../assets/styles/components.css";
 import "../../assets/styles/predictionHistory.css";
+import "../../assets/styles/calendar.css";
 import "./gpHero.css";
 import australiaPhoto from "../assets/australia.jpg";
 
 // Datos mock — esto NO pega contra el backend real, es solo para evaluar el
 // diseño. En la implementación real vendría de race.circuit.gp_name,
 // race.circuit.banner_img (campo nuevo a crear), etc.
+// Pedido: a la solapa le faltaban datos frente a la del calendario real
+// (CalendarCard.jsx) — día de semana + número, ícono de reloj, pill de
+// duración, marca de sesión finalizada. isPast en Práctica 1 es solo para
+// mostrar cómo se ve ese estado (en la implementación real sale de
+// comparar la fecha de la sesión contra ahora, como en CalendarCard.jsx).
 const MOCK_SCHEDULE = [
   { group: "Prácticas", icon: "bi-stopwatch", items: [
-    { label: "Práctica 1", dow: "VIE", day: "06", time: "12:30", dur: "60 MIN." },
+    { label: "Práctica 1", dow: "VIE", day: "06", time: "12:30", dur: "60 MIN.", isPast: true },
     { label: "Práctica 2", dow: "VIE", day: "06", time: "16:00", dur: "60 MIN." },
     { label: "Práctica 3", dow: "SÁB", day: "07", time: "11:30", dur: "60 MIN." },
   ]},
@@ -87,9 +93,15 @@ function GpHeroPrototype({ withPhoto = true }) {
     else setDragY(0);
   };
 
+  // Pedido: "hacerlo igual al del calendario" — en vez de aproximar el
+  // contenido con clases propias (como se había hecho antes con la barra
+  // de info), acá se reusa el markup y las clases reales de
+  // CalendarCard.jsx (.cal-zone, .cal-card__group*, .cal-session*) tal
+  // cual, de calendar.css. Mismo patrón ya aplicado a la barra de
+  // info/contador: pixel-igual al real en vez de una aproximación.
   const scheduleBody = (
     <>
-      <div className="gp-hero-proto__zone-compact" role="group" aria-label="Zona horaria">
+      <div className="cal-zone" role="group" aria-label="Zona horaria">
         <button type="button" className="is-active">
           <i className="bi bi-person-fill"></i>Mi tiempo
         </button>
@@ -99,16 +111,33 @@ function GpHeroPrototype({ withPhoto = true }) {
       </div>
 
       {MOCK_SCHEDULE.map((g) => (
-        <div className="gp-hero-proto__sched-group" key={g.group}>
-          <div className="gp-hero-proto__sched-group-title">
+        <div className="cal-card__group" key={g.group}>
+          <div className="cal-card__group-title">
             <i className={`bi ${g.icon}`}></i>{g.group}
           </div>
           {g.items.map((it) => (
-            <div className="gp-hero-proto__sched-row" key={it.label}>
-              <span className="gp-hero-proto__sched-label">{it.label}</span>
-              <span className={`gp-hero-proto__sched-time ${it.isRace ? "is-race" : ""}`}>
-                {it.dow} {it.day} · {it.time}
-              </span>
+            <div className={`cal-session ${it.isPast ? "is-past" : ""}`} key={it.label}>
+              <div className="cal-session__date">
+                <span className="cal-session__dow">{it.dow}</span>
+                <span className="cal-session__dnum">{it.day}</span>
+              </div>
+              <span className="cal-session__sep" aria-hidden="true"></span>
+              <div className="cal-session__main">
+                <span className="cal-session__name">{it.label}</span>
+                <span className="cal-session__time">
+                  <i className="bi bi-clock"></i>{it.time}
+                </span>
+              </div>
+              <div className="cal-session__end">
+                {it.isPast && (
+                  <span className="cal-session__status-badge" title="Sesión finalizada">
+                    <i className="bi bi-check2"></i>
+                  </span>
+                )}
+                <span className={`cal-session__dur ${it.isRace ? "is-race" : it.label === "Sprint" ? "is-sprint" : ""}`}>
+                  {it.dur}
+                </span>
+              </div>
             </div>
           ))}
         </div>
