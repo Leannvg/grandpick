@@ -58,32 +58,57 @@
   gap: 10px;
 }
 
+/* Barra transparente arriba de la foto: info del GP a la izquierda,
+   contador a la derecha — mismo contenido/orden que NextRaceCTA.jsx hoy
+   (.nr-cta__info / .nr-cta__countdown), sin fondo sólido. */
+.gp-hero-proto__topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px;
+  text-align: left;
+}
+
+.gp-hero-proto__info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
 .gp-hero-proto__top {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: .8rem;
+  align-items: baseline;
+  gap: 6px;
+  font-size: .85rem;
   font-weight: 700;
-  letter-spacing: .5px;
-  opacity: .92;
+  letter-spacing: .3px;
+  position: relative;
+  padding-bottom: 6px;
+}
+
+.gp-hero-proto__top::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, .6);
 }
 
 .gp-hero-proto__flag {
   font-size: 1.1rem;
 }
 
-.gp-hero-proto__sep {
-  opacity: .5;
-}
-
-.gp-hero-proto__meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 4px;
-}
-
 .gp-hero-proto__round {
+  align-self: flex-start;
   background: var(--color-stat-qualy, #FFCD56);
   color: #000;
   padding: 3px 10px;
@@ -127,17 +152,16 @@
 }
 
 /* El contador es también el ancla del desplegable de horarios (botón +
-   panel viven adentro, ver JSX): position:absolute lo ubica arriba a la
-   derecha de la foto Y sirve de contenedor posicionado para sus hijos
-   absolutos, así el panel toma exactamente el mismo ancho que el contador
-   en vez de desplegarse a todo el ancho del banner. */
+   panel viven adentro, ver JSX): position:relative (ya alcanza, ahora que
+   el contador es un hijo flex de .gp-hero-proto__topbar en vez de ir
+   posicionado solo) sirve de contenedor para sus hijos absolutos, así el
+   panel toma exactamente el mismo ancho que el contador en vez de
+   desplegarse a todo el ancho del banner. */
 .gp-hero-proto__countdown {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  position: relative;
   display: flex;
   gap: 4px;
-  z-index: 3;
+  flex-shrink: 0;
 }
 
 .gp-hero-proto__time {
@@ -195,11 +219,6 @@
 
 .gp-hero-proto__schedule-chevron {
   font-size: 12px;
-  transition: transform .3s var(--cal-ease, ease);
-}
-
-.gp-hero-proto.is-open .gp-hero-proto__schedule-chevron {
-  transform: rotate(180deg);
 }
 
 .gp-hero-proto__schedule-dropdown {
@@ -308,9 +327,8 @@
     font-size: 1.9rem;
   }
 
-  .gp-hero-proto__countdown {
-    top: 12px;
-    right: 12px;
+  .gp-hero-proto__topbar {
+    padding: 12px;
   }
 
   .gp-hero-proto__time {
@@ -327,6 +345,6 @@
   }
 
   .gp-hero-proto__content {
-    padding-top: 72px;
+    padding-top: 90px;
   }
 }

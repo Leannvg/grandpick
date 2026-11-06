@@ -2,6 +2,22 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-06 · Laboratorio: barra de datos transparente sobre la foto + ícono del desplegable
+
+- Ajustes pedidos tras ver el prototipo del banner de GP con foto
+  (`front/src/lab/sections/GpHeroPrototype.jsx`, pestaña "Prototipos" del
+  laboratorio — sigue sin tocar producción):
+  - La barra con bandera/país/fecha y la pastilla de sesión, más el
+    contador, pasan de estar centrados abajo a ir **transparentes arriba**
+    de la foto — mismo contenido y orden que ya usa `NextRaceCTA.jsx` hoy
+    (`.nr-cta__info` a la izquierda, `.nr-cta__countdown` a la derecha),
+    sin fondo sólido azul. El título grande y el botón "Ver circuito"
+    siguen abajo, centrados.
+  - El ícono del botón de horarios deja de ser una flecha sola (no decía
+    qué información iba a mostrar) — ahora es un ícono de calendario
+    (`bi-calendar-week`), que cambia a flecha hacia arriba cuando está
+    abierto (señal de "cerrar").
+
 ## 2026-11-04 · Nueva regla: rediseños visuales grandes primero en el laboratorio
 
 - Se revirtió de producción el botón de horarios desplegables del banner de
