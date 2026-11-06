@@ -31,6 +31,25 @@ Orden cronológico inverso (lo más nuevo arriba).
   (con el mismo padding que usa `.nr-cta` real) — al no usar la clase
   `.nr-cta` en sí (que trae el fondo celeste sólido), queda transparente
   sin necesidad de ninguna otra regla.
+- **Dos bugs reales encontrados al reusar las clases reales** (no solo
+  cosméticos, el usuario los marcó probándolo en el navegador):
+  - El botón de horarios, solapado al borde inferior del contador, pasaba
+    a chocar con el subrayado de "AUSTRALIA" — al usar `.nr-cta__container`
+    real (`align-items:center`), el contador y la info quedan con la
+    altura casi igualada, así que su borde inferior coincide con el
+    subrayado. Se separaron: el botón y el panel ahora van *debajo* del
+    contador con un margen, no solapados sobre su propio borde.
+  - El panel de horarios no se ocultaba del todo (quedaba un renglón
+    asomando siempre). Causa: el truco `grid-template-rows: 0fr → 1fr`
+    (que sí funcionaba en la versión anterior) dejaba de colapsar a 0 acá
+    — confirmado con el inspector, Chromium lo resolvía en `28px` en vez
+    de `0px` cuando el contador no tiene una altura explícita propia.
+    Se cambió a una animación por `max-height` (menos prolija en la
+    duración exacta de la transición, pero confiable).
+- **Nota de proceso**: a partir de este punto, los cambios en este tramo
+  (banner con foto) se commitean en la rama `leandro` pero **no se pushean
+  a GitHub** hasta que el usuario pida subir todo junto — pidió trabajar
+  puramente en local mientras se termina de iterar el diseño.
 
 ## 2026-11-04 · Nueva regla: rediseños visuales grandes primero en el laboratorio
 

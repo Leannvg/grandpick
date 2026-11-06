@@ -119,17 +119,19 @@
    así el panel toma exactamente el mismo ancho que el contador en vez de
    desplegarse a todo el ancho del banner. */
 
-/* Botón solapado al borde inferior DEL CONTADOR (no de todo el banner) +
-   dropdown angosto, mismo ancho que el contador (ver comentario arriba de
-   .gp-hero-proto__countdown). Sigue el mismo truco grid-template-rows
-   0fr/1fr que ya se usaba, pero ahora flota sobre la foto en vez de
-   empujar el layout — por eso el dropdown es position:absolute, no un
-   bloque en flujo normal. */
+/* Botón + dropdown angosto, mismo ancho que el contador (ver comentario
+   arriba de .gp-hero-proto__countdown). Van DEBAJO del contador con un
+   gap chico, no solapados sobre su borde: al reusar .nr-cta__info /
+   .nr-cta__countdown reales (align-items:center en .nr-cta__container),
+   el borde inferior del contador queda casi a la misma altura que el
+   subrayado de "AUSTRALIA" — solaparse ahí chocaba con el subrayado
+   (reportado al probarlo). */
 .gp-hero-proto__schedule-toggle {
   position: absolute;
   left: 50%;
-  bottom: 0;
-  transform: translate(-50%, 50%);
+  top: 100%;
+  margin-top: 8px;
+  transform: translateX(-50%);
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -153,6 +155,12 @@
   font-size: 12px;
 }
 
+/* Animación por max-height, no grid-template-rows: con el contador real
+   (que no tiene una altura propia explícita) el truco 0fr/1fr no
+   colapsaba del todo — Chromium lo dejaba en ~28px en vez de 0 (confirmado
+   inspeccionando el computed style). max-height es menos elegante (la
+   duración de la transición no es exactamente proporcional al contenido
+   real) pero es confiable. */
 .gp-hero-proto__schedule-dropdown {
   position: absolute;
   top: 100%;
@@ -160,20 +168,18 @@
   right: 0;
   /* mismo ancho que .gp-hero-proto__countdown automáticamente, por el
      left/right:0 relativo a ese contenedor */
-  margin-top: 18px;
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows .4s var(--cal-ease, ease);
+  margin-top: 44px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .4s var(--cal-ease, ease);
   z-index: 1;
 }
 
 .gp-hero-proto.is-open .gp-hero-proto__schedule-dropdown {
-  grid-template-rows: 1fr;
+  max-height: 480px;
 }
 
 .gp-hero-proto__schedule-inner {
-  min-height: 0;
-  overflow: hidden;
   background: var(--cal-panel, #3f4a55);
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
