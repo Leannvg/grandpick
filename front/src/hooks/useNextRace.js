@@ -68,7 +68,15 @@ export function useNextRace() {
     useEffect(() => {
         if (!race) return;
 
-        const interval = setInterval(() => {
+        // Pedido: "al cargar se ve el botón de predecir y tarda un poco en
+        // cambiar a 'en curso'" — setInterval no corre su callback de
+        // inmediato, solo después de 1seg. Hasta ese primer tick, `status`
+        // se queda en el default (isInProgress: false) aunque la carrera ya
+        // esté en curso, y GpHeroBanner muestra el CTA equivocado por un
+        // instante. Se corre el cálculo una vez de entrada (tick()) y
+        // después se repite cada 1seg con el interval, en vez de esperar al
+        // primer tick del interval para el primer cálculo.
+        const tick = () => {
             const now = Date.now();
             const startMs = new Date(race.date_race).getTime();
             const duration = race.totalDuration || 5400000;
@@ -96,7 +104,10 @@ export function useNextRace() {
             const seconds = String(Math.floor((difference / 1000) % 60)).padStart(2, "0");
 
             setTimeLeft({ days, hours, minutes, seconds });
-        }, 1000);
+        };
+
+        tick();
+        const interval = setInterval(tick, 1000);
 
         return () => clearInterval(interval);
     }, [race]);

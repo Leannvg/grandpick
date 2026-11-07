@@ -2,6 +2,23 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · useNextRace: se saca el flash de "Predecir ahora" → "En curso" al cargar
+
+- **Reportado con capturas**: al cargar Home con una carrera en curso, el
+  banner mostraba "Predecir ahora" un instante y después cambiaba a
+  "En curso". Causa: el countdown corría con `setInterval`, que no ejecuta
+  su callback de inmediato — recién al primer tick (1seg después) se
+  calculaba `computeRaceState()` y se actualizaba `status`; hasta ahí,
+  `status.isInProgress` se quedaba en el default (`false`), y el CTA
+  mostraba el estado equivocado por ese segundo.
+- `front/src/hooks/useNextRace.js`: el cálculo (antes inline dentro del
+  callback del interval) pasa a una función `tick()` que se llama una vez
+  de entrada, antes de armar el interval — mismo patrón de siempre para
+  evitar el retraso inicial de `setInterval`. Mismo fix beneficia a
+  `NextRaceCTA.jsx` (consume el mismo hook) en el resto de páginas, aunque
+  ahí no se había reportado (el chip "EN CURSO" es más chico, menos
+  notorio que el CTA grande del banner).
+
 ## 2026-11-07 · GpHeroBanner: margen lateral a la barra de arriba en mobile
 
 - **Reportado con captura**: en mobile, la barra de país/contador quedaba
