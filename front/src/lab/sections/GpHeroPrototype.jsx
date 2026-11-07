@@ -34,6 +34,8 @@ const DEFAULT_GP = {
   country: "AUSTRALIA",
   date: "06–08 NOVIEMBRE",
   title: "Gran Premio de Australia",
+  round: { label: "QUALIFYING", type: "qualy" },
+  isInProgress: false,
 };
 
 /**
@@ -184,7 +186,15 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP }) {
                 <span className="nr-cta__date">{gp.date}</span>
               </div>
               <div className="nr-cta__meta">
-                <span className="nr-cta__round nr-cta__round--qualy">QUALIFYING</span>
+                <span className={`nr-cta__round nr-cta__round--${gp.round.type}`}>{gp.round.label}</span>
+                {/* Pedido: "el 'en curso' de arriba ya no debería estar" —
+                    mismo criterio que con "Predecir ahora": dentro de ESTE
+                    hero quedaba duplicado contra la marca "En curso" del CTA
+                    grande de abajo (ver gp-hero-proto__cta--live). Se saca
+                    de acá. NextRaceCTA.jsx real, sin tocar, sigue mostrando
+                    su propio tag "EN CURSO" (.nr-cta__session-tag +
+                    .live-indicator) en el resto de páginas — ahí sí hace
+                    falta, porque no hay ningún CTA grande que ya lo diga. */}
                 {/* Pedido: "¿no quedan duplicados?" — sí, dentro de ESTE hero
                     se leía como el mismo botón repetido dos veces muy cerca.
                     Se saca de acá (vuelve a quedar solo el chip QUALIFYING).
@@ -247,8 +257,13 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP }) {
               arriba (país/fecha) ya lo sugiere, pero el título grande solo
               repite el nombre sin dar ese contexto. Etiqueta chica arriba,
               propia del prototipo (no existe en NextRaceCTA.jsx real, que no
-              tiene título — ver gp-hero-proto__eyebrow en gpHero.css). */}
-          <span className="gp-hero-proto__eyebrow">Próxima carrera</span>
+              tiene título — ver gp-hero-proto__eyebrow en gpHero.css).
+              Con isInProgress (ver EN CURSO más arriba) cambia el texto:
+              "Próxima carrera" quedaba contradictorio con un GP que ya
+              empezó (reportado probando el caso de Brasil). */}
+          <span className="gp-hero-proto__eyebrow">
+            {gp.isInProgress ? "Carrera en curso" : "Próxima carrera"}
+          </span>
           <h2 className="gp-hero-proto__title">{gp.title}</h2>
 
           {/* Pedido: "¿no hay demasiados call to action?" — había 3 botones
@@ -262,9 +277,24 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP }) {
               arriba (.nr-cta__meta) se terminó sacando también — ver
               comentario ahí, se leía como el mismo botón duplicado. */}
           <div className="gp-hero-proto__actions">
-            <a href="#" className="gp-hero-proto__cta" onClick={(e) => e.preventDefault()}>
-              Predecir ahora
-            </a>
+            {/* Pedido: "si la sesión está en curso el botón debe funcionar
+                como en la barra de contador" — ahí (NextRaceCTA.jsx real)
+                "Predecir ahora" directamente no se renderiza cuando
+                computeRaceState().canPredict es false (ver status.canPredict
+                en ese archivo), que es siempre el caso mientras isInProgress
+                es true. Acá, al ser el CTA principal del hero, no alcanza
+                con que desaparezca sin más — queda una marca "En curso" en
+                su lugar (no clickeable, mismo lenguaje rojo/punto animado
+                que el tag de arriba) en vez de dejar el hueco vacío. */}
+            {gp.isInProgress ? (
+              <span className="gp-hero-proto__cta gp-hero-proto__cta--live">
+                <span className="live-indicator"></span> En curso
+              </span>
+            ) : (
+              <a href="#" className="gp-hero-proto__cta" onClick={(e) => e.preventDefault()}>
+                Predecir ahora
+              </a>
+            )}
             <a href="#" className="gp-hero-proto__secondary-link" onClick={(e) => e.preventDefault()}>
               Ver circuito
             </a>

@@ -7,12 +7,25 @@ import yasMarinaPhoto from "../assets/yasmarina.jpg";
 // Pedido: probar la foto de fondo con GPs reales además de Australia (la
 // única que había hasta ahora) — mismos datos mock de horarios para las
 // cuatro, lo que cambia es la foto/bandera/país/título (ver prop `gp` en
-// GpHeroPrototype.jsx).
+// GpHeroPrototype.jsx). Son, en orden, los 4 GP que le quedan a la
+// temporada (únicas fotos que hay por ahora) — Brasil ya está en curso
+// hoy, de ahí el round "CARRERA" + isInProgress en vez de "QUALIFYING".
+//
+// Pedido: "el banner también debe cambiar una vez que se cambie al
+// contador del próximo circuito" — en la implementación real, `gp` no
+// sería estático como acá: saldría de la misma carrera que ya resuelve
+// racesServices.findCurrentOrNext() (lo que usa NextRaceCTA.jsx hoy, con
+// su re-fetch en el evento socket "races:updated"), buscando la foto por
+// race.circuit._id. El fallback sin foto (bloque de arriba) ya cubre el
+// caso general: la mayoría de los circuitos todavía no van a tener una
+// foto cargada (acá solo existen estas 4 + Australia), así que ese
+// camino no es un caso especial a resolver después, ya está contemplado
+// desde el diseño.
 const SAMPLE_GPS = [
-  { key: "brasil", photo: brasilPhoto, flag: "🇧🇷", country: "BRASIL", date: "07–09 NOVIEMBRE", title: "Gran Premio de Brasil" },
-  { key: "lasvegas", photo: lasVegasPhoto, flag: "🇺🇸", country: "ESTADOS UNIDOS", date: "20–22 NOVIEMBRE", title: "Gran Premio de Las Vegas" },
-  { key: "qatar", photo: qatarPhoto, flag: "🇶🇦", country: "QATAR", date: "28–30 NOVIEMBRE", title: "Gran Premio de Qatar" },
-  { key: "yasmarina", photo: yasMarinaPhoto, flag: "🇦🇪", country: "EMIRATOS ÁRABES UNIDOS", date: "05–07 DICIEMBRE", title: "Gran Premio de Abu Dabi" },
+  { key: "brasil", photo: brasilPhoto, flag: "🇧🇷", country: "BRASIL", date: "07–09 NOVIEMBRE", title: "Gran Premio de Brasil", round: { label: "CARRERA", type: "race" }, isInProgress: true },
+  { key: "lasvegas", photo: lasVegasPhoto, flag: "🇺🇸", country: "ESTADOS UNIDOS", date: "20–22 NOVIEMBRE", title: "Gran Premio de Las Vegas", round: { label: "QUALIFYING", type: "qualy" } },
+  { key: "qatar", photo: qatarPhoto, flag: "🇶🇦", country: "QATAR", date: "28–30 NOVIEMBRE", title: "Gran Premio de Qatar", round: { label: "QUALIFYING", type: "qualy" } },
+  { key: "yasmarina", photo: yasMarinaPhoto, flag: "🇦🇪", country: "EMIRATOS ÁRABES UNIDOS", date: "05–07 DICIEMBRE", title: "Gran Premio de Abu Dabi", round: { label: "QUALIFYING", type: "qualy" } },
 ];
 
 /**

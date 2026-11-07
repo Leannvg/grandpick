@@ -149,6 +149,25 @@
   transform: translateY(-1px);
 }
 
+/* Pedido: durante la carrera no se puede predecir — mismo rojo/punto que
+   .nr-cta__session-tag + .live-indicator reales (globals.css) para que se
+   lea como el mismo estado "en vivo" en todo el banner, pero en el tamaño
+   del CTA principal. No clickeable a propósito (no es un link, es un
+   <span>): no hay ninguna acción real que ofrecer acá mientras la sesión
+   está en curso. */
+.gp-hero-proto__cta--live {
+  background: rgba(255, 59, 48, .15);
+  color: #fff;
+  border: 1px solid rgba(255, 59, 48, .5);
+  cursor: default;
+}
+
+.gp-hero-proto__cta--live:hover {
+  background: rgba(255, 59, 48, .15);
+  color: #fff;
+  transform: none;
+}
+
 /* El contador (.nr-cta__countdown, real) es también el ancla del
    desplegable de horarios (botón + panel viven adentro, ver JSX) — recibe
    position:relative por inline style en el JSX (no se toca globals.css),

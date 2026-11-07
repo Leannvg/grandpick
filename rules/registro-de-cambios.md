@@ -2,6 +2,40 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: estado "en curso" en el banner + plan técnico para subirlo a producción
+
+- **Contexto**: solo hay fotos de muestra para los 4 GP que le quedan a la
+  temporada (Brasil, Las Vegas, Qatar, Yas Marina) + Australia, y hoy Brasil
+  ya está en curso. El prototipo no tenía ningún estado "en curso" armado
+  todavía (siempre mostraba el countdown/CTA de "próxima carrera").
+- `gp` (prop de `GpHeroPrototype.jsx`) suma `round` (label + tipo, antes
+  "QUALIFYING" fijo) e `isInProgress`. Con `isInProgress`: el chip de ronda
+  pasa a "CARRERA", aparece el tag `EN CURSO` (clases reales
+  `.nr-cta__session-tag` + `.live-indicator`, con su `@keyframes
+  pulse-red`), la etiqueta sobre el título dice "Carrera en curso" en vez
+  de "Próxima carrera" (quedaba contradictorio), y el CTA principal
+  **reemplaza** "Predecir ahora" por una marca no clickeable "En curso"
+  (mismo rojo/punto animado) — mismo criterio que `NextRaceCTA.jsx` real,
+  que deja de renderizar el link cuando `canPredict` es false.
+- Brasil (`PrototypesSection.jsx`) pasa a `round: CARRERA, isInProgress:
+  true` para probar el caso. Los otros 3 quedan con el round por defecto.
+- **Pedido**: "esto es para dejar preparado para subirlo a producción y que
+  sea viable" — se confirmó con el usuario que el alcance es dejar el plan
+  técnico listo, sin tocar producción todavía (seguimos en "laboratorio
+  hasta aprobar el diseño"). Doc nuevo:
+  `rules/features/banner-proxima-carrera-con-foto.md` — modelo de datos
+  que falta (`Circuits.banner_img`, opcional, mismo patrón que
+  `logo`/`isologo` de `Teams`), mapeo completo mock→real de la prop `gp`
+  (sale de `racesServices.findCurrentOrNext()`, el mismo fetch que ya usa
+  `NextRaceCTA.jsx`), y qué queda fuera (backend, panel admin, swap en
+  Home, conectar horarios a datos reales).
+- **Reportado**: el tag "EN CURSO" de arriba (chico, junto al chip
+  "CARRERA") quedaba duplicado contra la marca "En curso" del CTA grande —
+  mismo criterio que la duplicación de "Predecir ahora" resuelta antes. Se
+  saca de acá; `NextRaceCTA.jsx` real, sin tocar, sigue mostrando su propio
+  tag en el resto de páginas del sitio (ahí no hay ningún CTA grande que
+  ya lo diga, así que sí hace falta).
+
 ## 2026-11-07 · Laboratorio: se saca la pastilla "Predecir ahora" duplicada + se unifica radio/hover de los botones
 
 - **Reportado**: con el botón grande nuevo bajo el título, "Predecir ahora"
