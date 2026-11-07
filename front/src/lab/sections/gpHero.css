@@ -69,7 +69,14 @@
    cada una con su propio x/y/opacidad al azar, animadas con transform
    (no top/left, más barato) cayendo en diagonal. Dos capas de
    profundidad: "cerca" (menos gotas, más grandes/brillantes/rápidas) y
-   "lejos" (más gotas, chicas/tenues/lentas, con blur). */
+   "lejos" (más gotas, chicas/tenues/lentas, con blur).
+   Pedido después: "se nota cuando un grupo de gotas se corta y
+   desaparece" — cada capa se dibuja DOS veces apiladas en el JSX (mismo
+   patrón, offset por RAIN_TILE_HEIGHT) y el translateY de la animación
+   recorre EXACTAMENTE esa misma distancia — así, en el instante del
+   reinicio del loop, la segunda copia ya está donde estaba la primera y
+   el corte queda invisible (ver comentario largo en GpHeroPrototype.jsx,
+   es el truco estándar de "tiling" para loops continuos). */
 .gp-hero-proto__weather {
   position: absolute;
   inset: 0;
@@ -81,33 +88,35 @@
 
 .gp-hero-proto__rain-drop {
   position: absolute;
-  top: 0;
   left: 0;
   width: 1px;
+  /* top: lo pone el inline style (0 o -RAIN_TILE_HEIGHT, dos copias por capa) */
 }
 
 .gp-hero-proto__rain-drop--near {
   height: 16px;
-  animation: gp-hero-rain-fall-near 1s linear infinite;
+  animation: gp-hero-rain-fall-near 1.2s linear infinite;
 }
 
 .gp-hero-proto__rain-drop--far {
   height: 9px;
-  animation: gp-hero-rain-fall-far 1.6s linear infinite;
+  animation: gp-hero-rain-fall-far 1.9s linear infinite;
   filter: blur(.3px);
 }
 
 /* El elemento base no se ve (sin background) — lo que se ve son las N
    copias vía box-shadow (inline, de buildRainShadows), que sí se mueven
-   junto con el elemento al animar su transform. */
+   junto con el elemento al animar su transform. La distancia vertical
+   (700px) es RAIN_TILE_HEIGHT — tiene que coincidir exacto con el valor
+   de GpHeroPrototype.jsx para que el loop no se note. */
 @keyframes gp-hero-rain-fall-near {
   from { transform: translate(0, 0); }
-  to { transform: translate(-45px, 650px); }
+  to { transform: translate(-45px, 700px); }
 }
 
 @keyframes gp-hero-rain-fall-far {
   from { transform: translate(0, 0); }
-  to { transform: translate(-30px, 650px); }
+  to { transform: translate(-30px, 700px); }
 }
 
 .gp-hero-proto__content {

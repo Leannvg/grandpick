@@ -18,11 +18,26 @@ import australiaPhoto from "../assets/australia.jpg";
 // x/y/opacidad) — mismo truco clásico que se usa para campos de
 // estrellas. Se arma una sola vez por instancia (useMemo), no en cada
 // render.
-function buildRainShadows(count, xRange, yRange, opacityRange) {
+//
+// Pedido después: "se nota cuando un grupo de gotas se corta y
+// desaparece y vuelve a aparecer arriba" — la animación (un solo
+// translateY compartido por toda la capa) saltaba de golpe al reiniciar
+// el loop, y el rango disperso (y entre -300 y 900, 1200px) no coincidía
+// con la distancia que recorría el translate (650px), así que el patrón
+// no quedaba igual antes/después del salto. Fix: las gotas se generan en
+// UNA sola franja de alto RAIN_TILE_HEIGHT (no un rango grande), y esa
+// misma franja se dibuja DOS veces apiladas (una arriba de la otra, ver
+// GpHeroPrototype) — al animar el translateY exactamente esa altura, en
+// el instante del reinicio la segunda copia ya está exactamente donde
+// estaba la primera, así el corte queda invisible (es un truco estándar
+// de "tiling" para loops continuos, no hace falta JS extra para eso).
+const RAIN_TILE_HEIGHT = 700;
+
+function buildRainShadows(count, xRange, tileHeight, opacityRange) {
   const drops = [];
   for (let i = 0; i < count; i++) {
     const x = Math.round(xRange[0] + Math.random() * (xRange[1] - xRange[0]));
-    const y = Math.round(yRange[0] + Math.random() * (yRange[1] - yRange[0]));
+    const y = Math.round(Math.random() * tileHeight);
     const o = (opacityRange[0] + Math.random() * (opacityRange[1] - opacityRange[0])).toFixed(2);
     drops.push(`${x}px ${y}px 0 0 rgba(255,255,255,${o})`);
   }
@@ -90,16 +105,16 @@ const DEFAULT_GP = {
  */
 function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }) {
   // Dos capas de profundidad ("cerca": menos gotas, más grandes/brillantes/
-  // rápidas; "lejos": más gotas, chicas/tenues/lentas, con blur) — rango de
-  // dispersión más ancho/alto que el banner (600px) para que al caer
-  // siempre haya gotas entrando/saliendo del área visible, sin que se note
-  // el salto al reiniciar el loop de la animación.
+  // rápidas; "lejos": más gotas, chicas/tenues/lentas, con blur). Cada capa
+  // se arma UNA vez (una franja de alto RAIN_TILE_HEIGHT) y se dibuja dos
+  // veces apiladas en el JSX — ver comentario de buildRainShadows arriba,
+  // es lo que hace que el loop de la animación no se note al reiniciar.
   const rainNear = useMemo(
-    () => buildRainShadows(110, [-50, 1500], [-300, 900], [0.35, 0.65]),
+    () => buildRainShadows(65, [-50, 1500], RAIN_TILE_HEIGHT, [0.35, 0.65]),
     []
   );
   const rainFar = useMemo(
-    () => buildRainShadows(170, [-50, 1500], [-300, 900], [0.15, 0.35]),
+    () => buildRainShadows(100, [-50, 1500], RAIN_TILE_HEIGHT, [0.15, 0.35]),
     []
   );
 
@@ -228,11 +243,19 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }
             efecto visual, no aporta información). Gotas dispersas al azar
             (ver buildRainShadows arriba) en vez de un patrón regular —
             reportado que un degradado repetido "no parecía lluvia
-            natural", de ahí el cambio de técnica. */}
+            natural", de ahí el cambio de técnica.
+            Cada capa (near/far) se dibuja DOS veces con el MISMO patrón
+            (mismo rainNear/rainFar), una arriba de la otra (top: 0 y
+            top: -RAIN_TILE_HEIGHT) — con la animación cayendo exactamente
+            RAIN_TILE_HEIGHT px, al reiniciar el loop la segunda copia ya
+            quedó donde estaba la primera, invisible el corte (reportado
+            que se notaba el salto con una sola copia por capa). */}
         {gp.weather === "rain" && (
           <div className="gp-hero-proto__weather gp-hero-proto__weather--rain" aria-hidden="true">
-            <span className="gp-hero-proto__rain-drop gp-hero-proto__rain-drop--near" style={{ boxShadow: rainNear }}></span>
-            <span className="gp-hero-proto__rain-drop gp-hero-proto__rain-drop--far" style={{ boxShadow: rainFar }}></span>
+            <span className="gp-hero-proto__rain-drop gp-hero-proto__rain-drop--near" style={{ boxShadow: rainNear, top: 0 }}></span>
+            <span className="gp-hero-proto__rain-drop gp-hero-proto__rain-drop--near" style={{ boxShadow: rainNear, top: -RAIN_TILE_HEIGHT }}></span>
+            <span className="gp-hero-proto__rain-drop gp-hero-proto__rain-drop--far" style={{ boxShadow: rainFar, top: 0 }}></span>
+            <span className="gp-hero-proto__rain-drop gp-hero-proto__rain-drop--far" style={{ boxShadow: rainFar, top: -RAIN_TILE_HEIGHT }}></span>
           </div>
         )}
 

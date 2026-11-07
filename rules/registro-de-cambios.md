@@ -2,6 +2,24 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: se saca el salto visible del loop de la lluvia
+
+- **Reportado con captura**: "se nota cuando un grupo de gotas se corta y
+  desaparece y vuelve a aparecer arriba". Causa: toda la capa de gotas
+  compartía un único `translateY`, así que al reiniciar el loop saltaba
+  de golpe entera al mismo tiempo; además el rango disperso (1200px) no
+  coincidía con la distancia del translate (650px), así que el patrón
+  tampoco quedaba igual antes/después del salto.
+- Fix (truco estándar de "tiling" para loops continuos): las gotas se
+  generan ahora en una sola franja de alto fijo (`RAIN_TILE_HEIGHT`,
+  700px) y esa misma franja se dibuja DOS VECES apiladas (`top: 0` y
+  `top: -RAIN_TILE_HEIGHT`), con el `translateY` de la animación
+  recorriendo exactamente esa misma distancia. En el instante del
+  reinicio, la segunda copia ya está exactamente donde estaba la primera
+  — el corte queda invisible. Confirmado con una ráfaga de 6 capturas
+  espaciadas ~250ms: densidad y distribución se mantienen consistentes
+  entre frames, sin el salto reportado.
+
 ## 2026-11-07 · Laboratorio: la lluvia pasa de degradado repetido a gotas al azar
 
 - **Reportado con captura**: "se ve medio mal, no parece una lluvia
