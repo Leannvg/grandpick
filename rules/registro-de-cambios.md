@@ -2,6 +2,12 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · GpHeroBanner: margen lateral a la barra de arriba en mobile
+
+- **Reportado con captura**: en mobile, la barra de país/contador quedaba
+  pegada a los bordes de la pantalla (`.gp-hero-banner__topbar`, padding
+  horizontal de 2px). Pasa a 16px.
+
 ## 2026-11-07 · GpHeroBanner: 600px parejo en desktop/mobile + contenido centrado
 
 - **Pedido**: "en desktop el alto de banner que sea de 600px y lo mismo en

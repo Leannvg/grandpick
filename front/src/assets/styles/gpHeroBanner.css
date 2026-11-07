@@ -80,7 +80,9 @@
   left: 0;
   right: 0;
   z-index: 3;
-  padding: 6px 2px;
+  /* Pedido: "dar un poco de margen a los costados" — 2px dejaba bandera y
+     contador pegados al borde de la pantalla en mobile. */
+  padding: 6px 16px;
 }
 
 @media (min-width: 768px) {
