@@ -18,11 +18,14 @@
      centro del botón queda justo en el borde de recorte y el hit-test le
      falla (confirmado probando en el laboratorio). El recorte/redondeo va
      en las capas de fondo (bg/overlay) en vez de acá. */
+  /* Pedido: 600px fijo en desktop Y en mobile (antes 460px/540px), con el
+     contenido centrado verticalmente (antes justify-content:flex-end,
+     pegado abajo) — ver .gp-hero-banner__content. */
   position: relative;
-  min-height: 460px;
+  min-height: 600px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   color: #fff;
   text-align: center;
 }
@@ -53,8 +56,11 @@
 }
 
 .gp-hero-banner__content {
+  /* Padding simétrico (antes 28px/64px, pensado para contenido pegado
+     abajo) — con justify-content:center en .gp-hero-banner__hero, un
+     padding parejo es lo que lee como "centrado" de verdad. */
   position: relative;
-  padding: 28px 20px 64px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -259,20 +265,12 @@
    (.gp-hero-banner__schedule-inner para el desplegable de desktop,
    .gp-hero-banner__drawer-title para la bandeja de mobile). */
 
-/* Pedido: "dar un poco más de alto al banner en mobile" — con el título a
-   dos renglones ("GRAN PREMIO DE SÃO PAULO") quedaba muy justo contra el
-   resto del contenido. Un poco más de min-height que el base (460px). */
+/* El alto (600px) y el centrado vertical del contenido ya son parejos en
+   desktop y mobile (ver .gp-hero-banner__hero arriba) — acá solo queda
+   achicar el título para que entre cómodo en pantallas chicas. */
 @media (max-width: 600px) {
-  .gp-hero-banner__hero {
-    min-height: 540px;
-  }
-
   .gp-hero-banner__title {
     font-size: 1.9rem;
-  }
-
-  .gp-hero-banner__content {
-    padding-top: 90px;
   }
 }
 

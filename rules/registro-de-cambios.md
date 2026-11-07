@@ -2,6 +2,21 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · GpHeroBanner: 600px parejo en desktop/mobile + contenido centrado
+
+- **Pedido**: "en desktop el alto de banner que sea de 600px y lo mismo en
+  mobile, además centrar los textos en el banner". `min-height` pasa a
+  600px fijo en `.gp-hero-banner__hero` (antes 460px base / 540px mobile,
+  dos valores distintos) — se saca el override mobile, ya no hace falta.
+- `justify-content: flex-end` → `center` en `.gp-hero-banner__hero`: el
+  contenido (etiqueta + título + CTA) pasa de estar pegado abajo a centrado
+  verticalmente. `.gp-hero-banner__content` pasa de padding asimétrico
+  (28px/64px, pensado para quedar pegado abajo) a `20px` parejo.
+- Se saca el `padding-top: 90px` que tenía el contenido en mobile (era un
+  parche para no chocar con la barra de arriba cuando el contenido estaba
+  pegado abajo en una caja más baja) — con 600px y contenido centrado ya
+  no hace falta, probado sin superposición.
+
 ## 2026-11-07 · GpHeroBanner: faltaba Clasificación/Carrera en horarios + más alto en mobile
 
 - **Reportado con captura**: la solapa de horarios solo mostraba
