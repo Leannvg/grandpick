@@ -185,16 +185,16 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP }) {
               </div>
               <div className="nr-cta__meta">
                 <span className="nr-cta__round nr-cta__round--qualy">QUALIFYING</span>
-                {/* Pedido: se había perdido el botón real que invita a predecir
-                    (y a crearse cuenta si no se tiene una) al armar el
-                    prototipo — es la MISMA clase real (.nr-cta__action, de
-                    globals.css, con su propio pulso) que usa NextRaceCTA.jsx
-                    hoy, no una nueva. En producción aparece igual con o sin
-                    sesión iniciada (depende solo de si faltan ≤24hs para la
-                    carrera, ver computeRaceState en helpers.js) — sin cuenta
-                    el único cambio es que el click manda a /login en vez de
-                    directo a predicciones (ProtectedRoute.jsx), no cambia el
-                    banner. */}
+                {/* Pedido: no sacarlo de acá — NextRaceCTA.jsx (de donde viene
+                    esta barra, clases reales .nr-cta__*) se renderiza global
+                    en App.jsx, en TODAS las páginas del sitio, no solo en
+                    Home. Este hero con foto/título grande reemplazaría esa
+                    barra únicamente en Home; en el resto de páginas sigue
+                    siendo la única CTA visible, así que tiene que seguir acá
+                    (misma clase real .nr-cta__action, con su pulso). El botón
+                    grande de abajo (mismo texto, bajo el título) es un
+                    refuerzo adicional, exclusivo del hero de Home — no un
+                    reemplazo de este. */}
                 <a href="#" className="nr-cta__action" onClick={(e) => e.preventDefault()}>
                   Predecir ahora
                 </a>
@@ -253,9 +253,28 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP }) {
           <span className="gp-hero-proto__eyebrow">Próxima carrera</span>
           <h2 className="gp-hero-proto__title">{gp.title}</h2>
 
-          <a href="#" className="gp-hero-proto__cta" onClick={(e) => e.preventDefault()}>
-            Ver circuito
-          </a>
+          {/* Pedido: "¿no hay demasiados call to action?" — había 3 botones
+              compitiendo (Ver circuito grande + Predecir ahora chico arriba
+              + Horarios), con jerarquía invertida: el grande mandaba a una
+              página secundaria mientras el realmente importante para el
+              negocio (predecir) quedaba perdido arriba. Ahora un solo CTA
+              dominante acá ("Predecir ahora", mismo lugar/tamaño que tenía
+              "Ver circuito" — .gp-hero-proto__cta sin cambios) y "Ver
+              circuito" baja a link de texto secundario al lado.
+              El de arriba (.nr-cta__meta) NO se saca (ver comentario ahí):
+              sigue siendo la única CTA en el resto de páginas del sitio. Acá
+              en el hero de Home conviven los dos a propósito — no compiten
+              porque están en zonas visuales bien separadas (barra flotante
+              arriba vs. centro del banner), y el de abajo no pulsa (ya es
+              grande/sólido, no necesita además parpadear para destacarse). */}
+          <div className="gp-hero-proto__actions">
+            <a href="#" className="gp-hero-proto__cta" onClick={(e) => e.preventDefault()}>
+              Predecir ahora
+            </a>
+            <a href="#" className="gp-hero-proto__secondary-link" onClick={(e) => e.preventDefault()}>
+              Ver circuito
+            </a>
+          </div>
         </div>
       </div>
 

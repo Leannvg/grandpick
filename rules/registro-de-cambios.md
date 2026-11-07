@@ -2,6 +2,30 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: un solo CTA dominante en el banner ("Predecir ahora")
+
+- **Reportado**: los botones del banner (Ver circuito, Predecir ahora,
+  Horarios) tenían 3 formas/hovers/animaciones distintas sin un sistema
+  claro detrás.
+- **Pregunta**: "¿no hay demasiados call to action?" — había jerarquía
+  invertida: el botón grande y sólido bajo el título ("Ver circuito")
+  mandaba a una página secundaria, mientras "Predecir ahora" (la acción
+  que de verdad importa, todo el sitio gira en torno a predecir) quedaba
+  chico y perdido arriba, junto al chip "QUALIFYING".
+- Se invierte: "Predecir ahora" pasa a ser el CTA grande bajo el título
+  (mismo lugar/tamaño que tenía "Ver circuito" — `.gp-hero-proto__cta` sin
+  cambios de estilo), y "Ver circuito" baja a link de texto secundario
+  debajo (`.gp-hero-proto__secondary-link`, nuevo).
+- **Aclarado en el camino**: la pastilla chica de arriba (`.nr-cta__action`,
+  real, con su pulso) **no se saca** — `NextRaceCTA.jsx` (de donde sale esa
+  barra) se renderiza global en `App.jsx`, en todas las páginas del sitio,
+  no solo en Home. Ese hero con foto/título grande reemplazaría la barra
+  solo en Home; en el resto de páginas la pastilla chica sigue siendo la
+  única CTA visible. En Home conviven los dos (pastilla arriba + botón
+  grande abajo) a propósito, sin competir entre sí por estar en zonas
+  visuales separadas; el de abajo no pulsa (ya es grande/sólido, no hace
+  falta reforzarlo con animación).
+
 ## 2026-11-07 · Laboratorio: se restaura el botón "Predecir ahora" + etiqueta "Próxima carrera"
 
 - **Reportado**: al armar el prototipo del banner con foto se había

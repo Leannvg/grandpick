@@ -99,6 +99,34 @@
   text-shadow: 0 2px 18px rgba(0, 0, 0, .4);
 }
 
+/* Pedido: un solo CTA dominante en vez de 3 botones compitiendo — este
+   wrapper solo agrupa el botón grande ("Predecir ahora", .gp-hero-proto__cta
+   sin cambios) con el link chico de abajo ("Ver circuito",
+   .gp-hero-proto__secondary-link, nuevo). */
+.gp-hero-proto__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.gp-hero-proto__secondary-link {
+  color: rgba(255, 255, 255, .75);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255, 255, 255, .4);
+  transition: color .2s ease, text-decoration-color .2s ease;
+}
+
+.gp-hero-proto__secondary-link:hover {
+  color: #fff;
+  text-decoration-color: #fff;
+}
+
 .gp-hero-proto__cta {
   background: #fff;
   color: #0b2a3d;
