@@ -354,3 +354,73 @@
   font-size: 1.1rem;
   text-align: center;
 }
+
+/* Pedido: "probar en el laboratorio poner el banner en la pantalla de
+   predicción y darle un diseño más lucido" — variant="predictions" reusa
+   TODO lo de arriba (foto, topbar flotante, horarios) y solo cambia el
+   contenido de abajo por el de Predictions.jsx real (país, título, fecha,
+   ronda, countdown "para predecir", status de la predicción), pero
+   flotando sobre la foto en vez del fondo sólido que tiene hoy esa
+   página. .circuit-country-detail/.section-label (ya blancos, de
+   components.css/globals.css) y .prediction-status-banner/.status-missing/
+   .status-saved (ya glassy, de predictions.css) se reusan tal cual, sin
+   CSS propio — acá solo lo que no tenía ya un equivalente real. */
+.gp-hero-proto__predict-country {
+  margin-bottom: 0;
+}
+
+.gp-hero-proto__predict-date {
+  font-size: .95rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, .75);
+  margin-top: -4px;
+}
+
+/* .nr-cta__round real es un chip chico pensado para ir inline en la barra
+   de arriba (10px) — acá es el dato principal de qué sesión es, se lo
+   agranda en vez de inventar un chip nuevo. */
+.gp-hero-proto__predict-round {
+  font-size: .8rem;
+  padding: 5px 14px;
+  border-radius: 6px;
+  margin: 4px 0 2px;
+}
+
+.gp-hero-proto__predict-countdown {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gp-hero-proto__predict-countdown .countdown-label {
+  margin-bottom: 8px;
+}
+
+/* Versión agrandada de .nr-cta__time (de globals.css, las cajas del
+   contador de la barra de arriba) — mismo lenguaje visual (vidrio +
+   borde), más grande porque acá es el protagonista del bloque en vez de
+   un detalle chico al costado. */
+.gp-hero-proto__predict-time {
+  display: flex;
+  gap: 10px;
+}
+
+.gp-hero-proto__predict-time .nr-cta__time {
+  width: auto;
+  min-width: 64px;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 10px;
+  padding: 10px 16px;
+}
+
+.gp-hero-proto__predict-time .nr-cta__time-value {
+  font-size: 1.8rem;
+  display: block;
+}
+
+.gp-hero-proto__predict-time .nr-cta__time-label {
+  font-size: .68rem;
+  letter-spacing: 1px;
+}

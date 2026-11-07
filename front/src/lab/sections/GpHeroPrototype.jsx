@@ -5,6 +5,7 @@ import "../../assets/styles/globals.css";
 import "../../assets/styles/components.css";
 import "../../assets/styles/predictionHistory.css";
 import "../../assets/styles/calendar.css";
+import "../../assets/styles/predictions.css";
 import "./gpHero.css";
 import australiaPhoto from "../assets/australia.jpg";
 
@@ -48,8 +49,17 @@ const DEFAULT_GP = {
  * previsualizar varias fotos reales (Brasil, Las Vegas, Qatar, Yas Marina)
  * sin duplicar el componente entero. Default = Australia (el único caso
  * que había antes de parametrizarlo).
+ *
+ * `variant`: "home" (default, igual que siempre) | "predictions" — pedido
+ * para probar este mismo banner (foto + topbar flotante) como cabecera de
+ * Predictions.jsx, que hoy tiene su propio header de texto plano sobre
+ * fondo sólido (section-title/qualy-label/prediction-status-banner, de
+ * predictions.css), sin foto y con la barra de arriba sólida (.nr-cta real)
+ * en vez de flotante como en Home. Reusa TODO el resto del componente
+ * (foto, topbar transparente, desplegable/bandeja de horarios) — solo
+ * cambia el contenido de .gp-hero-proto__content.
  */
-function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP }) {
+function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }) {
   const [scheduleOpen, setScheduleOpen] = useState(false);
   // Pedido: en mobile, los horarios se abren en la misma "bandeja" (bottom
   // sheet) que ya usa el resto del sitio (comparación de predicciones,
@@ -253,52 +263,104 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP }) {
             </div>
           </div>
         <div className="gp-hero-proto__content">
-          {/* Pedido: no se entendía por qué estaba ahí ese GP — la barra de
-              arriba (país/fecha) ya lo sugiere, pero el título grande solo
-              repite el nombre sin dar ese contexto. Etiqueta chica arriba,
-              propia del prototipo (no existe en NextRaceCTA.jsx real, que no
-              tiene título — ver gp-hero-proto__eyebrow en gpHero.css).
-              Con isInProgress (ver EN CURSO más arriba) cambia el texto:
-              "Próxima carrera" quedaba contradictorio con un GP que ya
-              empezó (reportado probando el caso de Brasil). */}
-          <span className="gp-hero-proto__eyebrow">
-            {gp.isInProgress ? "Carrera en curso" : "Próxima carrera"}
-          </span>
-          <h2 className="gp-hero-proto__title">{gp.title}</h2>
-
-          {/* Pedido: "¿no hay demasiados call to action?" — había 3 botones
-              compitiendo (Ver circuito grande + Predecir ahora chico arriba
-              + Horarios), con jerarquía invertida: el grande mandaba a una
-              página secundaria mientras el realmente importante para el
-              negocio (predecir) quedaba perdido arriba. Ahora un solo CTA
-              dominante acá ("Predecir ahora", mismo lugar/tamaño que tenía
-              "Ver circuito" — .gp-hero-proto__cta sin cambios) y "Ver
-              circuito" baja a link de texto secundario al lado. El chico de
-              arriba (.nr-cta__meta) se terminó sacando también — ver
-              comentario ahí, se leía como el mismo botón duplicado. */}
-          <div className="gp-hero-proto__actions">
-            {/* Pedido: "si la sesión está en curso el botón debe funcionar
-                como en la barra de contador" — ahí (NextRaceCTA.jsx real)
-                "Predecir ahora" directamente no se renderiza cuando
-                computeRaceState().canPredict es false (ver status.canPredict
-                en ese archivo), que es siempre el caso mientras isInProgress
-                es true. Acá, al ser el CTA principal del hero, no alcanza
-                con que desaparezca sin más — queda una marca "En curso" en
-                su lugar (no clickeable, mismo lenguaje rojo/punto animado
-                que el tag de arriba) en vez de dejar el hueco vacío. */}
-            {gp.isInProgress ? (
-              <span className="gp-hero-proto__cta gp-hero-proto__cta--live">
-                <span className="live-indicator"></span> En curso
+          {variant === "predictions" ? (
+            <>
+              {/* Pedido: "adaptar la barra de contador como en la home" ya
+                  está cubierto arriba (mismo .gp-hero-proto__topbar
+                  transparente/flotante que usa "home"). Acá abajo: mismo
+                  contenido real que tiene hoy Predictions.jsx
+                  (circuit-country-detail/section-label, section-title,
+                  qualy-label → .nr-cta__round real para que sea consistente
+                  con el resto del sitio en vez de texto plano, countdown
+                  "tiempo restante para predecir" y el status banner real
+                  .prediction-status-banner/.status-missing/.status-saved,
+                  de predictions.css) — pero flotando sobre la foto en vez
+                  de fondo sólido, "más lucido" como se pidió. */}
+              <span className="circuit-country-detail section-label gp-hero-proto__predict-country">
+                <span className="emoji-flag me-2">{gp.flag}</span>{gp.country}
               </span>
-            ) : (
-              <a href="#" className="gp-hero-proto__cta" onClick={(e) => e.preventDefault()}>
-                Predecir ahora
-              </a>
-            )}
-            <a href="#" className="gp-hero-proto__secondary-link" onClick={(e) => e.preventDefault()}>
-              Ver circuito
-            </a>
-          </div>
+              <h1 className="gp-hero-proto__title">{gp.title}</h1>
+              <span className="gp-hero-proto__predict-date">{gp.date}</span>
+              <span className={`nr-cta__round nr-cta__round--${gp.round.type} gp-hero-proto__predict-round`}>
+                {gp.round.label}
+              </span>
+
+              <div className="gp-hero-proto__predict-countdown">
+                <span className="countdown-label">Tiempo restante para predecir:</span>
+                <div className="gp-hero-proto__predict-time">
+                  <div className="nr-cta__time">
+                    <span className="nr-cta__time-value">00</span>
+                    <span className="nr-cta__time-label">DÍAS</span>
+                  </div>
+                  <div className="nr-cta__time">
+                    <span className="nr-cta__time-value">20</span>
+                    <span className="nr-cta__time-label">HS.</span>
+                  </div>
+                  <div className="nr-cta__time">
+                    <span className="nr-cta__time-value">27</span>
+                    <span className="nr-cta__time-label">MIN.</span>
+                  </div>
+                  <div className="nr-cta__time">
+                    <span className="nr-cta__time-value">55</span>
+                    <span className="nr-cta__time-label">SEG.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="prediction-status-banner status-missing">
+                <span>💡 Todavía no realizaste tu predicción.</span>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Pedido: no se entendía por qué estaba ahí ese GP — la barra de
+                  arriba (país/fecha) ya lo sugiere, pero el título grande solo
+                  repite el nombre sin dar ese contexto. Etiqueta chica arriba,
+                  propia del prototipo (no existe en NextRaceCTA.jsx real, que no
+                  tiene título — ver gp-hero-proto__eyebrow en gpHero.css).
+                  Con isInProgress (ver EN CURSO más arriba) cambia el texto:
+                  "Próxima carrera" quedaba contradictorio con un GP que ya
+                  empezó (reportado probando el caso de Brasil). */}
+              <span className="gp-hero-proto__eyebrow">
+                {gp.isInProgress ? "Carrera en curso" : "Próxima carrera"}
+              </span>
+              <h2 className="gp-hero-proto__title">{gp.title}</h2>
+
+              {/* Pedido: "¿no hay demasiados call to action?" — había 3 botones
+                  compitiendo (Ver circuito grande + Predecir ahora chico arriba
+                  + Horarios), con jerarquía invertida: el grande mandaba a una
+                  página secundaria mientras el realmente importante para el
+                  negocio (predecir) quedaba perdido arriba. Ahora un solo CTA
+                  dominante acá ("Predecir ahora", mismo lugar/tamaño que tenía
+                  "Ver circuito" — .gp-hero-proto__cta sin cambios) y "Ver
+                  circuito" baja a link de texto secundario al lado. El chico de
+                  arriba (.nr-cta__meta) se terminó sacando también — ver
+                  comentario ahí, se leía como el mismo botón duplicado. */}
+              <div className="gp-hero-proto__actions">
+                {/* Pedido: "si la sesión está en curso el botón debe funcionar
+                    como en la barra de contador" — ahí (NextRaceCTA.jsx real)
+                    "Predecir ahora" directamente no se renderiza cuando
+                    computeRaceState().canPredict es false (ver status.canPredict
+                    en ese archivo), que es siempre el caso mientras isInProgress
+                    es true. Acá, al ser el CTA principal del hero, no alcanza
+                    con que desaparezca sin más — queda una marca "En curso" en
+                    su lugar (no clickeable, mismo lenguaje rojo/punto animado
+                    que el tag de arriba) en vez de dejar el hueco vacío. */}
+                {gp.isInProgress ? (
+                  <span className="gp-hero-proto__cta gp-hero-proto__cta--live">
+                    <span className="live-indicator"></span> En curso
+                  </span>
+                ) : (
+                  <a href="#" className="gp-hero-proto__cta" onClick={(e) => e.preventDefault()}>
+                    Predecir ahora
+                  </a>
+                )}
+                <a href="#" className="gp-hero-proto__secondary-link" onClick={(e) => e.preventDefault()}>
+                  Ver circuito
+                </a>
+              </div>
+            </>
+          )}
         </div>
       </div>
 

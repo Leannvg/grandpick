@@ -2,6 +2,34 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: probar el banner como cabecera de Predicciones
+
+- **Pedido**: "probar en el laboratorio poner el banner en la pantalla de
+  predicción y darle un diseño más lucido, también adaptar la barra de
+  contador como en la Home". `GpHeroPrototype.jsx` suma una prop `variant`
+  (`"home"` default | `"predictions"`) que reusa todo el mecanismo del
+  banner (foto, topbar flotante, desplegable/bandeja de horarios) y solo
+  cambia el contenido de `.gp-hero-proto__content` por el real de
+  `Predictions.jsx` (país, título, fecha, ronda, countdown "tiempo
+  restante para predecir", banner de estado de la predicción) — pero
+  flotando sobre la foto en vez del fondo sólido/topbar sólido que tiene
+  hoy esa página.
+- Reuso de clases reales en vez de aproximar: `.circuit-country-detail`/
+  `.section-label` (país, de `components.css`/`globals.css`),
+  `.prediction-status-banner`/`.status-missing`/`.status-saved` (banner de
+  estado, de `predictions.css`, sin tocar). La ronda pasa de texto plano
+  (`.qualy-label`) al chip real `.nr-cta__round--{type}` (agrandado para
+  este lugar, `.gp-hero-proto__predict-round`) para que se lea coherente
+  con el resto del sitio. El countdown reusa `.nr-cta__time` (cajas del
+  contador real) en una versión más grande (`.gp-hero-proto__predict-time`)
+  ya que acá es el protagonista del bloque.
+- Nuevo bloque de demo en `PrototypesSection.jsx` ("Mismo banner, como
+  cabecera de Predicciones"), con la foto/datos de Brasil (mismos que usa
+  hoy esa página en producción, para comparar manzanas con manzanas).
+  Probado en desktop y mobile — build limpio, cero impacto en producción
+  (`grep gp-hero-proto` en `dist/` sigue vacío). Predictions.jsx real no
+  se tocó.
+
 ## 2026-11-07 · GpHeroBanner: la barra de arriba pasa a usar la grilla real del sitio
 
 - **Pedido**: "poner el mismo container que tiene los botones del nav o

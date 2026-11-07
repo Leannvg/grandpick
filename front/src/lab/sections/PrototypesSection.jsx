@@ -89,6 +89,26 @@ function PrototypesSection() {
           </div>
         ))}
       </div>
+
+      <div className="lab-block">
+        <h2 className="lab-block-title">Mismo banner, como cabecera de Predicciones</h2>
+        <p className="lab-prose" style={{ marginBottom: 14 }}>
+          Pedido: probar este banner (foto + topbar flotante, igual que en
+          Home) como cabecera de <code>Predictions.jsx</code>, que hoy tiene
+          su propio header de texto plano sobre fondo sólido, con la barra
+          de arriba también sólida (no flotante). Reusa todo el mecanismo
+          del banner (foto, topbar transparente, horarios) — abajo cambia el
+          contenido real de esa página: país, título, fecha, ronda (chip
+          real <code>.nr-cta__round</code> en vez de texto plano), countdown
+          "tiempo restante para predecir" y el banner de estado de la
+          predicción (<code>.prediction-status-banner</code>, sin cambios).
+        </p>
+        <GpHeroPrototype
+          withPhoto
+          variant="predictions"
+          gp={{ ...SAMPLE_GPS[0], round: { label: "RACE", type: "race" }, isInProgress: false }}
+        />
+      </div>
     </div>
   );
 }
