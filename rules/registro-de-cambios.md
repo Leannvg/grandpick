@@ -2,6 +2,29 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: lluvia con 4 capas desfasadas, sin ciclo perceptible
+
+- **Pedido**: "¿podemos hacer que las gotas caigan de manera aleatoria
+  infinitamente?... se nota cuando se reinicia porque se reacomodan
+  siempre al mismo lugar". Con una sola capa (patrón fijo + una única
+  animación compartida), el conjunto entero se repetía idéntico cada
+  duración de ciclo — previsible si se mira un rato.
+- `RAIN_LAYERS` (`GpHeroPrototype.jsx`) pasa de 2 capas (cerca/lejos) a 4,
+  cada una con: su propio patrón de gotas al azar (`buildRainShadows`
+  corre aparte por capa), su propia duración (1.1s/1.45s/1.85s/2.3s,
+  ninguna múltiplo de otra a propósito) y un `animation-delay` negativo
+  al azar (arranca "a mitad de camino" de su propio ciclo). Para que
+  las 4 coincidan todas a la vez hacen falta muchos segundos (mínimo
+  común múltiplo de duraciones+delays al azar) — mucho más que lo que
+  alguien mira el banner, así que no se percibe un ciclo único.
+- CSS: una sola `@keyframes` genérica reutilizada por las 4 capas (antes
+  dos duplicadas, `--near`/`--far`), con duración/delay/deriva horizontal
+  por capa vía inline style (`animationDuration`, `animationDelay`,
+  variable CSS `--rain-drift`) en vez de clases fijas. El truco de "sin
+  corte visible" al reiniciar (cada capa dibujada 2 veces apiladas,
+  `RAIN_TILE_HEIGHT`) se mantiene igual, ahora por capa. Confirmado con
+  capturas espaciadas ~7s que el patrón visible ya no coincide.
+
 ## 2026-11-07 · Laboratorio: se saca el salto visible del loop de la lluvia
 
 - **Reportado con captura**: "se nota cuando un grupo de gotas se corta y

@@ -76,7 +76,15 @@
    recorre EXACTAMENTE esa misma distancia — así, en el instante del
    reinicio del loop, la segunda copia ya está donde estaba la primera y
    el corte queda invisible (ver comentario largo en GpHeroPrototype.jsx,
-   es el truco estándar de "tiling" para loops continuos). */
+   es el truco estándar de "tiling" para loops continuos).
+   Pedido después: "¿podemos hacer que caigan de manera aleatoria
+   infinitamente? se nota que se reacomodan siempre al mismo lugar" — con
+   una sola capa el patrón entero es fijo, se repite idéntico cada
+   duración de ciclo. Pasa a 4 capas (RAIN_LAYERS en GpHeroPrototype.jsx),
+   cada una con su propio patrón/duración/delay al azar — una sola clase
+   genérica acá (el height/duration/delay/blur/drift los pone el inline
+   style por capa), con animation-duration/delay/--rain-drift variables
+   por instancia en vez de clases --near/--far fijas. */
 .gp-hero-proto__weather {
   position: absolute;
   inset: 0;
@@ -89,34 +97,25 @@
 .gp-hero-proto__rain-drop {
   position: absolute;
   left: 0;
+  top: 0;
   width: 1px;
-  /* top: lo pone el inline style (0 o -RAIN_TILE_HEIGHT, dos copias por capa) */
-}
-
-.gp-hero-proto__rain-drop--near {
-  height: 16px;
-  animation: gp-hero-rain-fall-near 1.2s linear infinite;
-}
-
-.gp-hero-proto__rain-drop--far {
-  height: 9px;
-  animation: gp-hero-rain-fall-far 1.9s linear infinite;
-  filter: blur(.3px);
+  animation-name: gp-hero-rain-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  /* top real: lo pone el inline style (0 o -RAIN_TILE_HEIGHT, dos copias
+     por capa) — este top:0 es solo el valor por defecto del navegador. */
 }
 
 /* El elemento base no se ve (sin background) — lo que se ve son las N
    copias vía box-shadow (inline, de buildRainShadows), que sí se mueven
    junto con el elemento al animar su transform. La distancia vertical
    (700px) es RAIN_TILE_HEIGHT — tiene que coincidir exacto con el valor
-   de GpHeroPrototype.jsx para que el loop no se note. */
-@keyframes gp-hero-rain-fall-near {
+   de GpHeroPrototype.jsx para que el loop no se note. La deriva
+   horizontal (--rain-drift) es distinta por capa (inline style), para
+   que tampoco todas deriven hacia el mismo lado al mismo ritmo. */
+@keyframes gp-hero-rain-fall {
   from { transform: translate(0, 0); }
-  to { transform: translate(-45px, 700px); }
-}
-
-@keyframes gp-hero-rain-fall-far {
-  from { transform: translate(0, 0); }
-  to { transform: translate(-30px, 700px); }
+  to { transform: translate(var(--rain-drift, -30px), 700px); }
 }
 
 .gp-hero-proto__content {
