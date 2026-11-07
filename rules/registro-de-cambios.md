@@ -2,6 +2,27 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: se restaura el botón "Predecir ahora" + etiqueta "Próxima carrera"
+
+- **Reportado**: al armar el prototipo del banner con foto se había
+  perdido el botón real que invita a predecir (y, si no se tiene cuenta,
+  a loguearse para poder hacerlo) — no estaba en ninguna versión de la
+  barra de info/contador. Se restaura reusando la clase real
+  `.nr-cta__action` tal cual la usa `NextRaceCTA.jsx` hoy (mismo pulso,
+  mismo estilo), al lado del chip "QUALIFYING".
+- Aclarado que, en producción, este botón se ve y se comporta igual con o
+  sin sesión iniciada: `computeRaceState` (helpers.js) solo depende de
+  cuánto falta para la carrera, no del usuario — sin cuenta, el único
+  cambio es que el click cae en `/login` en vez de ir directo a
+  predicciones (`ProtectedRoute.jsx`). No hace falta una variante
+  separada del banner para ese caso.
+- **Reportado**: no quedaba claro por qué "GRAN PREMIO DE AUSTRALIA"
+  estaba ahí (podía leerse como un título cualquiera, sin contexto de que
+  es la próxima carrera del calendario). Se suma una etiqueta chica
+  "PRÓXIMA CARRERA" arriba del título (`.gp-hero-proto__eyebrow`, propia
+  del prototipo — `NextRaceCTA.jsx` real no tiene título, así que no hay
+  nada que reusar acá).
+
 ## 2026-11-06 · Laboratorio: desplegable de desktop centrado en vez de anclado a un borde
 
 - El ensanche a 340px del desplegable (entrada anterior) había quedado

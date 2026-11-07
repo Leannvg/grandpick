@@ -172,6 +172,19 @@ function GpHeroPrototype({ withPhoto = true }) {
               </div>
               <div className="nr-cta__meta">
                 <span className="nr-cta__round nr-cta__round--qualy">QUALIFYING</span>
+                {/* Pedido: se había perdido el botón real que invita a predecir
+                    (y a crearse cuenta si no se tiene una) al armar el
+                    prototipo — es la MISMA clase real (.nr-cta__action, de
+                    globals.css, con su propio pulso) que usa NextRaceCTA.jsx
+                    hoy, no una nueva. En producción aparece igual con o sin
+                    sesión iniciada (depende solo de si faltan ≤24hs para la
+                    carrera, ver computeRaceState en helpers.js) — sin cuenta
+                    el único cambio es que el click manda a /login en vez de
+                    directo a predicciones (ProtectedRoute.jsx), no cambia el
+                    banner. */}
+                <a href="#" className="nr-cta__action" onClick={(e) => e.preventDefault()}>
+                  Predecir ahora
+                </a>
               </div>
             </div>
 
@@ -219,6 +232,12 @@ function GpHeroPrototype({ withPhoto = true }) {
             </div>
           </div>
         <div className="gp-hero-proto__content">
+          {/* Pedido: no se entendía por qué estaba ahí ese GP — la barra de
+              arriba (país/fecha) ya lo sugiere, pero el título grande solo
+              repite el nombre sin dar ese contexto. Etiqueta chica arriba,
+              propia del prototipo (no existe en NextRaceCTA.jsx real, que no
+              tiene título — ver gp-hero-proto__eyebrow en gpHero.css). */}
+          <span className="gp-hero-proto__eyebrow">Próxima carrera</span>
           <h2 className="gp-hero-proto__title">Gran Premio de Australia</h2>
 
           <a href="#" className="gp-hero-proto__cta" onClick={(e) => e.preventDefault()}>
