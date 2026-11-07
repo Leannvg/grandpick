@@ -42,7 +42,12 @@ import australiaPhoto from "../assets/australia.jpg";
 // sin patrón perceptible" con CSS puro.
 const RAIN_TILE_HEIGHT = 700;
 
-function buildRainDrops(count, xRange) {
+// Pedido: "probemos una tormenta" — reusa toda la lluvia de arriba (más
+// densa y con más viento, parámetro `intense`) y le suma relámpagos: un
+// flash de luz breve e irregular sobre todo el banner. `intense` en vez
+// de un `count`/`drift` fijos para no duplicar buildRainDrops entero por
+// una variante.
+function buildRainDrops(count, xRange, intense = false) {
   const drops = [];
   for (let i = 0; i < count; i++) {
     // "depth" 0..1 encapsula varios atributos correlacionados a la vez
@@ -51,18 +56,34 @@ function buildRainDrops(count, xRange) {
     // vez de sortear cada atributo sin relación con los demás — da una
     // sensación de profundidad más creíble que puro ruido.
     const depth = Math.random();
-    const duration = +(2.6 - depth * 1.6).toFixed(2);
+    const baseDuration = 2.6 - depth * 1.6;
+    const duration = +(baseDuration * (intense ? 0.72 : 1)).toFixed(2); // tormenta: cae más rápido (viento)
+    const driftRange = intense ? 85 : 45; // tormenta: más deriva horizontal (viento)
     drops.push({
       x: Math.round(xRange[0] + Math.random() * (xRange[1] - xRange[0])),
       size: Math.round(6 + depth * 14),
       opacity: (0.12 + depth * 0.55).toFixed(2),
       duration,
       delay: -(Math.random() * duration).toFixed(2),
-      drift: -(15 + Math.round(Math.random() * 45)),
+      drift: -(15 + Math.round(Math.random() * driftRange)),
       blur: depth < 0.4 ? +((0.4 - depth) * 1.2).toFixed(2) : 0,
     });
   }
   return drops;
+}
+
+// Relámpagos: 2 capas independientes (misma lección que con la lluvia —
+// una sola capa periódica se notaría repetir) con duraciones largas y sin
+// relación simple entre sí, y un delay negativo al azar para que ni
+// arranquen sincronizadas. Cada @keyframes (gp-hero-rain-lightning-1/2 en
+// gpHero.css) ya tiene 2-3 destellos cortos distribuidos sin patrón fijo
+// dentro de su propio ciclo, para que un solo ciclo ya se sienta
+// irregular (un relámpago real no es un parpadeo único y parejo).
+function buildLightningLayers() {
+  return [
+    { duration: +(6 + Math.random() * 2).toFixed(2), delay: -(Math.random() * 8).toFixed(2), keyframe: "gp-hero-lightning-1" },
+    { duration: +(8.5 + Math.random() * 2.5).toFixed(2), delay: -(Math.random() * 11).toFixed(2), keyframe: "gp-hero-lightning-2" },
+  ];
 }
 
 // Datos mock — esto NO pega contra el backend real, es solo para evaluar el
@@ -100,7 +121,7 @@ const DEFAULT_GP = {
   // 100% mock por ahora — no hay ningún campo real que diga el clima de
   // un GP; si se aprueba, ver de dónde sale ese dato en la implementación
   // real (¿campo manual en el admin? ¿una API de clima?) es aparte.
-  // null | "rain" — ver .gp-hero-proto__weather* en gpHero.css.
+  // null | "rain" | "storm" — ver .gp-hero-proto__weather* en gpHero.css.
   weather: null,
 };
 
@@ -129,7 +150,13 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }
   // Se arma UNA vez por instancia (useMemo), no en cada render — si se
   // regenerara en cada render, las gotas "saltarían" a posiciones nuevas
   // cada vez que algo del banner fuerza un re-render (ej. abrir Horarios).
-  const rainDrops = useMemo(() => buildRainDrops(100, [-50, 1500]), []);
+  // Tormenta: más gotas (150 vs 100) y más viento (intense=true).
+  const isStorm = gp.weather === "storm";
+  const rainDrops = useMemo(
+    () => buildRainDrops(isStorm ? 150 : 100, [-50, 1500], isStorm),
+    [isStorm]
+  );
+  const lightningLayers = useMemo(() => (isStorm ? buildLightningLayers() : []), [isStorm]);
 
   const [scheduleOpen, setScheduleOpen] = useState(false);
   // Pedido: en mobile, los horarios se abren en la misma "bandeja" (bottom
@@ -265,8 +292,15 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }
             un grupo repitiéndose siempre igual (reportado: "se nota
             cuando se reinicia porque se reacomodan siempre al mismo
             lugar" — con capas compartidas, esa capa entera volvía a su
-            patrón exacto cada ciclo, un intervalo corto y perceptible). */}
-        {gp.weather === "rain" && (
+            patrón exacto cada ciclo, un intervalo corto y perceptible).
+            Pedido: "probemos una tormenta" — reusa toda la lluvia (más
+            densa/con viento, ver isStorm) y le suma relámpagos
+            (lightningLayers, ver buildLightningLayers arriba): 2 capas de
+            flash independientes, sin la "tiling" trick de la lluvia
+            porque acá no hace falta — el keyframe ya empieza y termina en
+            opacity:0, así que el reinicio del loop es naturalmente
+            invisible (0 a 0, no hay salto que disimular). */}
+        {(gp.weather === "rain" || isStorm) && (
           <div className="gp-hero-proto__weather gp-hero-proto__weather--rain" aria-hidden="true">
             {rainDrops.map((drop, i) => {
               const dropStyle = {
@@ -286,6 +320,17 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }
                 </Fragment>
               );
             })}
+            {lightningLayers.map((layer, i) => (
+              <span
+                key={i}
+                className="gp-hero-proto__lightning"
+                style={{
+                  animationName: layer.keyframe,
+                  animationDuration: `${layer.duration}s`,
+                  animationDelay: `${layer.delay}s`,
+                }}
+              ></span>
+            ))}
           </div>
         )}
 

@@ -110,6 +110,57 @@
   to { transform: translate(var(--rain-drift, -30px), 700px); }
 }
 
+/* Pedido: "probemos una tormenta" — mismo contenedor que la lluvia
+   (gp-hero-proto__weather, ya recortado con overflow:hidden + el mismo
+   border-radius que la foto), le suma relámpagos: un flash breve de luz
+   fría sobre toda la escena. mix-blend-mode:screen en vez de opacity sola
+   para que el flash aclare lo que hay debajo (foto + degradado + lluvia)
+   en vez de taparlo con un blanco plano.
+   2 capas independientes (duración/delay al azar, ver buildLightningLayers
+   en GpHeroPrototype.jsx) — misma lección que con la lluvia: una sola
+   capa periódica se notaría repetir. Acá no hace falta la "tiling trick"
+   de la lluvia (dibujar 2 copias apiladas): el keyframe ya arranca y
+   termina en opacity:0, así que el reinicio del loop ya es invisible por
+   sí solo (0 a 0, no hay salto que disimular). Cada keyframe tiene 2-3
+   destellos cortos en puntos sin relación simple dentro de su propio
+   ciclo (no un único parpadeo parejo) — un relámpago real no es un flash
+   limpio, suele tener un "rebote" chico después del principal. */
+.gp-hero-proto__lightning {
+  position: absolute;
+  inset: 0;
+  background: rgba(210, 225, 255, .95);
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes gp-hero-lightning-1 {
+  0%, 100% { opacity: 0; }
+  41% { opacity: 0; }
+  42.5% { opacity: .85; }
+  43.5% { opacity: .1; }
+  45% { opacity: .55; }
+  47% { opacity: 0; }
+  83% { opacity: 0; }
+  84% { opacity: .5; }
+  85.5% { opacity: 0; }
+}
+
+@keyframes gp-hero-lightning-2 {
+  0%, 100% { opacity: 0; }
+  17% { opacity: 0; }
+  18% { opacity: .7; }
+  19.5% { opacity: .05; }
+  21% { opacity: .4; }
+  23% { opacity: 0; }
+  67% { opacity: 0; }
+  68% { opacity: .9; }
+  69.2% { opacity: .15; }
+  70.5% { opacity: .45; }
+  72% { opacity: 0; }
+}
+
 .gp-hero-proto__content {
   /* Padding simétrico (antes 28px/64px, pensado para contenido pegado
      abajo) — igual que gpHeroBanner.css: con justify-content:center en

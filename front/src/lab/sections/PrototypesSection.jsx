@@ -166,6 +166,21 @@ function PrototypesSection() {
           gp={{ ...SAMPLE_GPS[0], round: { label: "CARRERA", type: "race" }, isInProgress: true, weather: "rain" }}
         />
       </div>
+
+      <div className="lab-block">
+        <h2 className="lab-block-title">Efecto de clima animado (tormenta)</h2>
+        <p className="lab-prose" style={{ marginBottom: 14 }}>
+          Pedido: "probemos una tormenta" — reusa toda la lluvia de arriba
+          (más densa y con más deriva por viento) y le suma relámpagos: un
+          flash breve e irregular de luz fría sobre toda la escena (2 capas
+          de destellos independientes, mismo criterio que la lluvia para
+          que no se note un ciclo fijo). <code>gp.weather = "storm"</code>.
+        </p>
+        <GpHeroPrototype
+          withPhoto
+          gp={{ ...SAMPLE_GPS[0], round: { label: "CARRERA", type: "race" }, isInProgress: true, weather: "storm" }}
+        />
+      </div>
     </div>
   );
 }

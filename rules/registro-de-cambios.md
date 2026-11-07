@@ -2,6 +2,33 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: segundo efecto de clima — tormenta (lluvia + relámpagos)
+
+- **Pedido**: "ahora se ve mucho mejor, probemos una tormenta" (segundo
+  clima de los pedidos originalmente — lluvia, tormenta, sol, nublado,
+  noche calurosa). `gp.weather` suma `"storm"`.
+- Reusa toda la lluvia ya construida (`buildRainDrops` suma un parámetro
+  `intense`): más densa (150 vs 100 gotas) y con más deriva horizontal
+  (viento, hasta 100px vs 60px) para una tormenta en vez de lluvia tranquila.
+- Relámpagos nuevos (`gp-hero-proto__lightning`): 2 capas de flash
+  independientes (`buildLightningLayers`) con duraciones largas sin
+  relación simple entre sí y delay al azar — misma lección que la lluvia,
+  una sola capa periódica se notaría repetir. `mix-blend-mode: screen` en
+  vez de opacity sola, para que el flash aclare la foto/lluvia de abajo en
+  vez de taparla con un blanco plano. Cada `@keyframes` ya tiene 2-3
+  destellos cortos e irregulares dentro de su propio ciclo (un relámpago
+  real no es un parpadeo único y parejo) — a diferencia de la lluvia, acá
+  no hace falta la "tiling trick" (dos copias apiladas): el keyframe ya
+  arranca y termina en `opacity: 0`, así que el reinicio del loop ya es
+  invisible por sí solo.
+- Nuevo bloque de demo en `PrototypesSection.jsx` ("Efecto de clima
+  animado (tormenta)"), misma foto de Brasil. Confirmado por código
+  (`getComputedStyle().opacity`, valores de 0.82 y 0.45 capturados en
+  distintos instantes) que el flash sí llega a dispararse — el juicio
+  visual final (qué tan convincente se ve/siente) queda para probarlo en
+  un navegador real, dado el problema de reloj de animación del entorno
+  headless encontrado en la vuelta anterior.
+
 ## 2026-11-07 · Laboratorio: cada gota de lluvia con timing propio (no por capas)
 
 - **Pedido**: "podemos verlo por tu cuenta para que veas que se nota
