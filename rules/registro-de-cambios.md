@@ -2,6 +2,29 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: fix de stacking — el clima tapaba el título
+
+- **Pedido** (3 screenshots): en nublado y noche calurosa "las letras
+  quedan como por detrás del efecto"; en sol, el resplandor "arruina la
+  foto de fondo con ese flash raro".
+- **Causa real (bug de stacking, no de diseño)**: `.gp-hero-proto__content`
+  (donde vive el título) tenía `position: relative` pero SIN `z-index`
+  propio — queda en el nivel "auto" del orden de apilado de CSS, que
+  pinta ANTES (más atrás) que `.gp-hero-proto__weather` (`z-index: 1`
+  explícito), sin importar que `.content` esté después en el DOM: un
+  z-index explícito, aunque sea bajo, siempre gana contra "auto". Con
+  lluvia/relámpagos no se notaba (gotas finas, flash breve), pero los
+  tintes de pantalla completa de nublado/noche y el resplandor de sol
+  quedaban pintados ENCIMA del título, no detrás. Fix: `z-index: 2` en
+  `.gp-hero-proto__content` — clima(1) < contenido(2) < topbar(3), el
+  texto siempre queda adelante.
+- Aparte, en sol: el resplandor no tenía `mix-blend-mode`, así que
+  pintaba un disco casi opaco (opacidad .9 en el centro) literalmente
+  encima de la foto en vez de iluminarla — de ahí el "flash raro".
+  Cambiado a `mix-blend-mode: screen` (como "sumar luz", mismo criterio
+  que el flash de los relámpagos) + más blur y menos opacidad en el
+  centro, para que difumine en vez de tener un borde duro.
+
 ## 2026-11-07 · Laboratorio: últimos 3 efectos de clima — nublado, sol, noche calurosa
 
 - **Pedido**: "pasemos a los demás efectos de clima" — cierra la lista

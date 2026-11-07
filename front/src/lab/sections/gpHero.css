@@ -200,21 +200,29 @@
   mix-blend-mode: soft-light;
 }
 
+/* Pedido: "arruina la foto de fondo con ese flash raro" — sin
+   mix-blend-mode, el radial-gradient pintaba un disco casi opaco (.9 en
+   el centro) literalmente ENCIMA de la foto, como un parche, en vez de
+   iluminarla. screen (como "sumar luz", igual que el flash de los
+   relámpagos) deja que lo que hay debajo se siga viendo y solo lo
+   aclara — más blur y menos opacidad en el centro para que difumine en
+   vez de tener un borde duro tipo flash. */
 .gp-hero-proto__sun-glow {
   position: absolute;
-  top: -10%;
-  right: -6%;
-  width: 46%;
+  top: -18%;
+  right: -12%;
+  width: 56%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 241, 201, .9) 0%, rgba(255, 221, 140, .35) 35%, rgba(255, 200, 100, 0) 70%);
-  filter: blur(2px);
-  animation: gp-hero-sun-breathe 5.5s ease-in-out infinite alternate;
+  background: radial-gradient(circle, rgba(255, 244, 214, .55) 0%, rgba(255, 221, 140, .22) 40%, rgba(255, 200, 100, 0) 72%);
+  mix-blend-mode: screen;
+  filter: blur(18px);
+  animation: gp-hero-sun-breathe 6.5s ease-in-out infinite alternate;
 }
 
 @keyframes gp-hero-sun-breathe {
-  from { transform: scale(.94); opacity: .75; }
-  to { transform: scale(1.06); opacity: 1; }
+  from { transform: scale(.95); opacity: .65; }
+  to { transform: scale(1.05); opacity: 1; }
 }
 
 /* --- Noche calurosa --- */
@@ -260,8 +268,18 @@
   /* Padding simétrico (antes 28px/64px, pensado para contenido pegado
      abajo) — igual que gpHeroBanner.css: con justify-content:center en
      .gp-hero-proto__hero, un padding parejo es lo que lee como centrado
-     de verdad. */
+     de verdad.
+     Pedido: "las letras quedan como por detrás del efecto" — bug real de
+     stacking: position:relative sin z-index propio queda en el nivel
+     "auto" del orden de apilado, que pinta ANTES (más atrás) que
+     .gp-hero-proto__weather (z-index:1 explícito) aunque .content esté
+     después en el DOM — un z-index explícito, aunque sea bajo, siempre
+     gana contra "auto". Con lluvia/relámpagos no se notaba (gotas finas,
+     relámpago raro) pero con los tintes de pantalla completa (nublado/
+     sol/noche) quedaban pintados ENCIMA del título. z-index:2 deja
+     clima(1) < contenido(2) < topbar(3), siempre detrás del texto. */
   position: relative;
+  z-index: 2;
   padding: 20px;
   display: flex;
   flex-direction: column;
