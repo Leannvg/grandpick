@@ -2,6 +2,40 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: últimos 3 efectos de clima — nublado, sol, noche calurosa
+
+- **Pedido**: "pasemos a los demás efectos de clima" — cierra la lista
+  original (lluvia, tormenta, sol, nublado, noche calurosa). `gp.weather`
+  suma `"cloudy"`, `"sun"` y `"night"`.
+- Decisión de diseño clave: a diferencia de la lluvia/relámpagos (algo que
+  viaja en una dirección y se reinicia de golpe, donde hay que disimular
+  el corte con la "tiling trick" o con capas/timing independiente), estos
+  tres efectos no se trasladan — oscilan entre dos valores con
+  `animation-direction: alternate`. Al no haber nunca un salto brusco (la
+  animación siempre frena, revierte y vuelve sobre sus propios pasos), no
+  existe el instante de reinicio que hubo que resolver con la lluvia. Cada
+  elemento igual tiene su propio timing al azar (misma lección: nada de
+  capas compartidas).
+- **Nublado**: tinte grisáceo plano (`mix-blend-mode: multiply`) + 5
+  sombras de nubes grandes y difusas (radial-gradient + blur, cada una
+  con su propio tamaño/posición/duración) meciéndose lento de lado a
+  lado. Demo con la foto de Brasil (ya nublada, mismo criterio que
+  lluvia/tormenta).
+- **Sol**: tinte cálido (`soft-light`) + un resplandor radial en la
+  esquina que "respira" (escala/opacidad oscilando 5.5s). Demo con la
+  foto de Australia (antes solo se usaba como fallback por defecto, ahora
+  también como demo propio con clima).
+- **Noche calurosa**: tinte oscuro azul/violeta (`multiply`) + 45
+  estrellas titilando (cada una con su propio ritmo de parpadeo, 1.6-4.4s)
+  + un resplandor cálido subiendo desde el piso (`heat-haze`, simulando
+  calor nocturno de desierto). Demo con la foto de Qatar (carrera
+  nocturna real, encaja temáticamente).
+- Un bug atrapado antes de mostrarlo: el primer intento del demo de "sol"
+  pasaba un `gp` parcial (solo `round`/`isInProgress`/`weather`) sin
+  spread de los datos base — la foto/bandera/país/título quedaban
+  `undefined` y el banner se veía vacío. Corregido pasando el objeto GP
+  completo.
+
 ## 2026-11-07 · Laboratorio: segundo efecto de clima — tormenta (lluvia + relámpagos)
 
 - **Pedido**: "ahora se ve mucho mejor, probemos una tormenta" (segundo

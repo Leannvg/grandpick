@@ -86,6 +86,53 @@ function buildLightningLayers() {
   ];
 }
 
+// Pedido: "pasemos a los demás efectos de clima" (nublado/sol/noche
+// calurosa, quedaban pendientes desde el pedido original de lluvia).
+// Para estos tres NO hace falta la "tiling trick" de la lluvia (dos
+// copias apiladas) ni separar en capas con cuidado: en vez de una
+// animación que viaja en una dirección y se reinicia de golpe (ahí es
+// donde se nota el corte), acá cada elemento solo "respira" — oscila
+// entre dos valores con animation-direction:alternate. Al no haber nunca
+// un salto brusco (la animación siempre se frena, revierte y vuelve sobre
+// sus propios pasos) no existe el instante de reinicio que había que
+// disimular con lluvia/relámpagos. Cada elemento igual tiene su propio
+// duration/delay al azar (misma lección: nada de capas compartidas) para
+// que no se note ningún subconjunto moviéndose en fase.
+
+// Nublado: sombras de nubes grandes y difusas, meciéndose lento.
+function buildCloudBlobs(count) {
+  const blobs = [];
+  for (let i = 0; i < count; i++) {
+    blobs.push({
+      top: Math.round(-15 + Math.random() * 95),
+      left: Math.round(-15 + Math.random() * 95),
+      size: Math.round(300 + Math.random() * 280),
+      opacity: (0.1 + Math.random() * 0.14).toFixed(2),
+      duration: +(22 + Math.random() * 18).toFixed(1),
+      delay: -(Math.random() * 35).toFixed(2),
+      drift: Math.round(60 + Math.random() * 120),
+    });
+  }
+  return blobs;
+}
+
+// Noche calurosa: estrellas titilando (cada una con su propio ritmo).
+function buildStars(count) {
+  const stars = [];
+  for (let i = 0; i < count; i++) {
+    stars.push({
+      top: Math.round(Math.random() * 65),
+      left: Math.round(Math.random() * 100),
+      size: +(1 + Math.random() * 1.6).toFixed(1),
+      duration: +(1.6 + Math.random() * 2.8).toFixed(2),
+      delay: -(Math.random() * 4).toFixed(2),
+      minOpacity: (0.1 + Math.random() * 0.15).toFixed(2),
+      maxOpacity: (0.6 + Math.random() * 0.4).toFixed(2),
+    });
+  }
+  return stars;
+}
+
 // Datos mock — esto NO pega contra el backend real, es solo para evaluar el
 // diseño. En la implementación real vendría de race.circuit.gp_name,
 // race.circuit.banner_img (campo nuevo a crear), etc.
@@ -121,7 +168,8 @@ const DEFAULT_GP = {
   // 100% mock por ahora — no hay ningún campo real que diga el clima de
   // un GP; si se aprueba, ver de dónde sale ese dato en la implementación
   // real (¿campo manual en el admin? ¿una API de clima?) es aparte.
-  // null | "rain" | "storm" — ver .gp-hero-proto__weather* en gpHero.css.
+  // null | "rain" | "storm" | "cloudy" | "sun" | "night" — ver
+  // .gp-hero-proto__weather* en gpHero.css.
   weather: null,
 };
 
@@ -157,6 +205,12 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }
     [isStorm]
   );
   const lightningLayers = useMemo(() => (isStorm ? buildLightningLayers() : []), [isStorm]);
+
+  const isCloudy = gp.weather === "cloudy";
+  const cloudBlobs = useMemo(() => (isCloudy ? buildCloudBlobs(5) : []), [isCloudy]);
+
+  const isNight = gp.weather === "night";
+  const stars = useMemo(() => (isNight ? buildStars(45) : []), [isNight]);
 
   const [scheduleOpen, setScheduleOpen] = useState(false);
   // Pedido: en mobile, los horarios se abren en la misma "bandeja" (bottom
@@ -328,6 +382,70 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }
                   animationName: layer.keyframe,
                   animationDuration: `${layer.duration}s`,
                   animationDelay: `${layer.delay}s`,
+                }}
+              ></span>
+            ))}
+          </div>
+        )}
+
+        {/* Nublado: tinte plano grisáceo sobre toda la foto + sombras de
+            nubes grandes y difusas (cloudBlobs, ver buildCloudBlobs arriba)
+            meciéndose con animation-direction:alternate — no hace falta
+            tiling, ver comentario largo junto a buildCloudBlobs. */}
+        {isCloudy && (
+          <div className="gp-hero-proto__weather gp-hero-proto__weather--cloudy" aria-hidden="true">
+            <div className="gp-hero-proto__cloud-tint"></div>
+            {cloudBlobs.map((blob, i) => (
+              <span
+                key={i}
+                className="gp-hero-proto__cloud-blob"
+                style={{
+                  top: `${blob.top}%`,
+                  left: `${blob.left}%`,
+                  width: blob.size,
+                  height: blob.size,
+                  opacity: blob.opacity,
+                  animationDuration: `${blob.duration}s`,
+                  animationDelay: `${blob.delay}s`,
+                  "--cloud-drift": `${blob.drift}px`,
+                }}
+              ></span>
+            ))}
+          </div>
+        )}
+
+        {/* Sol: tinte cálido sobre la foto + resplandor que "respira"
+            (alternate, sin salto de loop) en la esquina — no necesita
+            elementos independientes porque es uno solo oscilando en el
+            mismo lugar, no algo que se traslada y se reinicia. */}
+        {gp.weather === "sun" && (
+          <div className="gp-hero-proto__weather gp-hero-proto__weather--sun" aria-hidden="true">
+            <div className="gp-hero-proto__sun-tint"></div>
+            <div className="gp-hero-proto__sun-glow"></div>
+          </div>
+        )}
+
+        {/* Noche calurosa: tinte oscuro + estrellas titilando (stars, ver
+            buildStars arriba, cada una con su propio ritmo) + un resplandor
+            cálido de calor subiendo desde el piso (heat-haze), todo con
+            animation-direction:alternate. */}
+        {isNight && (
+          <div className="gp-hero-proto__weather gp-hero-proto__weather--night" aria-hidden="true">
+            <div className="gp-hero-proto__night-tint"></div>
+            <div className="gp-hero-proto__heat-haze"></div>
+            {stars.map((star, i) => (
+              <span
+                key={i}
+                className="gp-hero-proto__star"
+                style={{
+                  top: `${star.top}%`,
+                  left: `${star.left}%`,
+                  width: star.size,
+                  height: star.size,
+                  animationDuration: `${star.duration}s`,
+                  animationDelay: `${star.delay}s`,
+                  "--star-min": star.minOpacity,
+                  "--star-max": star.maxOpacity,
                 }}
               ></span>
             ))}

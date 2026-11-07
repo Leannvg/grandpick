@@ -1,4 +1,5 @@
 import GpHeroPrototype from "./GpHeroPrototype.jsx";
+import australiaPhoto from "../assets/australia.jpg";
 import brasilPhoto from "../assets/brasil.jpg";
 import lasVegasPhoto from "../assets/lasvegas.jpg";
 import qatarPhoto from "../assets/qatar.jpg";
@@ -179,6 +180,59 @@ function PrototypesSection() {
         <GpHeroPrototype
           withPhoto
           gp={{ ...SAMPLE_GPS[0], round: { label: "CARRERA", type: "race" }, isInProgress: true, weather: "storm" }}
+        />
+      </div>
+
+      <div className="lab-block">
+        <h2 className="lab-block-title">Efecto de clima animado (nublado)</h2>
+        <p className="lab-prose" style={{ marginBottom: 14 }}>
+          Pedido: "pasemos a los demás efectos de clima" — tinte grisáceo
+          plano sobre la foto + sombras de nubes grandes y difusas
+          meciéndose lento (sin trasladarse y reiniciar de golpe como la
+          lluvia: oscilan de un lado al otro con
+          <code> animation-direction: alternate</code>, así nunca hay un
+          salto que disimular). <code>gp.weather = "cloudy"</code>.
+        </p>
+        <GpHeroPrototype
+          withPhoto
+          gp={{ ...SAMPLE_GPS[0], round: { label: "CARRERA", type: "race" }, isInProgress: true, weather: "cloudy" }}
+        />
+      </div>
+
+      <div className="lab-block">
+        <h2 className="lab-block-title">Efecto de clima animado (sol)</h2>
+        <p className="lab-prose" style={{ marginBottom: 14 }}>
+          Tinte cálido sobre la foto + un resplandor en la esquina que
+          "respira" (escala/opacidad oscilando, mismo criterio de
+          <code> alternate</code> que nublado). Foto de Australia (de día,
+          buena luz). <code>gp.weather = "sun"</code>.
+        </p>
+        <GpHeroPrototype
+          withPhoto
+          gp={{
+            photo: australiaPhoto,
+            flag: "🇦🇺",
+            country: "AUSTRALIA",
+            date: "06–08 NOVIEMBRE",
+            title: "Gran Premio de Australia",
+            round: { label: "CARRERA", type: "race" },
+            isInProgress: true,
+            weather: "sun",
+          }}
+        />
+      </div>
+
+      <div className="lab-block">
+        <h2 className="lab-block-title">Efecto de clima animado (noche calurosa)</h2>
+        <p className="lab-prose" style={{ marginBottom: 14 }}>
+          Tinte oscuro azul/violeta + estrellas titilando (cada una con su
+          propio ritmo) + un resplandor cálido subiendo desde el piso,
+          simulando el calor de una noche de carrera en el desierto. Foto
+          de Qatar (carrera nocturna real). <code>gp.weather = "night"</code>.
+        </p>
+        <GpHeroPrototype
+          withPhoto
+          gp={{ ...SAMPLE_GPS[2], round: { label: "CARRERA", type: "race" }, isInProgress: true, weather: "night" }}
         />
       </div>
     </div>

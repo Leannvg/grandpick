@@ -161,6 +161,101 @@
   72% { opacity: 0; }
 }
 
+/* Pedido: "pasemos a los demás efectos de clima" (nublado, sol, noche
+   calurosa). A diferencia de la lluvia/relámpagos, ninguno de estos tres
+   necesita la "tiling trick" ni capas separadas con cuidado: todos usan
+   animation-direction:alternate (oscilan entre dos valores y vuelven) en
+   vez de viajar en una dirección y reiniciar de golpe — sin reinicio
+   brusco, no hay corte que disimular. Ver comentario largo junto a
+   buildCloudBlobs en GpHeroPrototype.jsx. */
+
+/* --- Nublado --- */
+.gp-hero-proto__cloud-tint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(70, 80, 92, .4), rgba(45, 52, 61, .5));
+  mix-blend-mode: multiply;
+}
+
+.gp-hero-proto__cloud-blob {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(15, 22, 30, .9) 0%, rgba(15, 22, 30, 0) 70%);
+  animation-name: gp-hero-cloud-drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes gp-hero-cloud-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(var(--cloud-drift, 80px)); }
+}
+
+/* --- Sol --- */
+.gp-hero-proto__sun-tint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(255, 200, 120, .25), rgba(255, 140, 60, .08) 55%, transparent 100%);
+  mix-blend-mode: soft-light;
+}
+
+.gp-hero-proto__sun-glow {
+  position: absolute;
+  top: -10%;
+  right: -6%;
+  width: 46%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 241, 201, .9) 0%, rgba(255, 221, 140, .35) 35%, rgba(255, 200, 100, 0) 70%);
+  filter: blur(2px);
+  animation: gp-hero-sun-breathe 5.5s ease-in-out infinite alternate;
+}
+
+@keyframes gp-hero-sun-breathe {
+  from { transform: scale(.94); opacity: .75; }
+  to { transform: scale(1.06); opacity: 1; }
+}
+
+/* --- Noche calurosa --- */
+.gp-hero-proto__night-tint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 15, 40, .55), rgba(20, 10, 35, .65));
+  mix-blend-mode: multiply;
+}
+
+.gp-hero-proto__heat-haze {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 0;
+  height: 40%;
+  background: radial-gradient(ellipse at center bottom, rgba(255, 140, 60, .2), transparent 70%);
+  filter: blur(6px);
+  animation: gp-hero-heat-breathe 4s ease-in-out infinite alternate;
+}
+
+@keyframes gp-hero-heat-breathe {
+  from { opacity: .5; transform: scaleY(.92); }
+  to { opacity: 1; transform: scaleY(1.05); }
+}
+
+.gp-hero-proto__star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation-name: gp-hero-star-twinkle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes gp-hero-star-twinkle {
+  from { opacity: var(--star-min, .15); }
+  to { opacity: var(--star-max, .9); }
+}
+
 .gp-hero-proto__content {
   /* Padding simétrico (antes 28px/64px, pensado para contenido pegado
      abajo) — igual que gpHeroBanner.css: con justify-content:center en
