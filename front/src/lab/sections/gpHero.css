@@ -61,30 +61,27 @@
    y del contenido), pointer-events:none para no tapar los clicks del
    botón de horarios/CTA que están por debajo en el DOM.
    Pedido después: "se ve medio mal, no parece lluvia natural" — un
-   repeating-linear-gradient es, por definición, perfectamente regular
-   (franjas idénticas y parejas), no hay forma de que lea como orgánico.
-   Se cambia de técnica: gotas individuales dispersas al azar vía
-   box-shadow (ver buildRainShadows en GpHeroPrototype.jsx) — un elemento
-   base invisible (gp-hero-proto__rain-drop) más N copias vía box-shadow,
-   cada una con su propio x/y/opacidad al azar, animadas con transform
-   (no top/left, más barato) cayendo en diagonal. Dos capas de
-   profundidad: "cerca" (menos gotas, más grandes/brillantes/rápidas) y
-   "lejos" (más gotas, chicas/tenues/lentas, con blur).
+   repeating-linear-gradient es, por definición, perfectamente regular, no
+   hay forma de que lea como orgánico. Se cambia a gotas individuales
+   dispersas al azar.
    Pedido después: "se nota cuando un grupo de gotas se corta y
-   desaparece" — cada capa se dibuja DOS veces apiladas en el JSX (mismo
-   patrón, offset por RAIN_TILE_HEIGHT) y el translateY de la animación
-   recorre EXACTAMENTE esa misma distancia — así, en el instante del
-   reinicio del loop, la segunda copia ya está donde estaba la primera y
-   el corte queda invisible (ver comentario largo en GpHeroPrototype.jsx,
-   es el truco estándar de "tiling" para loops continuos).
+   desaparece" — cada gota se dibuja DOS veces apiladas en el JSX (mismo
+   x/tamaño/opacidad/timing, offset por RAIN_TILE_HEIGHT) y el translateY
+   de su animación recorre EXACTAMENTE esa misma distancia — así, en el
+   instante del reinicio del loop de ESA gota, la segunda copia ya está
+   donde estaba la primera, y el corte queda invisible (truco estándar de
+   "tiling" para loops continuos).
    Pedido después: "¿podemos hacer que caigan de manera aleatoria
-   infinitamente? se nota que se reacomodan siempre al mismo lugar" — con
-   una sola capa el patrón entero es fijo, se repite idéntico cada
-   duración de ciclo. Pasa a 4 capas (RAIN_LAYERS en GpHeroPrototype.jsx),
-   cada una con su propio patrón/duración/delay al azar — una sola clase
-   genérica acá (el height/duration/delay/blur/drift los pone el inline
-   style por capa), con animation-duration/delay/--rain-drift variables
-   por instancia en vez de clases --near/--far fijas. */
+   infinitamente? se nota que se reacomodan siempre al mismo lugar" — un
+   primer intento agrupaba las gotas en 4 "capas" compartiendo timing (una
+   sola animación por capa, vía N copias de box-shadow en un elemento) —
+   más liviano, pero cada capa entera volvía a su patrón idéntico cada
+   ciclo (1.1-2.3s, perceptible). Ahora cada gota es su PROPIO elemento con
+   su PROPIO timing al azar (ver buildRainDrops en GpHeroPrototype.jsx) —
+   una sola clase genérica acá, todo lo que varía por gota (posición,
+   tamaño, opacidad, blur, duración, delay, deriva) lo pone el inline
+   style. Más elementos en el DOM, pero sigue siendo liviano (spans
+   simples animados con transform). */
 .gp-hero-proto__weather {
   position: absolute;
   inset: 0;
@@ -96,23 +93,18 @@
 
 .gp-hero-proto__rain-drop {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 1px;
   animation-name: gp-hero-rain-fall;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-  /* top real: lo pone el inline style (0 o -RAIN_TILE_HEIGHT, dos copias
-     por capa) — este top:0 es solo el valor por defecto del navegador. */
+  /* left/top/width/height/background: los pone el inline style por gota
+     (ver GpHeroPrototype.jsx) — acá solo lo compartido por todas. */
 }
 
-/* El elemento base no se ve (sin background) — lo que se ve son las N
-   copias vía box-shadow (inline, de buildRainShadows), que sí se mueven
-   junto con el elemento al animar su transform. La distancia vertical
-   (700px) es RAIN_TILE_HEIGHT — tiene que coincidir exacto con el valor
-   de GpHeroPrototype.jsx para que el loop no se note. La deriva
-   horizontal (--rain-drift) es distinta por capa (inline style), para
-   que tampoco todas deriven hacia el mismo lado al mismo ritmo. */
+/* La distancia vertical (700px) es RAIN_TILE_HEIGHT — tiene que coincidir
+   exacto con el valor de GpHeroPrototype.jsx para que el loop no se
+   note. La deriva horizontal (--rain-drift) es distinta por gota (inline
+   style), para que tampoco todas deriven hacia el mismo lado al mismo
+   ritmo. */
 @keyframes gp-hero-rain-fall {
   from { transform: translate(0, 0); }
   to { transform: translate(var(--rain-drift, -30px), 700px); }

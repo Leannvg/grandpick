@@ -2,6 +2,27 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: cada gota de lluvia con timing propio (no por capas)
+
+- **Pedido**: "podemos verlo por tu cuenta para que veas que se nota
+  cuando cambia o reinicia el bucle". Al revisarlo encontré que en este
+  entorno headless el reloj de animación corre mucho más rápido que el
+  tiempo real (confirmado con `getAnimations().currentTime`: 13s de
+  animación en 1s real) — mis capturas espaciadas de la vuelta anterior no
+  eran prueba confiable de esto. Pero revisando el código encontré el bug
+  real, independiente de ese problema de medición: las 4 "capas" (vuelta
+  anterior) compartían timing dentro de cada una — aunque el conjunto de
+  las 4 juntas no coincidía nunca exacto, CADA capa por separado sí volvía
+  a su patrón idéntico cada 1.1-2.3s (su propia duración), un intervalo
+  corto y perceptible, sobre todo la capa de gotas grandes/brillantes.
+- Fix real: cada gota pasa a ser su PROPIO elemento con su PROPIO timing
+  al azar (`buildRainDrops`, en vez de agrupar en pocas "capas" vía
+  box-shadow) — duración, delay, tamaño, opacidad, blur y deriva, todo
+  independiente por gota (~100 gotas × 2 copias para el truco de tiling =
+  200 elementos). Confirmado: 78 duraciones únicas entre las 100 gotas
+  (antes, 4 compartidas) — ya no hay ningún subconjunto de gotas que
+  comparta ciclo y se note repetirse.
+
 ## 2026-11-07 · Laboratorio: lluvia con 4 capas desfasadas, sin ciclo perceptible
 
 - **Pedido**: "¿podemos hacer que las gotas caigan de manera aleatoria

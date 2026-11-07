@@ -13,60 +13,57 @@ import australiaPhoto from "../assets/australia.jpg";
 // repeating-linear-gradient es, por definición, un patrón perfectamente
 // regular (franjas idénticas y parejas), no hay forma de que eso se lea
 // como orgánico. La técnica real para esto es dispersar "gotas"
-// individuales en posiciones al azar vía box-shadow (un solo elemento
-// base invisible + N copias vía box-shadow, cada una con su propio
-// x/y/opacidad) — mismo truco clásico que se usa para campos de
-// estrellas. Se arma una sola vez por instancia (useMemo), no en cada
-// render.
+// individuales en posiciones al azar — animadas cayendo en diagonal.
 //
 // Pedido después: "se nota cuando un grupo de gotas se corta y
-// desaparece y vuelve a aparecer arriba" — la animación (un solo
-// translateY compartido por toda la capa) saltaba de golpe al reiniciar
-// el loop, y el rango disperso (y entre -300 y 900, 1200px) no coincidía
-// con la distancia que recorría el translate (650px), así que el patrón
-// no quedaba igual antes/después del salto. Fix: las gotas se generan en
-// UNA sola franja de alto RAIN_TILE_HEIGHT (no un rango grande), y esa
-// misma franja se dibuja DOS veces apiladas (una arriba de la otra, ver
-// GpHeroPrototype) — al animar el translateY exactamente esa altura, en
-// el instante del reinicio la segunda copia ya está exactamente donde
-// estaba la primera, así el corte queda invisible (es un truco estándar
-// de "tiling" para loops continuos, no hace falta JS extra para eso).
+// desaparece y vuelve a aparecer arriba" — cada gota se dibuja DOS veces
+// apiladas (una arriba de la otra, top: 0 y top: -RAIN_TILE_HEIGHT) y el
+// translateY de su animación recorre EXACTAMENTE esa misma distancia —
+// así, en el instante del reinicio del loop, la segunda copia ya está
+// donde estaba la primera, y el corte queda invisible (truco estándar de
+// "tiling" para loops continuos).
+//
+// Pedido después: "¿podemos hacer que caigan de manera aleatoria
+// infinitamente? se nota que se reacomodan siempre al mismo lugar" — el
+// primer intento agrupaba las gotas en 4 "capas" compartiendo timing
+// (menos trabajo: una sola animación por capa, reusando un solo elemento
+// con N copias vía box-shadow). El problema: aunque el CONJUNTO completo
+// de las 4 capas juntas no coincidía nunca exacto, CADA capa por separado
+// sí volvía a su patrón idéntico cada 1.1-2.3s — un intervalo corto y
+// perceptible, sobre todo en la capa de gotas grandes/brillantes (la más
+// vistosa). Fix real: cada gota es su PROPIO elemento con su PROPIO
+// timing al azar (duración, delay, tamaño, opacidad, deriva — todo
+// independiente, no agrupado en unas pocas capas compartidas). Con ~100
+// gotas cada una con un timing distinto, no hay ningún subconjunto visible
+// que comparta ciclo y se note repetirse. Son más elementos en el DOM que
+// la técnica de box-shadow (200 contando el duplicado para el tiling),
+// pero sigue siendo liviano (spans simples animados con transform, sin
+// canvas ni librerías) — y es la única forma real de lograr "infinito y
+// sin patrón perceptible" con CSS puro.
 const RAIN_TILE_HEIGHT = 700;
 
-function buildRainShadows(count, xRange, tileHeight, opacityRange) {
+function buildRainDrops(count, xRange) {
   const drops = [];
   for (let i = 0; i < count; i++) {
-    const x = Math.round(xRange[0] + Math.random() * (xRange[1] - xRange[0]));
-    const y = Math.round(Math.random() * tileHeight);
-    const o = (opacityRange[0] + Math.random() * (opacityRange[1] - opacityRange[0])).toFixed(2);
-    drops.push(`${x}px ${y}px 0 0 rgba(255,255,255,${o})`);
+    // "depth" 0..1 encapsula varios atributos correlacionados a la vez
+    // (una gota "cerca" es más grande, más brillante, cae más rápido;
+    // una gota "lejos" es chica, tenue, lenta y un poco desenfocada) en
+    // vez de sortear cada atributo sin relación con los demás — da una
+    // sensación de profundidad más creíble que puro ruido.
+    const depth = Math.random();
+    const duration = +(2.6 - depth * 1.6).toFixed(2);
+    drops.push({
+      x: Math.round(xRange[0] + Math.random() * (xRange[1] - xRange[0])),
+      size: Math.round(6 + depth * 14),
+      opacity: (0.12 + depth * 0.55).toFixed(2),
+      duration,
+      delay: -(Math.random() * duration).toFixed(2),
+      drift: -(15 + Math.round(Math.random() * 45)),
+      blur: depth < 0.4 ? +((0.4 - depth) * 1.2).toFixed(2) : 0,
+    });
   }
-  return drops.join(", ");
+  return drops;
 }
-
-// Pedido después: "¿podemos hacer que las gotas caigan de manera
-// aleatoria infinitamente? se nota cuando se reinicia porque se
-// reacomodan siempre al mismo lugar" — correcto: con una sola capa, el
-// patrón entero es fijo y comparte una única animación, así que cada
-// duración de ciclo se repite IDÉNTICO (mismas gotas, mismo lugar, mismo
-// momento). En vez de una capa (o dos, cerca/lejos), se arman 4 capas
-// independientes — cada una con su propio patrón al azar (buildRainShadows
-// corre aparte por capa) Y su propia duración (ninguna es múltiplo de
-// otra, a propósito) Y un animation-delay negativo al azar (arranca la
-// animación "a mitad de camino", en un punto distinto del ciclo). El
-// resultado visible no se repite de forma perceptible: para que las 4
-// capas coincidan todas en el mismo punto a la vez hacen falta muchos
-// segundos (mínimo común múltiplo de 4 duraciones/delays al azar), mucho
-// más que lo que alguien mira el banner. Sigue sin canvas ni librerías —
-// la distancia vertical de cada capa sigue siendo RAIN_TILE_HEIGHT (ver
-// comentario de más arriba), así que el truco de "sin corte visible" al
-// reiniciar sigue funcionando igual, capa por capa.
-const RAIN_LAYERS = [
-  { key: "l1", count: 35, height: 18, opacity: [0.45, 0.7], duration: 1.1, blur: 0 },
-  { key: "l2", count: 45, height: 14, opacity: [0.3, 0.5], duration: 1.45, blur: 0 },
-  { key: "l3", count: 55, height: 10, opacity: [0.2, 0.35], duration: 1.85, blur: 0.3 },
-  { key: "l4", count: 60, height: 7, opacity: [0.1, 0.25], duration: 2.3, blur: 0.5 },
-];
 
 // Datos mock — esto NO pega contra el backend real, es solo para evaluar el
 // diseño. En la implementación real vendría de race.circuit.gp_name,
@@ -128,23 +125,11 @@ const DEFAULT_GP = {
  * cambia el contenido de .gp-hero-proto__content.
  */
 function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }) {
-  // 4 capas independientes (ver RAIN_LAYERS arriba) — cada una con su
-  // propio patrón de gotas al azar, duración y delay (también al azar,
-  // para que ni siquiera dos capas con la misma duración arranquen
-  // sincronizadas). Se arma UNA vez por instancia (useMemo), no en cada
-  // render — si se regenerara en cada render, las gotas "saltarían" a
-  // posiciones nuevas cada vez que algo del banner fuerza un re-render
-  // (ej. abrir Horarios).
-  const rainLayers = useMemo(
-    () =>
-      RAIN_LAYERS.map((layer) => ({
-        ...layer,
-        shadows: buildRainShadows(layer.count, [-50, 1500], RAIN_TILE_HEIGHT, layer.opacity),
-        delay: -(Math.random() * layer.duration).toFixed(2),
-        drift: -(20 + Math.round(Math.random() * 40)),
-      })),
-    []
-  );
+  // Cada gota con su propio timing al azar (ver buildRainDrops arriba).
+  // Se arma UNA vez por instancia (useMemo), no en cada render — si se
+  // regenerara en cada render, las gotas "saltarían" a posiciones nuevas
+  // cada vez que algo del banner fuerza un re-render (ej. abrir Horarios).
+  const rainDrops = useMemo(() => buildRainDrops(100, [-50, 1500]), []);
 
   const [scheduleOpen, setScheduleOpen] = useState(false);
   // Pedido: en mobile, los horarios se abren en la misma "bandeja" (bottom
@@ -268,32 +253,34 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }
             lluvia nomás (el resto — tormenta/sol/nublado/noche calurosa —
             queda para después de validar este). Capa propia encima del
             degradado y debajo del topbar/contenido (aria-hidden: puro
-            efecto visual, no aporta información). Gotas dispersas al azar
-            (ver buildRainShadows arriba) en vez de un patrón regular —
-            reportado que un degradado repetido "no parecía lluvia
-            natural", de ahí el cambio de técnica.
-            Cada una de las 4 capas (rainLayers, ver RAIN_LAYERS arriba) se
-            dibuja DOS veces con el MISMO patrón, una arriba de la otra
-            (top: 0 y top: -RAIN_TILE_HEIGHT) — con la animación cayendo
-            exactamente RAIN_TILE_HEIGHT px, al reiniciar el loop de CADA
-            capa la segunda copia ya quedó donde estaba la primera,
-            invisible el corte. La duración/delay distintos por capa (ver
-            useMemo de rainLayers) son lo que evita que todo el conjunto
-            se note repetirse siempre igual (reportado: "se nota cuando se
-            reinicia porque se reacomodan siempre al mismo lugar"). */}
+            efecto visual, no aporta información).
+            Cada gota (rainDrops, ver buildRainDrops arriba) es su propio
+            elemento con su propio timing al azar, y se dibuja DOS veces
+            apiladas (top: 0 y top: -RAIN_TILE_HEIGHT, mismo x/tamaño/
+            opacidad/duración/delay en ambas copias) — con la animación
+            cayendo exactamente RAIN_TILE_HEIGHT px, al reiniciar el loop
+            de ESA gota la segunda copia ya quedó donde estaba la primera,
+            invisible el corte. Que cada gota tenga su propio timing (no
+            unas pocas "capas" compartidas) es lo que evita que se note
+            un grupo repitiéndose siempre igual (reportado: "se nota
+            cuando se reinicia porque se reacomodan siempre al mismo
+            lugar" — con capas compartidas, esa capa entera volvía a su
+            patrón exacto cada ciclo, un intervalo corto y perceptible). */}
         {gp.weather === "rain" && (
           <div className="gp-hero-proto__weather gp-hero-proto__weather--rain" aria-hidden="true">
-            {rainLayers.map((layer) => {
+            {rainDrops.map((drop, i) => {
               const dropStyle = {
-                boxShadow: layer.shadows,
-                height: layer.height,
-                animationDuration: `${layer.duration}s`,
-                animationDelay: `${layer.delay}s`,
-                "--rain-drift": `${layer.drift}px`,
-                filter: layer.blur ? `blur(${layer.blur}px)` : undefined,
+                left: drop.x,
+                width: 1,
+                height: drop.size,
+                background: `rgba(255,255,255,${drop.opacity})`,
+                animationDuration: `${drop.duration}s`,
+                animationDelay: `${drop.delay}s`,
+                "--rain-drift": `${drop.drift}px`,
+                filter: drop.blur ? `blur(${drop.blur}px)` : undefined,
               };
               return (
-                <Fragment key={layer.key}>
+                <Fragment key={i}>
                   <span className="gp-hero-proto__rain-drop" style={{ ...dropStyle, top: 0 }}></span>
                   <span className="gp-hero-proto__rain-drop" style={{ ...dropStyle, top: -RAIN_TILE_HEIGHT }}></span>
                 </Fragment>
