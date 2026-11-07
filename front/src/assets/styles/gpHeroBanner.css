@@ -71,24 +71,21 @@
    que NextRaceCTA.jsx usa hoy (.nr-cta__container > .nr-cta__info +
    .nr-cta__countdown, de globals.css) — por eso no hay reglas propias para
    la info/el contador/la pastilla acá, vienen todas de globals.css. Lo
-   único que agrega este bloque es la posición (flotando sobre la foto) y
-   el padding, copiado del `.nr-cta` real (que no se puede usar tal cual
-   porque trae background sólido). */
+   único que agrega este bloque es la posición (flotando sobre la foto),
+   el padding vertical, copiado del `.nr-cta` real (que no se puede usar
+   tal cual porque trae background sólido) — y nada de padding horizontal
+   propio: el margen a los costados lo da la clase real `.container`
+   (Bootstrap) en el div de adentro (ver GpHeroBanner.jsx), la MISMA grilla
+   que usa el Nav y el resto del sitio, en vez de un padding en px propio
+   e inventado para este banner que se desalineaba del resto de la web en
+   pantallas anchas. */
 .gp-hero-banner__topbar {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   z-index: 3;
-  /* Pedido: "dar un poco de margen a los costados" — 2px dejaba bandera y
-     contador pegados al borde de la pantalla en mobile. */
-  padding: 6px 16px;
-}
-
-@media (min-width: 768px) {
-  .gp-hero-banner__topbar {
-    padding: 8px 50px;
-  }
+  padding: 6px 2px;
 }
 
 .gp-hero-banner__eyebrow {

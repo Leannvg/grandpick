@@ -2,6 +2,22 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · GpHeroBanner: la barra de arriba pasa a usar la grilla real del sitio
+
+- **Pedido**: "poner el mismo container que tiene los botones del nav o
+  contenido... para que no se vayan tanto a los costados y seguir una
+  grilla en toda la web, lo mismo en mobile". La barra de país/contador
+  tenía un padding horizontal en px inventado para este banner (16px
+  mobile / 50px desktop, de un ajuste anterior) — en vez de eso, se suma
+  la clase real `.container` (Bootstrap) al div interno
+  (`nr-cta__container container`), la misma que ya usan `Nav.jsx` y
+  `NextRaceCTA.jsx` en el resto del sitio. `.gp-hero-banner__topbar` vuelve
+  a un padding vertical nomás (`6px 2px`, igual que `.nr-cta` real) — el
+  ancho/centrado real lo da `.container`, no un valor manual. Verificado
+  en 1920px que la barra queda alineada con el logo/menú del Nav (antes se
+  corría más angosta en pantallas anchas) y en mobile sigue con margen a
+  los costados, ahora heredado de la grilla en vez de un número suelto.
+
 ## 2026-11-07 · useNextRace: se saca el flash de "Predecir ahora" → "En curso" al cargar
 
 - **Reportado con capturas**: al cargar Home con una carrera en curso, el

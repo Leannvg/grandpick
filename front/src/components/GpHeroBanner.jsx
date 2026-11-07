@@ -198,7 +198,12 @@ function GpHeroBanner() {
         <div className="gp-hero-banner__overlay"></div>
 
         <div className="gp-hero-banner__topbar">
-          <div className="nr-cta__container">
+          {/* Pedido: "poner el mismo container que tiene los botones del
+              nav o contenido... para que no se vayan tanto a los costados"
+              — se suma la clase real .container (Bootstrap, la misma que
+              usa Nav.jsx y NextRaceCTA.jsx: "nr-cta__container container")
+              en vez del padding en px inventado que tenía este banner. */}
+          <div className="nr-cta__container container">
             <div className="nr-cta__info">
               <div className="nr-cta__country">
                 <span className="emoji-flag nr-cta__flag">
