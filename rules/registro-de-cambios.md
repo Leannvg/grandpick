@@ -23,6 +23,29 @@ Orden cronológico inverso (lo más nuevo arriba).
   del prototipo — `NextRaceCTA.jsx` real no tiene título, así que no hay
   nada que reusar acá).
 
+## 2026-11-07 · Laboratorio: banner probado con fotos de otros GPs (Brasil, Las Vegas, Qatar, Yas Marina)
+
+- **Pedido**: ver cómo se ve el banner con foto con GPs reales además de
+  Australia. `GpHeroPrototype.jsx` pasa a recibir una prop `gp` (foto,
+  bandera, país, fecha, título — default = Australia, los valores que
+  antes estaban hardcodeados) en vez de tener todo fijo, y
+  `PrototypesSection.jsx` suma un bloque nuevo con las 4 fotos
+  (`front/src/lab/assets/brasil.jpg`, `lasvegas.jpg`, `qatar.jpg`,
+  `yasmarina.jpg`) sobre los mismos datos mock de horarios.
+- Las fotos originales (Qatar en `.avif`, Brasil primero en `.jpg`, luego
+  reemplazada por un `.png` pedido aparte) no eran servibles/uniformes tal
+  cual — no hay ImageMagick ni Python con Pillow instalados en esta
+  máquina para convertir. Se convirtieron dibujándolas en un `<canvas>`
+  desde el propio navegador (Chrome decodifica avif/png nativo) y
+  exportando con `toBlob("image/jpeg")`. Las Vegas y Yas Marina ya eran
+  JPEG reales pese a alguna extensión `.jpeg`, solo se normalizó la
+  extensión a `.jpg`.
+- Degradado de legibilidad probado contra encuadres bien distintos
+  (circuito callejero nocturno de Las Vegas, atardecer de Qatar, cielo
+  nublado de Brasil, noche cerrada en Yas Marina) — el contraste del
+  título se sostiene en los cuatro casos sin ajustes adicionales al
+  overlay existente.
+
 ## 2026-11-06 · Laboratorio: desplegable de desktop centrado en vez de anclado a un borde
 
 - El ensanche a 340px del desplegable (entrada anterior) había quedado

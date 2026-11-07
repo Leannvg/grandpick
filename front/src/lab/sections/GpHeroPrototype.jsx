@@ -28,13 +28,26 @@ const MOCK_SCHEDULE = [
   ]},
 ];
 
+const DEFAULT_GP = {
+  photo: australiaPhoto,
+  flag: "🇦🇺",
+  country: "AUSTRALIA",
+  date: "06–08 NOVIEMBRE",
+  title: "Gran Premio de Australia",
+};
+
 /**
  * PROTOTIPO — banner de próxima carrera con foto de fondo por GP.
  * Vive solo en el laboratorio (front/lab.html), no se importa desde
  * ningún archivo de producción. Reemplazaría eventualmente a
  * front/src/components/NextRaceCTA.jsx una vez aprobado el diseño.
+ *
+ * `gp` parametriza foto/bandera/país/fecha/título — pedido para poder
+ * previsualizar varias fotos reales (Brasil, Las Vegas, Qatar, Yas Marina)
+ * sin duplicar el componente entero. Default = Australia (el único caso
+ * que había antes de parametrizarlo).
  */
-function GpHeroPrototype({ withPhoto = true }) {
+function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP }) {
   const [scheduleOpen, setScheduleOpen] = useState(false);
   // Pedido: en mobile, los horarios se abren en la misma "bandeja" (bottom
   // sheet) que ya usa el resto del sitio (comparación de predicciones,
@@ -149,7 +162,7 @@ function GpHeroPrototype({ withPhoto = true }) {
     <div className={`gp-hero-proto ${scheduleOpen ? "is-open" : ""}`}>
       <div className={`gp-hero-proto__hero ${withPhoto ? "" : "gp-hero-proto--fallback"}`}>
         <div className="gp-hero-proto__bg">
-          {withPhoto && <img src={australiaPhoto} alt="" />}
+          {withPhoto && <img src={gp.photo} alt="" />}
         </div>
         <div className="gp-hero-proto__overlay"></div>
 
@@ -166,9 +179,9 @@ function GpHeroPrototype({ withPhoto = true }) {
           <div className="nr-cta__container">
             <div className="nr-cta__info">
               <div className="nr-cta__country">
-                <span className="emoji-flag nr-cta__flag">🇦🇺</span>
-                <span className="nr-cta__country-name">AUSTRALIA</span>
-                <span className="nr-cta__date">06–08 NOVIEMBRE</span>
+                <span className="emoji-flag nr-cta__flag">{gp.flag}</span>
+                <span className="nr-cta__country-name">{gp.country}</span>
+                <span className="nr-cta__date">{gp.date}</span>
               </div>
               <div className="nr-cta__meta">
                 <span className="nr-cta__round nr-cta__round--qualy">QUALIFYING</span>
@@ -238,7 +251,7 @@ function GpHeroPrototype({ withPhoto = true }) {
               propia del prototipo (no existe en NextRaceCTA.jsx real, que no
               tiene título — ver gp-hero-proto__eyebrow en gpHero.css). */}
           <span className="gp-hero-proto__eyebrow">Próxima carrera</span>
-          <h2 className="gp-hero-proto__title">Gran Premio de Australia</h2>
+          <h2 className="gp-hero-proto__title">{gp.title}</h2>
 
           <a href="#" className="gp-hero-proto__cta" onClick={(e) => e.preventDefault()}>
             Ver circuito
@@ -268,7 +281,7 @@ function GpHeroPrototype({ withPhoto = true }) {
             >
               <div className="drawer-handle"></div>
               <div className="gp-compare-drawer-header">
-                <p className="gp-hero-proto__drawer-title">Gran Premio de Australia</p>
+                <p className="gp-hero-proto__drawer-title">{gp.title}</p>
               </div>
             </div>
 

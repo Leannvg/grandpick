@@ -1,4 +1,19 @@
 import GpHeroPrototype from "./GpHeroPrototype.jsx";
+import brasilPhoto from "../assets/brasil.jpg";
+import lasVegasPhoto from "../assets/lasvegas.jpg";
+import qatarPhoto from "../assets/qatar.jpg";
+import yasMarinaPhoto from "../assets/yasmarina.jpg";
+
+// Pedido: probar la foto de fondo con GPs reales además de Australia (la
+// única que había hasta ahora) — mismos datos mock de horarios para las
+// cuatro, lo que cambia es la foto/bandera/país/título (ver prop `gp` en
+// GpHeroPrototype.jsx).
+const SAMPLE_GPS = [
+  { key: "brasil", photo: brasilPhoto, flag: "🇧🇷", country: "BRASIL", date: "07–09 NOVIEMBRE", title: "Gran Premio de Brasil" },
+  { key: "lasvegas", photo: lasVegasPhoto, flag: "🇺🇸", country: "ESTADOS UNIDOS", date: "20–22 NOVIEMBRE", title: "Gran Premio de Las Vegas" },
+  { key: "qatar", photo: qatarPhoto, flag: "🇶🇦", country: "QATAR", date: "28–30 NOVIEMBRE", title: "Gran Premio de Qatar" },
+  { key: "yasmarina", photo: yasMarinaPhoto, flag: "🇦🇪", country: "EMIRATOS ÁRABES UNIDOS", date: "05–07 DICIEMBRE", title: "Gran Premio de Abu Dabi" },
+];
 
 /**
  * Espacio de trabajo para diseños en evaluación, todavía no aprobados ni
@@ -44,6 +59,22 @@ function PrototypesSection() {
           &ldquo;salte&rdquo; al cambiar de GP.
         </p>
         <GpHeroPrototype withPhoto={false} />
+      </div>
+
+      <div className="lab-block">
+        <h2 className="lab-block-title">Prueba con fotos de otros GPs</h2>
+        <p className="lab-prose" style={{ marginBottom: 14 }}>
+          Mismo banner, variando la foto de fondo para ver cómo se comporta
+          el degradado/contraste de legibilidad con distintos encuadres y
+          condiciones de luz (circuito callejero de noche, desierto, pista
+          tradicional de día). Horarios con los mismos datos mock que la
+          versión de Australia, arriba — acá lo que se evalúa es la foto.
+        </p>
+        {SAMPLE_GPS.map((gp) => (
+          <div key={gp.key} style={{ marginBottom: 24 }}>
+            <GpHeroPrototype withPhoto gp={gp} />
+          </div>
+        ))}
       </div>
     </div>
   );
