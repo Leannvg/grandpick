@@ -147,6 +147,25 @@ function PrototypesSection() {
           </div>
         </div>
       </div>
+
+      <div className="lab-block">
+        <h2 className="lab-block-title">Efecto de clima animado (lluvia)</h2>
+        <p className="lab-prose" style={{ marginBottom: 14 }}>
+          Pedido: "¿es posible agregar un efecto de lluvia al banner?...
+          tormenta, sol, nublado, noche calurosa, cada uno con animación".
+          Arranca con lluvia nomás, para validar el mecanismo antes de
+          construir el resto — foto de Brasil (ya tiene cielo tormentoso,
+          encaja). Capa de CSS puro encima de la foto (dos capas de gotas,
+          "cerca"/"lejos", animadas en diagonal), sin canvas ni librerías.
+          Dato 100% mock por ahora (<code>gp.weather</code>) — no hay
+          ningún campo real de clima todavía; de dónde saldría ese dato en
+          la implementación real es una conversación aparte.
+        </p>
+        <GpHeroPrototype
+          withPhoto
+          gp={{ ...SAMPLE_GPS[0], round: { label: "CARRERA", type: "race" }, isInProgress: true, weather: "rain" }}
+        />
+      </div>
     </div>
   );
 }

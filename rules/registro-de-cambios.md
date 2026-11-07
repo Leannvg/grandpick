@@ -2,6 +2,27 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: efecto de lluvia animado en el banner + menos espacio antes de los selects
+
+- **Pedido**: "quitaría un poco de espacio vacío entre el primer select y
+  la imagen del banner". `.gp-hero-proto__predict-below` baja su
+  `padding-top` de 110px a 50px (se mantiene la franja de degradado de
+  arriba sin cambios).
+- **Pedido**: "¿es posible agregar un efecto de lluvia al banner?... se
+  me ocurriría agregar efectos de animación según el clima (lluvia,
+  tormenta, sol, nublado, noche calurosa)". Arranca con lluvia nomás
+  (acordado explícitamente, para validar el mecanismo antes de construir
+  el resto). `gp.weather` (`null` | `"rain"`, 100% mock — no hay ningún
+  campo real de clima todavía) agrega `.gp-hero-proto__weather--rain`:
+  dos capas de `repeating-linear-gradient` ("cerca"/"lejos", distinto
+  grosor/opacidad/velocidad para dar profundidad) animadas en diagonal
+  vía `background-position`, CSS puro, sin canvas ni librerías. Capa
+  propia por encima de la foto/degradado y por debajo del topbar/contenido
+  (`pointer-events: none`, no tapa clicks). Nuevo bloque de demo en
+  `PrototypesSection.jsx` con la foto de Brasil (cielo ya tormentoso, foto
+  elegida a propósito para que encaje). Animación confirmada corriendo
+  (`animationPlayState: running`), no es una captura estática.
+
 ## 2026-11-07 · Laboratorio: transición de fondo hacia los selects + se sincroniza con producción
 
 - **Pedido**: "¿cómo se verían los select de predicción abajo? ¿sería

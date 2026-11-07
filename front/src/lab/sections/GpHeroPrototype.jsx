@@ -37,6 +37,15 @@ const DEFAULT_GP = {
   title: "Gran Premio de Australia",
   round: { label: "QUALIFYING", type: "qualy" },
   isInProgress: false,
+  // Pedido: "¿es posible agregar un efecto de lluvia al banner?... se me
+  // ocurriría agregar efectos de animación según el clima". Arranca con
+  // uno solo (lluvia, pedido explícito) para validar el mecanismo antes
+  // de construir el resto (tormenta/sol/nublado/noche calurosa). Dato
+  // 100% mock por ahora — no hay ningún campo real que diga el clima de
+  // un GP; si se aprueba, ver de dónde sale ese dato en la implementación
+  // real (¿campo manual en el admin? ¿una API de clima?) es aparte.
+  // null | "rain" — ver .gp-hero-proto__weather* en gpHero.css.
+  weather: null,
 };
 
 /**
@@ -177,6 +186,15 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }
           {withPhoto && <img src={gp.photo} alt="" />}
         </div>
         <div className="gp-hero-proto__overlay"></div>
+
+        {/* Pedido: efecto de clima animado sobre la foto, arrancando con
+            lluvia nomás (el resto — tormenta/sol/nublado/noche calurosa —
+            queda para después de validar este). Capa propia encima del
+            degradado y debajo del topbar/contenido (aria-hidden: puro
+            efecto visual, no aporta información). */}
+        {gp.weather === "rain" && (
+          <div className="gp-hero-proto__weather gp-hero-proto__weather--rain" aria-hidden="true"></div>
+        )}
 
         {/* Pedido: la barra de datos (circuito, sesión, fecha) y el contador
             tienen que ser LA MISMA que ya está en producción
