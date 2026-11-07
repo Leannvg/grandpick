@@ -188,7 +188,7 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }
             background sólido) — al no usar esa clase, el fondo ya queda
             transparente sin tocar nada más. */}
         <div className="gp-hero-proto__topbar">
-          <div className="nr-cta__container">
+          <div className="nr-cta__container container">
             <div className="nr-cta__info">
               <div className="nr-cta__country">
                 <span className="emoji-flag nr-cta__flag">{gp.flag}</span>

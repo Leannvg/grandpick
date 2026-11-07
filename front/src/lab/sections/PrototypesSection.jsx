@@ -3,6 +3,7 @@ import brasilPhoto from "../assets/brasil.jpg";
 import lasVegasPhoto from "../assets/lasvegas.jpg";
 import qatarPhoto from "../assets/qatar.jpg";
 import yasMarinaPhoto from "../assets/yasmarina.jpg";
+import crystalBallIcon from "../../assets/icons/crystal_ball.png";
 
 // Pedido: probar la foto de fondo con GPs reales además de Australia (la
 // única que había hasta ahora) — mismos datos mock de horarios para las
@@ -108,6 +109,43 @@ function PrototypesSection() {
           variant="predictions"
           gp={{ ...SAMPLE_GPS[0], round: { label: "RACE", type: "race" }, isInProgress: false }}
         />
+
+        {/* Pedido: "¿sería mucho estirar la imagen por detrás de los 10
+            select?" — no, 10 filas interactivas sobre la foto compiten con
+            las cards blancas y rompen el patrón de "foto arriba, contenido
+            abajo" que ya usa todo el sitio (Home, Calendario). En vez de
+            estirar la foto, se continúa el mismo tono oscuro con el que
+            termina el degradado del banner (gp-hero-proto__predict-below),
+            así no hay un corte brusco entre el banner y la lista aunque la
+            foto en sí quede contenida arriba. Muestra parcial (4 de las 10
+            filas reales) — acá lo que se evalúa es la transición de fondo,
+            no los selects en sí (son los reales de Predictions.jsx,
+            .prediction-card/.prediction-rank/.prediction-select-wrapper,
+            de predictions.css, sin tocar; el control del select se
+            aproxima visualmente nomás, no es el SearchableSelect real). */}
+        <div className="gp-hero-proto__predict-below">
+          <div className="prediction-cards-container container">
+            {[1, 2, 3, 4].map((n) => (
+              <div className="prediction-card" key={n}>
+                <div className="prediction-rank">{String(n).padStart(2, "0")}</div>
+                <div className="prediction-select-wrapper">
+                  <div className="gp-hero-proto__predict-select-mock">
+                    <span>Seleccione un piloto</span>
+                    <i className="bi bi-chevron-down"></i>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="lab-prose" style={{ textAlign: "center", opacity: .6, marginTop: -4 }}>
+            (muestra parcial — son 10 filas en la pantalla real)
+          </p>
+          <div className="prediction-actions">
+            <button type="button" className="btn-submit-prediction" disabled title="Guardar predicción">
+              <img src={crystalBallIcon} alt="Predecir" className="crystal-ball-icon" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

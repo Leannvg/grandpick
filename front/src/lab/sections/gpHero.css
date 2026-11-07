@@ -14,12 +14,19 @@
      poder recibir clicks ahí; con overflow:hidden en este contenedor el
      centro del botón queda justo en el borde de recorte y el hit-test le
      falla (confirmado probando en el laboratorio). El recorte/redondeo va
-     en las capas de fondo (bg/overlay) en vez de acá. */
+     en las capas de fondo (bg/overlay) en vez de acá.
+     600px + contenido centrado (antes 460px + flex-end, pegado abajo):
+     ya se había probado y aprobado este cambio para el componente real
+     (gpHeroBanner.css) pero había quedado sin portar acá — hecho ahora
+     para que el laboratorio no se desincronice de lo que ya está en
+     producción (se notó al superponerse la franja nueva de abajo con el
+     banner de estado, que con el viejo 460px/flex-end quedaba pegado
+     justo al borde inferior). */
   position: relative;
-  min-height: 460px;
+  min-height: 600px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   color: #fff;
   text-align: center;
 }
@@ -50,8 +57,12 @@
 }
 
 .gp-hero-proto__content {
+  /* Padding simétrico (antes 28px/64px, pensado para contenido pegado
+     abajo) — igual que gpHeroBanner.css: con justify-content:center en
+     .gp-hero-proto__hero, un padding parejo es lo que lee como centrado
+     de verdad. */
   position: relative;
-  padding: 28px 20px 64px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -65,6 +76,11 @@
    único que agrega este bloque es la posición (flotando sobre la foto) y
    el padding, copiado del `.nr-cta` real (que no se puede usar tal cual
    porque trae background sólido). */
+/* Ancho/centrado real vía la clase .container (Bootstrap, la misma que
+   usa Nav.jsx/NextRaceCTA.jsx — ver nr-cta__container.container en el
+   JSX), no un padding en px propio — igual que se sincronizó en
+   gpHeroBanner.css (producción): sin esto la barra se corría más angosta
+   que el resto del sitio en pantallas anchas. */
 .gp-hero-proto__topbar {
   position: absolute;
   top: 0;
@@ -72,12 +88,6 @@
   right: 0;
   z-index: 3;
   padding: 6px 2px;
-}
-
-@media (min-width: 768px) {
-  .gp-hero-proto__topbar {
-    padding: 8px 50px;
-  }
 }
 
 .gp-hero-proto__eyebrow {
@@ -300,10 +310,6 @@
   .gp-hero-proto__title {
     font-size: 1.9rem;
   }
-
-  .gp-hero-proto__content {
-    padding-top: 90px;
-  }
 }
 
 /* Primer intento (apilar info/contador) ocupaba demasiado alto en mobile
@@ -404,4 +410,43 @@
 .gp-hero-proto__predict-time .nr-cta__time-label {
   font-size: .68rem;
   letter-spacing: 1px;
+}
+
+/* Pedido: "¿sería mucho estirar la imagen por detrás de los 10 select?" —
+   no (ver comentario en PrototypesSection.jsx). En vez de eso, esta franja
+   continúa el mismo tono con el que termina el degradado del banner
+   (--color-dark-blue, el mismo token que usa el resto del sitio para
+   fondo oscuro — no un valor inventado), con un margen negativo que la
+   solapa un poco contra el borde inferior del banner + un degradado
+   propio arriba (de transparente al mismo tono) para que el corte entre
+   la foto y esta franja no se note, sin estirar la foto en sí. */
+.gp-hero-proto__predict-below {
+  position: relative;
+  margin-top: -90px;
+  padding: 110px 0 40px;
+  background: var(--color-dark-blue, #081D2B);
+}
+
+.gp-hero-proto__predict-below::before {
+  content: "";
+  position: absolute;
+  top: -90px;
+  left: 0;
+  right: 0;
+  height: 90px;
+  background: linear-gradient(to bottom, transparent, var(--color-dark-blue, #081D2B));
+}
+
+/* Aproximación visual del control real (SearchableSelect/react-select) en
+   su estado vacío — no es el componente real, el laboratorio no pega
+   contra la lista de pilotos. Mismos tokens de color que
+   .prediction-card .react-select__placeholder (de predictions.css). */
+.gp-hero-proto__predict-select-mock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 12px;
+  color: #999;
+  font-weight: 300;
+  font-size: 14px;
 }

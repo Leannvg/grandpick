@@ -2,6 +2,36 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: transición de fondo hacia los selects + se sincroniza con producción
+
+- **Pedido**: "¿cómo se verían los select de predicción abajo? ¿sería
+  mucho estirar la imagen por detrás de los 10 select?" — no (10 filas
+  interactivas sobre la foto compiten con las cards blancas y rompen el
+  patrón "foto arriba, contenido abajo" del resto del sitio). En cambio,
+  `PrototypesSection.jsx` suma una franja debajo del banner de Predicciones
+  (`.gp-hero-proto__predict-below`) que continúa el mismo tono oscuro con
+  el que termina el degradado del banner (`--color-dark-blue`, token real,
+  no un valor inventado) con un degradado propio arriba para que no se
+  note el corte — la foto en sí queda contenida en el banner, no se
+  estira. Debajo, una muestra parcial (4 de las 10 filas reales) de los
+  selects de predicción, con las clases reales de `predictions.css`
+  (`.prediction-cards-container`/`.prediction-card`/`.prediction-rank`/
+  `.prediction-select-wrapper`) y una aproximación visual del control
+  (no es el `SearchableSelect` real, el laboratorio no pega contra la
+  lista de pilotos) + el botón real de enviar (`.btn-submit-prediction`,
+  ícono real `crystal_ball.png`).
+- **Bug encontrado al probar**: la franja nueva tapaba el banner de
+  estado de la predicción. Causa: el laboratorio (`gpHero.css`) había
+  quedado con el alto/centrado viejo (460px, contenido pegado abajo) —
+  el fix a 600px + contenido centrado que ya se había hecho para el
+  componente real (`gpHeroBanner.css`, pedido explícito "en desktop el
+  alto de banner que sea de 600px... y centrar los textos") nunca se
+  portó acá. Se sincroniza `gpHero.css` con `gpHeroBanner.css`: 600px,
+  `justify-content: center`, padding simétrico del contenido, y la barra
+  de arriba pasa a usar `.container` (Bootstrap) en vez de padding en px
+  propio — mismos tres ajustes que ya tiene el componente real, para que
+  el laboratorio no se desincronice de lo que ya está en producción.
+
 ## 2026-11-07 · Laboratorio: se saca la info repetida del banner de Predicciones
 
 - **Reportado con captura**: en el banner de cabecera de Predicciones
