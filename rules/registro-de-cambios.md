@@ -2,6 +2,23 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Home: se saca el banner viejo (quedaba duplicado con GpHeroBanner)
+
+- **Reportado**: en producción, debajo del `GpHeroBanner` nuevo seguía
+  apareciendo el hero genérico de siempre (`Home.jsx`, sección
+  `.home-hero`): fondo fijo + "UN JUEGO DE PREDICCIÓN PARA LA F1" /
+  "CONVERTÍ TU PASIÓN EN PUNTOS." + tira "Predecí tus próximos resultados"
+  con flechas animadas linkeando a `/predictions` — mismo mensaje/acción
+  que el banner nuevo, dos veces seguidas en la misma página.
+- Se borra esa sección de `Home.jsx` (quedó `<InstallAppBanner />` como
+  primer bloque) y su CSS asociada en `assets/styles/home.css`
+  (`.home-hero*`, `.hero-bg`, `.hero-overlay`, `.cta-predictions`,
+  `.cta-content`, `.cta-timer`, `.cta-arrows*`, `@keyframes arrows-move`,
+  más los overrides responsive sueltos) — nada de esto se usaba en ningún
+  otro lado del sitio (confirmado por grep antes de borrar).
+- Entrada sumada a `front/src/lab/data/changelog.js` (cambio de
+  consistencia visual, por CLAUDE.md).
+
 ## 2026-11-07 · Banner de próxima carrera con foto: implementación real en producción
 
 - **Pedido**: "esto es para dejar preparado para subirlo a producción y que

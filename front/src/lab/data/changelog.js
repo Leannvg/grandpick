@@ -9,6 +9,12 @@
 // corta: fecha, título, 2-3 líneas de qué cambió y por qué.
 export const DESIGN_CHANGELOG = [
   {
+    date: "2026-11-07",
+    title: "Home: se saca el banner viejo, duplicado con el nuevo de próxima carrera",
+    summary:
+      "Al subir GpHeroBanner (foto por GP + CTA \"Predecir ahora\") a Home, quedó debajo el hero genérico de siempre (fondo fijo + \"Predecí tus próximos resultados\" con flechas animadas) — mismo mensaje, dos banners seguidos. Se borra el viejo (.home-hero y su CSS en home.css) — Home arranca directo con GpHeroBanner.",
+  },
+  {
     date: "2026-11-03",
     title: "Podio de usuarios: tag de país arriba y foto + nombre + puntos abajo",
     summary:
