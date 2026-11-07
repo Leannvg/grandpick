@@ -15,7 +15,10 @@ router.route('/api/circuits')
         autenticado,
         admin,
         uploadContext("circuits"),
-        multerControl.single("image"),
+        multerControl.fields([
+            { name: "image", maxCount: 1 },
+            { name: "banner_img", maxCount: 1 },
+        ]),
         mapImageToBody,
         validateCircuit,
         circuitsApiControllers.create
@@ -32,7 +35,10 @@ router.route('/api/circuits/:circuitId')
         autenticado,
         admin,
         uploadContext("circuits"),
-        multerControl.single("image"),
+        multerControl.fields([
+            { name: "image", maxCount: 1 },
+            { name: "banner_img", maxCount: 1 },
+        ]),
         mapImageToBody,
         validateCircuit,
         circuitsApiControllers.editById

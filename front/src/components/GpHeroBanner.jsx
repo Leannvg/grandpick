@@ -1,0 +1,295 @@
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { useNextRace } from "../hooks/useNextRace";
+import { useModalPhase } from "../hooks/useModalPhase";
+import { useEscapeKey } from "../hooks/useEscapeKey";
+import practiceSessionsServices from "../services/practiceSessions.services";
+import { formatRaceDate, getFlagEmoji } from "../utils/helpers";
+import { getImageUrl } from "../utils/cloudinary";
+import { buildSchedule, formatSessionTime } from "../utils/schedule";
+import "../assets/styles/gpHeroBanner.css";
+
+/**
+ * Banner de próxima carrera con foto de fondo por GP — reemplaza a
+ * NextRaceCTA.jsx SOLO en Home (ver App.jsx, `{isHome ? <GpHeroBanner /> :
+ * <NextRaceCTA />}`); en el resto de páginas del sitio sigue viendo
+ * NextRaceCTA sin cambios. Diseñado y probado en el laboratorio
+ * (front/src/lab/sections/GpHeroPrototype.jsx) con datos mock a lo largo de
+ * varias rondas de feedback — este componente es ese mismo diseño ya
+ * conectado a datos reales, ver rules/features/banner-proxima-carrera-con-foto.md
+ * para el mapeo completo mock→real.
+ */
+function GpHeroBanner() {
+  const { race, countryName, timeLeft, status } = useNextRace();
+  const [practices, setPractices] = useState([]);
+  const [scheduleOpen, setScheduleOpen] = useState(false);
+  const [zoneMode, setZoneMode] = useState("mine");
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  // Las prácticas (Practice_Sessions) no vienen en findCurrentOrNext() —
+  // se piden filtradas por circuito, igual que ya hace Calendar.jsx (ahí
+  // filtra client-side sobre el año completo; acá, al ser un solo circuito,
+  // se filtra server-side con el parámetro circuitId que ya soporta el
+  // servicio).
+  useEffect(() => {
+    const circuitId = race?.circuit?._id;
+    if (!circuitId) {
+      setPractices([]);
+      return;
+    }
+    practiceSessionsServices.findAll({ circuitId })
+      .then(setPractices)
+      .catch((err) => console.error("Error cargando prácticas para el banner:", err));
+  }, [race?.circuit?._id]);
+
+  useEscapeKey(scheduleOpen, () => setScheduleOpen(false));
+  const phase = useModalPhase(scheduleOpen);
+
+  useEffect(() => {
+    if (scheduleOpen && isMobile) {
+      const scrollY = window.scrollY;
+      document.body.style.top = `-${scrollY}px`;
+      document.body.classList.add("body-scroll-lock");
+    } else {
+      const lockedScrollY = document.body.style.top;
+      document.body.classList.remove("body-scroll-lock");
+      document.body.style.top = "";
+      if (lockedScrollY) window.scrollTo(0, -parseInt(lockedScrollY, 10));
+    }
+    return () => {
+      document.body.classList.remove("body-scroll-lock");
+      document.body.style.top = "";
+    };
+  }, [scheduleOpen, isMobile]);
+
+  // Deslizar para cerrar la bandeja (mismo gesto que FloatingPredictionCompare.jsx)
+  const [dragY, setDragY] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const dragStartRef = useRef(0);
+
+  const onDragStart = (e) => {
+    dragStartRef.current = e.clientY;
+    setDragging(true);
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const onDragMove = (e) => {
+    if (!dragging) return;
+    setDragY(Math.max(0, e.clientY - dragStartRef.current));
+  };
+  const onDragEnd = () => {
+    if (!dragging) return;
+    setDragging(false);
+    if (dragY > 100) setScheduleOpen(false);
+    else setDragY(0);
+  };
+
+  if (!race) return null;
+
+  const circuitId = race.circuit?._id;
+  const circuitZone = race.circuit?.timezone || "UTC";
+  const sessions = [...(race.sessions || [])].sort(
+    (a, b) => new Date(a.date_race).getTime() - new Date(b.date_race).getTime()
+  );
+  const groups = buildSchedule(sessions, practices);
+
+  // Mismas 3 claves que el chip de sesión del calendario/historial
+  // (qualy/sprint/race), para colorear igual en todo el sitio — igual que
+  // NextRaceCTA.jsx.
+  const sessionType = race.points_system?.type === "qualifying"
+    ? "qualy"
+    : (race.points_system?.type || "race");
+
+  const bannerImg = race.circuit?.banner_img;
+  const withPhoto = !!bannerImg;
+
+  const scheduleBody = (
+    <>
+      <div className="cal-zone" role="group" aria-label="Zona horaria">
+        <button
+          type="button"
+          className={zoneMode === "mine" ? "is-active" : ""}
+          onClick={() => setZoneMode("mine")}
+        >
+          <i className="bi bi-person-fill"></i>Mi tiempo
+        </button>
+        <button
+          type="button"
+          className={zoneMode === "circuit" ? "is-active" : ""}
+          onClick={() => setZoneMode("circuit")}
+        >
+          <i className="bi bi-geo-alt-fill"></i>Tiempo de circuito
+        </button>
+      </div>
+
+      {groups.map((g) => (
+        <div className="cal-card__group" key={g.key}>
+          <div className="cal-card__group-title">
+            <i className={`bi ${g.icon}`}></i>{g.title}
+          </div>
+          {g.items.map((it) => {
+            const t = formatSessionTime(it.iso, zoneMode === "mine" ? "local" : circuitZone);
+            const isPast = new Date(it.iso) <= new Date();
+            return (
+              <div className={`cal-session ${isPast ? "is-past" : ""}`} key={it.id}>
+                <div className="cal-session__date">
+                  <span className="cal-session__dow">{t.dow}</span>
+                  <span className="cal-session__dnum">{t.day}</span>
+                </div>
+                <span className="cal-session__sep" aria-hidden="true"></span>
+                <div className="cal-session__main">
+                  <span className="cal-session__name">{it.label}</span>
+                  <span className="cal-session__time">
+                    <i className="bi bi-clock"></i>{t.time}
+                  </span>
+                </div>
+                <div className="cal-session__end">
+                  {isPast && (
+                    <span className="cal-session__status-badge" title="Sesión finalizada">
+                      <i className="bi bi-check2"></i>
+                    </span>
+                  )}
+                  <span className={`cal-session__dur ${it.race ? "is-race" : it.label === "Sprint" ? "is-sprint" : ""}`}>
+                    {it.dur}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ))}
+    </>
+  );
+
+  return (
+    <div className={`gp-hero-banner ${scheduleOpen ? "is-open" : ""}`}>
+      <div className={`gp-hero-banner__hero ${withPhoto ? "" : "gp-hero-banner--fallback"}`}>
+        <div className="gp-hero-banner__bg">
+          {withPhoto && <img src={getImageUrl(bannerImg, 1600)} alt="" />}
+        </div>
+        <div className="gp-hero-banner__overlay"></div>
+
+        <div className="gp-hero-banner__topbar">
+          <div className="nr-cta__container">
+            <div className="nr-cta__info">
+              <div className="nr-cta__country">
+                <span className="emoji-flag nr-cta__flag">
+                  {getFlagEmoji(race.circuit?.country || race.id_circuit?.country)}
+                </span>
+                <span className="nr-cta__country-name">{countryName.toUpperCase()}</span>
+                <span className="nr-cta__date">
+                  {formatRaceDate(race.date_gp_start, race.date_gp_end, race.circuit?.timezone).toUpperCase()}
+                </span>
+              </div>
+              <div className="nr-cta__meta">
+                <span className={`nr-cta__round nr-cta__round--${sessionType}`}>{race.points_system?.type?.toUpperCase() || "RACE"}</span>
+              </div>
+            </div>
+
+            <div className="nr-cta__countdown" style={{ position: "relative" }}>
+              <div className="nr-cta__time">
+                <span className="nr-cta__time-value">{timeLeft.days}</span>
+                <span className="nr-cta__time-label">DÍAS</span>
+              </div>
+              <div className="nr-cta__time">
+                <span className="nr-cta__time-value">{timeLeft.hours}</span>
+                <span className="nr-cta__time-label">HS.</span>
+              </div>
+              <div className="nr-cta__time">
+                <span className="nr-cta__time-value">{timeLeft.minutes}</span>
+                <span className="nr-cta__time-label">MIN.</span>
+              </div>
+              <div className="nr-cta__time">
+                <span className="nr-cta__time-value">{timeLeft.seconds}</span>
+                <span className="nr-cta__time-label">SEG.</span>
+              </div>
+
+              <button
+                type="button"
+                className="gp-hero-banner__schedule-toggle"
+                onClick={() => setScheduleOpen((v) => !v)}
+                aria-expanded={scheduleOpen}
+                aria-label={scheduleOpen ? "Ocultar horarios" : "Ver horarios del fin de semana"}
+              >
+                <i className={`bi ${scheduleOpen ? "bi-chevron-up" : "bi-calendar-week"} gp-hero-banner__schedule-chevron`}></i>
+                <span>Horarios</span>
+              </button>
+
+              {!isMobile && (
+                <div className="gp-hero-banner__schedule-dropdown">
+                  <div className="gp-hero-banner__schedule-inner">
+                    {scheduleBody}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="gp-hero-banner__content">
+          <span className="gp-hero-banner__eyebrow">
+            {status.isInProgress ? "Carrera en curso" : "Próxima carrera"}
+          </span>
+          <h2 className="gp-hero-banner__title">{race.circuit?.gp_name}</h2>
+
+          <div className="gp-hero-banner__actions">
+            {status.isInProgress ? (
+              <span className="gp-hero-banner__cta gp-hero-banner__cta--live">
+                <span className="live-indicator"></span> En curso
+              </span>
+            ) : (
+              <Link to="/predictions" className="gp-hero-banner__cta">
+                Predecir ahora
+              </Link>
+            )}
+            {circuitId && (
+              <Link to={`/circuits/${circuitId}`} className="gp-hero-banner__secondary-link">
+                Ver circuito
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {isMobile && phase !== "closed" && (
+        <>
+          <div
+            className={`history-drawer-overlay is-open gp-drawer-overlay--css ${phase === "closing" ? "is-closing" : ""}`}
+            onClick={() => setScheduleOpen(false)}
+          />
+          <div
+            className={`gp-compare-drawer gp-compare-drawer--css ${phase === "closing" ? "is-closing" : ""} ${dragging ? "is-dragging" : ""}`}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Horarios del fin de semana"
+            style={{ transform: `translateY(${dragY}px)` }}
+          >
+            <div
+              style={{ touchAction: "none" }}
+              onPointerDown={onDragStart}
+              onPointerMove={onDragMove}
+              onPointerUp={onDragEnd}
+              onPointerCancel={onDragEnd}
+            >
+              <div className="drawer-handle"></div>
+              <div className="gp-compare-drawer-header">
+                <p className="gp-hero-banner__drawer-title">{race.circuit?.gp_name}</p>
+              </div>
+            </div>
+
+            <div className="gp-compare-drawer-body">
+              {scheduleBody}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+export default GpHeroBanner;

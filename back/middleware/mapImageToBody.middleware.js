@@ -24,6 +24,24 @@ export function mapImageToBody(req, res, next) {
     } else if (req.body.isologo === "") {
       delete req.body.isologo;
     }
+
+    // CASO MULTIPLE IMAGES (image / banner_img, circuitos) — igual que
+    // arriba pero con el fallback a originalname del caso single (con
+    // memoryStorage, que es lo que usa multerControl, el file no tiene
+    // filename, solo originalname/buffer).
+    if (req.files.image?.[0]) {
+      const name = req.files.image[0].filename || req.files.image[0].originalname;
+      req.body.img = req.uploadFolder ? `${req.uploadFolder}/${name}` : name;
+    } else if (req.body.img === "") {
+      delete req.body.img;
+    }
+
+    if (req.files.banner_img?.[0]) {
+      const name = req.files.banner_img[0].filename || req.files.banner_img[0].originalname;
+      req.body.banner_img = req.uploadFolder ? `${req.uploadFolder}/${name}` : name;
+    } else if (req.body.banner_img === "") {
+      delete req.body.banner_img;
+    }
   }
 
   next();

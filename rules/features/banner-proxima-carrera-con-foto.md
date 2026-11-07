@@ -1,82 +1,78 @@
 # Banner de próxima carrera con foto por GP
 
-**Estado: prototipo en laboratorio, no implementado.** Vive solo en
-`front/lab.html` (`front/src/lab/sections/GpHeroPrototype.jsx` +
-`PrototypesSection.jsx` + `gpHero.css`), con datos 100% mock. No se sube a
-producción hasta aprobar el diseño — este documento es el plan técnico para
-que, cuando se apruebe, portarlo sea directo y no haya que rediseñar nada.
+**Estado: implementado.** Reemplaza a `NextRaceCTA.jsx` **solo en Home**
+(`front/src/App.jsx`: `{isHome ? <GpHeroBanner /> : <NextRaceCTA />}`). En
+el resto de páginas del sitio, `NextRaceCTA.jsx` sigue renderizándose sin
+ningún cambio. Diseñado y probado primero en el laboratorio
+(`front/src/lab/sections/GpHeroPrototype.jsx`, con datos mock, a lo largo de
+varias rondas de feedback — ver `rules/registro-de-cambios.md` para el
+historial) antes de portarlo acá; ese prototipo se deja como está, no se
+borra.
 
-## Qué resuelve
+## Componentes y archivos
 
-Reemplaza a `NextRaceCTA.jsx` **solo en Home**: foto de fondo específica del
-circuito (en vez del fondo sólido actual), con degradado de legibilidad,
-título grande, CTA "Predecir ahora" y el desplegable/bandeja de horarios del
-fin de semana. En el resto de páginas del sitio, `NextRaceCTA.jsx` sigue
-renderizándose **sin cambios** (es global, vive en `App.jsx`) — este banner
-no lo reemplaza ahí, porque no tiene sentido un héroe con foto grande fuera
-de Home.
+- **`front/src/components/GpHeroBanner.jsx`** — el banner en sí. Usa:
+  - `useNextRace()` (`front/src/hooks/useNextRace.js`, nuevo) — carrera
+    actual/próxima + countdown + nombre de país, extraído de
+    `NextRaceCTA.jsx` para que ambos lo reusen sin duplicar fetch/socket.
+    `NextRaceCTA.jsx` también pasa a consumir este hook (mismo
+    comportamiento, sin cambios visibles).
+  - `getImageUrl(race.circuit?.banner_img, 1600)`
+    (`front/src/utils/cloudinary.js`, ya existente) — si `banner_img` es
+    `null`, se renderiza el fallback degradado (`gp-hero-banner--fallback`).
+  - `buildSchedule`/`formatSessionTime` (`front/src/utils/schedule.js`,
+    nuevo) — extraído de `CalendarCard.jsx` para no duplicar la lógica de
+    agrupar sesiones. `CalendarCard.jsx` pasa a importarlas desde ahí.
+  - `practiceSessionsServices.findAll({ circuitId })` — las prácticas no
+    vienen en `findCurrentOrNext()`, se piden aparte filtradas por circuito
+    (el servicio ya soportaba ese filtro server-side).
+- **`front/src/assets/styles/gpHeroBanner.css`** — mismo CSS que
+  `front/src/lab/sections/gpHero.css` del prototipo, prefijo renombrado de
+  `gp-hero-proto` a `gp-hero-banner`.
 
-## Modelo de datos que falta
+## Modelo de datos
 
-- **Campo nuevo en `Circuits`**: `banner_img` (opcional — a diferencia de
-  `img`, que es la imagen del mapa de pista y sigue siendo obligatoria y sin
-  tocar). Mismo patrón que ya existe para `logo`/`isologo` en `Teams`
-  (`multerControl.fields([...])` en las rutas + `mapImageToBody.middleware.js`
-  extendido para mapear `req.files.banner_img`, ver `teams.api.routes.js`
-  como referencia exacta).
-- **Validación**: `banner_img: yup.string().optional()` en `circuitSchema`
-  (`back/schemas/schemas.js`).
-- **Fallback obligatorio, no un caso especial**: la mayoría de los circuitos
-  no van a tener `banner_img` cargado (recién hay fotos de muestra para 5:
-  Australia, Brasil, Las Vegas, Qatar, Yas Marina/Abu Dabi). El laboratorio
-  ya prueba y aprueba ese caso — `GpHeroPrototype withPhoto={false}`,
-  degradado con `--color-accent`, misma altura que la versión con foto para
-  que Home no "salte" al cambiar de GP.
+- **`Circuits.banner_img`** (`back/schemas/schemas.js`): opcional
+  (`yup.string().nullable().optional()`), a diferencia de `img` (mapa de
+  pista, sigue requerido). Mismo patrón que `logo`/`isologo` de `Teams`:
+  `back/api/routes/circuits.api.routes.js` pasó de
+  `multerControl.single("image")` a
+  `multerControl.fields([{name:"image"},{name:"banner_img"}])` en POST y
+  PATCH; `back/middleware/mapImageToBody.middleware.js` suma el mapeo de
+  `req.files.image`/`req.files.banner_img`; `back/api/controllers/circuits.api.controllers.js`
+  resuelve ambas imágenes con el helper `resolveImage` ya existente
+  (`banner_img` con `defaultImage: null` en vez del `circuit_default.png`
+  de `img`).
+- **Panel admin** (`front/src/components/dashboardForms/CircuitForm.jsx` +
+  `CircuitCreate.jsx`/`CircuitEdit.jsx`): segundo campo de carga "Banner
+  (opcional)", mismo patrón que el de "Imagen" (preview + input de
+  archivo), campo de FormData `banner_img`.
 
-## De dónde sale cada dato (mapeo mock → real)
+## Mapeo de datos (todo real, nada mock)
 
-El prototipo usa una prop `gp` (ver `DEFAULT_GP` en `GpHeroPrototype.jsx`)
-que ya está pensada para calzar 1 a 1 con lo que devuelve
-`racesServices.findCurrentOrNext()` — el mismo fetch que usa
-`NextRaceCTA.jsx` hoy (con su re-fetch en el evento socket
-`"races:updated"`, no haría falta duplicar esa lógica):
+| Dato                 | Fuente                                                             |
+|----------------------|---------------------------------------------------------------------|
+| foto                 | `race.circuit.banner_img` vía `getImageUrl`                         |
+| bandera               | `getFlagEmoji(race.circuit.country)`                                |
+| país                  | `countryName` (de `useNextRace()`)                                   |
+| fecha                 | `formatRaceDate(race.date_gp_start, race.date_gp_end, race.circuit.timezone)` |
+| título                | `race.circuit.gp_name`                                               |
+| ronda                 | `race.points_system.type`                                            |
+| en curso              | `status.isInProgress` (de `useNextRace()`, via `computeRaceState`)    |
+| horarios              | `buildSchedule(sessions, practices)`                                 |
 
-| Prop `gp` (mock)   | Fuente real                                                        |
-|---------------------|---------------------------------------------------------------------|
-| `photo`              | `race.circuit.banner_img`                                           |
-| `flag`               | `getFlagEmoji(race.circuit.country)` (ya existe, `utils/helpers.js`) |
-| `country`             | `countryName` — mismo fetch que ya hace `NextRaceCTA.jsx` vía `countriesServices.getOneCountry` |
-| `date`                | `formatRaceDate(race.date_gp_start, race.date_gp_end, race.circuit.timezone)` (ya existe) |
-| `title`               | `race.circuit.gp_name` (ya existe en el schema de `Circuits`)        |
-| `round.label`/`type`  | `race.points_system.type` — misma normalización que ya hace `NextRaceCTA.jsx` (qualy/sprint/race) |
-| `isInProgress`        | `computeRaceState(race).isInProgress` (ya existe, `utils/helpers.js`) |
+El CTA principal ("Predecir ahora") se reemplaza por una marca no
+clickeable "En curso" cuando `status.isInProgress` es true — mismo criterio
+que `NextRaceCTA.jsx`, que deja de renderizar ese link cuando `canPredict`
+es false. Nota: solo se contempla `isInProgress`; `canPredict` también es
+false en pre-ventana (>24hs) y carrera finalizada — en esos casos el CTA
+hoy sigue mostrando "Predecir ahora" igual (no se agregó un tercer estado,
+no estaba pedido). Si hace falta, queda para una siguiente vuelta.
 
-El CTA principal ("Predecir ahora", bajo el título) ya reacciona a
-`isInProgress`: se reemplaza por una marca no clickeable "En curso" (mismo
-rojo/punto animado que el tag `EN CURSO` de la barra de arriba), igual que
-`NextRaceCTA.jsx` real deja de renderizar el link "Predecir ahora" cuando
-`computeRaceState().canPredict` es false. Ojo: en el prototipo solo se
-contempla el caso `isInProgress` (el único que hay foto de muestra para
-probar, Brasil) — `canPredict` también es false en pre-ventana (>24hs) y
-carrera finalizada, casos que la integración real va a tener que cubrir
-también (probablemente mismo trato: "En curso" solo si `isInProgress`, y
-en los otros dos casos sin canPredict quizás alcance con que "Ver circuito"
-quede como única acción, sin la marca roja que es específica de "en vivo").
+## Qué queda pendiente
 
-La solapa de horarios (desplegable desktop / bandeja mobile) ya reusa el
-markup y las clases reales de `CalendarCard.jsx` (`.cal-zone`,
-`.cal-card__group*`, `.cal-session*`) — falta conectarla con
-`buildSchedule`/`formatSessionTime` (mismo archivo) en vez del
-`MOCK_SCHEDULE` fijo que tiene hoy el prototipo.
-
-## Fuera de este documento (recién cuando se apruebe el diseño)
-
-- Agregar `banner_img` al backend (schema, rutas, middleware) y al panel
-  admin de circuitos (campo de carga de imagen nuevo, junto al de `img`).
-- Decidir dónde exactamente se hace el swap en `Home.jsx`/`App.jsx` (hoy
-  `NextRaceCTA` es global en `App.jsx`; Home necesitaría no renderizarlo ahí
-  y usar este hero en su lugar).
-- Conectar `scheduleBody` a datos reales de `race.sessions`/prácticas en vez
-  de `MOCK_SCHEDULE`.
-- Subir las fotos de muestra (Australia, Brasil, Las Vegas, Qatar, Yas
-  Marina) como `banner_img` reales de esos circuitos.
+- **Subir las fotos de muestra**: las carga el usuario a mano desde el
+  panel admin (Australia, Brasil, Las Vegas, Qatar, Yas Marina — son las
+  que ya se usaron para probar el diseño en el laboratorio,
+  `front/src/lab/assets/*.jpg`). No se automatizó por decisión explícita
+  (evitar que un script le escriba directo a la base de producción).

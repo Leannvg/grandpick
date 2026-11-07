@@ -1,0 +1,316 @@
+/* Banner de próxima carrera con foto por GP (reemplaza a NextRaceCTA.jsx
+   solo en Home — ver App.jsx). Nace como prototipo en el laboratorio
+   (front/src/lab/sections/GpHeroPrototype.jsx + gpHero.css, con prefijo
+   gp-hero-proto) tras aprobarse el diseño en varias rondas de feedback;
+   este archivo es el mismo CSS portado a producción (prefijo gp-hero-banner).
+   Reusa .cal-* (calendar.css) para las filas de horarios, y los mismos
+   tokens de color que ya existen (--color-accent, --cal-panel, --cal-ease). */
+
+/* .gp-hero-banner = wrapper externo (solo agrupa hero + panel de horarios).
+   .gp-hero-banner__hero = la parte con la foto, altura fija (min-height),
+   separada del panel de horarios a propósito: si el fondo (inset:0) viviera
+   en el mismo contenedor que crece al abrir el panel, la foto se estira
+   para cubrir también el panel (confirmado probándolo en el laboratorio). */
+.gp-hero-banner__hero {
+  /* ojo: overflow NO va acá (aunque las esquinas redondeadas lo pidan) —
+     el botón solapado de horarios sobresale del borde inferior y necesita
+     poder recibir clicks ahí; con overflow:hidden en este contenedor el
+     centro del botón queda justo en el borde de recorte y el hit-test le
+     falla (confirmado probando en el laboratorio). El recorte/redondeo va
+     en las capas de fondo (bg/overlay) en vez de acá. */
+  position: relative;
+  min-height: 460px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #fff;
+  text-align: center;
+}
+
+.gp-hero-banner__bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.gp-hero-banner__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+}
+
+.gp-hero-banner__hero.gp-hero-banner--fallback .gp-hero-banner__bg {
+  background: linear-gradient(135deg, var(--color-accent, #3975A2), var(--color-dark-blue, #081D2B));
+}
+
+.gp-hero-banner__overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, rgba(5, 15, 25, .35) 0%, rgba(5, 15, 25, .55) 45%, rgba(5, 15, 25, .88) 100%);
+}
+
+.gp-hero-banner__content {
+  position: relative;
+  padding: 28px 20px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Barra transparente arriba de la foto: literalmente el mismo markup/clases
+   que NextRaceCTA.jsx usa hoy (.nr-cta__container > .nr-cta__info +
+   .nr-cta__countdown, de globals.css) — por eso no hay reglas propias para
+   la info/el contador/la pastilla acá, vienen todas de globals.css. Lo
+   único que agrega este bloque es la posición (flotando sobre la foto) y
+   el padding, copiado del `.nr-cta` real (que no se puede usar tal cual
+   porque trae background sólido). */
+.gp-hero-banner__topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding: 6px 2px;
+}
+
+@media (min-width: 768px) {
+  .gp-hero-banner__topbar {
+    padding: 8px 50px;
+  }
+}
+
+.gp-hero-banner__eyebrow {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .75);
+}
+
+.gp-hero-banner__title {
+  font-size: 2.6rem;
+  line-height: .95;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -.5px;
+  margin: 6px 0 14px;
+  max-width: 680px;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .4);
+}
+
+/* Un solo CTA dominante (en vez de varios botones compitiendo): este
+   wrapper agrupa el botón grande ("Predecir ahora", .gp-hero-banner__cta)
+   con el link chico de abajo ("Ver circuito", .gp-hero-banner__secondary-link). */
+.gp-hero-banner__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.gp-hero-banner__secondary-link {
+  color: rgba(255, 255, 255, .75);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255, 255, 255, .4);
+  transition: color .2s ease, text-decoration-color .2s ease;
+}
+
+.gp-hero-banner__secondary-link:hover {
+  color: #fff;
+  text-decoration-color: #fff;
+}
+
+.gp-hero-banner__cta {
+  background: #fff;
+  color: #0b2a3d;
+  font-weight: 700;
+  font-size: .85rem;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 11px 26px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform .2s ease, background-color .2s ease;
+}
+
+.gp-hero-banner__cta:hover {
+  background: var(--color-accent, #3975A2);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Durante la carrera no se puede predecir — mismo rojo/punto que
+   .nr-cta__session-tag + .live-indicator reales (globals.css) para que se
+   lea como el mismo estado "en vivo" en todo el banner, pero en el tamaño
+   del CTA principal. No clickeable a propósito (no es un link, es un
+   <span>): no hay ninguna acción real que ofrecer acá mientras la sesión
+   está en curso. */
+.gp-hero-banner__cta--live {
+  background: rgba(255, 59, 48, .15);
+  color: #fff;
+  border: 1px solid rgba(255, 59, 48, .5);
+  cursor: default;
+}
+
+.gp-hero-banner__cta--live:hover {
+  background: rgba(255, 59, 48, .15);
+  color: #fff;
+  transform: none;
+}
+
+/* El contador (.nr-cta__countdown, real) es también el ancla del
+   desplegable de horarios (botón + panel viven adentro, ver JSX) — recibe
+   position:relative por inline style en el JSX (no se toca globals.css),
+   así el panel toma exactamente el mismo ancho que el contador en vez de
+   desplegarse a todo el ancho del banner. */
+.gp-hero-banner__schedule-toggle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  margin-top: 8px;
+  width: auto;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  background: rgba(255, 255, 255, .12);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+  z-index: 2;
+  transition: background-color .3s var(--cal-ease, ease), color .3s var(--cal-ease, ease), transform .3s var(--cal-ease, ease);
+  animation: cta-pulse 2s infinite ease-in-out;
+}
+
+.gp-hero-banner.is-open .gp-hero-banner__schedule-toggle {
+  animation-play-state: paused;
+}
+
+.gp-hero-banner__schedule-toggle:hover {
+  background: #fff;
+  color: var(--color-accent, #3975A2);
+  transform: scale(1.03);
+  animation-play-state: paused;
+}
+
+.gp-hero-banner__schedule-chevron {
+  font-size: 12px;
+}
+
+/* Animación por max-height, no grid-template-rows: con el contador real
+   (que no tiene una altura propia explícita) el truco 0fr/1fr no
+   colapsaba del todo — Chromium lo dejaba en ~28px en vez de 0 (confirmado
+   inspeccionando el computed style en el laboratorio). max-height es menos
+   elegante (la duración de la transición no es exactamente proporcional al
+   contenido real) pero es confiable. */
+.gp-hero-banner__schedule-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 340px;
+  max-width: calc(100vw - 40px);
+  margin-top: 44px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .4s var(--cal-ease, ease);
+  z-index: 1;
+}
+
+.gp-hero-banner.is-open .gp-hero-banner__schedule-dropdown {
+  max-height: 480px;
+}
+
+.gp-hero-banner__schedule-inner {
+  background: var(--cal-panel, #3f4a55);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+  text-align: left;
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* La solapa de horarios reusa el markup/clases reales de CalendarCard.jsx
+   (.cal-zone, .cal-card__group*, .cal-session*, de calendar.css) tal cual
+   — acá no queda CSS propio para el contenido, solo el "cascarón"
+   (.gp-hero-banner__schedule-inner para el desplegable de desktop,
+   .gp-hero-banner__drawer-title para la bandeja de mobile). */
+
+@media (max-width: 600px) {
+  .gp-hero-banner__title {
+    font-size: 1.9rem;
+  }
+
+  .gp-hero-banner__content {
+    padding-top: 90px;
+  }
+}
+
+/* Mobile: se achica el contador (menos ancho/gap por caja) y se oculta la
+   fecha (el eyebrow "Próxima carrera"/país ya dan el contexto), dejando
+   solo bandera + nombre de país en una sola fila. Scopeado a
+   .gp-hero-banner__topbar para no tocar el .nr-cta real.
+   Hasta 767px (no 600px): el .nr-cta real agranda contador/fecha recién en
+   su propio breakpoint de min-width:768px — cortar antes (600px) deja un
+   hueco donde la fecha ya está en tamaño grande chocando con el contador. */
+@media (max-width: 767px) {
+  .gp-hero-banner__topbar .nr-cta__date {
+    display: none;
+  }
+
+  .gp-hero-banner__topbar .nr-cta__countdown {
+    gap: 1px;
+  }
+
+  .gp-hero-banner__topbar .nr-cta__time {
+    width: 32px;
+    padding: 5px 2px;
+  }
+
+  .gp-hero-banner__topbar .nr-cta__time-value {
+    font-size: 14px;
+  }
+
+  .gp-hero-banner__topbar .nr-cta__time-label {
+    font-size: 8px;
+  }
+}
+
+/* Bandeja de horarios en mobile (bottom-sheet): reusa la misma bandeja que
+   ya usa el resto del sitio (comparación de predicciones, historial) en
+   vez de un desplegable propio pegado al botón. El cascarón
+   (.history-drawer-overlay / .drawer-handle / .gp-compare-drawer*) y las
+   animaciones (.gp-drawer-overlay--css / .gp-compare-drawer--css, con sus
+   @keyframes) son 100% reusados de predictionHistory.css / components.css
+   — acá solo el título propio, porque esta bandeja no tiene una GpCard
+   (no es una comparación). */
+.gp-hero-banner__drawer-title {
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-align: center;
+}

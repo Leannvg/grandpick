@@ -2,6 +2,53 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Banner de próxima carrera con foto: implementación real en producción
+
+- **Pedido**: "esto es para dejar preparado para subirlo a producción y que
+  sea viable... empecemos la implementación" — primera vez en todo el
+  desarrollo de este banner que se toca producción (hasta ahora, solo
+  laboratorio). Plan revisado y aprobado antes de tocar nada (plan mode).
+- **Backend**: `Circuits.banner_img` (opcional, a diferencia de `img` que
+  sigue requerido) — `back/schemas/schemas.js`,
+  `back/api/routes/circuits.api.routes.js` (`multerControl.single("image")`
+  → `.fields([{name:"image"},{name:"banner_img"}])`, mismo patrón que
+  `logo`/`isologo` de `teams.api.routes.js`),
+  `back/middleware/mapImageToBody.middleware.js` (mapeo nuevo para
+  `req.files.image`/`req.files.banner_img`), `back/api/controllers/circuits.api.controllers.js`
+  (`create`/`editById` resuelven ambas imágenes con `resolveImage`,
+  `banner_img` con `defaultImage: null`).
+- **Panel admin**: `CircuitForm.jsx` suma un segundo campo de carga
+  "Banner (opcional)" (mismo patrón que "Imagen", con preview) —
+  `CircuitCreate.jsx`/`CircuitEdit.jsx` lo agregan al `FormData`. Las fotos
+  de muestra (Australia, Brasil, Las Vegas, Qatar, Yas Marina) las sube el
+  usuario a mano desde acá — decisión explícita, para no escribir directo
+  en la base de producción con un script.
+- **Reuso antes de duplicar**: se extrajo el fetch/socket/countdown de
+  `NextRaceCTA.jsx` a `front/src/hooks/useNextRace.js` (`NextRaceCTA.jsx`
+  pasa a consumirlo, mismo comportamiento sin cambios), y `buildSchedule`/
+  `formatSessionTime`/`STATUS`/`DOW`/`DURATION` de `CalendarCard.jsx` a
+  `front/src/utils/schedule.js` (`CalendarCard.jsx` pasa a importarlos).
+  Ambos los reusa el banner nuevo sin duplicar lógica.
+- **`front/src/components/GpHeroBanner.jsx`** (nuevo): puerto a producción
+  de `GpHeroPrototype.jsx` (el prototipo del laboratorio, que se deja sin
+  tocar), con datos 100% reales en vez de mock — ver mapeo completo en
+  `rules/features/banner-proxima-carrera-con-foto.md`. CSS portado a
+  `front/src/assets/styles/gpHeroBanner.css` (prefijo `gp-hero-proto` →
+  `gp-hero-banner`).
+- **`front/src/App.jsx`**: `<NextRaceCTA />` incondicional pasa a
+  `{isHome ? <GpHeroBanner /> : <NextRaceCTA />}` — el banner con foto
+  reemplaza a la barra solo en Home; en el resto de páginas sigue
+  `NextRaceCTA` sin ningún cambio.
+- Probado end-to-end contra datos reales (backend local + Mongo de
+  producción, sin escribir nada): con Brasil en curso hoy, el banner
+  mostró correctamente "Gran Premio de São Paulo", estado "En curso" (CTA
+  rojo no clickeable), countdown en vivo y la solapa de horarios con las
+  prácticas reales (finalizadas, con check). Confirmado también que
+  `NextRaceCTA`/`CalendarCard` siguen funcionando sin cambios en el resto
+  de páginas (Calendario) tras la extracción de `useNextRace`/`schedule.js`.
+- Commit local en `leandro`, sin push (sigue la misma disciplina de toda
+  la sesión).
+
 ## 2026-11-07 · Laboratorio: estado "en curso" en el banner + plan técnico para subirlo a producción
 
 - **Contexto**: solo hay fotos de muestra para los 4 GP que le quedan a la

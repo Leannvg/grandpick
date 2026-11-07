@@ -20,6 +20,7 @@ import TeamDetail from "./pages/TeamDetail";
 import Ranking from "./pages/Ranking";
 import Standings from "./pages/Standings";
 import NextRaceCTA from "./components/NextRaceCTA";
+import GpHeroBanner from "./components/GpHeroBanner";
 // Admin pages
 import Dashboard from "./pages/admin/Dashboard";
 import TeamCreate from "./pages/admin/team/TeamCreate";
@@ -166,7 +167,11 @@ function App() {
           autoClose={null}
           onClose={closeAlert}
         />
-        <NextRaceCTA />
+        {/* Banner con foto de fondo por GP — solo en Home (diseñado y
+            probado en el laboratorio, ver rules/features/banner-proxima-
+            carrera-con-foto.md). En el resto de páginas sigue NextRaceCTA
+            sin cambios, es el único lugar donde se lo ve. */}
+        {isHome ? <GpHeroBanner /> : <NextRaceCTA />}
         {estaAutenticado && <Glossary />}
         <main className={`main-content ${isHome ? 'home-content' : ''} ${(loading || cargando) ? 'is-loading' : ''}`}>
           {(loading || cargando) && <LoaderCar message={cargando ? "Iniciando..." : "Cargando..."} />}

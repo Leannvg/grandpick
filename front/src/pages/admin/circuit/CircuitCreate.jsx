@@ -16,7 +16,7 @@ function CircuitCreate() {
   const { showLoader, hideLoader } = useLoader();
 
 
-  async function handleCreate(circuitData, imageFile) {
+  async function handleCreate(circuitData, imageFile, bannerFile) {
     try {
       const dialog = {
         title: "¿Deseás crear un nuevo circuito?",
@@ -38,6 +38,10 @@ function CircuitCreate() {
 
       if (imageFile) {
         formData.append("image", imageFile);
+      }
+
+      if (bannerFile) {
+        formData.append("banner_img", bannerFile);
       }
 
       await CircuitsServices.create(formData);

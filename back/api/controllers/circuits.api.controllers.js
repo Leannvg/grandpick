@@ -19,15 +19,23 @@ export async function editById(req, res, next) {
     const existingCircuit = await circuitsServices.findCircuitById(circuitId);
 
     const finalImage = await resolveImage({
-      file: req.file,
+      file: req.files?.image?.[0],
       currentImage: existingCircuit.img,
       folder: "circuits",
       defaultImage: "general/circuit_default.png",
     });
 
+    const finalBannerImage = await resolveImage({
+      file: req.files?.banner_img?.[0],
+      currentImage: existingCircuit.banner_img,
+      folder: "circuits",
+      defaultImage: null,
+    });
+
     const newCircuitData = {
       ...req.body,
       img: finalImage,
+      banner_img: finalBannerImage,
     };
 
     console.log("New Circuit Data:", newCircuitData);
@@ -44,15 +52,22 @@ export async function editById(req, res, next) {
 export async function create(req, res, next) {
   try {
     const imgPath = await resolveImage({
-      file: req.file,
+      file: req.files?.image?.[0],
       folder: "circuits",
       defaultImage: "general/circuit_default.png",
+    });
+
+    const bannerImgPath = await resolveImage({
+      file: req.files?.banner_img?.[0],
+      folder: "circuits",
+      defaultImage: null,
     });
 
     const circuit = {
       circuit_name: req.body.circuit_name,
       country: req.body.country,
       img: imgPath,
+      banner_img: bannerImgPath,
       length: req.body.length,
       gp_name: req.body.gp_name,
       description: req.body.description,
