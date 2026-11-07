@@ -185,19 +185,17 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP }) {
               </div>
               <div className="nr-cta__meta">
                 <span className="nr-cta__round nr-cta__round--qualy">QUALIFYING</span>
-                {/* Pedido: no sacarlo de acá — NextRaceCTA.jsx (de donde viene
-                    esta barra, clases reales .nr-cta__*) se renderiza global
-                    en App.jsx, en TODAS las páginas del sitio, no solo en
-                    Home. Este hero con foto/título grande reemplazaría esa
-                    barra únicamente en Home; en el resto de páginas sigue
-                    siendo la única CTA visible, así que tiene que seguir acá
-                    (misma clase real .nr-cta__action, con su pulso). El botón
-                    grande de abajo (mismo texto, bajo el título) es un
-                    refuerzo adicional, exclusivo del hero de Home — no un
-                    reemplazo de este. */}
-                <a href="#" className="nr-cta__action" onClick={(e) => e.preventDefault()}>
-                  Predecir ahora
-                </a>
+                {/* Pedido: "¿no quedan duplicados?" — sí, dentro de ESTE hero
+                    se leía como el mismo botón repetido dos veces muy cerca.
+                    Se saca de acá (vuelve a quedar solo el chip QUALIFYING).
+                    La duda de la vuelta anterior (que el resto de páginas se
+                    quede sin esta CTA) no aplica: ese riesgo era sobre
+                    NextRaceCTA.jsx, el archivo real — y este hero no lo toca
+                    ni lo reemplaza ahí, solo lo reemplazaría en Home (es
+                    prototipo, vive solo en el laboratorio). NextRaceCTA.jsx
+                    sigue mostrando "Predecir ahora" en el resto del sitio tal
+                    cual está hoy, intacto. Acá en Home el botón grande de
+                    abajo (bajo el título) ya cubre esa acción. */}
               </div>
             </div>
 
@@ -260,13 +258,9 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP }) {
               negocio (predecir) quedaba perdido arriba. Ahora un solo CTA
               dominante acá ("Predecir ahora", mismo lugar/tamaño que tenía
               "Ver circuito" — .gp-hero-proto__cta sin cambios) y "Ver
-              circuito" baja a link de texto secundario al lado.
-              El de arriba (.nr-cta__meta) NO se saca (ver comentario ahí):
-              sigue siendo la única CTA en el resto de páginas del sitio. Acá
-              en el hero de Home conviven los dos a propósito — no compiten
-              porque están en zonas visuales bien separadas (barra flotante
-              arriba vs. centro del banner), y el de abajo no pulsa (ya es
-              grande/sólido, no necesita además parpadear para destacarse). */}
+              circuito" baja a link de texto secundario al lado. El chico de
+              arriba (.nr-cta__meta) se terminó sacando también — ver
+              comentario ahí, se leía como el mismo botón duplicado. */}
           <div className="gp-hero-proto__actions">
             <a href="#" className="gp-hero-proto__cta" onClick={(e) => e.preventDefault()}>
               Predecir ahora

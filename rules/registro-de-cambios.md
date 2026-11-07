@@ -2,6 +2,28 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: se saca la pastilla "Predecir ahora" duplicada + se unifica radio/hover de los botones
+
+- **Reportado**: con el botón grande nuevo bajo el título, "Predecir ahora"
+  quedaba duplicado (la pastilla chica de arriba y el botón grande decían
+  lo mismo, muy cerca). Se saca la pastilla chica (`.nr-cta__meta` vuelve a
+  tener solo el chip "QUALIFYING"). La duda de la entrada anterior (que el
+  resto de páginas se quedara sin esta CTA) no aplicaba: ese riesgo es
+  sobre `NextRaceCTA.jsx`, el archivo real, que este prototipo de
+  laboratorio no toca ni reemplaza ahí — sigue mostrando "Predecir ahora"
+  en el resto del sitio tal cual está hoy. Este hero reemplazaría esa barra
+  solo en Home, y ahí el botón grande ya cubre la acción.
+- **Reportado**: "Horarios" tenía mucho menos radio (8px) que los otros dos
+  botones (pastilla completa, 999px) y un hover distinto (se aclaraba el
+  vidrio nomás, los otros invertían color). Se unifica: `border-radius:
+  999px` igual que los demás, y el hover pasa a invertir color exactamente
+  igual que `.nr-cta__action` real (fondo blanco sólido + texto/ícono en
+  color de acento) en vez de solo aclarar el translúcido. Con esto los 3
+  botones del banner quedan bajo una misma regla de hover ("invertir entre
+  blanco y color de acento"): los que empiezan blancos/sólidos (Predecir
+  ahora grande) invierten a acento, los que empiezan translúcidos
+  (Horarios) invierten a blanco — mismo patrón, dos puntos de partida.
+
 ## 2026-11-07 · Laboratorio: un solo CTA dominante en el banner ("Predecir ahora")
 
 - **Reportado**: los botones del banner (Ver circuito, Predecir ahora,
