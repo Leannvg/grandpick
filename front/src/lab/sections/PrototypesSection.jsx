@@ -97,11 +97,11 @@ function PrototypesSection() {
           Home) como cabecera de <code>Predictions.jsx</code>, que hoy tiene
           su propio header de texto plano sobre fondo sólido, con la barra
           de arriba también sólida (no flotante). Reusa todo el mecanismo
-          del banner (foto, topbar transparente, horarios) — abajo cambia el
-          contenido real de esa página: país, título, fecha, ronda (chip
-          real <code>.nr-cta__round</code> en vez de texto plano), countdown
-          "tiempo restante para predecir" y el banner de estado de la
-          predicción (<code>.prediction-status-banner</code>, sin cambios).
+          del banner (foto, topbar transparente, horarios). Abajo: solo
+          título, el countdown "tiempo restante para predecir" y el banner
+          de estado de la predicción (<code>.prediction-status-banner</code>,
+          sin cambios) — país, fecha y ronda ya están en el topbar, se
+          sacaron de acá para no repetirlos (reportado con captura).
         </p>
         <GpHeroPrototype
           withPhoto

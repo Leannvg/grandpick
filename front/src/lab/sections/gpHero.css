@@ -358,34 +358,15 @@
 /* Pedido: "probar en el laboratorio poner el banner en la pantalla de
    predicción y darle un diseño más lucido" — variant="predictions" reusa
    TODO lo de arriba (foto, topbar flotante, horarios) y solo cambia el
-   contenido de abajo por el de Predictions.jsx real (país, título, fecha,
-   ronda, countdown "para predecir", status de la predicción), pero
-   flotando sobre la foto en vez del fondo sólido que tiene hoy esa
-   página. .circuit-country-detail/.section-label (ya blancos, de
-   components.css/globals.css) y .prediction-status-banner/.status-missing/
-   .status-saved (ya glassy, de predictions.css) se reusan tal cual, sin
-   CSS propio — acá solo lo que no tenía ya un equivalente real. */
-.gp-hero-proto__predict-country {
-  margin-bottom: 0;
-}
-
-.gp-hero-proto__predict-date {
-  font-size: .95rem;
-  font-weight: 300;
-  color: rgba(255, 255, 255, .75);
-  margin-top: -4px;
-}
-
-/* .nr-cta__round real es un chip chico pensado para ir inline en la barra
-   de arriba (10px) — acá es el dato principal de qué sesión es, se lo
-   agranda en vez de inventar un chip nuevo. */
-.gp-hero-proto__predict-round {
-  font-size: .8rem;
-  padding: 5px 14px;
-  border-radius: 6px;
-  margin: 4px 0 2px;
-}
-
+   contenido de abajo por el de Predictions.jsx real, flotando sobre la
+   foto en vez del fondo sólido que tiene hoy esa página.
+   Pedido después: "información repetida" (país, fecha y chip de ronda se
+   veían acá Y en el topbar) — se sacaron del bloque de abajo (quedan solo
+   en el topbar, que ya los tenía). Por eso acá ya no queda CSS propia
+   para país/fecha/ronda — solo el countdown, que es lo único que sigue
+   siendo específico de esta pantalla (.prediction-status-banner/
+   .status-missing/.status-saved, de predictions.css, se reusan tal cual
+   sin CSS propia tampoco). */
 .gp-hero-proto__predict-countdown {
   margin-top: 6px;
   display: flex;

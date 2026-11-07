@@ -268,22 +268,21 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }
               {/* Pedido: "adaptar la barra de contador como en la home" ya
                   está cubierto arriba (mismo .gp-hero-proto__topbar
                   transparente/flotante que usa "home"). Acá abajo: mismo
-                  contenido real que tiene hoy Predictions.jsx
-                  (circuit-country-detail/section-label, section-title,
-                  qualy-label → .nr-cta__round real para que sea consistente
-                  con el resto del sitio en vez de texto plano, countdown
-                  "tiempo restante para predecir" y el status banner real
-                  .prediction-status-banner/.status-missing/.status-saved,
-                  de predictions.css) — pero flotando sobre la foto en vez
-                  de fondo sólido, "más lucido" como se pidió. */}
-              <span className="circuit-country-detail section-label gp-hero-proto__predict-country">
-                <span className="emoji-flag me-2">{gp.flag}</span>{gp.country}
-              </span>
+                  contenido real que tiene hoy Predictions.jsx, pero
+                  flotando sobre la foto en vez de fondo sólido, "más
+                  lucido" como se pidió.
+                  Pedido después: "información repetida — el tag de RACE,
+                  el contador, la fecha" se veían tanto acá como en la
+                  barra de arriba. Se saca de acá país/bandera, fecha y el
+                  chip de ronda (ya están arriba, en el topbar — no se
+                  toca ESE, es el que pidieron igual a Home) y se deja solo
+                  lo específico de esta pantalla: título, el countdown
+                  "tiempo restante para predecir" (el protagonista, pedido
+                  explícito: "queda bien porque muestra en primera plana
+                  el tiempo que queda") y el status real de la predicción
+                  (.prediction-status-banner/.status-missing/.status-saved,
+                  de predictions.css, sin tocar). */}
               <h1 className="gp-hero-proto__title">{gp.title}</h1>
-              <span className="gp-hero-proto__predict-date">{gp.date}</span>
-              <span className={`nr-cta__round nr-cta__round--${gp.round.type} gp-hero-proto__predict-round`}>
-                {gp.round.label}
-              </span>
 
               <div className="gp-hero-proto__predict-countdown">
                 <span className="countdown-label">Tiempo restante para predecir:</span>

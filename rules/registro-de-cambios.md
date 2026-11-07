@@ -2,6 +2,25 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: se saca la info repetida del banner de Predicciones
+
+- **Reportado con captura**: en el banner de cabecera de Predicciones
+  (`variant="predictions"`), el chip RACE, la fecha y (conceptualmente) el
+  countdown aparecían tanto en la barra de arriba como en el bloque
+  central — mismo dato dos veces. El countdown centrado ("tiempo restante
+  para predecir") se valida explícitamente ("queda bien porque muestra en
+  primera plana el tiempo que queda"), así que el recorte va del lado del
+  bloque central, no del topbar — el topbar es justo el que se pidió que
+  fuera "igual a Home" para mantener consistencia en todo el sitio, y
+  tocarlo lo hubiese desbalanceado.
+- Se sacan del bloque central (`GpHeroPrototype.jsx`, `variant="predictions"`):
+  bandera/país (`.circuit-country-detail`), fecha y chip de ronda — quedan
+  solo en el topbar, que ya los tenía. El bloque central queda con lo
+  realmente específico de esta pantalla: título, countdown "tiempo
+  restante para predecir" y el banner de estado de la predicción. Se
+  limpia también la CSS que quedó sin uso (`.gp-hero-proto__predict-country`/
+  `-date`/`-round`, en `gpHero.css`).
+
 ## 2026-11-07 · Laboratorio: probar el banner como cabecera de Predicciones
 
 - **Pedido**: "probar en el laboratorio poner el banner en la pantalla de
