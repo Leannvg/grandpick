@@ -8,8 +8,9 @@ Orden cronológico inverso (lo más nuevo arriba).
   clima de los pedidos originalmente — lluvia, tormenta, sol, nublado,
   noche calurosa). `gp.weather` suma `"storm"`.
 - Reusa toda la lluvia ya construida (`buildRainDrops` suma un parámetro
-  `intense`): más densa (150 vs 100 gotas) y con más deriva horizontal
-  (viento, hasta 100px vs 60px) para una tormenta en vez de lluvia tranquila.
+  `intense`): mucha más densa (320 vs 100 gotas — ajustado tras feedback
+  "agregar muchas más gotas") y con más deriva horizontal (viento, hasta
+  100px vs 60px) para una tormenta en vez de lluvia tranquila.
 - Relámpagos nuevos (`gp-hero-proto__lightning`): 2 capas de flash
   independientes (`buildLightningLayers`) con duraciones largas sin
   relación simple entre sí y delay al azar — misma lección que la lluvia,

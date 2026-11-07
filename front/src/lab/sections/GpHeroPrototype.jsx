@@ -150,10 +150,10 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }
   // Se arma UNA vez por instancia (useMemo), no en cada render — si se
   // regenerara en cada render, las gotas "saltarían" a posiciones nuevas
   // cada vez que algo del banner fuerza un re-render (ej. abrir Horarios).
-  // Tormenta: más gotas (150 vs 100) y más viento (intense=true).
+  // Tormenta: muchas más gotas (320 vs 100) y más viento (intense=true).
   const isStorm = gp.weather === "storm";
   const rainDrops = useMemo(
-    () => buildRainDrops(isStorm ? 150 : 100, [-50, 1500], isStorm),
+    () => buildRainDrops(isStorm ? 320 : 100, [-50, 1500], isStorm),
     [isStorm]
   );
   const lightningLayers = useMemo(() => (isStorm ? buildLightningLayers() : []), [isStorm]);
