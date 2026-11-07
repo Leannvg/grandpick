@@ -58,14 +58,18 @@
 
 /* Pedido: "¿es posible agregar un efecto de lluvia al banner?" — capa
    propia (z-index:1, encima de foto+degradado, debajo del topbar z-index:3
-   y del contenido) con dos repeating-linear-gradient superpuestos (gotas
-   "cerca"/"lejos": distinto grosor, opacidad y velocidad para dar
-   profundidad en vez de una sola capa plana) animados por background-
-   position en diagonal — no hace falta canvas ni ninguna librería para
-   esto, es CSS puro. overflow:hidden + inset negativo en los pseudo-
-   elementos para que la animación en diagonal nunca deje ver un borde
-   recortado al repetirse. pointer-events:none para no tapar los clicks
-   del botón de horarios/CTA que están por debajo en el DOM. */
+   y del contenido), pointer-events:none para no tapar los clicks del
+   botón de horarios/CTA que están por debajo en el DOM.
+   Pedido después: "se ve medio mal, no parece lluvia natural" — un
+   repeating-linear-gradient es, por definición, perfectamente regular
+   (franjas idénticas y parejas), no hay forma de que lea como orgánico.
+   Se cambia de técnica: gotas individuales dispersas al azar vía
+   box-shadow (ver buildRainShadows en GpHeroPrototype.jsx) — un elemento
+   base invisible (gp-hero-proto__rain-drop) más N copias vía box-shadow,
+   cada una con su propio x/y/opacidad al azar, animadas con transform
+   (no top/left, más barato) cayendo en diagonal. Dos capas de
+   profundidad: "cerca" (menos gotas, más grandes/brillantes/rápidas) y
+   "lejos" (más gotas, chicas/tenues/lentas, con blur). */
 .gp-hero-proto__weather {
   position: absolute;
   inset: 0;
@@ -75,52 +79,35 @@
   pointer-events: none;
 }
 
-.gp-hero-proto__weather--rain::before,
-.gp-hero-proto__weather--rain::after {
-  content: "";
+.gp-hero-proto__rain-drop {
   position: absolute;
-  inset: -20% -20%;
-  background-image: repeating-linear-gradient(
-    100deg,
-    transparent 0px,
-    transparent 2px,
-    rgba(255, 255, 255, .55) 2px,
-    rgba(255, 255, 255, .55) 3px,
-    transparent 3px,
-    transparent 42px
-  );
+  top: 0;
+  left: 0;
+  width: 1px;
 }
 
-.gp-hero-proto__weather--rain::before {
-  background-size: 100% 140px;
-  animation: gp-hero-rain-near 0.4s linear infinite;
-  opacity: .5;
+.gp-hero-proto__rain-drop--near {
+  height: 16px;
+  animation: gp-hero-rain-fall-near 1s linear infinite;
 }
 
-.gp-hero-proto__weather--rain::after {
-  background-image: repeating-linear-gradient(
-    100deg,
-    transparent 0px,
-    transparent 1px,
-    rgba(255, 255, 255, .4) 1px,
-    rgba(255, 255, 255, .4) 2px,
-    transparent 2px,
-    transparent 30px
-  );
-  background-size: 100% 90px;
-  animation: gp-hero-rain-far 0.6s linear infinite;
-  opacity: .3;
-  filter: blur(.4px);
+.gp-hero-proto__rain-drop--far {
+  height: 9px;
+  animation: gp-hero-rain-fall-far 1.6s linear infinite;
+  filter: blur(.3px);
 }
 
-@keyframes gp-hero-rain-near {
-  from { background-position: 0 -140px; }
-  to { background-position: -35px 0; }
+/* El elemento base no se ve (sin background) — lo que se ve son las N
+   copias vía box-shadow (inline, de buildRainShadows), que sí se mueven
+   junto con el elemento al animar su transform. */
+@keyframes gp-hero-rain-fall-near {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-45px, 650px); }
 }
 
-@keyframes gp-hero-rain-far {
-  from { background-position: 0 -90px; }
-  to { background-position: -25px 0; }
+@keyframes gp-hero-rain-fall-far {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-30px, 650px); }
 }
 
 .gp-hero-proto__content {

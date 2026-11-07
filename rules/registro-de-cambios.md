@@ -2,6 +2,23 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · Laboratorio: la lluvia pasa de degradado repetido a gotas al azar
+
+- **Reportado con captura**: "se ve medio mal, no parece una lluvia
+  natural" — el `repeating-linear-gradient` usado para el efecto de
+  lluvia es, por definición, un patrón perfectamente regular (franjas
+  idénticas y parejas), no hay forma de que lea como orgánico por más
+  que se ajuste grosor/opacidad.
+- Se cambia de técnica: gotas individuales dispersas en posiciones al
+  azar vía `box-shadow` (`buildRainShadows()`, nuevo, en
+  `GpHeroPrototype.jsx`) — un elemento base invisible por capa
+  ("cerca"/"lejos") más N copias vía `box-shadow`, cada una con su
+  propio x/y/opacidad al azar (`useMemo`, se arma una sola vez por
+  instancia, no en cada render), animadas con `transform` (no
+  `top`/`left`, más liviano) cayendo en diagonal. Confirmado con dos
+  capturas seguidas que las gotas están en posiciones distintas entre
+  frames (la animación mueve cada una, no es un patrón estático).
+
 ## 2026-11-07 · Laboratorio: efecto de lluvia animado en el banner + menos espacio antes de los selects
 
 - **Pedido**: "quitaría un poco de espacio vacío entre el primer select y

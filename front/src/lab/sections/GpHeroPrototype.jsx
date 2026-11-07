@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useModalPhase } from "../../hooks/useModalPhase";
 import { useEscapeKey } from "../../hooks/useEscapeKey";
 import "../../assets/styles/globals.css";
@@ -8,6 +8,26 @@ import "../../assets/styles/calendar.css";
 import "../../assets/styles/predictions.css";
 import "./gpHero.css";
 import australiaPhoto from "../assets/australia.jpg";
+
+// Pedido: "se ve medio mal, no parece una lluvia natural" — un
+// repeating-linear-gradient es, por definición, un patrón perfectamente
+// regular (franjas idénticas y parejas), no hay forma de que eso se lea
+// como orgánico. La técnica real para esto es dispersar "gotas"
+// individuales en posiciones al azar vía box-shadow (un solo elemento
+// base invisible + N copias vía box-shadow, cada una con su propio
+// x/y/opacidad) — mismo truco clásico que se usa para campos de
+// estrellas. Se arma una sola vez por instancia (useMemo), no en cada
+// render.
+function buildRainShadows(count, xRange, yRange, opacityRange) {
+  const drops = [];
+  for (let i = 0; i < count; i++) {
+    const x = Math.round(xRange[0] + Math.random() * (xRange[1] - xRange[0]));
+    const y = Math.round(yRange[0] + Math.random() * (yRange[1] - yRange[0]));
+    const o = (opacityRange[0] + Math.random() * (opacityRange[1] - opacityRange[0])).toFixed(2);
+    drops.push(`${x}px ${y}px 0 0 rgba(255,255,255,${o})`);
+  }
+  return drops.join(", ");
+}
 
 // Datos mock — esto NO pega contra el backend real, es solo para evaluar el
 // diseño. En la implementación real vendría de race.circuit.gp_name,
@@ -69,6 +89,20 @@ const DEFAULT_GP = {
  * cambia el contenido de .gp-hero-proto__content.
  */
 function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }) {
+  // Dos capas de profundidad ("cerca": menos gotas, más grandes/brillantes/
+  // rápidas; "lejos": más gotas, chicas/tenues/lentas, con blur) — rango de
+  // dispersión más ancho/alto que el banner (600px) para que al caer
+  // siempre haya gotas entrando/saliendo del área visible, sin que se note
+  // el salto al reiniciar el loop de la animación.
+  const rainNear = useMemo(
+    () => buildRainShadows(110, [-50, 1500], [-300, 900], [0.35, 0.65]),
+    []
+  );
+  const rainFar = useMemo(
+    () => buildRainShadows(170, [-50, 1500], [-300, 900], [0.15, 0.35]),
+    []
+  );
+
   const [scheduleOpen, setScheduleOpen] = useState(false);
   // Pedido: en mobile, los horarios se abren en la misma "bandeja" (bottom
   // sheet) que ya usa el resto del sitio (comparación de predicciones,
@@ -191,9 +225,15 @@ function GpHeroPrototype({ withPhoto = true, gp = DEFAULT_GP, variant = "home" }
             lluvia nomás (el resto — tormenta/sol/nublado/noche calurosa —
             queda para después de validar este). Capa propia encima del
             degradado y debajo del topbar/contenido (aria-hidden: puro
-            efecto visual, no aporta información). */}
+            efecto visual, no aporta información). Gotas dispersas al azar
+            (ver buildRainShadows arriba) en vez de un patrón regular —
+            reportado que un degradado repetido "no parecía lluvia
+            natural", de ahí el cambio de técnica. */}
         {gp.weather === "rain" && (
-          <div className="gp-hero-proto__weather gp-hero-proto__weather--rain" aria-hidden="true"></div>
+          <div className="gp-hero-proto__weather gp-hero-proto__weather--rain" aria-hidden="true">
+            <span className="gp-hero-proto__rain-drop gp-hero-proto__rain-drop--near" style={{ boxShadow: rainNear }}></span>
+            <span className="gp-hero-proto__rain-drop gp-hero-proto__rain-drop--far" style={{ boxShadow: rainFar }}></span>
+          </div>
         )}
 
         {/* Pedido: la barra de datos (circuito, sesión, fecha) y el contador
