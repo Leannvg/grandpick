@@ -2,6 +2,22 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-07 · GpHeroBanner: faltaba Clasificación/Carrera en horarios + más alto en mobile
+
+- **Reportado con captura**: la solapa de horarios solo mostraba
+  "Prácticas", nunca "Clasificación y carrera". Causa: `findCurrentOrNext()`
+  (lo que usa `useNextRace`) devuelve una sola sesión (la más próxima, ej.
+  clasificación), no el fin de semana agrupado — `race.sessions` no existe
+  en esa respuesta (a diferencia de `Calendar.jsx`, que arma `sessions`
+  client-side agrupando todas las carreras del circuito+fecha). Se agrega
+  un fetch con `racesServices.findByCircuitAndYear(circuitId, year)` (mismo
+  endpoint que ya usan `Calendar.jsx`/`RaceForm.jsx`), mapeando su
+  `race_types` como `sessions` para `buildSchedule`.
+- **Reportado con captura**: en mobile, con el título a dos renglones
+  ("GRAN PREMIO DE SÃO PAULO"), el banner quedaba muy justo. Se suma
+  `min-height: 540px` (antes 460px heredado del base) en el breakpoint de
+  mobile (`gpHeroBanner.css`, `@media (max-width: 600px)`).
+
 ## 2026-11-07 · Home: se saca el banner viejo (quedaba duplicado con GpHeroBanner)
 
 - **Reportado**: en producción, debajo del `GpHeroBanner` nuevo seguía

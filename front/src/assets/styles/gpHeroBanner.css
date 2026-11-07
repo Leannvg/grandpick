@@ -259,7 +259,14 @@
    (.gp-hero-banner__schedule-inner para el desplegable de desktop,
    .gp-hero-banner__drawer-title para la bandeja de mobile). */
 
+/* Pedido: "dar un poco más de alto al banner en mobile" — con el título a
+   dos renglones ("GRAN PREMIO DE SÃO PAULO") quedaba muy justo contra el
+   resto del contenido. Un poco más de min-height que el base (460px). */
 @media (max-width: 600px) {
+  .gp-hero-banner__hero {
+    min-height: 540px;
+  }
+
   .gp-hero-banner__title {
     font-size: 1.9rem;
   }

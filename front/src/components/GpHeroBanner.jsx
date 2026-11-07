@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useNextRace } from "../hooks/useNextRace";
 import { useModalPhase } from "../hooks/useModalPhase";
 import { useEscapeKey } from "../hooks/useEscapeKey";
+import racesServices from "../services/races.services";
 import practiceSessionsServices from "../services/practiceSessions.services";
 import { formatRaceDate, getFlagEmoji } from "../utils/helpers";
 import { getImageUrl } from "../utils/cloudinary";
@@ -21,6 +22,7 @@ import "../assets/styles/gpHeroBanner.css";
  */
 function GpHeroBanner() {
   const { race, countryName, timeLeft, status } = useNextRace();
+  const [sessions, setSessions] = useState([]);
   const [practices, setPractices] = useState([]);
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [zoneMode, setZoneMode] = useState("mine");
@@ -31,6 +33,27 @@ function GpHeroBanner() {
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
+
+  // findCurrentOrNext() devuelve UNA sola sesión (la más próxima, ej.
+  // clasificación) — no el fin de semana completo con las demás sesiones
+  // (clasificación + carrera, y sprint si aplica). Para eso hace falta
+  // findByCircuitAndYear, que SÍ agrupa todas las sesiones del circuito en
+  // el año (mismo endpoint que ya usa Calendar.jsx/RaceForm.jsx, con la
+  // forma { race_types: [...] } en vez de { sessions: [...] } — se mapea
+  // acá). Sin esto, buildSchedule() solo tenía prácticas (Practice_Sessions,
+  // que sí vienen aparte) y nunca mostraba Clasificación/Carrera (reportado
+  // con captura: la solapa solo listaba prácticas).
+  useEffect(() => {
+    const circuitId = race?.circuit?._id;
+    if (!circuitId) {
+      setSessions([]);
+      return;
+    }
+    const year = new Date(race.date_gp_start).getFullYear();
+    racesServices.findByCircuitAndYear(circuitId, year)
+      .then((data) => setSessions(data?.race_types || []))
+      .catch((err) => console.error("Error cargando sesiones para el banner:", err));
+  }, [race?.circuit?._id, race?.date_gp_start]);
 
   // Las prácticas (Practice_Sessions) no vienen en findCurrentOrNext() —
   // se piden filtradas por circuito, igual que ya hace Calendar.jsx (ahí
@@ -93,10 +116,10 @@ function GpHeroBanner() {
 
   const circuitId = race.circuit?._id;
   const circuitZone = race.circuit?.timezone || "UTC";
-  const sessions = [...(race.sessions || [])].sort(
+  const sortedSessions = [...sessions].sort(
     (a, b) => new Date(a.date_race).getTime() - new Date(b.date_race).getTime()
   );
-  const groups = buildSchedule(sessions, practices);
+  const groups = buildSchedule(sortedSessions, practices);
 
   // Mismas 3 claves que el chip de sesión del calendario/historial
   // (qualy/sprint/race), para colorear igual en todo el sitio — igual que
