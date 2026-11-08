@@ -2,6 +2,29 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-08 · Ajuste: el loader debe tapar todo menos el nav (corrige el fix anterior)
+
+- **Pedido**: "el loader debe tapar la pantalla completa menos el nav
+  principal" — el fix anterior (`top:660px`, debajo del banner entero)
+  dejaba ver el banner COMPLETO con sus datos reales y, debajo, un loader
+  chico flotando en un hueco — un corte raro, "a medio cargar" en vez de
+  una sola pantalla de carga limpia.
+- Corregido: `.main-content.hero-banner-content .loader-car-overlay` pasa
+  de `top:660px` a `top:60px` (justo debajo del nav, no del banner) — el
+  loader vuelve a tapar TODO lo de abajo del nav, banner incluido, aunque
+  ya tenga datos listos. `.navbar` (Bootstrap, `sticky-top`) ya tiene
+  z-index más alto que el overlay, así que un valor aproximado alcanza
+  sin que se note el corte (el nav siempre pinta encima).
+- Esto significa que el "Causa 1" del fix anterior (evitar que el loader
+  tape el banner) ya no aplica — el criterio correcto, aclarado por el
+  pedido de esta vuelta, es el opuesto: SÍ taparlo, todo junto, hasta que
+  la página esté lista. El fix de "Causa 2" (flash de "no hay carreras",
+  `raceChecked`) sigue vigente sin cambios.
+- Verificado en el navegador (mismo flujo: login real, click en nav a
+  Predicciones): el loader ahora cubre todo el ancho/alto debajo del nav,
+  sin banner ni hueco visible mientras carga; después de cargar, el banner
+  y la página se ven normal, sin regresión.
+
 ## 2026-11-08 · Fix: el loader global tapaba el banner en Predicciones (producción)
 
 - **Pedido**: "cuando paso a la pantalla de predicción por un momento
