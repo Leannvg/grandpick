@@ -2,6 +2,40 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-08 · Fix: el loader global tapaba el banner en Predicciones (producción)
+
+- **Pedido**: "cuando paso a la pantalla de predicción por un momento
+  aparece esto así" (screenshot: topbar con datos reales, pero el título/
+  countdown/estado del banner vacíos, tapados por el loader global de
+  autito — `LoaderCar`). Después: "veo que al presionar rápido logré
+  agarrar lo que aparece antes de aparecer el loader" (screenshot: el
+  mensaje "No hay próximas carreras para predecir en este momento" un
+  instante antes del loader).
+- **Causa 1 (loader tapando el banner)**: `.loader-car-overlay` tiene
+  `position:fixed; top:110px` — calculado para la barra corta de
+  `NextRaceCTA` (nav + barra ≈ 110px). Con `GpHeroBanner` (600px) en vez
+  de esa barra en Home/Predicciones, `<main>` arranca ≈660px más abajo,
+  pero el loader (dentro de `<main>`, pero `position:fixed` respecto al
+  viewport) seguía anclado a 110px — tapando buena parte del banner, que
+  ya tenía sus propios datos listos (no es lo que estaba cargando). Fix:
+  `.main-content.hero-banner-content .loader-car-overlay` (misma clase
+  que ya diferenciaba el margen) con `top:660px`.
+- **Causa 2 (flash de "no hay carreras")**: `race` arranca en `null` como
+  valor inicial de `useState`, y `showLoader()` recién pone `loading=true`
+  en un `useEffect` — que corre DESPUÉS del primer render. En ese primer
+  frame, `race` sigue siendo `null` (su valor inicial, no "se confirmó que
+  no hay carrera") y `loading` todavía es `false`, así que el mensaje de
+  "No hay próximas carreras..." se ve un instante antes de que el loader
+  tape todo. Fix: nuevo estado `raceChecked` (false hasta que `fetchRace()`
+  resuelve por primera vez, haya o no carrera) — el mensaje ahora depende
+  de `raceChecked && race === null` en vez de solo `race === null`.
+- Verificado con polling cada 50ms sobre la navegación real (Home →
+  Predicciones, como navega un usuario real): ni el loader tapa el banner
+  ni aparece el mensaje de "no hay carreras" en ningún frame muestreado.
+  Una pantalla "Iniciando..." aparte (antes de resolver el login, en TODAS
+  las rutas) no se toca — no es específica de este cambio, confirmado que
+  se comporta igual en Home.
+
 ## 2026-11-08 · Banner con foto también en Predicciones (producción)
 
 - **Pedido**: "apliquemos los cambios de la pantalla de predicciones a

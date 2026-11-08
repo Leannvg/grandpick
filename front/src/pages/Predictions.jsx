@@ -17,6 +17,17 @@ import "../assets/styles/predictions.css";
 function Predictions() {
   const [drivers, setDrivers] = useState([]);
   const [race, setRace] = useState(null);
+  // Pedido: "al presionar rápido logré agarrar lo que aparece antes de
+  // aparecer el loader" — "race === null" por sí solo no distingue
+  // "todavía no se consultó" de "se consultó y no hay carrera" (los dos
+  // casos arrancan en null). showLoader() recién pone loading=true en un
+  // useEffect, DESPUÉS del primer render — en ese primer frame race sigue
+  // siendo null (su valor inicial) y loading todavía es false, así que el
+  // mensaje "No hay próximas carreras..." se ve un instante antes de que
+  // tape todo el loader. raceChecked solo pasa a true cuando fetchRace()
+  // ya resolvió (haya o no carrera), para esperar ese resultado real en
+  // vez de guiarse por el estado inicial.
+  const [raceChecked, setRaceChecked] = useState(false);
   const [pointSystem, setPointSystem] = useState([]);
   const [predictions, setPredictions] = useState([]);
   const [invalidIndexes, setInvalidIndexes] = useState([]);
@@ -59,6 +70,8 @@ function Predictions() {
       console.error("Error en fetchRace:", err);
       setRace(null);
       return null;
+    } finally {
+      setRaceChecked(true);
     }
   }, []);
 
@@ -260,7 +273,7 @@ function Predictions() {
       )}
 
       <section className="page-section container text-center">
-        {race === null && (
+        {raceChecked && race === null && (
           <div className="info-message">
             📭 No hay próximas carreras para predecir en este momento. <br />
             ¡Mantente atento a las próximas fechas!
