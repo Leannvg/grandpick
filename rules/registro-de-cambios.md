@@ -2,6 +2,51 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-08 · Laboratorio: rediseño de las cards de predicción (vidrio + arrastrar para reordenar)
+
+- **Pedido**: "si tuvieras que rediseñar los selects para que queden bien
+  con el diseño del banner y la transparencia, cómo lo harías? se puede
+  agregar algún diseño nuevo para probar que sea UX/UI y quede más
+  moderno, que se pueda mover los pilotos de posición arrastrando?".
+- Nuevo prototipo (`lab/sections/PredictionCardsPrototype.jsx` +
+  `predictionCards.css`, prefijo `pcp-`), 100% mock (pilotos/colores de
+  escudería inventados, no pega contra el backend). Dos piezas:
+  1. **Cards tipo vidrio** (`blur` + fondo semitransparente + borde
+     sutil) en vez del card blanco opaco actual — mismo lenguaje visual
+     que `GpHeroBanner`.
+  2. **Picker de piloto construido desde cero**, no una versión pintada
+     del `react-select` real: su menú se abre vía portal a
+     `document.body` (`SearchableSelect.jsx`, `menuPortalTarget`), fuera
+     del DOM del card — un override global de `.react-select__menu`
+     hubiera chocado con los otros mocks de esta misma página del
+     laboratorio que también usan `SearchableSelect` (el bloque de
+     predict-below, más arriba). El picker propio tiene su panel
+     `position:absolute` DENTRO del card (sin portal), con buscador
+     (filtra por nombre o escudería) y badge "Ya elegido" en los pilotos
+     que ya ocupan otra posición.
+  3. **Arrastrar para reordenar**: cada fila tiene una manija (ícono de
+     puntos); arrastrándola verticalmente, la fila "salta" de posición y
+     las demás se corren con una animación suave (transform + transition,
+     mismo patrón de pointer events — `setPointerCapture`/
+     `touch-action:none` — que ya usa el drawer de horarios de
+     `GpHeroBanner`, no una librería nueva). El selector sigue sirviendo
+     para ELEGIR qué piloto va en cada posición; si elegís uno que ya
+     estaba en otro lugar, las dos posiciones se intercambian en vez de
+     duplicarse.
+- **Bug encontrado y arreglado en el camino**: el panel del picker
+  quedaba tapado DETRÁS de las cards siguientes al abrirlo — mismo tipo
+  de bug de stacking que el del clima del banner (ver entrada del
+  2026-11-07): `.pcp-card` tiene `position`+`z-index` propio, así que
+  crea su propio contexto de apilado y el z-index alto del panel queda
+  atrapado adentro, sin poder ganarle a una card HERMANA (mismo z-index
+  base, pero más abajo en el DOM). Fix: cuando el picker de una fila está
+  abierto, la fila ENTERA sube de z-index (no solo el panel) — mismo
+  criterio de solución que la vez anterior.
+- Probado en el navegador: abrir/cerrar el picker, buscar y elegir un
+  piloto nuevo (reemplaza al que estaba), elegir uno ya usado (intercambia
+  posiciones), y arrastrar una fila a otra posición (confirmado con
+  `agent-browser drag`: las filas intermedias se reacomodan solas).
+
 ## 2026-11-08 · Fix: en mobile quedaba un hueco entre el nav y el loader
 
 - **Pedido**: "en mobile queda un pedacito libre que se ve la imagen de

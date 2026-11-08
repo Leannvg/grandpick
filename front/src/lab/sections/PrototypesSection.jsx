@@ -1,4 +1,5 @@
 import GpHeroPrototype from "./GpHeroPrototype.jsx";
+import PredictionCardsPrototype from "./PredictionCardsPrototype.jsx";
 import australiaPhoto from "../assets/australia.jpg";
 import brasilPhoto from "../assets/brasil.jpg";
 import lasVegasPhoto from "../assets/lasvegas.jpg";
@@ -234,6 +235,32 @@ function PrototypesSection() {
           withPhoto
           gp={{ ...SAMPLE_GPS[2], round: { label: "CARRERA", type: "race" }, isInProgress: true, weather: "night" }}
         />
+      </div>
+
+      <div className="lab-block">
+        <h2 className="lab-block-title">Predicciones: cards tipo vidrio + reordenar arrastrando</h2>
+        <p className="lab-prose" style={{ marginBottom: 14 }}>
+          Pedido: "si tuvieras que rediseñar los selects para que queden
+          bien con el diseño del banner y la transparencia, cómo lo
+          harías? se puede agregar algún diseño nuevo para probar, que
+          sea UX/UI y quede más moderno, que se pueda mover los pilotos
+          de posición arrastrando?". Dos cambios sobre el diseño real: (1)
+          cards tipo vidrio (blur + semitransparente) en vez del card
+          blanco opaco de hoy, mismo lenguaje que el banner; (2) picker de
+          piloto propio, construido desde cero (no es una versión pintada
+          del <code>react-select</code> actual — su menú se abre en un
+          portal a <code>document.body</code>, fuera del card, y un
+          override global hubiera chocado con los otros mocks de esta
+          misma página que también usan <code>SearchableSelect</code>).
+          Arrastrando el ícono de la derecha de cada fila se reordena la
+          posición (las demás se corren con animación); el selector sigue
+          sirviendo para elegir/cambiar qué piloto va en cada lugar — si
+          elegís uno que ya estaba en otra posición, las dos se
+          intercambian en vez de duplicarse. 100% mock (datos de pilotos
+          y colores de escudería inventados para la prueba, no pegan
+          contra el backend).
+        </p>
+        <PredictionCardsPrototype />
       </div>
     </div>
   );
