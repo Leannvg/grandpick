@@ -2,6 +2,35 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-08 · Laboratorio: el arrastre de las cards de predicción pasa a Framer Motion
+
+- **Pedido**: "se traba mucho al arrastrar, no podríamos utilizar framer
+  motion?" — la primera versión (misma entrada de más abajo) calculaba la
+  posición a mano en cada evento `pointermove` (`setState` de React, para
+  las 10 filas a la vez, en cada pixel de movimiento) — se nota. Framer
+  Motion ya estaba instalada en el proyecto (`Reveal.jsx` la usa para las
+  animaciones de scroll), así que no hizo falta sumar una dependencia
+  nueva — se reemplazó todo el cálculo manual (`dragSlot`/`dragY`/
+  `onHandlePointerDown/Move/Up`, el `transform: translateY()` a mano) por
+  `Reorder.Group`/`Reorder.Item`, hechos justo para listas arrastrables:
+  el seguimiento del puntero y la animación de las filas vecinas corren
+  por el motor de animación de la librería, no por el ciclo de render de
+  React. `dragListener={false}` + `useDragControls()` restringe el
+  arrastre a la manija (si no, tocar el selector también arrastraría la
+  fila entera).
+- **Bug encontrado en el camino**: el fix de z-index del picker abierto
+  (ver entrada anterior) dejó de funcionar al cambiar a `Reorder.Item` —
+  investigado: `Reorder.Item` pone su PROPIO `z-index` inline por fila
+  (`"z-index: unset"`, confirmado inspeccionando el DOM, para manejar el
+  apilado durante el drag), y un estilo inline le gana a cualquier clase
+  sin importar la especificidad. Fix: `!important` en
+  `.pcp-card.is-picker-open` — acá no es "por las dudas", es necesario
+  para ganarle al inline style de la librería.
+- Probado en el navegador: abrir el picker (el panel vuelve a flotar
+  correcto, sin quedar tapado) y arrastrar una fila a otra posición
+  (confirmado con `agent-browser drag`: mismo comportamiento funcional
+  que antes — las filas intermedias se reacomodan solas).
+
 ## 2026-11-08 · Laboratorio: rediseño de las cards de predicción (vidrio + arrastrar para reordenar)
 
 - **Pedido**: "si tuvieras que rediseñar los selects para que queden bien

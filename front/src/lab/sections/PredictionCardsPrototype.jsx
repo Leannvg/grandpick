@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Reorder, useDragControls } from "framer-motion";
 import "./predictionCards.css";
 
 // Pedido: "si tuvieras que rediseñar los selects para que queden bien con
@@ -16,6 +17,18 @@ import "./predictionCards.css";
 //    por uno. Colores de escudería reales (2025), orden inicial = grilla
 //    real, para que el gesto de "arrastrar a mi pronóstico" se sienta
 //    natural en vez de arrancar de cero.
+//
+// Pedido después: "se traba mucho al arrastrar, no podríamos utilizar
+// framer motion?" — la primera versión calculaba la posición a mano en
+// cada evento pointermove (setState de React en cada pixel, para las 10
+// filas a la vez) — se nota. Framer Motion ya está instalada en el
+// proyecto (Reveal.jsx la usa para las animaciones de scroll) y trae
+// Reorder.Group/Reorder.Item hecho justo para listas arrastrables: el
+// seguimiento del puntero y la animación de las filas vecinas corren por
+// fuera del ciclo de render de React (vía su propio motor de animación),
+// nada de setState por cada pixel. dragListener={false} + dragControls
+// (useDragControls) restringe el arrastre a la manija en vez de toda la
+// fila — si no, tocar el selector también empezaría a arrastrar.
 const TEAM = {
   mercedes: "#27F4D2",
   redbull: "#3671C6",
@@ -56,10 +69,6 @@ const INITIAL_ORDER = [
   "antonelli", "russell", "verstappen", "hadjar", "hamilton",
   "lawson", "hulkenberg", "lindblad", "colapinto", "bearman",
 ];
-
-const ROW_H = 56;
-const GAP = 10;
-const STEP = ROW_H + GAP;
 
 function splitName(fullName) {
   const parts = fullName.split(" ");
@@ -151,42 +160,54 @@ function DriverPicker({ driver, onSelect, takenIds, open, onOpenChange }) {
   );
 }
 
+function PredictionRow({ driverId, slot, driver, order, onSelect, openSlot, setOpenSlot }) {
+  const dragControls = useDragControls();
+
+  return (
+    <Reorder.Item
+      value={driverId}
+      as="div"
+      dragListener={false}
+      dragControls={dragControls}
+      className={`pcp-card ${openSlot === driverId ? "is-picker-open" : ""}`}
+      whileDrag={{
+        scale: 1.015,
+        boxShadow: "0 16px 36px rgba(0,0,0,.4)",
+        backgroundColor: "rgba(255,255,255,.11)",
+        zIndex: 50,
+      }}
+    >
+      <span className="pcp-card__rank">{String(slot + 1).padStart(2, "0")}</span>
+      <span className="pcp-card__color" style={{ background: driver.color }}></span>
+      <div className="pcp-card__picker-wrap">
+        <DriverPicker
+          driver={driver}
+          onSelect={(id) => onSelect(slot, id)}
+          takenIds={order}
+          open={openSlot === driverId}
+          onOpenChange={(next) => setOpenSlot(next ? driverId : null)}
+        />
+      </div>
+      <button
+        type="button"
+        className="pcp-card__handle"
+        onPointerDown={(e) => dragControls.start(e)}
+        style={{ touchAction: "none" }}
+        aria-label={`Arrastrar para cambiar la posición ${slot + 1}`}
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <circle cx="5" cy="3" r="1.3" /><circle cx="11" cy="3" r="1.3" />
+          <circle cx="5" cy="8" r="1.3" /><circle cx="11" cy="8" r="1.3" />
+          <circle cx="5" cy="13" r="1.3" /><circle cx="11" cy="13" r="1.3" />
+        </svg>
+      </button>
+    </Reorder.Item>
+  );
+}
+
 function PredictionCardsPrototype() {
   const [order, setOrder] = useState(INITIAL_ORDER);
-  const [dragSlot, setDragSlot] = useState(null);
-  const [dragY, setDragY] = useState(0);
   const [openSlot, setOpenSlot] = useState(null);
-  const dragStartClientY = useRef(0);
-
-  const onHandlePointerDown = (slot, e) => {
-    setDragSlot(slot);
-    setDragY(0);
-    dragStartClientY.current = e.clientY;
-    e.currentTarget.setPointerCapture(e.pointerId);
-  };
-
-  const onHandlePointerMove = (e) => {
-    if (dragSlot === null) return;
-    const delta = e.clientY - dragStartClientY.current;
-    setDragY(delta);
-
-    const targetSlot = Math.min(order.length - 1, Math.max(0, Math.round(dragSlot + delta / STEP)));
-    if (targetSlot !== dragSlot) {
-      setOrder((prev) => {
-        const next = [...prev];
-        const [moved] = next.splice(dragSlot, 1);
-        next.splice(targetSlot, 0, moved);
-        return next;
-      });
-      dragStartClientY.current += (targetSlot - dragSlot) * STEP;
-      setDragSlot(targetSlot);
-    }
-  };
-
-  const onHandlePointerUp = () => {
-    setDragSlot(null);
-    setDragY(0);
-  };
 
   const handleSwap = (slot, selectedId) => {
     setOrder((prev) => {
@@ -204,50 +225,20 @@ function PredictionCardsPrototype() {
   return (
     <div className="pcp-root">
       <p className="pcp-hint">Arrastrá el ícono de la derecha para reordenar</p>
-      <div className="pcp-list" style={{ height: order.length * STEP - GAP }}>
-        {order.map((driverId, slot) => {
-          const driver = ALL_DRIVERS.find((d) => d._id === driverId);
-          const isDragging = dragSlot === slot;
-          const y = isDragging ? slot * STEP + dragY : slot * STEP;
-          return (
-            <div
-              key={driverId}
-              className={`pcp-card ${isDragging ? "is-dragging" : ""} ${openSlot === slot ? "is-picker-open" : ""}`}
-              style={{
-                transform: `translateY(${y}px)`,
-                transition: isDragging ? "none" : "transform .22s cubic-bezier(.2,.8,.2,1)",
-              }}
-            >
-              <span className="pcp-card__rank">{String(slot + 1).padStart(2, "0")}</span>
-              <span className="pcp-card__color" style={{ background: driver.color }}></span>
-              <div className="pcp-card__picker-wrap">
-                <DriverPicker
-                  driver={driver}
-                  onSelect={(id) => handleSwap(slot, id)}
-                  takenIds={order}
-                  open={openSlot === slot}
-                  onOpenChange={(next) => setOpenSlot(next ? slot : null)}
-                />
-              </div>
-              <button
-                type="button"
-                className="pcp-card__handle"
-                onPointerDown={(e) => onHandlePointerDown(slot, e)}
-                onPointerMove={onHandlePointerMove}
-                onPointerUp={onHandlePointerUp}
-                onPointerCancel={onHandlePointerUp}
-                aria-label={`Arrastrar para cambiar la posición ${slot + 1}`}
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                  <circle cx="5" cy="3" r="1.3" /><circle cx="11" cy="3" r="1.3" />
-                  <circle cx="5" cy="8" r="1.3" /><circle cx="11" cy="8" r="1.3" />
-                  <circle cx="5" cy="13" r="1.3" /><circle cx="11" cy="13" r="1.3" />
-                </svg>
-              </button>
-            </div>
-          );
-        })}
-      </div>
+      <Reorder.Group as="div" axis="y" values={order} onReorder={setOrder} className="pcp-list">
+        {order.map((driverId, slot) => (
+          <PredictionRow
+            key={driverId}
+            driverId={driverId}
+            slot={slot}
+            driver={ALL_DRIVERS.find((d) => d._id === driverId)}
+            order={order}
+            onSelect={handleSwap}
+            openSlot={openSlot}
+            setOpenSlot={setOpenSlot}
+          />
+        ))}
+      </Reorder.Group>
     </div>
   );
 }

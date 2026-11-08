@@ -19,22 +19,23 @@
   --pcp-gap: 10px;
 }
 
+/* Pedido: "se traba mucho al arrastrar, no podríamos utilizar framer
+   motion?" — Reorder.Group/Reorder.Item (framer-motion, ver
+   PredictionCardsPrototype.jsx) reemplaza el cálculo manual de posición
+   por pointermove. Ya no hace falta position:absolute + transform
+   calculado a mano: cada fila vive en el flujo normal (flex column) y la
+   librería anima por su cuenta el reacomodo de las vecinas cuando el
+   array de orden cambia — fuera del ciclo de render de React. */
 .pcp-list {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   max-width: 640px;
   margin: 0 auto;
 }
 
-/* Cada card se posiciona por transform (ver PredictionCardsPrototype.jsx,
-   translateY calculado por slot) en vez de depender del orden real en el
-   DOM — así una gota puede "saltar" de posición con una animación suave
-   (transition en transform) sin tener que reordenar nodos de React, y la
-   que se está arrastrando puede seguir al puntero 1 a 1 sin transición. */
 .pcp-card {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: relative;
   height: 56px;
   display: flex;
   align-items: center;
@@ -47,25 +48,26 @@
   border: 1px solid rgba(255, 255, 255, .14);
   box-shadow: 0 4px 16px rgba(0, 0, 0, .18);
   color: #fff;
-  z-index: 1;
 }
 
-.pcp-card.is-dragging {
-  z-index: 50;
-  background: rgba(255, 255, 255, .11);
-  border-color: rgba(255, 255, 255, .28);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, .4);
-  transform-origin: center;
-}
+/* El "levantarse" mientras se arrastra (escala + sombra + z-index) ya no
+   es una clase CSS propia — es whileDrag en el Reorder.Item (framer
+   anima esas props directo, sin pasar por un re-render de React). */
 
-/* Bug encontrado probando: position+z-index en .pcp-card crea un
-   contexto de apilado propio por fila — el z-index alto del panel del
-   picker (.pcp-picker__panel) queda atrapado ADENTRO de ese contexto,
-   así que no le gana a una card HERMANA de más abajo en el DOM (mismo
-   z-index base, pinta encima igual). Por eso la card ENTERA sube de
-   z-index cuando su propio picker está abierto, no solo el panel. */
+/* Bug encontrado probando (con la versión anterior, a mano, y se
+   mantiene igual acá): position+z-index en .pcp-card crea un contexto de
+   apilado propio por fila — el z-index alto del panel del picker
+   (.pcp-picker__panel) queda atrapado ADENTRO de ese contexto, así que
+   no le gana a una card HERMANA de más abajo en el DOM (mismo z-index
+   base, pinta encima igual). Por eso la card ENTERA sube de z-index
+   cuando su propio picker está abierto, no solo el panel.
+   !important acá no es por las dudas: Reorder.Item (framer-motion) pone
+   su PROPIO z-index inline por fila ("z-index: unset", confirmado
+   inspeccionando el DOM) para manejar el apilado durante el drag — un
+   inline style le gana a cualquier clase sin importar la especificidad,
+   así que sin !important esta regla queda sin efecto, no es decoración. */
 .pcp-card.is-picker-open {
-  z-index: 50;
+  z-index: 50 !important;
 }
 
 .pcp-card__rank {
@@ -114,7 +116,7 @@
   color: rgba(255, 255, 255, .85);
 }
 
-.pcp-card.is-dragging .pcp-card__handle {
+.pcp-card__handle:active {
   cursor: grabbing;
   color: #fff;
   background: rgba(255, 255, 255, .12);
