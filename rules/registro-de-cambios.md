@@ -2,6 +2,27 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-08 · Fix: en mobile quedaba un hueco entre el nav y el loader
+
+- **Pedido**: "en mobile queda un pedacito libre que se ve la imagen de
+  atrás" — el `top:60px` del ajuste anterior era una aproximación; medido
+  en el navegador, el `<nav>` real mide **56px en mobile** (`navbar-
+  expand-lg` colapsado) y **60.375px en desktop** (≥992px, breakpoint
+  `lg` de Bootstrap, nav expandido) — dos alturas reales, no una. Con
+  60px fijo, en mobile sobraban ~4px sin tapar, dejando ver la foto del
+  banner detrás.
+- Causa de fondo (por qué hacía falta ser exacto, no "más o menos"): el
+  `<nav>` en sí es **transparente** (`background: rgba(0,0,0,0)` — el
+  oscuro que se ve es el fondo de `.app-wrapper`/body detrás, no un color
+  propio del nav), así que su z-index más alto (1020 vs 1000 del loader)
+  no alcanza para disimular un top corto — si el loader no llega
+  exactamente hasta el borde real del nav, el hueco deja ver lo de atrás.
+- Fix: `top`/`height` por breakpoint (`@media (min-width: 992px)`) con
+  los valores medidos exactos, en vez de un número aproximado único.
+- Verificado en el navegador en mobile (390px) y desktop (1400px): el
+  gradiente del loader llega justo al borde del nav en los dos casos, sin
+  hueco.
+
 ## 2026-11-08 · Ajuste: el loader debe tapar todo menos el nav (corrige el fix anterior)
 
 - **Pedido**: "el loader debe tapar la pantalla completa menos el nav
