@@ -5,6 +5,7 @@ import { useModalPhase } from "../hooks/useModalPhase";
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import racesServices from "../services/races.services";
 import practiceSessionsServices from "../services/practiceSessions.services";
+import predictionsServices from "../services/predictions.services";
 import { formatRaceDate, getFlagEmoji } from "../utils/helpers";
 import { getImageUrl } from "../utils/cloudinary";
 import { buildSchedule, formatSessionTime } from "../utils/schedule";
@@ -12,21 +13,31 @@ import "../assets/styles/gpHeroBanner.css";
 
 /**
  * Banner de próxima carrera con foto de fondo por GP — reemplaza a
- * NextRaceCTA.jsx SOLO en Home (ver App.jsx, `{isHome ? <GpHeroBanner /> :
- * <NextRaceCTA />}`); en el resto de páginas del sitio sigue viendo
- * NextRaceCTA sin cambios. Diseñado y probado en el laboratorio
- * (front/src/lab/sections/GpHeroPrototype.jsx) con datos mock a lo largo de
- * varias rondas de feedback — este componente es ese mismo diseño ya
- * conectado a datos reales, ver rules/features/banner-proxima-carrera-con-foto.md
- * para el mapeo completo mock→real.
+ * NextRaceCTA.jsx en Home (`variant="home"`, default) Y en la pantalla de
+ * Predicciones (`variant="predictions"`, montado en App.jsx igual que Home,
+ * fuera de Predictions.jsx — ver el ternario de banners ahí). En el resto
+ * de páginas del sitio sigue NextRaceCTA sin cambios. Diseñado y probado en
+ * el laboratorio (front/src/lab/sections/GpHeroPrototype.jsx) con datos
+ * mock a lo largo de varias rondas de feedback — este componente es ese
+ * mismo diseño ya conectado a datos reales, ver
+ * rules/features/banner-proxima-carrera-con-foto.md para el mapeo completo
+ * mock→real.
+ *
+ * `userId`: solo lo usa variant="predictions", para resolver si el usuario
+ * ya cargó su predicción de esta carrera (status-saved/status-missing). Se
+ * pasa desde App.jsx (que ya lo tiene del auth) en vez de pedir el perfil
+ * acá de nuevo — Predictions.jsx hace su propio fetch completo de la
+ * predicción (la necesita para precargar el formulario); acá solo
+ * necesitamos saber si existe o no.
  */
-function GpHeroBanner() {
+function GpHeroBanner({ variant = "home", userId = null }) {
   const { race, countryName, timeLeft, status } = useNextRace();
   const [sessions, setSessions] = useState([]);
   const [practices, setPractices] = useState([]);
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [zoneMode, setZoneMode] = useState("mine");
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  const [hasPrediction, setHasPrediction] = useState(false);
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < 768);
@@ -70,6 +81,26 @@ function GpHeroBanner() {
       .then(setPractices)
       .catch((err) => console.error("Error cargando prácticas para el banner:", err));
   }, [race?.circuit?._id]);
+
+  // Solo variant="predictions": si el usuario ya cargó su predicción para
+  // esta carrera, para elegir status-saved/status-missing en el banner
+  // (mismo endpoint que usa Predictions.jsx, acá solo nos interesa si
+  // existe o no, no el contenido). 404/"No existe predicción" = todavía no
+  // predijo, no es un error real.
+  useEffect(() => {
+    if (variant !== "predictions" || !userId || !race?._id) {
+      setHasPrediction(false);
+      return;
+    }
+    predictionsServices.findPredictionByUserAndRace(userId, race._id)
+      .then((prediction) => setHasPrediction(!!prediction))
+      .catch((err) => {
+        if (!err.message?.includes("No existe predicción")) {
+          console.error("Error consultando la predicción del usuario para el banner:", err);
+        }
+        setHasPrediction(false);
+      });
+  }, [variant, userId, race?._id]);
 
   useEscapeKey(scheduleOpen, () => setScheduleOpen(false));
   const phase = useModalPhase(scheduleOpen);
@@ -260,27 +291,78 @@ function GpHeroBanner() {
         </div>
 
         <div className="gp-hero-banner__content">
-          <span className="gp-hero-banner__eyebrow">
-            {status.isInProgress ? "Carrera en curso" : "Próxima carrera"}
-          </span>
-          <h2 className="gp-hero-banner__title">{race.circuit?.gp_name}</h2>
+          {variant === "predictions" ? (
+            // Diseñado y aprobado en el laboratorio (GpHeroPrototype.jsx,
+            // variant="predictions"). Se saca de acá país/bandera/fecha/tag
+            // de ronda — ya están arriba, en el topbar (el mismo de
+            // siempre, sin tocar) — y se deja solo lo específico de esta
+            // pantalla: título, el countdown "tiempo restante para
+            // predecir" (mismas condiciones que tenía Predictions.jsx:
+            // oculto en pre-window, visible mientras la carrera no esté
+            // Finalizado) y el estado real de la predicción del usuario
+            // (hasPrediction, ver el effect arriba).
+            <>
+              <h1 className="gp-hero-banner__title">{race.circuit?.gp_name}</h1>
 
-          <div className="gp-hero-banner__actions">
-            {status.isInProgress ? (
-              <span className="gp-hero-banner__cta gp-hero-banner__cta--live">
-                <span className="live-indicator"></span> En curso
+              {!status.isPreWindow && race.state !== "Finalizado" && (
+                <div className="gp-hero-banner__predict-countdown">
+                  <span className="countdown-label">Tiempo restante para predecir:</span>
+                  <div className="gp-hero-banner__predict-time">
+                    <div className="nr-cta__time">
+                      <span className="nr-cta__time-value">{timeLeft.days}</span>
+                      <span className="nr-cta__time-label">DÍAS</span>
+                    </div>
+                    <div className="nr-cta__time">
+                      <span className="nr-cta__time-value">{timeLeft.hours}</span>
+                      <span className="nr-cta__time-label">HS.</span>
+                    </div>
+                    <div className="nr-cta__time">
+                      <span className="nr-cta__time-value">{timeLeft.minutes}</span>
+                      <span className="nr-cta__time-label">MIN.</span>
+                    </div>
+                    <div className="nr-cta__time">
+                      <span className="nr-cta__time-value">{timeLeft.seconds}</span>
+                      <span className="nr-cta__time-label">SEG.</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {!status.isPreWindow && !status.isClosed && (
+                <div className={`prediction-status-banner ${hasPrediction ? "status-saved" : "status-missing"}`}>
+                  <span>
+                    {hasPrediction
+                      ? "✅ Tu predicción ya está guardada, pero podés editarla antes de que el contador llegue a 0."
+                      : "💡 Todavía no realizaste tu predicción."}
+                  </span>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <span className="gp-hero-banner__eyebrow">
+                {status.isInProgress ? "Carrera en curso" : "Próxima carrera"}
               </span>
-            ) : (
-              <Link to="/predictions" className="gp-hero-banner__cta">
-                Predecir ahora
-              </Link>
-            )}
-            {circuitId && (
-              <Link to={`/circuits/${circuitId}`} className="gp-hero-banner__secondary-link">
-                Ver circuito
-              </Link>
-            )}
-          </div>
+              <h2 className="gp-hero-banner__title">{race.circuit?.gp_name}</h2>
+
+              <div className="gp-hero-banner__actions">
+                {status.isInProgress ? (
+                  <span className="gp-hero-banner__cta gp-hero-banner__cta--live">
+                    <span className="live-indicator"></span> En curso
+                  </span>
+                ) : (
+                  <Link to="/predictions" className="gp-hero-banner__cta">
+                    Predecir ahora
+                  </Link>
+                )}
+                {circuitId && (
+                  <Link to={`/circuits/${circuitId}`} className="gp-hero-banner__secondary-link">
+                    Ver circuito
+                  </Link>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
 

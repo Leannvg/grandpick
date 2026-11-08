@@ -5,16 +5,14 @@ import { computeRaceState } from "../utils/helpers";
 import { onSocketReady } from "../socket";
 
 /**
- * Carrera actual o próxima + countdown en vivo + nombre de país — extraído
- * de NextRaceCTA.jsx para que GpHeroBanner.jsx (hero de Home) lo reuse sin
- * duplicar el fetch/socket/intervalo. Mismo comportamiento, sin cambios:
- * re-fetch en el evento socket "races:updated", countdown a 1seg, status
- * de computeRaceState() recalculado en cada tick (isInProgress cambia el
- * destino del countdown: fin de sesión en vez de inicio).
+ * Countdown en vivo + status (computeRaceState) para una carrera ya
+ * obtenida — extraído de useNextRace() para que GpHeroBanner.jsx lo pueda
+ * usar también en la variante de Predictions.jsx, donde la carrera NO se
+ * vuelve a pedir (Predictions.jsx ya hace su propio fetch con lógica
+ * propia de pre-window/predicción guardada) sino que se recibe por prop.
+ * Mismo comportamiento de siempre, sin cambios de fondo.
  */
-export function useNextRace() {
-    const [race, setRace] = useState(null);
-    const [countryName, setCountryName] = useState("");
+export function useRaceCountdown(race) {
     const [timeLeft, setTimeLeft] = useState({
         days: "00",
         hours: "00",
@@ -22,48 +20,6 @@ export function useNextRace() {
         seconds: "00"
     });
     const [status, setStatus] = useState({ isClosed: false, isInProgress: false, canPredict: false, isPreWindow: false });
-
-    async function fetchNextRace() {
-        try {
-            const data = await racesServices.findCurrentOrNext();
-            if (data) {
-                setRace(data);
-
-                const countryIso = data.circuit?.country || data.id_circuit?.country;
-                if (countryIso) {
-                    try {
-                        const country = await countriesServices.getOneCountry(countryIso);
-                        setCountryName(country?.name || countryIso);
-                    } catch (err) {
-                        console.error("Error fetching country name:", err);
-                    }
-                }
-            } else {
-                setRace(null);
-            }
-        } catch (error) {
-            console.error("Error fetching next race:", error);
-        }
-    }
-
-    useEffect(() => {
-        fetchNextRace();
-
-        let currentSocket = null;
-        const handleRacesUpdated = () => fetchNextRace();
-
-        const cleanup = onSocketReady((socket) => {
-            currentSocket = socket;
-            socket.on("races:updated", handleRacesUpdated);
-        });
-
-        return () => {
-            if (cleanup) cleanup();
-            if (currentSocket) {
-                currentSocket.off("races:updated", handleRacesUpdated);
-            }
-        };
-    }, []);
 
     useEffect(() => {
         if (!race) return;
@@ -111,6 +67,64 @@ export function useNextRace() {
 
         return () => clearInterval(interval);
     }, [race]);
+
+    return { timeLeft, status };
+}
+
+/**
+ * Carrera actual o próxima + countdown en vivo + nombre de país — extraído
+ * de NextRaceCTA.jsx para que GpHeroBanner.jsx (hero de Home) lo reuse sin
+ * duplicar el fetch/socket/intervalo. Mismo comportamiento, sin cambios:
+ * re-fetch en el evento socket "races:updated", countdown vía
+ * useRaceCountdown() arriba.
+ */
+export function useNextRace() {
+    const [race, setRace] = useState(null);
+    const [countryName, setCountryName] = useState("");
+
+    async function fetchNextRace() {
+        try {
+            const data = await racesServices.findCurrentOrNext();
+            if (data) {
+                setRace(data);
+
+                const countryIso = data.circuit?.country || data.id_circuit?.country;
+                if (countryIso) {
+                    try {
+                        const country = await countriesServices.getOneCountry(countryIso);
+                        setCountryName(country?.name || countryIso);
+                    } catch (err) {
+                        console.error("Error fetching country name:", err);
+                    }
+                }
+            } else {
+                setRace(null);
+            }
+        } catch (error) {
+            console.error("Error fetching next race:", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchNextRace();
+
+        let currentSocket = null;
+        const handleRacesUpdated = () => fetchNextRace();
+
+        const cleanup = onSocketReady((socket) => {
+            currentSocket = socket;
+            socket.on("races:updated", handleRacesUpdated);
+        });
+
+        return () => {
+            if (cleanup) cleanup();
+            if (currentSocket) {
+                currentSocket.off("races:updated", handleRacesUpdated);
+            }
+        };
+    }, []);
+
+    const { timeLeft, status } = useRaceCountdown(race);
 
     return { race, countryName, timeLeft, status };
 }

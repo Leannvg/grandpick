@@ -9,6 +9,12 @@
 // corta: fecha, título, 2-3 líneas de qué cambió y por qué.
 export const DESIGN_CHANGELOG = [
   {
+    date: "2026-11-08",
+    title: "Predicciones: banner con foto de fondo (antes solo Home)",
+    summary:
+      "GpHeroBanner (el banner con foto + countdown que ya estaba en Home) pasa también a la pantalla de Predicciones, reemplazando el header de texto plano que tenía (país/título/fecha/tag + contador + estado de la predicción). Mismo topbar/foto que Home, contenido propio: título + countdown \"tiempo restante para predecir\" + banner de estado (guardada/falta predecir), diseño validado antes en el laboratorio.",
+  },
+  {
     date: "2026-11-07",
     title: "Home: se saca el banner viejo, duplicado con el nuevo de próxima carrera",
     summary:

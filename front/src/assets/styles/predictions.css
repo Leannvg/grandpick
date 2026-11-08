@@ -1,17 +1,8 @@
-.qualy-label {
-    display: block;
-    font-size: 24px;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-top: 30px;
-}
-
-.predictions-countdown {
-    font-size: 2rem;
-    font-weight: 100;
-    color: #fff;
-}
-
+/* .countdown-in-progress: sigue viva porque CountdownToRace.jsx sigue
+   montado (oculto, ver Predictions.jsx) solo por su efecto secundario de
+   cerrar las predicciones al arrancar la carrera — su propio contenido ya
+   no se muestra (ese rol lo cumple ahora el countdown del banner), pero el
+   componente igual la renderiza. */
 .countdown-in-progress p {
     margin: 5px 0;
     line-height: 1.2;
@@ -28,6 +19,34 @@
     text-transform: uppercase;
     letter-spacing: 2px;
     opacity: 0.7;
+}
+
+/* Franja de transición entre el banner (GpHeroBanner variant="predictions",
+   montado en App.jsx, fuera de este componente — ver el ternario de
+   banners ahí) y la lista de predicciones de acá abajo. Mismo tono con el
+   que termina el degradado del banner (--color-dark-blue, el mismo token
+   que usa el resto del sitio para fondo oscuro) con un margen negativo que
+   la solapa un poco contra el borde inferior del banner + un degradado
+   propio arriba (de transparente al mismo tono) para que el corte entre
+   la foto y esta franja no se note. Aprobado y probado primero en el
+   laboratorio (GpHeroPrototype.jsx/gpHero.css, prefijo gp-hero-proto) —
+   mismas reglas, prefijo gp-hero-banner acá por consistencia con el resto
+   del componente de producción. */
+.gp-hero-banner__predict-below {
+    position: relative;
+    margin-top: -90px;
+    padding: 50px 0 40px;
+    background: var(--color-dark-blue, #081D2B);
+}
+
+.gp-hero-banner__predict-below::before {
+    content: "";
+    position: absolute;
+    top: -90px;
+    left: 0;
+    right: 0;
+    height: 90px;
+    background: linear-gradient(to bottom, transparent, var(--color-dark-blue, #081D2B));
 }
 
 .prediction-cards-container {

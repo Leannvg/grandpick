@@ -83,12 +83,18 @@ body {
   /* Agregado para contener el loader */
 }
 
-.main-content.home-content {
+/* Pedido: "apliquemos los cambios de la pantalla de predicciones a
+   producción" — Predicciones pasa a tener el mismo hero con foto de fondo
+   que Home (GpHeroBanner variant="predictions", ver App.jsx), así que
+   necesita el mismo reset de margen (el banner queda pegado al nav, sin
+   el gap de 40px que separaba a NextRaceCTA del resto). Renombrada de
+   .home-content a .hero-banner-content porque ya no es exclusiva de Home. */
+.main-content.hero-banner-content {
   margin: 0px;
 }
 
 @media (max-width: 991px) {
-  .main-content:not(.home-content) {
+  .main-content:not(.hero-banner-content) {
     margin: 15px 0px;
   }
 }

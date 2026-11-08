@@ -2,6 +2,54 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-08 · Banner con foto también en Predicciones (producción)
+
+- **Pedido**: "apliquemos los cambios de la pantalla de predicciones a
+  producción con los cambios aprobados" — el diseño ya estaba validado en
+  el laboratorio (`GpHeroPrototype.jsx`, `variant="predictions"`, rondas de
+  feedback anteriores: dedupe de info repetida con el topbar, espacio
+  entre banner y selects). Primera vez que se toca `App.jsx`/`Predictions.jsx`
+  en esta sesión (hasta ahora todo lo de clima/tormenta había sido solo
+  laboratorio).
+- `GpHeroBanner` suma `variant` (`"home"` default | `"predictions"`) y
+  `userId`. Topbar/foto/horarios sin cambios en las dos variantes; el
+  contenido de predicciones es título + countdown "tiempo restante para
+  predecir" + `.prediction-status-banner` real (saved/missing, según si el
+  usuario ya predijo esta carrera — `predictionsServices.findPredictionByUserAndRace`).
+  Se arma como componente autónomo (se fetchea su propia carrera vía
+  `useNextRace`, no la recibe de Predictions.jsx) para no tocar la lógica
+  ya probada de la página — mismo criterio que ya usa `NextRaceCTA`/Home.
+- `useNextRace.js` se separa en `useRaceCountdown(race)` (el countdown/
+  `computeRaceState` puro) + `useNextRace()` (fetch + `useRaceCountdown`
+  por dentro) — refactor sin cambios de comportamiento, deja la puerta
+  abierta a reusar el countdown sobre una carrera ya obtenida.
+- `App.jsx`: el banner se monta también en `/predictions` (antes solo en
+  Home), con el mismo `userId` que ya resuelve el auth. `.main-content`
+  pasa de `.home-content` a `.hero-banner-content` (renombrada, ya no es
+  solo de Home) para sacar el margen superior en cualquier página que
+  arranque con este banner.
+- `Predictions.jsx` pierde su `<header>` (todo lo cubre el banner de
+  arriba ahora) y queda con: pre-ventana (`CountdownToOpen`, sin cambios),
+  la franja de transición `.gp-hero-banner__predict-below` (mismo CSS que
+  ya había probado el laboratorio, portada a `predictions.css`)
+  envolviendo las cards de predicción, y el mensaje de "predicciones
+  cerradas" (se reordenó para quedar después de las cards, igual que
+  antes — no un cambio de diseño nuevo). `CountdownToRace` se deja
+  montado pero oculto (`display:none`) solo por su efecto secundario
+  (cierra las predicciones cuando arranca la carrera, sin depender de un
+  evento de socket) — reusar el componente tal cual en vez de reimplementar
+  esa lógica a mano. Limpieza de lo que quedó muerto: el fetch de país
+  (`getCountry`) que ya no se mostraba en ningún lado, y 3 clases CSS sin
+  uso (`.qualy-label`, `.predictions-countdown`, `.prediction-status-container`).
+- Probado en el navegador con un usuario de prueba real (registro + login +
+  predicción vía API, dev local): countdown tickeando, banner de estado
+  cambiando de "falta predecir" a "ya guardada" tras enviar, formulario
+  precargado con la predicción real, desplegable de horarios funcionando
+  (con clasificación/carrera, no solo prácticas), mobile sin desbordes.
+  Home sin cambios de comportamiento.
+- `npm run build` limpio. Commit en `leandro` → push → merge a `main` →
+  push a `main` (dispara deploy Vercel/Railway) → vuelta a `leandro`.
+
 ## 2026-11-07 · Laboratorio: fix de stacking — el clima tapaba el título
 
 - **Pedido** (3 screenshots): en nublado y noche calurosa "las letras
