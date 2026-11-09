@@ -64,7 +64,12 @@ sigue reemplazado por el del banner.
 
 `.main-content` pasa de la clase `.home-content` a `.hero-banner-content`
 (renombrada, ya no es exclusiva de Home) para sacar el margen superior de
-40px en cualquier página que empiece con este banner full-bleed.
+40px en cualquier página que empiece con este banner full-bleed. También
+suma `background: var(--color-dark-blue)` — sin eso, páginas con poco
+contenido debajo del banner (ej. Predicciones en pre-ventana, sin cards)
+dejaban ver una franja del `radial-gradient` celeste del `body` en el
+hueco que el `flex: 1` de `.main-content` estira para empujar el footer
+(se notaba en desktop, donde sobra más alto de viewport; no en mobile).
 
 ## Componentes y archivos
 
@@ -74,9 +79,16 @@ sigue reemplazado por el del banner.
     `NextRaceCTA.jsx` para que ambos lo reusen sin duplicar fetch/socket.
     `NextRaceCTA.jsx` también pasa a consumir este hook (mismo
     comportamiento, sin cambios visibles).
-  - `getImageUrl(race.circuit?.banner_img, 1600)`
-    (`front/src/utils/cloudinary.js`, ya existente) — si `banner_img` es
-    `null`, se renderiza el fallback degradado (`gp-hero-banner--fallback`).
+  - `getImageUrl(race.circuit?.banner_img, isMobile ? 900 : 2200, "empty", "auto:best")`
+    (`front/src/utils/cloudinary.js`, ya existente, suma un 4° parámetro
+    opcional `quality` — default `"auto"`, sin cambios para el resto de
+    usos del sitio). Si `banner_img` es `null`, se renderiza el fallback
+    degradado (`gp-hero-banner--fallback`). Pedido: "la calidad de la
+    imagen del banner se redujo... en el laboratorio se veía mejor" — el
+    `q_auto`/1600px originales (como en el resto del sitio) se notaban de
+    más en esta foto protagonista full-bleed; `"auto:best"` + ancho según
+    `isMobile` (en vez de un único ancho fijo) sube la calidad en desktop
+    sin pesar de más en mobile.
   - `buildSchedule`/`formatSessionTime` (`front/src/utils/schedule.js`,
     nuevo) — extraído de `CalendarCard.jsx` para no duplicar la lógica de
     agrupar sesiones. `CalendarCard.jsx` pasa a importarlas desde ahí.

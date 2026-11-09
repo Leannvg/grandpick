@@ -2,6 +2,42 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-09 · Fix: franja celeste debajo del banner (desktop) + banner con más calidad de imagen
+
+- **Reportado** (con captura): en desktop, debajo del banner de
+  Predicciones (en pre-ventana, sin cards) se veía una franja horizontal
+  celeste antes del footer; en mobile no pasaba.
+- Causa: `.main-content` es `flex: 1` (de siempre, empuja el footer abajo
+  en páginas cortas) y no pinta fondo propio. Cuando el contenido de abajo
+  es chico (pre-ventana, sin cards), el flex-grow lo estira para llenar el
+  alto de la ventana — ese hueco dejaba ver el `radial-gradient` celeste
+  del `body` (pensado para asomar en los márgenes normales del sitio, no
+  como franja plana pegada a un banner full-bleed). Se nota más en
+  desktop porque sobra más alto de viewport para estirar; en mobile el
+  contenido ya llena casi todo, así que el flex-grow no tiene casi nada
+  que estirar.
+- Fix: `.main-content.hero-banner-content` (globals.css) suma
+  `background: var(--color-dark-blue)` — mismo azul oscuro del degradé de
+  fallback del banner — para que el estirón del flex quede invisible en
+  vez de mostrar el celeste del body. Solo afecta Home/Predicciones (las
+  únicas páginas con esta clase). Probado en el navegador con viewports de
+  distinto alto (900px y 1400px) y en mobile (390px) — franja
+  desaparecida en los tres casos.
+- **De paso, pedido aparte**: "la calidad de la imagen del banner se
+  redujo... en el laboratorio se veía de mejor calidad". El laboratorio
+  mostraba el mock con `<img>` directo (sin pasar por Cloudinary); en
+  producción, el banner es full-bleed (puede ocupar todo el ancho de un
+  monitor grande) y el `q_auto` de siempre (nivel "good") más un ancho
+  fijo de 1600px se notaban de más en una foto protagonista. `getImageUrl`
+  (`cloudinary.js`) suma un 4° parámetro opcional `quality` (default
+  `"auto"`, sin cambios para el resto de usos del sitio); `GpHeroBanner.jsx`
+  pasa `"auto:best"` + ancho según `isMobile` (2200px desktop / 900px
+  mobile, en vez de 1600px fijo para todas las pantallas — en mobile ese
+  ancho de más no se nota y sale más liviano pedir menos). Comparado con
+  `curl` contra la imagen real de Las Vegas: 280KB (antes, 1600px
+  q_auto) → 676KB (ahora, 2200px q_auto:best) en desktop, pero apenas
+  227KB en mobile (900px q_auto:best) — más liviano que antes ahí.
+
 ## 2026-11-09 · Fix: cartel de pre-ventana de predicciones sube al banner, sin contador
 
 - **Reportado en producción** (con captura): el cartel "Las predicciones

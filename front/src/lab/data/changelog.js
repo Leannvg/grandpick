@@ -10,6 +10,12 @@
 export const DESIGN_CHANGELOG = [
   {
     date: "2026-11-09",
+    title: "Banner: franja celeste debajo (desktop) y foto con más calidad",
+    summary:
+      "En desktop, páginas con poco contenido debajo del banner (ej. Predicciones en pre-ventana) dejaban ver una franja celeste del fondo del body antes del footer; no pasaba en mobile. .main-content.hero-banner-content suma un fondo oscuro propio para taparla. De paso, la foto del banner pasa de 1600px/calidad \"good\" fija a 2200px (900px en mobile) + calidad \"best\" — se veía más comprimida que en el laboratorio.",
+  },
+  {
+    date: "2026-11-09",
     title: "Predicciones: cartel de pre-ventana sube al banner, sin contador",
     summary:
       "El cartel \"Las predicciones se habilitarán en...\" vivía aparte, en una caja por debajo del banner (reportado en producción). Ahora es un cartel fijo (sin contador en vivo) dentro del banner, junto al título: \"se habilitarán 24 hs antes de su inicio\" + aviso de que se manda una notificación push cuando se abren.",

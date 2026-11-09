@@ -234,7 +234,23 @@ function GpHeroBanner({ variant = "home", userId = null }) {
     <div className={`gp-hero-banner ${scheduleOpen ? "is-open" : ""}`}>
       <div className={`gp-hero-banner__hero ${withPhoto ? "" : "gp-hero-banner--fallback"}`}>
         <div className="gp-hero-banner__bg">
-          {withPhoto && <img src={getImageUrl(bannerImg, 1600)} alt="" />}
+          {/* Pedido: "la calidad de la imagen del banner se redujo... en el
+              laboratorio se veía de mejor calidad" — el laboratorio mostraba
+              el mock sin pasar por Cloudinary; acá el banner es full-bleed
+              (sin .container, puede llegar a ocupar todo el ancho de un
+              monitor grande) y el q_auto de siempre (nivel "good") se nota
+              de más en una foto protagonista como esta. Calidad "auto:best"
+              (ver cloudinary.js) solo para esta imagen; ancho según
+              isMobile (ya trackeado acá arriba para el breakpoint del
+              topbar) en vez de un único w_2200 fijo para todas las
+              pantallas — en mobile ese ancho de más no se nota (el banner
+              es angosto) y sale más liviano pedir menos px. */}
+          {withPhoto && (
+            <img
+              src={getImageUrl(bannerImg, isMobile ? 900 : 2200, "empty", "auto:best")}
+              alt=""
+            />
+          )}
         </div>
         <div className="gp-hero-banner__overlay"></div>
 
