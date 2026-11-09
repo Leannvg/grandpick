@@ -2,6 +2,41 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-09 · Fix: cartel de pre-ventana de predicciones sube al banner, sin contador
+
+- **Reportado en producción** (con captura): el cartel "Las predicciones
+  se habilitarán en..." aparecía en una caja aparte, por debajo del
+  banner nuevo — "todos los mensajes deberían aparecer junto al título".
+  Pedido también: para esta alerta puntual no hace falta un temporizador
+  en vivo, mejor un cartel fijo ("se habilitarán 24 hs antes") aclarando
+  que además se manda una notificación push a quien tenga la app.
+- `computeRaceState()` (`front/src/utils/helpers.js`) abre la ventana
+  siempre exactamente 24hs antes de `date_race` — dato fijo, no hace
+  falta contarlo en vivo para comunicarlo. La notificación "🔮
+  Predicciones habilitadas" ya existe de verdad
+  (`back/services/pushAutomation.services.js`, se dispara sola a las
+  24hs) — el texto nuevo no promete algo sin implementar.
+- `GpHeroBanner.jsx` (`variant="predictions"`): cuando `status.isPreWindow`,
+  en vez del countdown + `.prediction-status-banner` de siempre, se
+  muestra `.gp-hero-banner__prewindow` — texto fijo con el nombre de la
+  sesión (clasificación/sprint/carrera, `SESSION_LABEL`) + el aviso de
+  la notificación. Mismo lenguaje visual vidrio que el resto del banner.
+- `Predictions.jsx`: se sacó el `<section>` con el cartel visible + el
+  `CountdownToOpen` que lo alimentaba. `CountdownToOpen` sigue montado,
+  ahora oculto (`display:none`, mismo patrón que ya tenía
+  `CountdownToRace` en este archivo) — se conserva SOLO por su efecto
+  secundario `onOpen` (flippea `canPredict`/`isPreWindow` en el momento
+  exacto en que se cumplen las 24hs, sin esperar un refetch ni un evento
+  de socket); su render visual ya no hace falta, lo reemplazó el cartel
+  del banner.
+- `predictions.css`: se borró `.prewindow-countdown` (quedó sin uso, era
+  solo el wrapper del contador visible que se sacó).
+- Probado localmente (dev server del front apuntado al backend local vía
+  `.env.local` temporal, no commiteado; usuario de prueba descartable):
+  con una carrera en pre-ventana (GP de Las Vegas, clasificación a más de
+  24hs), el cartel nuevo aparece debajo del título dentro del banner, sin
+  ninguna caja aparte más abajo; `npm run build` limpio.
+
 ## 2026-11-08 · Laboratorio: el arrastre de las cards de predicción pasa a Framer Motion
 
 - **Pedido**: "se traba mucho al arrastrar, no podríamos utilizar framer
@@ -1325,6 +1360,7 @@ Orden cronológico inverso (lo más nuevo arriba).
   admin, se manda de una sola vez). Se priorizan 4 "quick wins" de
   impacto alto y esfuerzo bajo. Ver `rules/seo.md` para el detalle y el
   checklist. No se modificó código en esta pasada, solo se documentó.
+
 
 ## 2026-10-20 · Historial mobile: banda con el nombre del usuario en historial ajeno
 

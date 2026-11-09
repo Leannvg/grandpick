@@ -20,10 +20,22 @@ tocar — solo cambia `.gp-hero-banner__content`:
 - **home**: eyebrow + título + CTA ("Predecir ahora"/"En curso") + "Ver
   circuito" (como siempre).
 - **predictions**: título (`<h1>`, reemplaza el `<h1 className="section-title">`
-  que tenía Predictions.jsx) + countdown "tiempo restante para predecir"
-  (mismas cajas `.nr-cta__time` agrandadas, oculto en pre-window o con la
-  carrera Finalizado) + `.prediction-status-banner` real
-  (`status-saved`/`status-missing`, según `hasPrediction`).
+  que tenía Predictions.jsx) y, debajo, UNO de dos bloques según
+  `status.isPreWindow`:
+  - **pre-ventana**: `.gp-hero-banner__prewindow` — cartel fijo (sin
+    contador en vivo), "Las predicciones para {la clasificación/el
+    sprint/la carrera} se habilitarán 24 hs antes de su inicio" +
+    aviso de que se manda una notificación push cuando se abren (la
+    automatización ya existe de verdad, `back/services/pushAutomation.services.js`,
+    "🔮 Predicciones habilitadas" — el texto no promete algo sin
+    implementar). Pedido: "el cartel de las predicciones se habilitarán
+    en X tiempo aparece por debajo del banner, todos los mensajes
+    deberían aparecer junto al título... quizás no hace falta poner un
+    temporizador".
+  - **resto de estados**: countdown "tiempo restante para predecir"
+    (mismas cajas `.nr-cta__time` agrandadas, oculto con la carrera
+    Finalizado) + `.prediction-status-banner` real
+    (`status-saved`/`status-missing`, según `hasPrediction`).
 
 `GpHeroBanner` sigue siendo autónomo (se fetchea su propia carrera vía
 `useNextRace()`, igual en las dos variantes) — en vez de recibir la carrera
@@ -37,14 +49,18 @@ a la que ya pide Predictions.jsx, igual que ya pasaba con `NextRaceCTA`/
 un único fetch entre banner y página.
 
 Predictions.jsx perdió su `<header>` (país/título/fecha/tag/countdown/
-status, todo lo cubre el banner de arriba ahora) y quedó con: mensaje de
-pre-ventana (`CountdownToOpen`, sin cambios), `.gp-hero-banner__predict-below`
-(franja de transición, mismo CSS que probó el laboratorio, ahora en
-`predictions.css`) envolviendo `.prediction-cards-container`, y el mensaje
-de "predicciones cerradas". `CountdownToRace` se mantiene montado pero
-oculto (`display:none`) SOLO por su efecto secundario (dispara
-`handleStartRace` cuando arranca la carrera, sin esperar un socket) — su
-visual ya no se muestra, lo reemplazó el countdown del banner.
+status, todo lo cubre el banner de arriba ahora) y quedó con:
+`.gp-hero-banner__predict-below` (franja de transición, mismo CSS que probó
+el laboratorio, ahora en `predictions.css`) envolviendo
+`.prediction-cards-container`, y el mensaje de "predicciones cerradas".
+`CountdownToRace` y `CountdownToOpen` se mantienen montados pero ocultos
+(`display:none`) SOLO por sus efectos secundarios (`handleStartRace`/
+`onOpen`, respectivamente — arrancan sin esperar un refetch ni un evento de
+socket): el cartel visible de "predicciones se habilitarán en..." que tenía
+`CountdownToOpen` ya no se muestra ahí, lo reemplazó el cartel fijo del
+banner (`.gp-hero-banner__prewindow`, ver más arriba); el countdown visible
+"tiempo restante para predecir" de `CountdownToRace` tampoco se muestra,
+sigue reemplazado por el del banner.
 
 `.main-content` pasa de la clase `.home-content` a `.hero-banner-content`
 (renombrada, ya no es exclusiva de Home) para sacar el margen superior de

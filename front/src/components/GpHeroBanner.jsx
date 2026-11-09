@@ -11,6 +11,16 @@ import { getImageUrl } from "../utils/cloudinary";
 import { buildSchedule, formatSessionTime } from "../utils/schedule";
 import "../assets/styles/gpHeroBanner.css";
 
+// Pedido: "el cartel de las predicciones se habilitarán en X tiempo aparece
+// por debajo del banner, todos los mensajes deberían aparecer junto al
+// título". Nombre legible para el mensaje de pre-ventana (ver status.isPreWindow
+// más abajo) — mismas 3 claves que sessionType (qualy/sprint/race).
+const SESSION_LABEL = {
+  qualy: "la clasificación",
+  sprint: "el sprint",
+  race: "la carrera",
+};
+
 /**
  * Banner de próxima carrera con foto de fondo por GP — reemplaza a
  * NextRaceCTA.jsx en Home (`variant="home"`, default) Y en la pantalla de
@@ -304,38 +314,61 @@ function GpHeroBanner({ variant = "home", userId = null }) {
             <>
               <h1 className="gp-hero-banner__title">{race.circuit?.gp_name}</h1>
 
-              {!status.isPreWindow && race.state !== "Finalizado" && (
-                <div className="gp-hero-banner__predict-countdown">
-                  <span className="countdown-label">Tiempo restante para predecir:</span>
-                  <div className="gp-hero-banner__predict-time">
-                    <div className="nr-cta__time">
-                      <span className="nr-cta__time-value">{timeLeft.days}</span>
-                      <span className="nr-cta__time-label">DÍAS</span>
-                    </div>
-                    <div className="nr-cta__time">
-                      <span className="nr-cta__time-value">{timeLeft.hours}</span>
-                      <span className="nr-cta__time-label">HS.</span>
-                    </div>
-                    <div className="nr-cta__time">
-                      <span className="nr-cta__time-value">{timeLeft.minutes}</span>
-                      <span className="nr-cta__time-label">MIN.</span>
-                    </div>
-                    <div className="nr-cta__time">
-                      <span className="nr-cta__time-value">{timeLeft.seconds}</span>
-                      <span className="nr-cta__time-label">SEG.</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {!status.isPreWindow && !status.isClosed && (
-                <div className={`prediction-status-banner ${hasPrediction ? "status-saved" : "status-missing"}`}>
-                  <span>
-                    {hasPrediction
-                      ? "✅ Tu predicción ya está guardada, pero podés editarla antes de que el contador llegue a 0."
-                      : "💡 Todavía no realizaste tu predicción."}
+              {status.isPreWindow ? (
+                // Pedido: "quizás para esta alerta no hace falta poner un
+                // temporizador, sino un cartel que diga que las predicciones
+                // se habilitarán 24hs antes... y que igual se les enviará
+                // una notificación". computeRaceState() abre la ventana
+                // siempre exactamente 24hs antes de date_race (helpers.js)
+                // — dato fijo, no hace falta un contador en vivo para
+                // comunicarlo. La notificación push ya existe de verdad
+                // (pushAutomation.services.js, "🔮 Predicciones habilitadas",
+                // se dispara sola a las 24hs) — el texto no promete algo
+                // que no esté implementado.
+                <div className="gp-hero-banner__prewindow">
+                  <span className="gp-hero-banner__prewindow-text">
+                    🔮 Las predicciones para {SESSION_LABEL[sessionType] || "esta sesión"} se habilitarán 24&nbsp;hs antes de su inicio.
+                  </span>
+                  <span className="gp-hero-banner__prewindow-sub">
+                    Te avisamos con una notificación apenas se abran, si tenés la app instalada.
                   </span>
                 </div>
+              ) : (
+                <>
+                  {race.state !== "Finalizado" && (
+                    <div className="gp-hero-banner__predict-countdown">
+                      <span className="countdown-label">Tiempo restante para predecir:</span>
+                      <div className="gp-hero-banner__predict-time">
+                        <div className="nr-cta__time">
+                          <span className="nr-cta__time-value">{timeLeft.days}</span>
+                          <span className="nr-cta__time-label">DÍAS</span>
+                        </div>
+                        <div className="nr-cta__time">
+                          <span className="nr-cta__time-value">{timeLeft.hours}</span>
+                          <span className="nr-cta__time-label">HS.</span>
+                        </div>
+                        <div className="nr-cta__time">
+                          <span className="nr-cta__time-value">{timeLeft.minutes}</span>
+                          <span className="nr-cta__time-label">MIN.</span>
+                        </div>
+                        <div className="nr-cta__time">
+                          <span className="nr-cta__time-value">{timeLeft.seconds}</span>
+                          <span className="nr-cta__time-label">SEG.</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {!status.isClosed && (
+                    <div className={`prediction-status-banner ${hasPrediction ? "status-saved" : "status-missing"}`}>
+                      <span>
+                        {hasPrediction
+                          ? "✅ Tu predicción ya está guardada, pero podés editarla antes de que el contador llegue a 0."
+                          : "💡 Todavía no realizaste tu predicción."}
+                      </span>
+                    </div>
+                  )}
+                </>
               )}
             </>
           ) : (

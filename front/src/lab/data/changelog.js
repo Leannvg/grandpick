@@ -9,6 +9,12 @@
 // corta: fecha, título, 2-3 líneas de qué cambió y por qué.
 export const DESIGN_CHANGELOG = [
   {
+    date: "2026-11-09",
+    title: "Predicciones: cartel de pre-ventana sube al banner, sin contador",
+    summary:
+      "El cartel \"Las predicciones se habilitarán en...\" vivía aparte, en una caja por debajo del banner (reportado en producción). Ahora es un cartel fijo (sin contador en vivo) dentro del banner, junto al título: \"se habilitarán 24 hs antes de su inicio\" + aviso de que se manda una notificación push cuando se abren.",
+  },
+  {
     date: "2026-11-08",
     title: "Predicciones: banner con foto de fondo (antes solo Home)",
     summary:

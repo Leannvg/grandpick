@@ -272,26 +272,31 @@ function Predictions() {
         </div>
       )}
 
+      {race && isPreWindow && timeToOpen !== null && (
+        // Pedido: "el cartel de las predicciones se habilitarán en X tiempo
+        // aparece por debajo del banner, todos los mensajes deberían aparecer
+        // junto al título" — el cartel visible para pre-ventana ahora vive en
+        // GpHeroBanner variant="predictions" (junto al título, como texto
+        // fijo en vez de un contador). CountdownToOpen sigue montado acá,
+        // oculto, SOLO por su efecto secundario onOpen (mismo patrón que
+        // CountdownToRace arriba): cuando se cumplen las 24hs, flippea
+        // canPredict/isPreWindow sin esperar un refetch ni un evento de socket.
+        <div style={{ display: "none" }} aria-hidden="true">
+          <CountdownToOpen
+            timeToOpen={timeToOpen}
+            onOpen={() => {
+              setCanPredict(true);
+              setIsPreWindow(false);
+            }}
+          />
+        </div>
+      )}
+
       <section className="page-section container text-center">
         {raceChecked && race === null && (
           <div className="info-message">
             📭 No hay próximas carreras para predecir en este momento. <br />
             ¡Mantente atento a las próximas fechas!
-          </div>
-        )}
-
-        {race && isPreWindow && timeToOpen !== null && (
-          <div className="mt-4 info-message">
-            <span>⏳ Las predicciones se habilitarán en</span>
-            <div className="prewindow-countdown">
-              <CountdownToOpen
-                timeToOpen={timeToOpen}
-                onOpen={() => {
-                  setCanPredict(true);
-                  setIsPreWindow(false);
-                }}
-              />
-            </div>
           </div>
         )}
       </section>
