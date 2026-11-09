@@ -10,9 +10,9 @@
 export const DESIGN_CHANGELOG = [
   {
     date: "2026-11-09",
-    title: "Banner: franja celeste debajo (desktop) y foto con más calidad",
+    title: "Banner: franja debajo (desktop) y foto con más calidad",
     summary:
-      "En desktop, páginas con poco contenido debajo del banner (ej. Predicciones en pre-ventana) dejaban ver una franja celeste del fondo del body antes del footer; no pasaba en mobile. .main-content.hero-banner-content suma un fondo oscuro propio para taparla. De paso, la foto del banner pasa de 1600px/calidad \"good\" fija a 2200px (900px en mobile) + calidad \"best\" — se veía más comprimida que en el laboratorio.",
+      "En desktop, páginas con poco contenido debajo del banner (ej. Predicciones en pre-ventana) dejaban un hueco vacío antes del footer (el flex-grow de .main-content estirándose sin contenido); no pasaba en mobile. Un primer intento le puso fondo oscuro al hueco, pero seguía marcándose una línea contra el footer — el fix real le saca el flex-grow a esta clase, así el hueco no existe más. De paso, la foto del banner pasa de 1600px/calidad \"good\" fija a 2200px (900px en mobile) + calidad \"best\" — se veía más comprimida que en el laboratorio.",
   },
   {
     date: "2026-11-09",

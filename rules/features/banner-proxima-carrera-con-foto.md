@@ -65,11 +65,18 @@ sigue reemplazado por el del banner.
 `.main-content` pasa de la clase `.home-content` a `.hero-banner-content`
 (renombrada, ya no es exclusiva de Home) para sacar el margen superior de
 40px en cualquier página que empiece con este banner full-bleed. También
-suma `background: var(--color-dark-blue)` — sin eso, páginas con poco
-contenido debajo del banner (ej. Predicciones en pre-ventana, sin cards)
-dejaban ver una franja del `radial-gradient` celeste del `body` en el
-hueco que el `flex: 1` de `.main-content` estira para empujar el footer
-(se notaba en desktop, donde sobra más alto de viewport; no en mobile).
+suma `flex-grow: 0` — sin eso, páginas con poco contenido debajo del
+banner (ej. Predicciones en pre-ventana, sin cards) dejaban un hueco
+vacío (el `flex: 1` de `.main-content`, de siempre, estira para empujar
+el footer abajo en páginas cortas) que mostraba una franja de color
+distinto a sus vecinos — primero se vio el `radial-gradient` celeste del
+`body` de fondo; un primer intento le puso fondo oscuro a ese hueco para
+taparlo, pero seguía marcándose una línea contra el gris del footer (dos
+oscuros distintos no es lo mismo que "sin hueco"). El fix real es sacarle
+el estiramiento a esta clase nomás (el resto del sitio lo sigue usando
+para el efecto sticky-footer) — en vez de taparlo con un color, el hueco
+directamente no existe más. Consecuencia aceptada: en páginas cortas con
+este banner, el footer ya no queda pegado abajo de la ventana.
 
 ## Componentes y archivos
 

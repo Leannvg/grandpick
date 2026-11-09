@@ -2,6 +2,32 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-09 · Fix (corrección): la franja debajo del banner seguía viéndose
+
+- El fix anterior (entrada de más abajo, mismo día) le puso fondo oscuro
+  al hueco que el `flex: 1` de `.main-content` estira en páginas cortas
+  con este banner — tapaba el celeste del `body`, pero el usuario mandó
+  captura (con el inspector de Chrome marcando el elemento,
+  `.main-content.hero-banner-content`, 1368×37.2px) mostrando que seguía
+  viéndose una línea: dos oscuros distintos (el azul del relleno vs. el
+  gris del footer, `--color-footer: #272727`) todavía se notan como
+  borde entre sí, no es lo mismo que "sin hueco".
+- Fix real: en vez de buscar qué color le pondría para que no se note
+  contra NINGUNO de sus vecinos (depende del alto de cada viewport, nada
+  garantiza que combine), se le saca el `flex-grow` a esta clase nomás
+  (`flex-grow: 0`, reemplaza el `background` del intento anterior) — así
+  el hueco no existe, en vez de taparlo. El resto del sitio sigue usando
+  `flex: 1` en `.main-content` para el efecto sticky-footer de siempre;
+  esta clase es la única que lo pierde (Home/Predicciones). Consecuencia
+  aceptada: en páginas cortas con este banner, el footer ya no queda
+  pegado abajo de la ventana, sube justo después del contenido real.
+- Probado en el navegador (local, viewports de 1000px y 390px de alto):
+  `getBoundingClientRect()` del elemento da `height: 0` ahora en
+  Predicciones en pre-ventana — hero termina y arranca el footer, sin
+  nada en el medio. Confirmado también que Home (que sí tiene contenido
+  de sobra) no cambia: su alto natural ya supera el viewport, así que
+  nunca dependió del flex-grow para nada visible.
+
 ## 2026-11-09 · Fix: franja celeste debajo del banner (desktop) + banner con más calidad de imagen
 
 - **Reportado** (con captura): en desktop, debajo del banner de
@@ -1396,6 +1422,7 @@ Orden cronológico inverso (lo más nuevo arriba).
   admin, se manda de una sola vez). Se priorizan 4 "quick wins" de
   impacto alto y esfuerzo bajo. Ver `rules/seo.md` para el detalle y el
   checklist. No se modificó código en esta pasada, solo se documentó.
+
 
 
 ## 2026-10-20 · Historial mobile: banda con el nombre del usuario en historial ajeno
