@@ -9,6 +9,12 @@
 // corta: fecha, título, 2-3 líneas de qué cambió y por qué.
 export const DESIGN_CHANGELOG = [
   {
+    date: "2026-11-13",
+    title: "Campeonatos de pilotos y constructores con el diseño del podio de usuarios",
+    summary:
+      "Standings usa ahora UserPodium: pilotos con su foto de fondo, país arriba a la derecha y abajo isologo de la escudería · nombre · puntos; constructores con el color de la escudería y su logo grande. Mismo confeti y brillo que el podio de usuarios. El componente Podium viejo ya no se usa en ninguna pantalla.",
+  },
+  {
     date: "2026-11-03",
     title: "Podio de usuarios: tag de país arriba y foto + nombre + puntos abajo",
     summary:
@@ -18,7 +24,7 @@ export const DESIGN_CHANGELOG = [
     date: "2026-11-03",
     title: "Podio de usuarios con nuevo diseño",
     summary:
-      "El podio del ranking de usuarios (global, por GP y Home) pasa a una card ilustrada por puesto, con foto y puntos en rectángulos a la derecha y bandera + nombre completo abajo (componente UserPodium). Los podios de Standings siguen con el diseño anterior.",
+      "El podio del ranking de usuarios (global, por GP y Home) pasa a una card ilustrada por puesto, con foto y puntos en rectángulos a la derecha y bandera + nombre completo abajo (componente UserPodium).",
   },
   {
     date: "2026-10-28",

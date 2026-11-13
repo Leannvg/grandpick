@@ -93,7 +93,11 @@ tocó. Lo único que sí estaba desalineado era el radio de `ranking-table`
 | `.w-50px`, `.w-120px`, `.h-38px` | Utilidades de tamaño ya definidas |
 | `.btn-row-action` | Ícono dentro de `.user-info` (junto al nombre): en modo `global` va al historial del usuario (`bi-clock-history`); en modo `grand_prix` abre `FloatingPredictionCompare` (`bi-arrow-left-right`). Círculo de **contorno** azul (`#4c86b7`, fondo transparente, hover `rgba(76,134,183,.12)` + `scale(1.1)`) — ver la familia de botón circular con ícono más abajo. |
 
-## Podio (`Podium`, estilos en `assets/styles/podium.css`)
+## Podio (`UserPodium` + `user-podium.css`; confeti/brillo/contenedor en `podium.css`)
+
+> Desde 2026-11-13 todos los podios (Home, Ranking, Standings) usan `UserPodium`.
+> `Podium.jsx` es legado: lo que sigue sobre tarjetas con foto grande a la
+> derecha describe ese diseño viejo; el actual está en `rules/features/podio-usuarios.md`.
 
 Componente reutilizable `components/Podium.jsx` (ver [componentes.md](./componentes.md)); se usa en Home, Ranking (global y por GP) y Campeonato de pilotos/constructores. Clases `.ranking__podium`, `.podium__*`.
 

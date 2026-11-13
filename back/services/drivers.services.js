@@ -300,7 +300,8 @@ export async function findDriversStandings(year) {
                         _id: d.team_info._id,
                         name: d.team_info.name,
                         full_team_name: d.team_info.full_team_name,
-                        color: d.team_info.color
+                        color: d.team_info.color,
+                        isologo: d.team_info.isologo
                     }
                     : null,
                 points: pointsByDriver[d._id.toString()] || 0

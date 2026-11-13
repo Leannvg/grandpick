@@ -148,3 +148,11 @@ exacto) confirmó el cálculo. De acá en adelante, toda carrera nueva captura
 `team` al cargar resultados (`RaceForm.jsx`), así que no debería volver a
 hacer falta un backfill manual salvo que se detecte otro caso similar no
 capturado a tiempo por el admin.
+
+## Podio (actualizado 2026-11-13)
+
+Standings usa `UserPodium` (ya no `Podium`). Pilotos: foto del piloto de fondo
+(`bg`), puesto a la izquierda, país a la derecha, footer isologo de la
+escudería (`team.isologo`, ahora devuelto por `/api/standings/drivers`) ·
+nombre · puntos. Constructores: fondo del color de la escudería con su logo
+grande, sin país; footer isologo · nombre · puntos.

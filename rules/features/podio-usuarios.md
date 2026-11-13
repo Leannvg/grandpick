@@ -10,4 +10,6 @@
 - Imágenes: `front/src/assets/podium/pos1.png`, `pos2.png`, `pos3.png`
   (se levantan con `import.meta.glob`; si faltan, fondo `--color-dark-blue`).
 - Desktop ≥992px: 3 columnas, orden 2º · 1º · 3º, alturas 235/275/245px.
-- `Podium.jsx` se mantiene para Standings (pilotos/constructores).
+- Standings (campeonato de pilotos y constructores) también usa `UserPodium`,
+  con las variantes `bg` / `logo` / `accentColor` + `bgLogo` (ver
+  `rules/features/clasificacion-pilotos.md`). `Podium.jsx` queda como legado.

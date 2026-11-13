@@ -2,6 +2,23 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-13 · Podios de Standings con el diseño de UserPodium
+
+- `pages/Standings.jsx` (pilotos y constructores) pasa de `Podium` a
+  `UserPodium`, generalizado con props opcionales por entry: `bg` (foto de
+  fondo con encuadre alto + degradé), `logo` (isologo de escudería en el
+  footer en vez de la foto de perfil), `accentColor` + `bgLogo` (fondo del
+  color de la escudería con su logo grande, para constructores). Home y
+  Ranking no cambian (sin esas props).
+- Pilotos: foto del piloto de fondo · puesto izquierda · país derecha · footer
+  isologo · nombre · puntos. Constructores: igual, sin tag de país.
+- Back: `GET /api/standings/drivers` suma `team.isologo`
+  (`drivers.services.js`).
+- Confeti y brillo extraídos a `components/podiumAnimations.js`
+  (`CONFETTI_BY_RANK`, `SHINE_DELAY_BY_RANK`), compartidos con `Podium`.
+- `Podium.jsx` ya no se usa en pantallas (el Lab muestra `UserPodium`); se
+  conserva el archivo, y las reglas de confeti/brillo siguen en `podium.css`.
+
 ## 2026-11-03 · Fix: tocar una notificación push ahora abre la app
 
 - **Causa**: el backend (`back/services/fcm.services.js`) mandaba la ruta

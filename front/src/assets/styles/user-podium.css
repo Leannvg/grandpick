@@ -24,6 +24,38 @@
   object-position: center 8%;
 }
 
+/* Foto de piloto: encuadre alto para que se vea la cara + degradé bajo la franja */
+.user-podium__item--photo .user-podium__bg {
+  object-position: center 22%;
+}
+
+.user-podium__item--photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent 45%);
+  pointer-events: none;
+}
+
+/* Constructores: color de la escudería con su logo grande */
+.user-podium__item--team {
+  background: linear-gradient(
+    135deg,
+    var(--team-color, var(--color-dark-blue)),
+    color-mix(in srgb, var(--team-color, var(--color-dark-blue)) 55%, #000)
+  );
+}
+
+.user-podium__bg-logo {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  width: 46%;
+  height: 46%;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+}
+
 .user-podium__rank {
   position: absolute;
   top: 12px;
@@ -56,6 +88,12 @@
   border-radius: var(--radius-general);
   background: #fff;
   object-fit: cover;
+}
+
+/* Isologo de escudería: se ve entero, con un poco de aire dentro del cuadrito blanco */
+.user-podium__avatar--logo {
+  padding: 3px;
+  object-fit: contain;
 }
 
 /* Puntos como en Standings: número grande + "PTS" chico, a la derecha del nombre */

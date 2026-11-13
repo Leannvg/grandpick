@@ -3,7 +3,7 @@ import SubmitButton from "../../components/SubmitButton.jsx";
 import FloatingDialog from "../../components/FloatingDialog.jsx";
 import LoaderCar from "../../components/LoaderCar.jsx";
 import LoaderSpinner from "../../components/LoaderSpinner.jsx";
-import Podium from "../../components/Podium.jsx";
+import UserPodium from "../../components/UserPodium.jsx";
 import PasswordInput from "../../components/PasswordInput.jsx";
 import CalendarCard from "../../components/calendar/CalendarCard.jsx";
 
@@ -166,9 +166,9 @@ function ComponentsSection() {
         <h2 className="lab-block-title">Podio</h2>
         <div className="lab-specimen lab-specimen-wide">
           <div className="lab-specimen-stage lab-specimen-stage--dark">
-            <Podium entries={MOCK_PODIUM} />
+            <UserPodium entries={MOCK_PODIUM} />
           </div>
-          <div className="lab-specimen-label">Podium (Home, Ranking, Campeonato)</div>
+          <div className="lab-specimen-label">UserPodium (Home, Ranking, Campeonato de pilotos y constructores)</div>
         </div>
       </div>
 

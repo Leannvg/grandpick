@@ -3,7 +3,8 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useLoader } from "../context/LoaderContext";
 import DriversServices from "../services/drivers.services";
 import TeamsServices from "../services/teams.services";
-import Podium from "../components/Podium";
+import UserPodium from "../components/UserPodium";
+import { getImageUrl } from "../utils/cloudinary";
 import CountryDisplay from "../components/CountryDisplay";
 import "../assets/styles/ranking.css";
 import "../assets/styles/standings.css";
@@ -94,8 +95,8 @@ function Standings() {
             lastName: last,
             country: d.country,
             points: d.points,
-            img: d.img,
-            subtitle: d.team?.name,
+            bg: getImageUrl(d.img),
+            logo: d.team?.isologo,
         };
     });
 
@@ -105,7 +106,9 @@ function Standings() {
         firstName: t.name,
         lastName: "",
         points: t.points,
-        img: t.isologo,
+        logo: t.isologo,
+        bgLogo: t.logo || t.isologo,
+        accentColor: t.color,
     }));
 
     const podiumEntries = mode === "drivers" ? driversPodiumEntries : constructorsPodiumEntries;
@@ -181,7 +184,7 @@ function Standings() {
                             transition={{ duration: reduceMotion ? 0 : 0.3, ease: "easeInOut" }}
                             style={{ overflow: "hidden" }}
                         >
-                            <Podium key={`${mode}-${selectedYear}`} entries={podiumEntries} />
+                            <UserPodium key={`${mode}-${selectedYear}`} entries={podiumEntries} />
                         </motion.div>
                     )}
                 </AnimatePresence>
