@@ -1,0 +1,300 @@
+/* Pedido: "si tuvieras que rediseñar los selects para que queden bien con
+   el banner y la transparencia, cómo lo harías? se puede mover los
+   pilotos de posición arrastrando?" — prototipo nuevo, no una variante de
+   .prediction-card real. Dos piezas:
+   1) Cards tipo vidrio (glass) en vez del card blanco opaco actual, mismo
+      lenguaje visual que el banner (fondo oscuro + blur + borde sutil).
+   2) Picker de piloto construido desde cero (no react-select): su menú
+      real se abre vía portal a document.body (ver SearchableSelect.jsx,
+      menuPortalTarget), fuera del DOM del card — no se puede "scopear"
+      con un selector descendiente, y como el laboratorio junta varios
+      mocks en una sola página, un override global de
+      .react-select__menu rompería el look de los otros mocks que
+      también usan SearchableSelect (predict-below, más arriba en esta
+      misma página). Un picker propio, con su propio panel
+      position:absolute DENTRO del card, evita el choque de raíz. */
+
+.pcp-root {
+  --pcp-row-h: 56px;
+  --pcp-gap: 10px;
+}
+
+/* Pedido: "se traba mucho al arrastrar, no podríamos utilizar framer
+   motion?" — Reorder.Group/Reorder.Item (framer-motion, ver
+   PredictionCardsPrototype.jsx) reemplaza el cálculo manual de posición
+   por pointermove. Ya no hace falta position:absolute + transform
+   calculado a mano: cada fila vive en el flujo normal (flex column) y la
+   librería anima por su cuenta el reacomodo de las vecinas cuando el
+   array de orden cambia — fuera del ciclo de render de React. */
+.pcp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.pcp-card {
+  position: relative;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px 0 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, .14);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .18);
+  color: #fff;
+}
+
+/* El "levantarse" mientras se arrastra (escala + sombra + z-index) ya no
+   es una clase CSS propia — es whileDrag en el Reorder.Item (framer
+   anima esas props directo, sin pasar por un re-render de React). */
+
+/* Bug encontrado probando (con la versión anterior, a mano, y se
+   mantiene igual acá): position+z-index en .pcp-card crea un contexto de
+   apilado propio por fila — el z-index alto del panel del picker
+   (.pcp-picker__panel) queda atrapado ADENTRO de ese contexto, así que
+   no le gana a una card HERMANA de más abajo en el DOM (mismo z-index
+   base, pinta encima igual). Por eso la card ENTERA sube de z-index
+   cuando su propio picker está abierto, no solo el panel.
+   !important acá no es por las dudas: Reorder.Item (framer-motion) pone
+   su PROPIO z-index inline por fila ("z-index: unset", confirmado
+   inspeccionando el DOM) para manejar el apilado durante el drag — un
+   inline style le gana a cualquier clase sin importar la especificidad,
+   así que sin !important esta regla queda sin efecto, no es decoración. */
+.pcp-card.is-picker-open {
+  z-index: 50 !important;
+}
+
+.pcp-card__rank {
+  flex-shrink: 0;
+  width: 44px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, .55);
+  border-right: 1px solid rgba(255, 255, 255, .1);
+}
+
+.pcp-card__color {
+  flex-shrink: 0;
+  width: 4px;
+  height: 28px;
+  border-radius: 4px;
+}
+
+.pcp-card__picker-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.pcp-card__handle {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, .45);
+  cursor: grab;
+  touch-action: none;
+  transition: background-color .15s ease, color .15s ease;
+}
+
+.pcp-card__handle:hover {
+  background: rgba(255, 255, 255, .08);
+  color: rgba(255, 255, 255, .85);
+}
+
+.pcp-card__handle:active {
+  cursor: grabbing;
+  color: #fff;
+  background: rgba(255, 255, 255, .12);
+}
+
+/* --- Picker de piloto (propio, sin react-select) --- */
+.pcp-picker {
+  position: relative;
+  height: 100%;
+}
+
+.pcp-picker__control {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color .15s ease;
+}
+
+.pcp-picker__control:hover {
+  background: rgba(255, 255, 255, .05);
+}
+
+.pcp-picker.is-open .pcp-picker__control {
+  background: rgba(255, 255, 255, .07);
+}
+
+.pcp-picker__dot {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px -1px currentColor;
+}
+
+.pcp-picker__name {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.pcp-picker__first {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, .65);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pcp-picker__last {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pcp-picker__chevron {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, .4);
+  transition: transform .18s ease;
+}
+
+.pcp-picker.is-open .pcp-picker__chevron {
+  transform: rotate(180deg);
+}
+
+/* Panel flotante, position:absolute DENTRO del propio picker (no portal a
+   body) — por eso puede quedar scopeado bajo .pcp-root sin chocar con
+   otros mocks de la página. z-index alto para tapar las cards de abajo
+   (lista corta, 10 filas, no hace falta reposicionar hacia arriba). */
+.pcp-picker__panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  background: rgba(13, 24, 36, .92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 12px;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, .5);
+  overflow: hidden;
+}
+
+.pcp-picker__search {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, .05);
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+}
+
+.pcp-picker__search::placeholder {
+  color: rgba(255, 255, 255, .4);
+}
+
+.pcp-picker__options {
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.pcp-picker__option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color .12s ease;
+}
+
+.pcp-picker__option:hover,
+.pcp-picker__option:focus-visible {
+  background: rgba(255, 255, 255, .09);
+}
+
+.pcp-picker__option.is-selected {
+  background: rgba(255, 255, 255, .13);
+}
+
+.pcp-picker__option-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pcp-picker__option-team {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: rgba(255, 255, 255, .5);
+}
+
+.pcp-picker__taken-badge {
+  flex-shrink: 0;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: #ffd54f;
+}
+
+.pcp-picker__empty {
+  padding: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, .45);
+}
+
+.pcp-hint {
+  text-align: center;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, .5);
+  margin-bottom: 14px;
+}

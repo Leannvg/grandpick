@@ -24,7 +24,7 @@ function CircuitEdit() {
     CircuitsServices.findOne(id).then(setInitialData);
   }, [id]);
 
-  async function handleEdit(circuitData, imageFile) {
+  async function handleEdit(circuitData, imageFile, bannerFile) {
     try {
       const dialog = {
         title: `¿Deseás editar ${circuitData.circuit_name}?`,
@@ -45,6 +45,10 @@ function CircuitEdit() {
 
       if (imageFile) {
         formData.append("image", imageFile);
+      }
+
+      if (bannerFile) {
+        formData.append("banner_img", bannerFile);
       }
 
       await CircuitsServices.updateCircuit(id, formData);

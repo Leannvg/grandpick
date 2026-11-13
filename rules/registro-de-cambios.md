@@ -19,6 +19,1021 @@ Orden cronológico inverso (lo más nuevo arriba).
 - `Podium.jsx` ya no se usa en pantallas (el Lab muestra `UserPodium`); se
   conserva el archivo, y las reglas de confeti/brillo siguen en `podium.css`.
 
+## 2026-11-09 · Fix (corrección): la franja debajo del banner seguía viéndose
+
+- El fix anterior (entrada de más abajo, mismo día) le puso fondo oscuro
+  al hueco que el `flex: 1` de `.main-content` estira en páginas cortas
+  con este banner — tapaba el celeste del `body`, pero el usuario mandó
+  captura (con el inspector de Chrome marcando el elemento,
+  `.main-content.hero-banner-content`, 1368×37.2px) mostrando que seguía
+  viéndose una línea: dos oscuros distintos (el azul del relleno vs. el
+  gris del footer, `--color-footer: #272727`) todavía se notan como
+  borde entre sí, no es lo mismo que "sin hueco".
+- Fix real: en vez de buscar qué color le pondría para que no se note
+  contra NINGUNO de sus vecinos (depende del alto de cada viewport, nada
+  garantiza que combine), se le saca el `flex-grow` a esta clase nomás
+  (`flex-grow: 0`, reemplaza el `background` del intento anterior) — así
+  el hueco no existe, en vez de taparlo. El resto del sitio sigue usando
+  `flex: 1` en `.main-content` para el efecto sticky-footer de siempre;
+  esta clase es la única que lo pierde (Home/Predicciones). Consecuencia
+  aceptada: en páginas cortas con este banner, el footer ya no queda
+  pegado abajo de la ventana, sube justo después del contenido real.
+- Probado en el navegador (local, viewports de 1000px y 390px de alto):
+  `getBoundingClientRect()` del elemento da `height: 0` ahora en
+  Predicciones en pre-ventana — hero termina y arranca el footer, sin
+  nada en el medio. Confirmado también que Home (que sí tiene contenido
+  de sobra) no cambia: su alto natural ya supera el viewport, así que
+  nunca dependió del flex-grow para nada visible.
+
+## 2026-11-09 · Fix: franja celeste debajo del banner (desktop) + banner con más calidad de imagen
+
+- **Reportado** (con captura): en desktop, debajo del banner de
+  Predicciones (en pre-ventana, sin cards) se veía una franja horizontal
+  celeste antes del footer; en mobile no pasaba.
+- Causa: `.main-content` es `flex: 1` (de siempre, empuja el footer abajo
+  en páginas cortas) y no pinta fondo propio. Cuando el contenido de abajo
+  es chico (pre-ventana, sin cards), el flex-grow lo estira para llenar el
+  alto de la ventana — ese hueco dejaba ver el `radial-gradient` celeste
+  del `body` (pensado para asomar en los márgenes normales del sitio, no
+  como franja plana pegada a un banner full-bleed). Se nota más en
+  desktop porque sobra más alto de viewport para estirar; en mobile el
+  contenido ya llena casi todo, así que el flex-grow no tiene casi nada
+  que estirar.
+- Fix: `.main-content.hero-banner-content` (globals.css) suma
+  `background: var(--color-dark-blue)` — mismo azul oscuro del degradé de
+  fallback del banner — para que el estirón del flex quede invisible en
+  vez de mostrar el celeste del body. Solo afecta Home/Predicciones (las
+  únicas páginas con esta clase). Probado en el navegador con viewports de
+  distinto alto (900px y 1400px) y en mobile (390px) — franja
+  desaparecida en los tres casos.
+- **De paso, pedido aparte**: "la calidad de la imagen del banner se
+  redujo... en el laboratorio se veía de mejor calidad". El laboratorio
+  mostraba el mock con `<img>` directo (sin pasar por Cloudinary); en
+  producción, el banner es full-bleed (puede ocupar todo el ancho de un
+  monitor grande) y el `q_auto` de siempre (nivel "good") más un ancho
+  fijo de 1600px se notaban de más en una foto protagonista. `getImageUrl`
+  (`cloudinary.js`) suma un 4° parámetro opcional `quality` (default
+  `"auto"`, sin cambios para el resto de usos del sitio); `GpHeroBanner.jsx`
+  pasa `"auto:best"` + ancho según `isMobile` (2200px desktop / 900px
+  mobile, en vez de 1600px fijo para todas las pantallas — en mobile ese
+  ancho de más no se nota y sale más liviano pedir menos). Comparado con
+  `curl` contra la imagen real de Las Vegas: 280KB (antes, 1600px
+  q_auto) → 676KB (ahora, 2200px q_auto:best) en desktop, pero apenas
+  227KB en mobile (900px q_auto:best) — más liviano que antes ahí.
+
+## 2026-11-09 · Fix: cartel de pre-ventana de predicciones sube al banner, sin contador
+
+- **Reportado en producción** (con captura): el cartel "Las predicciones
+  se habilitarán en..." aparecía en una caja aparte, por debajo del
+  banner nuevo — "todos los mensajes deberían aparecer junto al título".
+  Pedido también: para esta alerta puntual no hace falta un temporizador
+  en vivo, mejor un cartel fijo ("se habilitarán 24 hs antes") aclarando
+  que además se manda una notificación push a quien tenga la app.
+- `computeRaceState()` (`front/src/utils/helpers.js`) abre la ventana
+  siempre exactamente 24hs antes de `date_race` — dato fijo, no hace
+  falta contarlo en vivo para comunicarlo. La notificación "🔮
+  Predicciones habilitadas" ya existe de verdad
+  (`back/services/pushAutomation.services.js`, se dispara sola a las
+  24hs) — el texto nuevo no promete algo sin implementar.
+- `GpHeroBanner.jsx` (`variant="predictions"`): cuando `status.isPreWindow`,
+  en vez del countdown + `.prediction-status-banner` de siempre, se
+  muestra `.gp-hero-banner__prewindow` — texto fijo con el nombre de la
+  sesión (clasificación/sprint/carrera, `SESSION_LABEL`) + el aviso de
+  la notificación. Mismo lenguaje visual vidrio que el resto del banner.
+- `Predictions.jsx`: se sacó el `<section>` con el cartel visible + el
+  `CountdownToOpen` que lo alimentaba. `CountdownToOpen` sigue montado,
+  ahora oculto (`display:none`, mismo patrón que ya tenía
+  `CountdownToRace` en este archivo) — se conserva SOLO por su efecto
+  secundario `onOpen` (flippea `canPredict`/`isPreWindow` en el momento
+  exacto en que se cumplen las 24hs, sin esperar un refetch ni un evento
+  de socket); su render visual ya no hace falta, lo reemplazó el cartel
+  del banner.
+- `predictions.css`: se borró `.prewindow-countdown` (quedó sin uso, era
+  solo el wrapper del contador visible que se sacó).
+- Probado localmente (dev server del front apuntado al backend local vía
+  `.env.local` temporal, no commiteado; usuario de prueba descartable):
+  con una carrera en pre-ventana (GP de Las Vegas, clasificación a más de
+  24hs), el cartel nuevo aparece debajo del título dentro del banner, sin
+  ninguna caja aparte más abajo; `npm run build` limpio.
+
+## 2026-11-08 · Laboratorio: el arrastre de las cards de predicción pasa a Framer Motion
+
+- **Pedido**: "se traba mucho al arrastrar, no podríamos utilizar framer
+  motion?" — la primera versión (misma entrada de más abajo) calculaba la
+  posición a mano en cada evento `pointermove` (`setState` de React, para
+  las 10 filas a la vez, en cada pixel de movimiento) — se nota. Framer
+  Motion ya estaba instalada en el proyecto (`Reveal.jsx` la usa para las
+  animaciones de scroll), así que no hizo falta sumar una dependencia
+  nueva — se reemplazó todo el cálculo manual (`dragSlot`/`dragY`/
+  `onHandlePointerDown/Move/Up`, el `transform: translateY()` a mano) por
+  `Reorder.Group`/`Reorder.Item`, hechos justo para listas arrastrables:
+  el seguimiento del puntero y la animación de las filas vecinas corren
+  por el motor de animación de la librería, no por el ciclo de render de
+  React. `dragListener={false}` + `useDragControls()` restringe el
+  arrastre a la manija (si no, tocar el selector también arrastraría la
+  fila entera).
+- **Bug encontrado en el camino**: el fix de z-index del picker abierto
+  (ver entrada anterior) dejó de funcionar al cambiar a `Reorder.Item` —
+  investigado: `Reorder.Item` pone su PROPIO `z-index` inline por fila
+  (`"z-index: unset"`, confirmado inspeccionando el DOM, para manejar el
+  apilado durante el drag), y un estilo inline le gana a cualquier clase
+  sin importar la especificidad. Fix: `!important` en
+  `.pcp-card.is-picker-open` — acá no es "por las dudas", es necesario
+  para ganarle al inline style de la librería.
+- Probado en el navegador: abrir el picker (el panel vuelve a flotar
+  correcto, sin quedar tapado) y arrastrar una fila a otra posición
+  (confirmado con `agent-browser drag`: mismo comportamiento funcional
+  que antes — las filas intermedias se reacomodan solas).
+
+## 2026-11-08 · Laboratorio: rediseño de las cards de predicción (vidrio + arrastrar para reordenar)
+
+- **Pedido**: "si tuvieras que rediseñar los selects para que queden bien
+  con el diseño del banner y la transparencia, cómo lo harías? se puede
+  agregar algún diseño nuevo para probar que sea UX/UI y quede más
+  moderno, que se pueda mover los pilotos de posición arrastrando?".
+- Nuevo prototipo (`lab/sections/PredictionCardsPrototype.jsx` +
+  `predictionCards.css`, prefijo `pcp-`), 100% mock (pilotos/colores de
+  escudería inventados, no pega contra el backend). Dos piezas:
+  1. **Cards tipo vidrio** (`blur` + fondo semitransparente + borde
+     sutil) en vez del card blanco opaco actual — mismo lenguaje visual
+     que `GpHeroBanner`.
+  2. **Picker de piloto construido desde cero**, no una versión pintada
+     del `react-select` real: su menú se abre vía portal a
+     `document.body` (`SearchableSelect.jsx`, `menuPortalTarget`), fuera
+     del DOM del card — un override global de `.react-select__menu`
+     hubiera chocado con los otros mocks de esta misma página del
+     laboratorio que también usan `SearchableSelect` (el bloque de
+     predict-below, más arriba). El picker propio tiene su panel
+     `position:absolute` DENTRO del card (sin portal), con buscador
+     (filtra por nombre o escudería) y badge "Ya elegido" en los pilotos
+     que ya ocupan otra posición.
+  3. **Arrastrar para reordenar**: cada fila tiene una manija (ícono de
+     puntos); arrastrándola verticalmente, la fila "salta" de posición y
+     las demás se corren con una animación suave (transform + transition,
+     mismo patrón de pointer events — `setPointerCapture`/
+     `touch-action:none` — que ya usa el drawer de horarios de
+     `GpHeroBanner`, no una librería nueva). El selector sigue sirviendo
+     para ELEGIR qué piloto va en cada posición; si elegís uno que ya
+     estaba en otro lugar, las dos posiciones se intercambian en vez de
+     duplicarse.
+- **Bug encontrado y arreglado en el camino**: el panel del picker
+  quedaba tapado DETRÁS de las cards siguientes al abrirlo — mismo tipo
+  de bug de stacking que el del clima del banner (ver entrada del
+  2026-11-07): `.pcp-card` tiene `position`+`z-index` propio, así que
+  crea su propio contexto de apilado y el z-index alto del panel queda
+  atrapado adentro, sin poder ganarle a una card HERMANA (mismo z-index
+  base, pero más abajo en el DOM). Fix: cuando el picker de una fila está
+  abierto, la fila ENTERA sube de z-index (no solo el panel) — mismo
+  criterio de solución que la vez anterior.
+- Probado en el navegador: abrir/cerrar el picker, buscar y elegir un
+  piloto nuevo (reemplaza al que estaba), elegir uno ya usado (intercambia
+  posiciones), y arrastrar una fila a otra posición (confirmado con
+  `agent-browser drag`: las filas intermedias se reacomodan solas).
+
+## 2026-11-08 · Fix: en mobile quedaba un hueco entre el nav y el loader
+
+- **Pedido**: "en mobile queda un pedacito libre que se ve la imagen de
+  atrás" — el `top:60px` del ajuste anterior era una aproximación; medido
+  en el navegador, el `<nav>` real mide **56px en mobile** (`navbar-
+  expand-lg` colapsado) y **60.375px en desktop** (≥992px, breakpoint
+  `lg` de Bootstrap, nav expandido) — dos alturas reales, no una. Con
+  60px fijo, en mobile sobraban ~4px sin tapar, dejando ver la foto del
+  banner detrás.
+- Causa de fondo (por qué hacía falta ser exacto, no "más o menos"): el
+  `<nav>` en sí es **transparente** (`background: rgba(0,0,0,0)` — el
+  oscuro que se ve es el fondo de `.app-wrapper`/body detrás, no un color
+  propio del nav), así que su z-index más alto (1020 vs 1000 del loader)
+  no alcanza para disimular un top corto — si el loader no llega
+  exactamente hasta el borde real del nav, el hueco deja ver lo de atrás.
+- Fix: `top`/`height` por breakpoint (`@media (min-width: 992px)`) con
+  los valores medidos exactos, en vez de un número aproximado único.
+- Verificado en el navegador en mobile (390px) y desktop (1400px): el
+  gradiente del loader llega justo al borde del nav en los dos casos, sin
+  hueco.
+
+## 2026-11-08 · Ajuste: el loader debe tapar todo menos el nav (corrige el fix anterior)
+
+- **Pedido**: "el loader debe tapar la pantalla completa menos el nav
+  principal" — el fix anterior (`top:660px`, debajo del banner entero)
+  dejaba ver el banner COMPLETO con sus datos reales y, debajo, un loader
+  chico flotando en un hueco — un corte raro, "a medio cargar" en vez de
+  una sola pantalla de carga limpia.
+- Corregido: `.main-content.hero-banner-content .loader-car-overlay` pasa
+  de `top:660px` a `top:60px` (justo debajo del nav, no del banner) — el
+  loader vuelve a tapar TODO lo de abajo del nav, banner incluido, aunque
+  ya tenga datos listos. `.navbar` (Bootstrap, `sticky-top`) ya tiene
+  z-index más alto que el overlay, así que un valor aproximado alcanza
+  sin que se note el corte (el nav siempre pinta encima).
+- Esto significa que el "Causa 1" del fix anterior (evitar que el loader
+  tape el banner) ya no aplica — el criterio correcto, aclarado por el
+  pedido de esta vuelta, es el opuesto: SÍ taparlo, todo junto, hasta que
+  la página esté lista. El fix de "Causa 2" (flash de "no hay carreras",
+  `raceChecked`) sigue vigente sin cambios.
+- Verificado en el navegador (mismo flujo: login real, click en nav a
+  Predicciones): el loader ahora cubre todo el ancho/alto debajo del nav,
+  sin banner ni hueco visible mientras carga; después de cargar, el banner
+  y la página se ven normal, sin regresión.
+
+## 2026-11-08 · Fix: el loader global tapaba el banner en Predicciones (producción)
+
+- **Pedido**: "cuando paso a la pantalla de predicción por un momento
+  aparece esto así" (screenshot: topbar con datos reales, pero el título/
+  countdown/estado del banner vacíos, tapados por el loader global de
+  autito — `LoaderCar`). Después: "veo que al presionar rápido logré
+  agarrar lo que aparece antes de aparecer el loader" (screenshot: el
+  mensaje "No hay próximas carreras para predecir en este momento" un
+  instante antes del loader).
+- **Causa 1 (loader tapando el banner)**: `.loader-car-overlay` tiene
+  `position:fixed; top:110px` — calculado para la barra corta de
+  `NextRaceCTA` (nav + barra ≈ 110px). Con `GpHeroBanner` (600px) en vez
+  de esa barra en Home/Predicciones, `<main>` arranca ≈660px más abajo,
+  pero el loader (dentro de `<main>`, pero `position:fixed` respecto al
+  viewport) seguía anclado a 110px — tapando buena parte del banner, que
+  ya tenía sus propios datos listos (no es lo que estaba cargando). Fix:
+  `.main-content.hero-banner-content .loader-car-overlay` (misma clase
+  que ya diferenciaba el margen) con `top:660px`.
+- **Causa 2 (flash de "no hay carreras")**: `race` arranca en `null` como
+  valor inicial de `useState`, y `showLoader()` recién pone `loading=true`
+  en un `useEffect` — que corre DESPUÉS del primer render. En ese primer
+  frame, `race` sigue siendo `null` (su valor inicial, no "se confirmó que
+  no hay carrera") y `loading` todavía es `false`, así que el mensaje de
+  "No hay próximas carreras..." se ve un instante antes de que el loader
+  tape todo. Fix: nuevo estado `raceChecked` (false hasta que `fetchRace()`
+  resuelve por primera vez, haya o no carrera) — el mensaje ahora depende
+  de `raceChecked && race === null` en vez de solo `race === null`.
+- Verificado con polling cada 50ms sobre la navegación real (Home →
+  Predicciones, como navega un usuario real): ni el loader tapa el banner
+  ni aparece el mensaje de "no hay carreras" en ningún frame muestreado.
+  Una pantalla "Iniciando..." aparte (antes de resolver el login, en TODAS
+  las rutas) no se toca — no es específica de este cambio, confirmado que
+  se comporta igual en Home.
+
+## 2026-11-08 · Banner con foto también en Predicciones (producción)
+
+- **Pedido**: "apliquemos los cambios de la pantalla de predicciones a
+  producción con los cambios aprobados" — el diseño ya estaba validado en
+  el laboratorio (`GpHeroPrototype.jsx`, `variant="predictions"`, rondas de
+  feedback anteriores: dedupe de info repetida con el topbar, espacio
+  entre banner y selects). Primera vez que se toca `App.jsx`/`Predictions.jsx`
+  en esta sesión (hasta ahora todo lo de clima/tormenta había sido solo
+  laboratorio).
+- `GpHeroBanner` suma `variant` (`"home"` default | `"predictions"`) y
+  `userId`. Topbar/foto/horarios sin cambios en las dos variantes; el
+  contenido de predicciones es título + countdown "tiempo restante para
+  predecir" + `.prediction-status-banner` real (saved/missing, según si el
+  usuario ya predijo esta carrera — `predictionsServices.findPredictionByUserAndRace`).
+  Se arma como componente autónomo (se fetchea su propia carrera vía
+  `useNextRace`, no la recibe de Predictions.jsx) para no tocar la lógica
+  ya probada de la página — mismo criterio que ya usa `NextRaceCTA`/Home.
+- `useNextRace.js` se separa en `useRaceCountdown(race)` (el countdown/
+  `computeRaceState` puro) + `useNextRace()` (fetch + `useRaceCountdown`
+  por dentro) — refactor sin cambios de comportamiento, deja la puerta
+  abierta a reusar el countdown sobre una carrera ya obtenida.
+- `App.jsx`: el banner se monta también en `/predictions` (antes solo en
+  Home), con el mismo `userId` que ya resuelve el auth. `.main-content`
+  pasa de `.home-content` a `.hero-banner-content` (renombrada, ya no es
+  solo de Home) para sacar el margen superior en cualquier página que
+  arranque con este banner.
+- `Predictions.jsx` pierde su `<header>` (todo lo cubre el banner de
+  arriba ahora) y queda con: pre-ventana (`CountdownToOpen`, sin cambios),
+  la franja de transición `.gp-hero-banner__predict-below` (mismo CSS que
+  ya había probado el laboratorio, portada a `predictions.css`)
+  envolviendo las cards de predicción, y el mensaje de "predicciones
+  cerradas" (se reordenó para quedar después de las cards, igual que
+  antes — no un cambio de diseño nuevo). `CountdownToRace` se deja
+  montado pero oculto (`display:none`) solo por su efecto secundario
+  (cierra las predicciones cuando arranca la carrera, sin depender de un
+  evento de socket) — reusar el componente tal cual en vez de reimplementar
+  esa lógica a mano. Limpieza de lo que quedó muerto: el fetch de país
+  (`getCountry`) que ya no se mostraba en ningún lado, y 3 clases CSS sin
+  uso (`.qualy-label`, `.predictions-countdown`, `.prediction-status-container`).
+- Probado en el navegador con un usuario de prueba real (registro + login +
+  predicción vía API, dev local): countdown tickeando, banner de estado
+  cambiando de "falta predecir" a "ya guardada" tras enviar, formulario
+  precargado con la predicción real, desplegable de horarios funcionando
+  (con clasificación/carrera, no solo prácticas), mobile sin desbordes.
+  Home sin cambios de comportamiento.
+- `npm run build` limpio. Commit en `leandro` → push → merge a `main` →
+  push a `main` (dispara deploy Vercel/Railway) → vuelta a `leandro`.
+
+## 2026-11-07 · Laboratorio: fix de stacking — el clima tapaba el título
+
+- **Pedido** (3 screenshots): en nublado y noche calurosa "las letras
+  quedan como por detrás del efecto"; en sol, el resplandor "arruina la
+  foto de fondo con ese flash raro".
+- **Causa real (bug de stacking, no de diseño)**: `.gp-hero-proto__content`
+  (donde vive el título) tenía `position: relative` pero SIN `z-index`
+  propio — queda en el nivel "auto" del orden de apilado de CSS, que
+  pinta ANTES (más atrás) que `.gp-hero-proto__weather` (`z-index: 1`
+  explícito), sin importar que `.content` esté después en el DOM: un
+  z-index explícito, aunque sea bajo, siempre gana contra "auto". Con
+  lluvia/relámpagos no se notaba (gotas finas, flash breve), pero los
+  tintes de pantalla completa de nublado/noche y el resplandor de sol
+  quedaban pintados ENCIMA del título, no detrás. Fix: `z-index: 2` en
+  `.gp-hero-proto__content` — clima(1) < contenido(2) < topbar(3), el
+  texto siempre queda adelante.
+- Aparte, en sol: el resplandor no tenía `mix-blend-mode`, así que
+  pintaba un disco casi opaco (opacidad .9 en el centro) literalmente
+  encima de la foto en vez de iluminarla — de ahí el "flash raro".
+  Cambiado a `mix-blend-mode: screen` (como "sumar luz", mismo criterio
+  que el flash de los relámpagos) + más blur y menos opacidad en el
+  centro, para que difumine en vez de tener un borde duro.
+
+## 2026-11-07 · Laboratorio: últimos 3 efectos de clima — nublado, sol, noche calurosa
+
+- **Pedido**: "pasemos a los demás efectos de clima" — cierra la lista
+  original (lluvia, tormenta, sol, nublado, noche calurosa). `gp.weather`
+  suma `"cloudy"`, `"sun"` y `"night"`.
+- Decisión de diseño clave: a diferencia de la lluvia/relámpagos (algo que
+  viaja en una dirección y se reinicia de golpe, donde hay que disimular
+  el corte con la "tiling trick" o con capas/timing independiente), estos
+  tres efectos no se trasladan — oscilan entre dos valores con
+  `animation-direction: alternate`. Al no haber nunca un salto brusco (la
+  animación siempre frena, revierte y vuelve sobre sus propios pasos), no
+  existe el instante de reinicio que hubo que resolver con la lluvia. Cada
+  elemento igual tiene su propio timing al azar (misma lección: nada de
+  capas compartidas).
+- **Nublado**: tinte grisáceo plano (`mix-blend-mode: multiply`) + 5
+  sombras de nubes grandes y difusas (radial-gradient + blur, cada una
+  con su propio tamaño/posición/duración) meciéndose lento de lado a
+  lado. Demo con la foto de Brasil (ya nublada, mismo criterio que
+  lluvia/tormenta).
+- **Sol**: tinte cálido (`soft-light`) + un resplandor radial en la
+  esquina que "respira" (escala/opacidad oscilando 5.5s). Demo con la
+  foto de Australia (antes solo se usaba como fallback por defecto, ahora
+  también como demo propio con clima).
+- **Noche calurosa**: tinte oscuro azul/violeta (`multiply`) + 45
+  estrellas titilando (cada una con su propio ritmo de parpadeo, 1.6-4.4s)
+  + un resplandor cálido subiendo desde el piso (`heat-haze`, simulando
+  calor nocturno de desierto). Demo con la foto de Qatar (carrera
+  nocturna real, encaja temáticamente).
+- Un bug atrapado antes de mostrarlo: el primer intento del demo de "sol"
+  pasaba un `gp` parcial (solo `round`/`isInProgress`/`weather`) sin
+  spread de los datos base — la foto/bandera/país/título quedaban
+  `undefined` y el banner se veía vacío. Corregido pasando el objeto GP
+  completo.
+
+## 2026-11-07 · Laboratorio: segundo efecto de clima — tormenta (lluvia + relámpagos)
+
+- **Pedido**: "ahora se ve mucho mejor, probemos una tormenta" (segundo
+  clima de los pedidos originalmente — lluvia, tormenta, sol, nublado,
+  noche calurosa). `gp.weather` suma `"storm"`.
+- Reusa toda la lluvia ya construida (`buildRainDrops` suma un parámetro
+  `intense`): mucha más densa (320 vs 100 gotas — ajustado tras feedback
+  "agregar muchas más gotas") y con más deriva horizontal (viento, hasta
+  100px vs 60px) para una tormenta en vez de lluvia tranquila.
+- Relámpagos nuevos (`gp-hero-proto__lightning`): 2 capas de flash
+  independientes (`buildLightningLayers`) con duraciones largas sin
+  relación simple entre sí y delay al azar — misma lección que la lluvia,
+  una sola capa periódica se notaría repetir. `mix-blend-mode: screen` en
+  vez de opacity sola, para que el flash aclare la foto/lluvia de abajo en
+  vez de taparla con un blanco plano. Cada `@keyframes` ya tiene 2-3
+  destellos cortos e irregulares dentro de su propio ciclo (un relámpago
+  real no es un parpadeo único y parejo) — a diferencia de la lluvia, acá
+  no hace falta la "tiling trick" (dos copias apiladas): el keyframe ya
+  arranca y termina en `opacity: 0`, así que el reinicio del loop ya es
+  invisible por sí solo.
+- Nuevo bloque de demo en `PrototypesSection.jsx` ("Efecto de clima
+  animado (tormenta)"), misma foto de Brasil. Confirmado por código
+  (`getComputedStyle().opacity`, valores de 0.82 y 0.45 capturados en
+  distintos instantes) que el flash sí llega a dispararse — el juicio
+  visual final (qué tan convincente se ve/siente) queda para probarlo en
+  un navegador real, dado el problema de reloj de animación del entorno
+  headless encontrado en la vuelta anterior.
+
+## 2026-11-07 · Laboratorio: cada gota de lluvia con timing propio (no por capas)
+
+- **Pedido**: "podemos verlo por tu cuenta para que veas que se nota
+  cuando cambia o reinicia el bucle". Al revisarlo encontré que en este
+  entorno headless el reloj de animación corre mucho más rápido que el
+  tiempo real (confirmado con `getAnimations().currentTime`: 13s de
+  animación en 1s real) — mis capturas espaciadas de la vuelta anterior no
+  eran prueba confiable de esto. Pero revisando el código encontré el bug
+  real, independiente de ese problema de medición: las 4 "capas" (vuelta
+  anterior) compartían timing dentro de cada una — aunque el conjunto de
+  las 4 juntas no coincidía nunca exacto, CADA capa por separado sí volvía
+  a su patrón idéntico cada 1.1-2.3s (su propia duración), un intervalo
+  corto y perceptible, sobre todo la capa de gotas grandes/brillantes.
+- Fix real: cada gota pasa a ser su PROPIO elemento con su PROPIO timing
+  al azar (`buildRainDrops`, en vez de agrupar en pocas "capas" vía
+  box-shadow) — duración, delay, tamaño, opacidad, blur y deriva, todo
+  independiente por gota (~100 gotas × 2 copias para el truco de tiling =
+  200 elementos). Confirmado: 78 duraciones únicas entre las 100 gotas
+  (antes, 4 compartidas) — ya no hay ningún subconjunto de gotas que
+  comparta ciclo y se note repetirse.
+
+## 2026-11-07 · Laboratorio: lluvia con 4 capas desfasadas, sin ciclo perceptible
+
+- **Pedido**: "¿podemos hacer que las gotas caigan de manera aleatoria
+  infinitamente?... se nota cuando se reinicia porque se reacomodan
+  siempre al mismo lugar". Con una sola capa (patrón fijo + una única
+  animación compartida), el conjunto entero se repetía idéntico cada
+  duración de ciclo — previsible si se mira un rato.
+- `RAIN_LAYERS` (`GpHeroPrototype.jsx`) pasa de 2 capas (cerca/lejos) a 4,
+  cada una con: su propio patrón de gotas al azar (`buildRainShadows`
+  corre aparte por capa), su propia duración (1.1s/1.45s/1.85s/2.3s,
+  ninguna múltiplo de otra a propósito) y un `animation-delay` negativo
+  al azar (arranca "a mitad de camino" de su propio ciclo). Para que
+  las 4 coincidan todas a la vez hacen falta muchos segundos (mínimo
+  común múltiplo de duraciones+delays al azar) — mucho más que lo que
+  alguien mira el banner, así que no se percibe un ciclo único.
+- CSS: una sola `@keyframes` genérica reutilizada por las 4 capas (antes
+  dos duplicadas, `--near`/`--far`), con duración/delay/deriva horizontal
+  por capa vía inline style (`animationDuration`, `animationDelay`,
+  variable CSS `--rain-drift`) en vez de clases fijas. El truco de "sin
+  corte visible" al reiniciar (cada capa dibujada 2 veces apiladas,
+  `RAIN_TILE_HEIGHT`) se mantiene igual, ahora por capa. Confirmado con
+  capturas espaciadas ~7s que el patrón visible ya no coincide.
+
+## 2026-11-07 · Laboratorio: se saca el salto visible del loop de la lluvia
+
+- **Reportado con captura**: "se nota cuando un grupo de gotas se corta y
+  desaparece y vuelve a aparecer arriba". Causa: toda la capa de gotas
+  compartía un único `translateY`, así que al reiniciar el loop saltaba
+  de golpe entera al mismo tiempo; además el rango disperso (1200px) no
+  coincidía con la distancia del translate (650px), así que el patrón
+  tampoco quedaba igual antes/después del salto.
+- Fix (truco estándar de "tiling" para loops continuos): las gotas se
+  generan ahora en una sola franja de alto fijo (`RAIN_TILE_HEIGHT`,
+  700px) y esa misma franja se dibuja DOS VECES apiladas (`top: 0` y
+  `top: -RAIN_TILE_HEIGHT`), con el `translateY` de la animación
+  recorriendo exactamente esa misma distancia. En el instante del
+  reinicio, la segunda copia ya está exactamente donde estaba la primera
+  — el corte queda invisible. Confirmado con una ráfaga de 6 capturas
+  espaciadas ~250ms: densidad y distribución se mantienen consistentes
+  entre frames, sin el salto reportado.
+
+## 2026-11-07 · Laboratorio: la lluvia pasa de degradado repetido a gotas al azar
+
+- **Reportado con captura**: "se ve medio mal, no parece una lluvia
+  natural" — el `repeating-linear-gradient` usado para el efecto de
+  lluvia es, por definición, un patrón perfectamente regular (franjas
+  idénticas y parejas), no hay forma de que lea como orgánico por más
+  que se ajuste grosor/opacidad.
+- Se cambia de técnica: gotas individuales dispersas en posiciones al
+  azar vía `box-shadow` (`buildRainShadows()`, nuevo, en
+  `GpHeroPrototype.jsx`) — un elemento base invisible por capa
+  ("cerca"/"lejos") más N copias vía `box-shadow`, cada una con su
+  propio x/y/opacidad al azar (`useMemo`, se arma una sola vez por
+  instancia, no en cada render), animadas con `transform` (no
+  `top`/`left`, más liviano) cayendo en diagonal. Confirmado con dos
+  capturas seguidas que las gotas están en posiciones distintas entre
+  frames (la animación mueve cada una, no es un patrón estático).
+
+## 2026-11-07 · Laboratorio: efecto de lluvia animado en el banner + menos espacio antes de los selects
+
+- **Pedido**: "quitaría un poco de espacio vacío entre el primer select y
+  la imagen del banner". `.gp-hero-proto__predict-below` baja su
+  `padding-top` de 110px a 50px (se mantiene la franja de degradado de
+  arriba sin cambios).
+- **Pedido**: "¿es posible agregar un efecto de lluvia al banner?... se
+  me ocurriría agregar efectos de animación según el clima (lluvia,
+  tormenta, sol, nublado, noche calurosa)". Arranca con lluvia nomás
+  (acordado explícitamente, para validar el mecanismo antes de construir
+  el resto). `gp.weather` (`null` | `"rain"`, 100% mock — no hay ningún
+  campo real de clima todavía) agrega `.gp-hero-proto__weather--rain`:
+  dos capas de `repeating-linear-gradient` ("cerca"/"lejos", distinto
+  grosor/opacidad/velocidad para dar profundidad) animadas en diagonal
+  vía `background-position`, CSS puro, sin canvas ni librerías. Capa
+  propia por encima de la foto/degradado y por debajo del topbar/contenido
+  (`pointer-events: none`, no tapa clicks). Nuevo bloque de demo en
+  `PrototypesSection.jsx` con la foto de Brasil (cielo ya tormentoso, foto
+  elegida a propósito para que encaje). Animación confirmada corriendo
+  (`animationPlayState: running`), no es una captura estática.
+
+## 2026-11-07 · Laboratorio: transición de fondo hacia los selects + se sincroniza con producción
+
+- **Pedido**: "¿cómo se verían los select de predicción abajo? ¿sería
+  mucho estirar la imagen por detrás de los 10 select?" — no (10 filas
+  interactivas sobre la foto compiten con las cards blancas y rompen el
+  patrón "foto arriba, contenido abajo" del resto del sitio). En cambio,
+  `PrototypesSection.jsx` suma una franja debajo del banner de Predicciones
+  (`.gp-hero-proto__predict-below`) que continúa el mismo tono oscuro con
+  el que termina el degradado del banner (`--color-dark-blue`, token real,
+  no un valor inventado) con un degradado propio arriba para que no se
+  note el corte — la foto en sí queda contenida en el banner, no se
+  estira. Debajo, una muestra parcial (4 de las 10 filas reales) de los
+  selects de predicción, con las clases reales de `predictions.css`
+  (`.prediction-cards-container`/`.prediction-card`/`.prediction-rank`/
+  `.prediction-select-wrapper`) y una aproximación visual del control
+  (no es el `SearchableSelect` real, el laboratorio no pega contra la
+  lista de pilotos) + el botón real de enviar (`.btn-submit-prediction`,
+  ícono real `crystal_ball.png`).
+- **Bug encontrado al probar**: la franja nueva tapaba el banner de
+  estado de la predicción. Causa: el laboratorio (`gpHero.css`) había
+  quedado con el alto/centrado viejo (460px, contenido pegado abajo) —
+  el fix a 600px + contenido centrado que ya se había hecho para el
+  componente real (`gpHeroBanner.css`, pedido explícito "en desktop el
+  alto de banner que sea de 600px... y centrar los textos") nunca se
+  portó acá. Se sincroniza `gpHero.css` con `gpHeroBanner.css`: 600px,
+  `justify-content: center`, padding simétrico del contenido, y la barra
+  de arriba pasa a usar `.container` (Bootstrap) en vez de padding en px
+  propio — mismos tres ajustes que ya tiene el componente real, para que
+  el laboratorio no se desincronice de lo que ya está en producción.
+
+## 2026-11-07 · Laboratorio: se saca la info repetida del banner de Predicciones
+
+- **Reportado con captura**: en el banner de cabecera de Predicciones
+  (`variant="predictions"`), el chip RACE, la fecha y (conceptualmente) el
+  countdown aparecían tanto en la barra de arriba como en el bloque
+  central — mismo dato dos veces. El countdown centrado ("tiempo restante
+  para predecir") se valida explícitamente ("queda bien porque muestra en
+  primera plana el tiempo que queda"), así que el recorte va del lado del
+  bloque central, no del topbar — el topbar es justo el que se pidió que
+  fuera "igual a Home" para mantener consistencia en todo el sitio, y
+  tocarlo lo hubiese desbalanceado.
+- Se sacan del bloque central (`GpHeroPrototype.jsx`, `variant="predictions"`):
+  bandera/país (`.circuit-country-detail`), fecha y chip de ronda — quedan
+  solo en el topbar, que ya los tenía. El bloque central queda con lo
+  realmente específico de esta pantalla: título, countdown "tiempo
+  restante para predecir" y el banner de estado de la predicción. Se
+  limpia también la CSS que quedó sin uso (`.gp-hero-proto__predict-country`/
+  `-date`/`-round`, en `gpHero.css`).
+
+## 2026-11-07 · Laboratorio: probar el banner como cabecera de Predicciones
+
+- **Pedido**: "probar en el laboratorio poner el banner en la pantalla de
+  predicción y darle un diseño más lucido, también adaptar la barra de
+  contador como en la Home". `GpHeroPrototype.jsx` suma una prop `variant`
+  (`"home"` default | `"predictions"`) que reusa todo el mecanismo del
+  banner (foto, topbar flotante, desplegable/bandeja de horarios) y solo
+  cambia el contenido de `.gp-hero-proto__content` por el real de
+  `Predictions.jsx` (país, título, fecha, ronda, countdown "tiempo
+  restante para predecir", banner de estado de la predicción) — pero
+  flotando sobre la foto en vez del fondo sólido/topbar sólido que tiene
+  hoy esa página.
+- Reuso de clases reales en vez de aproximar: `.circuit-country-detail`/
+  `.section-label` (país, de `components.css`/`globals.css`),
+  `.prediction-status-banner`/`.status-missing`/`.status-saved` (banner de
+  estado, de `predictions.css`, sin tocar). La ronda pasa de texto plano
+  (`.qualy-label`) al chip real `.nr-cta__round--{type}` (agrandado para
+  este lugar, `.gp-hero-proto__predict-round`) para que se lea coherente
+  con el resto del sitio. El countdown reusa `.nr-cta__time` (cajas del
+  contador real) en una versión más grande (`.gp-hero-proto__predict-time`)
+  ya que acá es el protagonista del bloque.
+- Nuevo bloque de demo en `PrototypesSection.jsx` ("Mismo banner, como
+  cabecera de Predicciones"), con la foto/datos de Brasil (mismos que usa
+  hoy esa página en producción, para comparar manzanas con manzanas).
+  Probado en desktop y mobile — build limpio, cero impacto en producción
+  (`grep gp-hero-proto` en `dist/` sigue vacío). Predictions.jsx real no
+  se tocó.
+
+## 2026-11-07 · GpHeroBanner: la barra de arriba pasa a usar la grilla real del sitio
+
+- **Pedido**: "poner el mismo container que tiene los botones del nav o
+  contenido... para que no se vayan tanto a los costados y seguir una
+  grilla en toda la web, lo mismo en mobile". La barra de país/contador
+  tenía un padding horizontal en px inventado para este banner (16px
+  mobile / 50px desktop, de un ajuste anterior) — en vez de eso, se suma
+  la clase real `.container` (Bootstrap) al div interno
+  (`nr-cta__container container`), la misma que ya usan `Nav.jsx` y
+  `NextRaceCTA.jsx` en el resto del sitio. `.gp-hero-banner__topbar` vuelve
+  a un padding vertical nomás (`6px 2px`, igual que `.nr-cta` real) — el
+  ancho/centrado real lo da `.container`, no un valor manual. Verificado
+  en 1920px que la barra queda alineada con el logo/menú del Nav (antes se
+  corría más angosta en pantallas anchas) y en mobile sigue con margen a
+  los costados, ahora heredado de la grilla en vez de un número suelto.
+
+## 2026-11-07 · useNextRace: se saca el flash de "Predecir ahora" → "En curso" al cargar
+
+- **Reportado con capturas**: al cargar Home con una carrera en curso, el
+  banner mostraba "Predecir ahora" un instante y después cambiaba a
+  "En curso". Causa: el countdown corría con `setInterval`, que no ejecuta
+  su callback de inmediato — recién al primer tick (1seg después) se
+  calculaba `computeRaceState()` y se actualizaba `status`; hasta ahí,
+  `status.isInProgress` se quedaba en el default (`false`), y el CTA
+  mostraba el estado equivocado por ese segundo.
+- `front/src/hooks/useNextRace.js`: el cálculo (antes inline dentro del
+  callback del interval) pasa a una función `tick()` que se llama una vez
+  de entrada, antes de armar el interval — mismo patrón de siempre para
+  evitar el retraso inicial de `setInterval`. Mismo fix beneficia a
+  `NextRaceCTA.jsx` (consume el mismo hook) en el resto de páginas, aunque
+  ahí no se había reportado (el chip "EN CURSO" es más chico, menos
+  notorio que el CTA grande del banner).
+
+## 2026-11-07 · GpHeroBanner: margen lateral a la barra de arriba en mobile
+
+- **Reportado con captura**: en mobile, la barra de país/contador quedaba
+  pegada a los bordes de la pantalla (`.gp-hero-banner__topbar`, padding
+  horizontal de 2px). Pasa a 16px.
+
+## 2026-11-07 · GpHeroBanner: 600px parejo en desktop/mobile + contenido centrado
+
+- **Pedido**: "en desktop el alto de banner que sea de 600px y lo mismo en
+  mobile, además centrar los textos en el banner". `min-height` pasa a
+  600px fijo en `.gp-hero-banner__hero` (antes 460px base / 540px mobile,
+  dos valores distintos) — se saca el override mobile, ya no hace falta.
+- `justify-content: flex-end` → `center` en `.gp-hero-banner__hero`: el
+  contenido (etiqueta + título + CTA) pasa de estar pegado abajo a centrado
+  verticalmente. `.gp-hero-banner__content` pasa de padding asimétrico
+  (28px/64px, pensado para quedar pegado abajo) a `20px` parejo.
+- Se saca el `padding-top: 90px` que tenía el contenido en mobile (era un
+  parche para no chocar con la barra de arriba cuando el contenido estaba
+  pegado abajo en una caja más baja) — con 600px y contenido centrado ya
+  no hace falta, probado sin superposición.
+
+## 2026-11-07 · GpHeroBanner: faltaba Clasificación/Carrera en horarios + más alto en mobile
+
+- **Reportado con captura**: la solapa de horarios solo mostraba
+  "Prácticas", nunca "Clasificación y carrera". Causa: `findCurrentOrNext()`
+  (lo que usa `useNextRace`) devuelve una sola sesión (la más próxima, ej.
+  clasificación), no el fin de semana agrupado — `race.sessions` no existe
+  en esa respuesta (a diferencia de `Calendar.jsx`, que arma `sessions`
+  client-side agrupando todas las carreras del circuito+fecha). Se agrega
+  un fetch con `racesServices.findByCircuitAndYear(circuitId, year)` (mismo
+  endpoint que ya usan `Calendar.jsx`/`RaceForm.jsx`), mapeando su
+  `race_types` como `sessions` para `buildSchedule`.
+- **Reportado con captura**: en mobile, con el título a dos renglones
+  ("GRAN PREMIO DE SÃO PAULO"), el banner quedaba muy justo. Se suma
+  `min-height: 540px` (antes 460px heredado del base) en el breakpoint de
+  mobile (`gpHeroBanner.css`, `@media (max-width: 600px)`).
+
+## 2026-11-07 · Home: se saca el banner viejo (quedaba duplicado con GpHeroBanner)
+
+- **Reportado**: en producción, debajo del `GpHeroBanner` nuevo seguía
+  apareciendo el hero genérico de siempre (`Home.jsx`, sección
+  `.home-hero`): fondo fijo + "UN JUEGO DE PREDICCIÓN PARA LA F1" /
+  "CONVERTÍ TU PASIÓN EN PUNTOS." + tira "Predecí tus próximos resultados"
+  con flechas animadas linkeando a `/predictions` — mismo mensaje/acción
+  que el banner nuevo, dos veces seguidas en la misma página.
+- Se borra esa sección de `Home.jsx` (quedó `<InstallAppBanner />` como
+  primer bloque) y su CSS asociada en `assets/styles/home.css`
+  (`.home-hero*`, `.hero-bg`, `.hero-overlay`, `.cta-predictions`,
+  `.cta-content`, `.cta-timer`, `.cta-arrows*`, `@keyframes arrows-move`,
+  más los overrides responsive sueltos) — nada de esto se usaba en ningún
+  otro lado del sitio (confirmado por grep antes de borrar).
+- Entrada sumada a `front/src/lab/data/changelog.js` (cambio de
+  consistencia visual, por CLAUDE.md).
+
+## 2026-11-07 · Banner de próxima carrera con foto: implementación real en producción
+
+- **Pedido**: "esto es para dejar preparado para subirlo a producción y que
+  sea viable... empecemos la implementación" — primera vez en todo el
+  desarrollo de este banner que se toca producción (hasta ahora, solo
+  laboratorio). Plan revisado y aprobado antes de tocar nada (plan mode).
+- **Backend**: `Circuits.banner_img` (opcional, a diferencia de `img` que
+  sigue requerido) — `back/schemas/schemas.js`,
+  `back/api/routes/circuits.api.routes.js` (`multerControl.single("image")`
+  → `.fields([{name:"image"},{name:"banner_img"}])`, mismo patrón que
+  `logo`/`isologo` de `teams.api.routes.js`),
+  `back/middleware/mapImageToBody.middleware.js` (mapeo nuevo para
+  `req.files.image`/`req.files.banner_img`), `back/api/controllers/circuits.api.controllers.js`
+  (`create`/`editById` resuelven ambas imágenes con `resolveImage`,
+  `banner_img` con `defaultImage: null`).
+- **Panel admin**: `CircuitForm.jsx` suma un segundo campo de carga
+  "Banner (opcional)" (mismo patrón que "Imagen", con preview) —
+  `CircuitCreate.jsx`/`CircuitEdit.jsx` lo agregan al `FormData`. Las fotos
+  de muestra (Australia, Brasil, Las Vegas, Qatar, Yas Marina) las sube el
+  usuario a mano desde acá — decisión explícita, para no escribir directo
+  en la base de producción con un script.
+- **Reuso antes de duplicar**: se extrajo el fetch/socket/countdown de
+  `NextRaceCTA.jsx` a `front/src/hooks/useNextRace.js` (`NextRaceCTA.jsx`
+  pasa a consumirlo, mismo comportamiento sin cambios), y `buildSchedule`/
+  `formatSessionTime`/`STATUS`/`DOW`/`DURATION` de `CalendarCard.jsx` a
+  `front/src/utils/schedule.js` (`CalendarCard.jsx` pasa a importarlos).
+  Ambos los reusa el banner nuevo sin duplicar lógica.
+- **`front/src/components/GpHeroBanner.jsx`** (nuevo): puerto a producción
+  de `GpHeroPrototype.jsx` (el prototipo del laboratorio, que se deja sin
+  tocar), con datos 100% reales en vez de mock — ver mapeo completo en
+  `rules/features/banner-proxima-carrera-con-foto.md`. CSS portado a
+  `front/src/assets/styles/gpHeroBanner.css` (prefijo `gp-hero-proto` →
+  `gp-hero-banner`).
+- **`front/src/App.jsx`**: `<NextRaceCTA />` incondicional pasa a
+  `{isHome ? <GpHeroBanner /> : <NextRaceCTA />}` — el banner con foto
+  reemplaza a la barra solo en Home; en el resto de páginas sigue
+  `NextRaceCTA` sin ningún cambio.
+- Probado end-to-end contra datos reales (backend local + Mongo de
+  producción, sin escribir nada): con Brasil en curso hoy, el banner
+  mostró correctamente "Gran Premio de São Paulo", estado "En curso" (CTA
+  rojo no clickeable), countdown en vivo y la solapa de horarios con las
+  prácticas reales (finalizadas, con check). Confirmado también que
+  `NextRaceCTA`/`CalendarCard` siguen funcionando sin cambios en el resto
+  de páginas (Calendario) tras la extracción de `useNextRace`/`schedule.js`.
+- Commit local en `leandro`, sin push (sigue la misma disciplina de toda
+  la sesión).
+
+## 2026-11-07 · Laboratorio: estado "en curso" en el banner + plan técnico para subirlo a producción
+
+- **Contexto**: solo hay fotos de muestra para los 4 GP que le quedan a la
+  temporada (Brasil, Las Vegas, Qatar, Yas Marina) + Australia, y hoy Brasil
+  ya está en curso. El prototipo no tenía ningún estado "en curso" armado
+  todavía (siempre mostraba el countdown/CTA de "próxima carrera").
+- `gp` (prop de `GpHeroPrototype.jsx`) suma `round` (label + tipo, antes
+  "QUALIFYING" fijo) e `isInProgress`. Con `isInProgress`: el chip de ronda
+  pasa a "CARRERA", aparece el tag `EN CURSO` (clases reales
+  `.nr-cta__session-tag` + `.live-indicator`, con su `@keyframes
+  pulse-red`), la etiqueta sobre el título dice "Carrera en curso" en vez
+  de "Próxima carrera" (quedaba contradictorio), y el CTA principal
+  **reemplaza** "Predecir ahora" por una marca no clickeable "En curso"
+  (mismo rojo/punto animado) — mismo criterio que `NextRaceCTA.jsx` real,
+  que deja de renderizar el link cuando `canPredict` es false.
+- Brasil (`PrototypesSection.jsx`) pasa a `round: CARRERA, isInProgress:
+  true` para probar el caso. Los otros 3 quedan con el round por defecto.
+- **Pedido**: "esto es para dejar preparado para subirlo a producción y que
+  sea viable" — se confirmó con el usuario que el alcance es dejar el plan
+  técnico listo, sin tocar producción todavía (seguimos en "laboratorio
+  hasta aprobar el diseño"). Doc nuevo:
+  `rules/features/banner-proxima-carrera-con-foto.md` — modelo de datos
+  que falta (`Circuits.banner_img`, opcional, mismo patrón que
+  `logo`/`isologo` de `Teams`), mapeo completo mock→real de la prop `gp`
+  (sale de `racesServices.findCurrentOrNext()`, el mismo fetch que ya usa
+  `NextRaceCTA.jsx`), y qué queda fuera (backend, panel admin, swap en
+  Home, conectar horarios a datos reales).
+- **Reportado**: el tag "EN CURSO" de arriba (chico, junto al chip
+  "CARRERA") quedaba duplicado contra la marca "En curso" del CTA grande —
+  mismo criterio que la duplicación de "Predecir ahora" resuelta antes. Se
+  saca de acá; `NextRaceCTA.jsx` real, sin tocar, sigue mostrando su propio
+  tag en el resto de páginas del sitio (ahí no hay ningún CTA grande que
+  ya lo diga, así que sí hace falta).
+
+## 2026-11-07 · Laboratorio: se saca la pastilla "Predecir ahora" duplicada + se unifica radio/hover de los botones
+
+- **Reportado**: con el botón grande nuevo bajo el título, "Predecir ahora"
+  quedaba duplicado (la pastilla chica de arriba y el botón grande decían
+  lo mismo, muy cerca). Se saca la pastilla chica (`.nr-cta__meta` vuelve a
+  tener solo el chip "QUALIFYING"). La duda de la entrada anterior (que el
+  resto de páginas se quedara sin esta CTA) no aplicaba: ese riesgo es
+  sobre `NextRaceCTA.jsx`, el archivo real, que este prototipo de
+  laboratorio no toca ni reemplaza ahí — sigue mostrando "Predecir ahora"
+  en el resto del sitio tal cual está hoy. Este hero reemplazaría esa barra
+  solo en Home, y ahí el botón grande ya cubre la acción.
+- **Reportado**: "Horarios" tenía mucho menos radio (8px) que los otros dos
+  botones (pastilla completa, 999px) y un hover distinto (se aclaraba el
+  vidrio nomás, los otros invertían color). Se unifica: `border-radius:
+  999px` igual que los demás, y el hover pasa a invertir color exactamente
+  igual que `.nr-cta__action` real (fondo blanco sólido + texto/ícono en
+  color de acento) en vez de solo aclarar el translúcido. Con esto los 3
+  botones del banner quedan bajo una misma regla de hover ("invertir entre
+  blanco y color de acento"): los que empiezan blancos/sólidos (Predecir
+  ahora grande) invierten a acento, los que empiezan translúcidos
+  (Horarios) invierten a blanco — mismo patrón, dos puntos de partida.
+
+## 2026-11-07 · Laboratorio: un solo CTA dominante en el banner ("Predecir ahora")
+
+- **Reportado**: los botones del banner (Ver circuito, Predecir ahora,
+  Horarios) tenían 3 formas/hovers/animaciones distintas sin un sistema
+  claro detrás.
+- **Pregunta**: "¿no hay demasiados call to action?" — había jerarquía
+  invertida: el botón grande y sólido bajo el título ("Ver circuito")
+  mandaba a una página secundaria, mientras "Predecir ahora" (la acción
+  que de verdad importa, todo el sitio gira en torno a predecir) quedaba
+  chico y perdido arriba, junto al chip "QUALIFYING".
+- Se invierte: "Predecir ahora" pasa a ser el CTA grande bajo el título
+  (mismo lugar/tamaño que tenía "Ver circuito" — `.gp-hero-proto__cta` sin
+  cambios de estilo), y "Ver circuito" baja a link de texto secundario
+  debajo (`.gp-hero-proto__secondary-link`, nuevo).
+- **Aclarado en el camino**: la pastilla chica de arriba (`.nr-cta__action`,
+  real, con su pulso) **no se saca** — `NextRaceCTA.jsx` (de donde sale esa
+  barra) se renderiza global en `App.jsx`, en todas las páginas del sitio,
+  no solo en Home. Ese hero con foto/título grande reemplazaría la barra
+  solo en Home; en el resto de páginas la pastilla chica sigue siendo la
+  única CTA visible. En Home conviven los dos (pastilla arriba + botón
+  grande abajo) a propósito, sin competir entre sí por estar en zonas
+  visuales separadas; el de abajo no pulsa (ya es grande/sólido, no hace
+  falta reforzarlo con animación).
+
+## 2026-11-07 · Laboratorio: se restaura el botón "Predecir ahora" + etiqueta "Próxima carrera"
+
+- **Reportado**: al armar el prototipo del banner con foto se había
+  perdido el botón real que invita a predecir (y, si no se tiene cuenta,
+  a loguearse para poder hacerlo) — no estaba en ninguna versión de la
+  barra de info/contador. Se restaura reusando la clase real
+  `.nr-cta__action` tal cual la usa `NextRaceCTA.jsx` hoy (mismo pulso,
+  mismo estilo), al lado del chip "QUALIFYING".
+- Aclarado que, en producción, este botón se ve y se comporta igual con o
+  sin sesión iniciada: `computeRaceState` (helpers.js) solo depende de
+  cuánto falta para la carrera, no del usuario — sin cuenta, el único
+  cambio es que el click cae en `/login` en vez de ir directo a
+  predicciones (`ProtectedRoute.jsx`). No hace falta una variante
+  separada del banner para ese caso.
+- **Reportado**: no quedaba claro por qué "GRAN PREMIO DE AUSTRALIA"
+  estaba ahí (podía leerse como un título cualquiera, sin contexto de que
+  es la próxima carrera del calendario). Se suma una etiqueta chica
+  "PRÓXIMA CARRERA" arriba del título (`.gp-hero-proto__eyebrow`, propia
+  del prototipo — `NextRaceCTA.jsx` real no tiene título, así que no hay
+  nada que reusar acá).
+
+## 2026-11-07 · Laboratorio: banner probado con fotos de otros GPs (Brasil, Las Vegas, Qatar, Yas Marina)
+
+- **Pedido**: ver cómo se ve el banner con foto con GPs reales además de
+  Australia. `GpHeroPrototype.jsx` pasa a recibir una prop `gp` (foto,
+  bandera, país, fecha, título — default = Australia, los valores que
+  antes estaban hardcodeados) en vez de tener todo fijo, y
+  `PrototypesSection.jsx` suma un bloque nuevo con las 4 fotos
+  (`front/src/lab/assets/brasil.jpg`, `lasvegas.jpg`, `qatar.jpg`,
+  `yasmarina.jpg`) sobre los mismos datos mock de horarios.
+- Las fotos originales (Qatar en `.avif`, Brasil primero en `.jpg`, luego
+  reemplazada por un `.png` pedido aparte) no eran servibles/uniformes tal
+  cual — no hay ImageMagick ni Python con Pillow instalados en esta
+  máquina para convertir. Se convirtieron dibujándolas en un `<canvas>`
+  desde el propio navegador (Chrome decodifica avif/png nativo) y
+  exportando con `toBlob("image/jpeg")`. Las Vegas y Yas Marina ya eran
+  JPEG reales pese a alguna extensión `.jpeg`, solo se normalizó la
+  extensión a `.jpg`.
+- Degradado de legibilidad probado contra encuadres bien distintos
+  (circuito callejero nocturno de Las Vegas, atardecer de Qatar, cielo
+  nublado de Brasil, noche cerrada en Yas Marina) — el contraste del
+  título se sostiene en los cuatro casos sin ajustes adicionales al
+  overlay existente.
+
+## 2026-11-06 · Laboratorio: desplegable de desktop centrado en vez de anclado a un borde
+
+- El ensanche a 340px del desplegable (entrada anterior) había quedado
+  anclado al borde derecho del contador (`right: 0`) — todo el sobrante
+  de ancho asomaba solo para la izquierda y se veía desalineado/corrido
+  respecto al botón (reportado con captura). Se centra en cambio
+  (`left: 50%` + `transform: translateX(-50%)`, mismo truco que se usó
+  antes para el botón circular): sobresale parejo de los dos lados, se
+  lee como un flyout a propósito en vez de un error de posicionamiento.
+
+## 2026-11-06 · Laboratorio: la solapa de horarios pasa a reusar el markup real del calendario
+
+- **Pedido**: "le faltan datos, hacerlo igual al del calendario" — la
+  solapa (desplegable de desktop y bandeja de mobile) mostraba una
+  versión simplificada de cada sesión (solo nombre + "VIE 06 · 12:30" en
+  texto plano), sin el día/número grande, el ícono de reloj, la pill de
+  duración ni la marca de sesión finalizada que sí tiene el calendario
+  real (`CalendarCard.jsx`). Se reemplazó el markup propio
+  (`.gp-hero-proto__sched-*`) por las clases reales de `calendar.css`
+  (`.cal-zone`, `.cal-card__group*`, `.cal-session*`) tal cual —
+  mismo patrón ya aplicado antes a la barra de info/contador (pixel-igual
+  al real en vez de una aproximación). El toggle de zona horaria también
+  pasa de clases propias a `.cal-zone` real.
+- El desplegable de desktop, antes atado al ancho angosto del contador
+  (~270-290px), se agrandó a 340px fijo (anclado al borde derecho, no al
+  izquierdo) porque la grilla de 4 columnas de `.cal-session` no entraba
+  en ese ancho y todo se amontonaba/cortaba. La bandeja de mobile no
+  necesitó el ajuste: ya usa el ancho completo de pantalla.
+- `MOCK_SCHEDULE` suma `isPast` (solo en Práctica 1, de muestra) para
+  mostrar la marca de sesión finalizada — en la implementación real sale
+  de comparar la fecha contra ahora, como ya hace `CalendarCard.jsx`.
+
+## 2026-11-06 · Laboratorio: botón de horarios en vidrio translúcido + texto
+
+- La barra ancho-contador del botón de horarios se veía "muy pleno" de
+  celeste sólido, y con solo el ícono quedaba como un botón grande vacío.
+  Se cambió a vidrio translúcido (fondo blanco a baja opacidad + blur,
+  borde sutil) en vez del color de acento sólido — mismo lenguaje visual
+  que el resto de la barra, flotando sobre la foto — y se le sumó el
+  texto "Horarios" al lado del ícono, en mayúsculas como el resto de los
+  textos cortos del banner (ej. QUALIFYING).
+
+## 2026-11-06 · Laboratorio: horarios en bandeja mobile + botón de calendario en barra
+
+- **Pedido**: que en mobile los horarios se abran en la misma "bandeja"
+  (bottom-sheet) que ya usa el resto del sitio (comparación de
+  predicciones, historial), no en el desplegable angosto pegado al botón.
+  `GpHeroPrototype.jsx` ahora detecta mobile (`<768px`, mismo corte que ya
+  usa el resto del prototipo) y en ese caso reusa el cascarón real
+  completo: overlay + tirador + `.gp-compare-drawer*` de
+  `predictionHistory.css`, las animaciones `--css`/`@keyframes` de
+  `components.css`, y los hooks `useModalPhase`/`useEscapeKey` — mismo
+  patrón (incluido el gesto de arrastrar para cerrar) que
+  `FloatingPredictionCompare.jsx`. El contenido de horarios (mock) se
+  extrajo a una sola variable (`scheduleBody`) para no duplicarlo entre el
+  desplegable de desktop y la bandeja de mobile. En desktop no cambia
+  nada: sigue el desplegable angosto pegado al contador.
+- **Pedido aparte**: el botón de calendario (círculo) se veía descentrado
+  en algunas resoluciones — el contador real no es perfectamente simétrico
+  en todos los anchos. Se cambió de círculo a una barra del mismo ancho
+  que el contador (mismo radio que sus cajas, 8px), que de paso gana área
+  de toque en mobile. Se mantiene en desktop también (desplegable sigue
+  igual, solo cambia la forma del botón que lo abre/cierra).
+
+## 2026-11-06 · Laboratorio: hueco entre breakpoints donde la fecha chocaba con el contador
+
+- Reportado con captura en una resolución intermedia (~700-800px, tablet):
+  el arreglo anterior (fecha oculta + contador angosto) cortaba en
+  `max-width: 600px`, pero el `.nr-cta` real recién agranda el contador y
+  la fecha en su propio breakpoint de `min-width: 768px` — quedaba un
+  hueco entre 600 y 768px donde la fecha ya estaba en tamaño grande
+  chocando con el contador. Se extendió el breakpoint propio a
+  `max-width: 767px` para que empalme exacto con el de producción, sin
+  hueco. Verificado en 700px, 767px (fecha oculta, contador chico) y
+  768px (fecha visible, contador grande de producción, ya con espacio de
+  sobra) — transición limpia en el límite exacto.
+
+## 2026-11-06 · Laboratorio: se descarta el apilado, contador angosto + fecha oculta en mobile
+
+- El apilado de la entrada anterior (info arriba, contador abajo) ocupaba
+  demasiado alto en mobile — el usuario lo probó y no le gustó. Se
+  reemplaza por una solución que mantiene todo en una sola fila: se oculta
+  la fecha (`06–08 NOVIEMBRE`, dato secundario — el contexto de "próxima
+  carrera" ya está implícito) y se achican las cajas del contador (de 42px
+  a 32px de ancho, menos gap, fuente más chica) para liberarle espacio a
+  la info. Solo bandera + nombre de país quedan visibles en esa fila.
+  Scopeado a `.gp-hero-proto__topbar` para no tocar `.nr-cta` real.
+
+## 2026-11-06 · Laboratorio: la barra de info se apila en mobile angosto (descartado, ver entrada de arriba)
+
+- Con un nombre de país largo (ej. "AUSTRALIA" + fecha), en mobile angosto
+  la info y el contador competían por el mismo renglón y la fecha se
+  cortaba en dos líneas. Se agregó un breakpoint (`max-width: 600px`,
+  scopeado a `.gp-hero-proto__topbar .nr-cta__container` para no tocar el
+  `.nr-cta` real) que apila la barra: info arriba a todo el ancho (nunca
+  le falta espacio), contador centrado abajo — mismo patrón de "contexto
+  arriba, número grande abajo" que ya se usa en otras partes del sitio en
+  mobile. Verificado simulando un ancho real de celular (sin la columna
+  angosta que le roba espacio el propio panel del laboratorio).
+
+## 2026-11-06 · Laboratorio: pulso en el botón de horarios para que se note que es clickeable
+
+- El botón de horarios (ícono de calendario) no se distinguía como botón
+  sobre la foto — se pidió una técnica para llamar la atención. Se reusó
+  la misma animación de pulso que ya tiene `.nr-cta__action` ("Predecir
+  ahora" en el banner real, `@keyframes cta-pulse` de `globals.css`) en
+  vez de crear una nueva, más el color de acento (`--color-accent`) en
+  vez del navy oscuro que se mimetizaba con las cajas del contador. El
+  pulso se pausa mientras el desplegable está abierto (el ícono de flecha
+  arriba ya indica el estado).
+
+## 2026-11-06 · Laboratorio: barra de datos transparente sobre la foto + ícono del desplegable
+
+- Ajustes pedidos tras ver el prototipo del banner de GP con foto
+  (`front/src/lab/sections/GpHeroPrototype.jsx`, pestaña "Prototipos" del
+  laboratorio — sigue sin tocar producción):
+  - La barra con bandera/país/fecha y la pastilla de sesión, más el
+    contador, pasan de estar centrados abajo a ir **transparentes arriba**
+    de la foto — mismo contenido y orden que ya usa `NextRaceCTA.jsx` hoy
+    (`.nr-cta__info` a la izquierda, `.nr-cta__countdown` a la derecha),
+    sin fondo sólido azul. El título grande y el botón "Ver circuito"
+    siguen abajo, centrados.
+  - El ícono del botón de horarios deja de ser una flecha sola (no decía
+    qué información iba a mostrar) — ahora es un ícono de calendario
+    (`bi-calendar-week`), que cambia a flecha hacia arriba cuando está
+    abierto (señal de "cerrar").
+- **Ajuste de fidelidad visual**: la barra transparente (info + contador)
+  pasó de ser una aproximación hecha a mano (clases propias del prototipo,
+  `gp-hero-proto__info`/`__top`/`__round`/etc.) a **reusar literalmente las
+  clases reales** de `NextRaceCTA.jsx` (`.nr-cta__container`,
+  `.nr-cta__info`, `.nr-cta__country`, `.nr-cta__round--qualy`,
+  `.nr-cta__countdown`, `.nr-cta__time`, todas de `globals.css`, ahora
+  importado en el prototipo). Así queda pixel-igual a la barra que corre
+  hoy en producción, no una aproximación — el usuario pidió exactamente
+  esto tras comparar una captura del prototipo contra una de la web
+  real. El único CSS propio del prototipo para esta barra es
+  `.gp-hero-proto__topbar`, que solo la posiciona flotando sobre la foto
+  (con el mismo padding que usa `.nr-cta` real) — al no usar la clase
+  `.nr-cta` en sí (que trae el fondo celeste sólido), queda transparente
+  sin necesidad de ninguna otra regla.
+- **Dos bugs reales encontrados al reusar las clases reales** (no solo
+  cosméticos, el usuario los marcó probándolo en el navegador):
+  - El botón de horarios, solapado al borde inferior del contador, pasaba
+    a chocar con el subrayado de "AUSTRALIA" — al usar `.nr-cta__container`
+    real (`align-items:center`), el contador y la info quedan con la
+    altura casi igualada, así que su borde inferior coincide con el
+    subrayado. Se separaron: el botón y el panel ahora van *debajo* del
+    contador con un margen, no solapados sobre su propio borde.
+  - El panel de horarios no se ocultaba del todo (quedaba un renglón
+    asomando siempre). Causa: el truco `grid-template-rows: 0fr → 1fr`
+    (que sí funcionaba en la versión anterior) dejaba de colapsar a 0 acá
+    — confirmado con el inspector, Chromium lo resolvía en `28px` en vez
+    de `0px` cuando el contador no tiene una altura explícita propia.
+    Se cambió a una animación por `max-height` (menos prolija en la
+    duración exacta de la transición, pero confiable).
+- **Nota de proceso**: a partir de este punto, los cambios en este tramo
+  (banner con foto) se commitean en la rama `leandro` pero **no se pushean
+  a GitHub** hasta que el usuario pida subir todo junto — pidió trabajar
+  puramente en local mientras se termina de iterar el diseño.
+
+## 2026-11-04 · Nueva regla: rediseños visuales grandes primero en el laboratorio
+
+- Se revirtió de producción el botón de horarios desplegables del banner de
+  Home (commit `05e34e0`, agregado el 2026-11-03) — se había subido a
+  `main` sin pasar primero por el laboratorio, y el usuario pidió sacarlo
+  de producción. El código no se perdió (sigue en el historial de git),
+  pero el banner de Home vuelve a su versión anterior.
+- **Regla nueva** (acordada con el usuario, sumada también a
+  `rules/estructura.md`): los rediseños visuales grandes o con riesgo de
+  layout (no los fixes/ajustes chicos de todos los días) se prototipan
+  primero en el laboratorio (`front/lab.html`, pestaña nueva
+  "Prototipos" — ver abajo) y recién se deciden/suben a producción una vez
+  aprobados.
+- Primer uso de esa pestaña: prototipo del banner de próxima carrera con
+  foto de fondo por Gran Premio (reemplazaría a `NextRaceCTA.jsx`), con
+  datos mock y una foto de muestra (`src/lab/assets/australia.jpg`). Incluye
+  el botón de horarios desplegables reintegrado ahí, con datos mock —
+  mismo mecanismo que se había revertido de producción, pero ahora vive
+  solo en el laboratorio hasta que se apruebe el diseño completo.
+- **Bug de layout encontrado y corregido durante el prototipado** (anotado
+  para no repetirlo si se arma algo parecido en el diseño real): poner
+  `overflow: hidden` en el contenedor que también tiene el botón solapado
+  de horarios rompe el área de click del botón (el centro del botón queda
+  justo en el borde del recorte). Y si la foto de fondo (`inset: 0`) vive
+  en el mismo contenedor que crece al abrir el panel de horarios, la foto
+  se estira para cubrir también el panel. Solución: la foto/overlay/título
+  van en un sub-contenedor de altura fija, separado del panel de horarios
+  (que sigue en flujo normal, afuera); el recorte de esquinas redondeadas
+  va en las capas de fondo, no en el contenedor que tiene el botón
+  solapado.
+- **Ajuste pedido tras ver el prototipo**: el desplegable de horarios no
+  va más a todo el ancho del banner — ahora abre pegado al contador
+  numérico, con su mismo ancho (`left:0; right:0` relativo al contenedor
+  del contador, que ya estaba `position:absolute` y queda de ancla).
+  Flota como un dropdown sobre la foto (no empuja el layout del banner),
+  con filas compactas (nombre + día/hora en una sola columna angosta) en
+  vez de las filas anchas del calendario, que no entraban en ese ancho.
+
 ## 2026-11-03 · Fix: tocar una notificación push ahora abre la app
 
 - **Causa**: el backend (`back/services/fcm.services.js`) mandaba la ruta
@@ -424,6 +1439,8 @@ Orden cronológico inverso (lo más nuevo arriba).
   admin, se manda de una sola vez). Se priorizan 4 "quick wins" de
   impacto alto y esfuerzo bajo. Ver `rules/seo.md` para el detalle y el
   checklist. No se modificó código en esta pasada, solo se documentó.
+
+
 
 ## 2026-10-20 · Historial mobile: banda con el nombre del usuario en historial ajeno
 

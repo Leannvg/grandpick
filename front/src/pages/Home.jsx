@@ -46,48 +46,6 @@ const Home = () => {
     return (
         <div className="home-page page-wrapper">
             <>
-                <section className="home-hero">
-                    {/* Imagen de fondo */}
-                    <picture className="hero-bg">
-                        <source srcSet={getImageUrl("hero-desktop.png")} media="(min-width: 992px)" />
-                        <source srcSet={getImageUrl("hero-tablet.png")} media="(min-width: 576px)" />
-                        <img
-                            src={getImageUrl("hero-mobile.png")}
-                            alt="Circuito de Fórmula 1"
-                            loading="eager"
-                        />
-                    </picture>
-
-                    {/* Overlay */}
-                    <div className="hero-overlay"></div>
-
-                    {/* Contenido */}
-                    <div className="home-hero__content">
-                        <div className="container">
-                            <p className="home-hero__eyebrow">UN JUEGO DE PREDICCIÓN PARA LA F1</p>
-                            <h1 className="home-hero__title">CONVERTÍ TU PASIÓN EN PUNTOS.</h1>
-                        </div>
-                    </div>
-
-                    <Link to="/predictions" className="cta-predictions">
-                        <div className="container">
-                            <div className="d-flex align-items-center">
-                                {/* Texto alineado al borde del contenedor */}
-                                <div className="cta-content-wrapper">
-                                    <span className="cta-content">
-                                        <span className="cta-timer">
-                                            Predecí tus próximos resultados
-                                        </span>
-                                    </span>
-                                </div>
-
-                                {/* Flechas interiores: del fin del texto al borde del contenedor */}
-                                <span className="cta-arrows cta-arrows--end"></span>
-                            </div>
-                        </div>
-                    </Link>
-                </section>
-
                 <InstallAppBanner />
 
                 <Reveal as="section" className="how-it-works">

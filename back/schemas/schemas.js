@@ -139,6 +139,10 @@ export const circuitSchema = yup.object({
   img: yup
     .string()
     .required("La imagen es requerida"),
+  banner_img: yup
+    .string()
+    .nullable()
+    .optional(),
 }).noUnknown();
 
 

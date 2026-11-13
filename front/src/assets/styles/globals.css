@@ -83,12 +83,34 @@ body {
   /* Agregado para contener el loader */
 }
 
-.main-content.home-content {
+/* Pedido: "apliquemos los cambios de la pantalla de predicciones a
+   producción" — Predicciones pasa a tener el mismo hero con foto de fondo
+   que Home (GpHeroBanner variant="predictions", ver App.jsx), así que
+   necesita el mismo reset de margen (el banner queda pegado al nav, sin
+   el gap de 40px que separaba a NextRaceCTA del resto). Renombrada de
+   .home-content a .hero-banner-content porque ya no es exclusiva de Home. */
+.main-content.hero-banner-content {
   margin: 0px;
+  /* Pedido: "en desktop aparece ese fragmento horizontal del background
+     celeste abajo, en mobile no aparece eso" — .main-content es flex:1 (de
+     siempre, para empujar el footer abajo en páginas cortas) y no pinta
+     fondo propio; cuando el contenido de abajo es chico (ej. Predicciones
+     en pre-ventana, sin cards) el flex-grow lo estira para llenar el alto
+     de la ventana, y ese hueco deja ver el gradiente celeste del body. Un
+     primer intento le puso fondo oscuro al hueco (mismo azul del degradé
+     de fallback del banner) para que no se note — pero seguía marcándose
+     una línea contra el gris del footer (dos oscuros distintos, no es lo
+     mismo que "invisible"). Fix real: sacarle el flex-grow a esta clase
+     nomás (el resto del sitio lo sigue usando igual, para el efecto de
+     sticky footer) — así el hueco no existe, en vez de taparlo con un
+     color. El footer ya no queda pegado abajo de la ventana en páginas
+     cortas con este banner (ej. predicciones en pre-ventana), pero eso es
+     más correcto que una franja de relleno. */
+  flex-grow: 0;
 }
 
 @media (max-width: 991px) {
-  .main-content:not(.home-content) {
+  .main-content:not(.hero-banner-content) {
     margin: 15px 0px;
   }
 }

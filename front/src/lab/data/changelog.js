@@ -15,6 +15,30 @@ export const DESIGN_CHANGELOG = [
       "Standings usa ahora UserPodium: pilotos con su foto de fondo, país arriba a la derecha y abajo isologo de la escudería · nombre · puntos; constructores con el color de la escudería y su logo grande. Mismo confeti y brillo que el podio de usuarios. El componente Podium viejo ya no se usa en ninguna pantalla.",
   },
   {
+    date: "2026-11-09",
+    title: "Banner: franja debajo (desktop) y foto con más calidad",
+    summary:
+      "En desktop, páginas con poco contenido debajo del banner (ej. Predicciones en pre-ventana) dejaban un hueco vacío antes del footer (el flex-grow de .main-content estirándose sin contenido); no pasaba en mobile. Un primer intento le puso fondo oscuro al hueco, pero seguía marcándose una línea contra el footer — el fix real le saca el flex-grow a esta clase, así el hueco no existe más. De paso, la foto del banner pasa de 1600px/calidad \"good\" fija a 2200px (900px en mobile) + calidad \"best\" — se veía más comprimida que en el laboratorio.",
+  },
+  {
+    date: "2026-11-09",
+    title: "Predicciones: cartel de pre-ventana sube al banner, sin contador",
+    summary:
+      "El cartel \"Las predicciones se habilitarán en...\" vivía aparte, en una caja por debajo del banner (reportado en producción). Ahora es un cartel fijo (sin contador en vivo) dentro del banner, junto al título: \"se habilitarán 24 hs antes de su inicio\" + aviso de que se manda una notificación push cuando se abren.",
+  },
+  {
+    date: "2026-11-08",
+    title: "Predicciones: banner con foto de fondo (antes solo Home)",
+    summary:
+      "GpHeroBanner (el banner con foto + countdown que ya estaba en Home) pasa también a la pantalla de Predicciones, reemplazando el header de texto plano que tenía (país/título/fecha/tag + contador + estado de la predicción). Mismo topbar/foto que Home, contenido propio: título + countdown \"tiempo restante para predecir\" + banner de estado (guardada/falta predecir), diseño validado antes en el laboratorio.",
+  },
+  {
+    date: "2026-11-07",
+    title: "Home: se saca el banner viejo, duplicado con el nuevo de próxima carrera",
+    summary:
+      "Al subir GpHeroBanner (foto por GP + CTA \"Predecir ahora\") a Home, quedó debajo el hero genérico de siempre (fondo fijo + \"Predecí tus próximos resultados\" con flechas animadas) — mismo mensaje, dos banners seguidos. Se borra el viejo (.home-hero y su CSS en home.css) — Home arranca directo con GpHeroBanner.",
+  },
+  {
     date: "2026-11-03",
     title: "Podio de usuarios: tag de país arriba y foto + nombre + puntos abajo",
     summary:

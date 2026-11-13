@@ -1,0 +1,673 @@
+/* Prototipo "banner con foto por GP" — SOLO laboratorio, no es CSS de
+   producción. Prefijo gp-hero-proto para no chocar con nada real.
+   Reusa .cal-* (calendar.css) para las filas de horarios, y los mismos
+   tokens de color que ya existen (--color-accent, --cal-panel, --cal-ease). */
+
+/* .gp-hero-proto = wrapper externo (solo agrupa hero + panel de horarios).
+   .gp-hero-proto__hero = la parte con la foto, altura fija (min-height),
+   separada del panel de horarios a propósito: si el fondo (inset:0) viviera
+   en el mismo contenedor que crece al abrir el panel, la foto se estira
+   para cubrir también el panel (confirmado probándolo). */
+.gp-hero-proto__hero {
+  /* ojo: overflow NO va acá (aunque las esquinas redondeadas lo pidan) —
+     el botón solapado de horarios sobresale del borde inferior y necesita
+     poder recibir clicks ahí; con overflow:hidden en este contenedor el
+     centro del botón queda justo en el borde de recorte y el hit-test le
+     falla (confirmado probando en el laboratorio). El recorte/redondeo va
+     en las capas de fondo (bg/overlay) en vez de acá.
+     600px + contenido centrado (antes 460px + flex-end, pegado abajo):
+     ya se había probado y aprobado este cambio para el componente real
+     (gpHeroBanner.css) pero había quedado sin portar acá — hecho ahora
+     para que el laboratorio no se desincronice de lo que ya está en
+     producción (se notó al superponerse la franja nueva de abajo con el
+     banner de estado, que con el viejo 460px/flex-end quedaba pegado
+     justo al borde inferior). */
+  position: relative;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+}
+
+.gp-hero-proto__bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.gp-hero-proto__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+}
+
+.gp-hero-proto__hero.gp-hero-proto--fallback .gp-hero-proto__bg {
+  background: linear-gradient(135deg, var(--color-accent, #3975A2), var(--color-dark-blue, #081D2B));
+}
+
+.gp-hero-proto__overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, rgba(5, 15, 25, .35) 0%, rgba(5, 15, 25, .55) 45%, rgba(5, 15, 25, .88) 100%);
+}
+
+/* Pedido: "¿es posible agregar un efecto de lluvia al banner?" — capa
+   propia (z-index:1, encima de foto+degradado, debajo del topbar z-index:3
+   y del contenido), pointer-events:none para no tapar los clicks del
+   botón de horarios/CTA que están por debajo en el DOM.
+   Pedido después: "se ve medio mal, no parece lluvia natural" — un
+   repeating-linear-gradient es, por definición, perfectamente regular, no
+   hay forma de que lea como orgánico. Se cambia a gotas individuales
+   dispersas al azar.
+   Pedido después: "se nota cuando un grupo de gotas se corta y
+   desaparece" — cada gota se dibuja DOS veces apiladas en el JSX (mismo
+   x/tamaño/opacidad/timing, offset por RAIN_TILE_HEIGHT) y el translateY
+   de su animación recorre EXACTAMENTE esa misma distancia — así, en el
+   instante del reinicio del loop de ESA gota, la segunda copia ya está
+   donde estaba la primera, y el corte queda invisible (truco estándar de
+   "tiling" para loops continuos).
+   Pedido después: "¿podemos hacer que caigan de manera aleatoria
+   infinitamente? se nota que se reacomodan siempre al mismo lugar" — un
+   primer intento agrupaba las gotas en 4 "capas" compartiendo timing (una
+   sola animación por capa, vía N copias de box-shadow en un elemento) —
+   más liviano, pero cada capa entera volvía a su patrón idéntico cada
+   ciclo (1.1-2.3s, perceptible). Ahora cada gota es su PROPIO elemento con
+   su PROPIO timing al azar (ver buildRainDrops en GpHeroPrototype.jsx) —
+   una sola clase genérica acá, todo lo que varía por gota (posición,
+   tamaño, opacidad, blur, duración, delay, deriva) lo pone el inline
+   style. Más elementos en el DOM, pero sigue siendo liviano (spans
+   simples animados con transform). */
+.gp-hero-proto__weather {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.gp-hero-proto__rain-drop {
+  position: absolute;
+  animation-name: gp-hero-rain-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  /* left/top/width/height/background: los pone el inline style por gota
+     (ver GpHeroPrototype.jsx) — acá solo lo compartido por todas. */
+}
+
+/* La distancia vertical (700px) es RAIN_TILE_HEIGHT — tiene que coincidir
+   exacto con el valor de GpHeroPrototype.jsx para que el loop no se
+   note. La deriva horizontal (--rain-drift) es distinta por gota (inline
+   style), para que tampoco todas deriven hacia el mismo lado al mismo
+   ritmo. */
+@keyframes gp-hero-rain-fall {
+  from { transform: translate(0, 0); }
+  to { transform: translate(var(--rain-drift, -30px), 700px); }
+}
+
+/* Pedido: "probemos una tormenta" — mismo contenedor que la lluvia
+   (gp-hero-proto__weather, ya recortado con overflow:hidden + el mismo
+   border-radius que la foto), le suma relámpagos: un flash breve de luz
+   fría sobre toda la escena. mix-blend-mode:screen en vez de opacity sola
+   para que el flash aclare lo que hay debajo (foto + degradado + lluvia)
+   en vez de taparlo con un blanco plano.
+   2 capas independientes (duración/delay al azar, ver buildLightningLayers
+   en GpHeroPrototype.jsx) — misma lección que con la lluvia: una sola
+   capa periódica se notaría repetir. Acá no hace falta la "tiling trick"
+   de la lluvia (dibujar 2 copias apiladas): el keyframe ya arranca y
+   termina en opacity:0, así que el reinicio del loop ya es invisible por
+   sí solo (0 a 0, no hay salto que disimular). Cada keyframe tiene 2-3
+   destellos cortos en puntos sin relación simple dentro de su propio
+   ciclo (no un único parpadeo parejo) — un relámpago real no es un flash
+   limpio, suele tener un "rebote" chico después del principal. */
+.gp-hero-proto__lightning {
+  position: absolute;
+  inset: 0;
+  background: rgba(210, 225, 255, .95);
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes gp-hero-lightning-1 {
+  0%, 100% { opacity: 0; }
+  41% { opacity: 0; }
+  42.5% { opacity: .85; }
+  43.5% { opacity: .1; }
+  45% { opacity: .55; }
+  47% { opacity: 0; }
+  83% { opacity: 0; }
+  84% { opacity: .5; }
+  85.5% { opacity: 0; }
+}
+
+@keyframes gp-hero-lightning-2 {
+  0%, 100% { opacity: 0; }
+  17% { opacity: 0; }
+  18% { opacity: .7; }
+  19.5% { opacity: .05; }
+  21% { opacity: .4; }
+  23% { opacity: 0; }
+  67% { opacity: 0; }
+  68% { opacity: .9; }
+  69.2% { opacity: .15; }
+  70.5% { opacity: .45; }
+  72% { opacity: 0; }
+}
+
+/* Pedido: "pasemos a los demás efectos de clima" (nublado, sol, noche
+   calurosa). A diferencia de la lluvia/relámpagos, ninguno de estos tres
+   necesita la "tiling trick" ni capas separadas con cuidado: todos usan
+   animation-direction:alternate (oscilan entre dos valores y vuelven) en
+   vez de viajar en una dirección y reiniciar de golpe — sin reinicio
+   brusco, no hay corte que disimular. Ver comentario largo junto a
+   buildCloudBlobs en GpHeroPrototype.jsx. */
+
+/* --- Nublado --- */
+.gp-hero-proto__cloud-tint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(70, 80, 92, .4), rgba(45, 52, 61, .5));
+  mix-blend-mode: multiply;
+}
+
+.gp-hero-proto__cloud-blob {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(15, 22, 30, .9) 0%, rgba(15, 22, 30, 0) 70%);
+  animation-name: gp-hero-cloud-drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes gp-hero-cloud-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(var(--cloud-drift, 80px)); }
+}
+
+/* --- Sol --- */
+.gp-hero-proto__sun-tint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(255, 200, 120, .25), rgba(255, 140, 60, .08) 55%, transparent 100%);
+  mix-blend-mode: soft-light;
+}
+
+/* Pedido: "arruina la foto de fondo con ese flash raro" — sin
+   mix-blend-mode, el radial-gradient pintaba un disco casi opaco (.9 en
+   el centro) literalmente ENCIMA de la foto, como un parche, en vez de
+   iluminarla. screen (como "sumar luz", igual que el flash de los
+   relámpagos) deja que lo que hay debajo se siga viendo y solo lo
+   aclara — más blur y menos opacidad en el centro para que difumine en
+   vez de tener un borde duro tipo flash. */
+.gp-hero-proto__sun-glow {
+  position: absolute;
+  top: -18%;
+  right: -12%;
+  width: 56%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 244, 214, .55) 0%, rgba(255, 221, 140, .22) 40%, rgba(255, 200, 100, 0) 72%);
+  mix-blend-mode: screen;
+  filter: blur(18px);
+  animation: gp-hero-sun-breathe 6.5s ease-in-out infinite alternate;
+}
+
+@keyframes gp-hero-sun-breathe {
+  from { transform: scale(.95); opacity: .65; }
+  to { transform: scale(1.05); opacity: 1; }
+}
+
+/* --- Noche calurosa --- */
+.gp-hero-proto__night-tint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 15, 40, .55), rgba(20, 10, 35, .65));
+  mix-blend-mode: multiply;
+}
+
+.gp-hero-proto__heat-haze {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 0;
+  height: 40%;
+  background: radial-gradient(ellipse at center bottom, rgba(255, 140, 60, .2), transparent 70%);
+  filter: blur(6px);
+  animation: gp-hero-heat-breathe 4s ease-in-out infinite alternate;
+}
+
+@keyframes gp-hero-heat-breathe {
+  from { opacity: .5; transform: scaleY(.92); }
+  to { opacity: 1; transform: scaleY(1.05); }
+}
+
+.gp-hero-proto__star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation-name: gp-hero-star-twinkle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes gp-hero-star-twinkle {
+  from { opacity: var(--star-min, .15); }
+  to { opacity: var(--star-max, .9); }
+}
+
+.gp-hero-proto__content {
+  /* Padding simétrico (antes 28px/64px, pensado para contenido pegado
+     abajo) — igual que gpHeroBanner.css: con justify-content:center en
+     .gp-hero-proto__hero, un padding parejo es lo que lee como centrado
+     de verdad.
+     Pedido: "las letras quedan como por detrás del efecto" — bug real de
+     stacking: position:relative sin z-index propio queda en el nivel
+     "auto" del orden de apilado, que pinta ANTES (más atrás) que
+     .gp-hero-proto__weather (z-index:1 explícito) aunque .content esté
+     después en el DOM — un z-index explícito, aunque sea bajo, siempre
+     gana contra "auto". Con lluvia/relámpagos no se notaba (gotas finas,
+     relámpago raro) pero con los tintes de pantalla completa (nublado/
+     sol/noche) quedaban pintados ENCIMA del título. z-index:2 deja
+     clima(1) < contenido(2) < topbar(3), siempre detrás del texto. */
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Barra transparente arriba de la foto: literalmente el mismo markup/clases
+   que NextRaceCTA.jsx usa hoy (.nr-cta__container > .nr-cta__info +
+   .nr-cta__countdown, de globals.css) — por eso no hay reglas propias para
+   la info/el contador/la pastilla acá, vienen todas de globals.css. Lo
+   único que agrega este bloque es la posición (flotando sobre la foto) y
+   el padding, copiado del `.nr-cta` real (que no se puede usar tal cual
+   porque trae background sólido). */
+/* Ancho/centrado real vía la clase .container (Bootstrap, la misma que
+   usa Nav.jsx/NextRaceCTA.jsx — ver nr-cta__container.container en el
+   JSX), no un padding en px propio — igual que se sincronizó en
+   gpHeroBanner.css (producción): sin esto la barra se corría más angosta
+   que el resto del sitio en pantallas anchas. */
+.gp-hero-proto__topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding: 6px 2px;
+}
+
+.gp-hero-proto__eyebrow {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .75);
+}
+
+.gp-hero-proto__title {
+  font-size: 2.6rem;
+  line-height: .95;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -.5px;
+  margin: 6px 0 14px;
+  max-width: 680px;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .4);
+}
+
+/* Pedido: un solo CTA dominante en vez de 3 botones compitiendo — este
+   wrapper solo agrupa el botón grande ("Predecir ahora", .gp-hero-proto__cta
+   sin cambios) con el link chico de abajo ("Ver circuito",
+   .gp-hero-proto__secondary-link, nuevo). */
+.gp-hero-proto__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.gp-hero-proto__secondary-link {
+  color: rgba(255, 255, 255, .75);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255, 255, 255, .4);
+  transition: color .2s ease, text-decoration-color .2s ease;
+}
+
+.gp-hero-proto__secondary-link:hover {
+  color: #fff;
+  text-decoration-color: #fff;
+}
+
+.gp-hero-proto__cta {
+  background: #fff;
+  color: #0b2a3d;
+  font-weight: 700;
+  font-size: .85rem;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 11px 26px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform .2s ease, background-color .2s ease;
+}
+
+.gp-hero-proto__cta:hover {
+  background: var(--color-accent, #3975A2);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Pedido: durante la carrera no se puede predecir — mismo rojo/punto que
+   .nr-cta__session-tag + .live-indicator reales (globals.css) para que se
+   lea como el mismo estado "en vivo" en todo el banner, pero en el tamaño
+   del CTA principal. No clickeable a propósito (no es un link, es un
+   <span>): no hay ninguna acción real que ofrecer acá mientras la sesión
+   está en curso. */
+.gp-hero-proto__cta--live {
+  background: rgba(255, 59, 48, .15);
+  color: #fff;
+  border: 1px solid rgba(255, 59, 48, .5);
+  cursor: default;
+}
+
+.gp-hero-proto__cta--live:hover {
+  background: rgba(255, 59, 48, .15);
+  color: #fff;
+  transform: none;
+}
+
+/* El contador (.nr-cta__countdown, real) es también el ancla del
+   desplegable de horarios (botón + panel viven adentro, ver JSX) — recibe
+   position:relative por inline style en el JSX (no se toca globals.css),
+   así el panel toma exactamente el mismo ancho que el contador en vez de
+   desplegarse a todo el ancho del banner. */
+
+/* Botón + dropdown angosto, mismo ancho que el contador (ver comentario
+   arriba de .gp-hero-proto__countdown). Van DEBAJO del contador con un
+   gap chico, no solapados sobre su borde: al reusar .nr-cta__info /
+   .nr-cta__countdown reales (align-items:center en .nr-cta__container),
+   el borde inferior del contador queda casi a la misma altura que el
+   subrayado de "AUSTRALIA" — solaparse ahí chocaba con el subrayado
+   (reportado al probarlo). */
+/* Pedido: que se note que es un botón — reusa la misma animación de pulso
+   que ya usa .nr-cta__action ("Predecir ahora", @keyframes cta-pulse en
+   globals.css) en vez de inventar una nueva. Se pausa el pulso mientras
+   está abierto (el ícono de flecha arriba ya avisa).
+   Círculo centrado descartado (reportado que se veía descentrado — el
+   contador real no es perfectamente simétrico en todos los anchos, así
+   que centrar algo angosto encima quedaba inconsistente): ahora ocupa
+   todo el ancho del contador (left:0/right:0 en vez de left:50%+transform).
+   De paso gana área de toque.
+   Color de acento sólido descartado después (se veía "muy pleno" de
+   celeste, pidieron algo más liviano) — ahora vidrio translúcido (blanco
+   bajo opacidad + blur), mismo lenguaje visual que el resto del banner
+   flotando sobre la foto. Y en vez de solo el ícono perdido en el medio
+   de un botón grande, se le suma el texto "Horarios" al lado.
+   Pedido más tarde: "¿no deberíamos unificar el radio?" — tenía 8px (el
+   mismo que las cajas del contador, .nr-cta__time) mientras los otros dos
+   botones del banner son pastillas completas (999px). Pasa a 999px para
+   quedar en la misma familia. El hover también quedaba distinto (se
+   aclaraba el vidrio nomás, sin invertir color) — ahora invierte igual
+   que .nr-cta__action real (fondo blanco sólido + texto/ícono en color de
+   acento), la misma regla que ya usan los otros dos botones del banner. */
+.gp-hero-proto__schedule-toggle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  margin-top: 8px;
+  width: auto;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  background: rgba(255, 255, 255, .12);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+  z-index: 2;
+  transition: background-color .3s var(--cal-ease, ease), color .3s var(--cal-ease, ease), transform .3s var(--cal-ease, ease);
+  animation: cta-pulse 2s infinite ease-in-out;
+}
+
+.gp-hero-proto.is-open .gp-hero-proto__schedule-toggle {
+  animation-play-state: paused;
+}
+
+.gp-hero-proto__schedule-toggle:hover {
+  background: #fff;
+  color: var(--color-accent, #3975A2);
+  transform: scale(1.03);
+  animation-play-state: paused;
+}
+
+.gp-hero-proto__schedule-chevron {
+  font-size: 12px;
+}
+
+/* Animación por max-height, no grid-template-rows: con el contador real
+   (que no tiene una altura propia explícita) el truco 0fr/1fr no
+   colapsaba del todo — Chromium lo dejaba en ~28px en vez de 0 (confirmado
+   inspeccionando el computed style). max-height es menos elegante (la
+   duración de la transición no es exactamente proporcional al contenido
+   real) pero es confiable. */
+.gp-hero-proto__schedule-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Antes left:0/right:0 (mismo ancho que el contador, ~270-290px): al
+     sumar las filas reales (.cal-session, grid de 4 columnas con fecha +
+     nombre + hora + pill de duración) quedaba demasiado angosto y todo se
+     amontonaba/cortaba. Ancho fijo más cómodo (340px), centrado respecto
+     al contador/botón en vez de anclado a un borde: antes, anclado al
+     borde derecho, todo el sobrante asomaba solo para la izquierda y se
+     veía desalineado (reportado); centrado sobresale parejo de los dos
+     lados, se lee como un flyout a propósito. */
+  width: 340px;
+  max-width: calc(100vw - 40px);
+  margin-top: 44px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .4s var(--cal-ease, ease);
+  z-index: 1;
+}
+
+.gp-hero-proto.is-open .gp-hero-proto__schedule-dropdown {
+  max-height: 480px;
+}
+
+.gp-hero-proto__schedule-inner {
+  background: var(--cal-panel, #3f4a55);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+  text-align: left;
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Pedido: "hacerlo igual al del calendario" — se reusan las clases reales
+   de CalendarCard.jsx (.cal-zone, .cal-card__group*, .cal-session*, de
+   calendar.css) en vez de una aproximación propia (como ya se hizo con la
+   barra de info/contador). Acá no queda CSS propio para el contenido de
+   la solapa, solo el "cascarón" (.gp-hero-proto__schedule-inner para el
+   desplegable de desktop, .gp-hero-proto__drawer-title para la bandeja de
+   mobile) — ver más abajo y en GpHeroPrototype.jsx. */
+
+@media (max-width: 600px) {
+  .gp-hero-proto__title {
+    font-size: 1.9rem;
+  }
+}
+
+/* Primer intento (apilar info/contador) ocupaba demasiado alto en mobile
+   — se descartó. En su lugar: se achica el contador (menos ancho/gap por
+   caja) para liberarle espacio a la info, y se oculta la fecha
+   (06-08 NOVIEMBRE es secundario, "próxima carrera" ya da el contexto),
+   dejando solo bandera + nombre de país en una sola fila. Scopeado a
+   .gp-hero-proto__topbar para no tocar el .nr-cta real.
+   Hasta 767px (no 600px): el .nr-cta real agranda contador/fecha recién
+   en su propio breakpoint de min-width:768px — si acá cortábamos antes
+   (600px), quedaba un hueco donde la fecha ya estaba en tamaño grande
+   chocando con el contador (reportado con capturas en ~700px de ancho). */
+@media (max-width: 767px) {
+  .gp-hero-proto__topbar .nr-cta__date {
+    display: none;
+  }
+
+  .gp-hero-proto__topbar .nr-cta__countdown {
+    gap: 1px;
+  }
+
+  .gp-hero-proto__topbar .nr-cta__time {
+    width: 32px;
+    padding: 5px 2px;
+  }
+
+  .gp-hero-proto__topbar .nr-cta__time-value {
+    font-size: 14px;
+  }
+
+  .gp-hero-proto__topbar .nr-cta__time-label {
+    font-size: 8px;
+  }
+}
+
+/* Bandeja de horarios en mobile (bottom-sheet): pedido explícito de
+   reusar la misma bandeja que ya usa el resto del sitio (comparación de
+   predicciones, historial) en vez de un desplegable propio pegado al
+   botón. El cascarón (.history-drawer-overlay / .drawer-handle /
+   .gp-compare-drawer*) y las animaciones (.gp-drawer-overlay--css /
+   .gp-compare-drawer--css, con sus @keyframes) son 100% reusados de
+   predictionHistory.css / components.css — acá solo el título propio,
+   porque esta bandeja no tiene una GpCard (no es una comparación). */
+.gp-hero-proto__drawer-title {
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+/* Pedido: "probar en el laboratorio poner el banner en la pantalla de
+   predicción y darle un diseño más lucido" — variant="predictions" reusa
+   TODO lo de arriba (foto, topbar flotante, horarios) y solo cambia el
+   contenido de abajo por el de Predictions.jsx real, flotando sobre la
+   foto en vez del fondo sólido que tiene hoy esa página.
+   Pedido después: "información repetida" (país, fecha y chip de ronda se
+   veían acá Y en el topbar) — se sacaron del bloque de abajo (quedan solo
+   en el topbar, que ya los tenía). Por eso acá ya no queda CSS propia
+   para país/fecha/ronda — solo el countdown, que es lo único que sigue
+   siendo específico de esta pantalla (.prediction-status-banner/
+   .status-missing/.status-saved, de predictions.css, se reusan tal cual
+   sin CSS propia tampoco). */
+.gp-hero-proto__predict-countdown {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gp-hero-proto__predict-countdown .countdown-label {
+  margin-bottom: 8px;
+}
+
+/* Versión agrandada de .nr-cta__time (de globals.css, las cajas del
+   contador de la barra de arriba) — mismo lenguaje visual (vidrio +
+   borde), más grande porque acá es el protagonista del bloque en vez de
+   un detalle chico al costado. */
+.gp-hero-proto__predict-time {
+  display: flex;
+  gap: 10px;
+}
+
+.gp-hero-proto__predict-time .nr-cta__time {
+  width: auto;
+  min-width: 64px;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 10px;
+  padding: 10px 16px;
+}
+
+.gp-hero-proto__predict-time .nr-cta__time-value {
+  font-size: 1.8rem;
+  display: block;
+}
+
+.gp-hero-proto__predict-time .nr-cta__time-label {
+  font-size: .68rem;
+  letter-spacing: 1px;
+}
+
+/* Pedido: "¿sería mucho estirar la imagen por detrás de los 10 select?" —
+   no (ver comentario en PrototypesSection.jsx). En vez de eso, esta franja
+   continúa el mismo tono con el que termina el degradado del banner
+   (--color-dark-blue, el mismo token que usa el resto del sitio para
+   fondo oscuro — no un valor inventado), con un margen negativo que la
+   solapa un poco contra el borde inferior del banner + un degradado
+   propio arriba (de transparente al mismo tono) para que el corte entre
+   la foto y esta franja no se note, sin estirar la foto en sí. */
+.gp-hero-proto__predict-below {
+  /* Pedido: "quitaría un poco de espacio vacío entre el primer select y
+     la imagen" — el padding-top bajó de 110px a 50px (la franja de
+     degradado de arriba, .predict-below::before, se mantiene igual). */
+  position: relative;
+  margin-top: -90px;
+  padding: 50px 0 40px;
+  background: var(--color-dark-blue, #081D2B);
+}
+
+.gp-hero-proto__predict-below::before {
+  content: "";
+  position: absolute;
+  top: -90px;
+  left: 0;
+  right: 0;
+  height: 90px;
+  background: linear-gradient(to bottom, transparent, var(--color-dark-blue, #081D2B));
+}
+
+/* Aproximación visual del control real (SearchableSelect/react-select) en
+   su estado vacío — no es el componente real, el laboratorio no pega
+   contra la lista de pilotos. Mismos tokens de color que
+   .prediction-card .react-select__placeholder (de predictions.css). */
+.gp-hero-proto__predict-select-mock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 12px;
+  color: #999;
+  font-weight: 300;
+  font-size: 14px;
+}

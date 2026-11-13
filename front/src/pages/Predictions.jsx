@@ -3,14 +3,13 @@ import DriversServices from "../services/drivers.services";
 import RacesServices from "../services/races.services";
 import PredictionServices from "../services/predictions.services";
 import UsersServices from "../services/users.services.js";
-import * as countriesServices from "../services/countries.services.js";
 import SearchableSelect from "./../components/SearchableSelect.jsx";
 import CountdownToRace from "../components/countdown/CountdownToRace.jsx";
 import CountdownToOpen from "../components/countdown/CountdownToOpen.jsx";
 import { useAlert } from "./../context/AlertContext.jsx";
 import { useDialog } from "./../context/DialogContext.jsx";
 import { useLoader } from './../context/LoaderContext.jsx';
-import { computeRaceState, formatRaceDate } from "../utils/helpers.js";
+import { computeRaceState } from "../utils/helpers.js";
 import crystalBallIcon from "../assets/icons/crystal_ball.png";
 import { onSocketReady } from "../socket.js";
 import "../assets/styles/predictions.css";
@@ -18,6 +17,17 @@ import "../assets/styles/predictions.css";
 function Predictions() {
   const [drivers, setDrivers] = useState([]);
   const [race, setRace] = useState(null);
+  // Pedido: "al presionar rápido logré agarrar lo que aparece antes de
+  // aparecer el loader" — "race === null" por sí solo no distingue
+  // "todavía no se consultó" de "se consultó y no hay carrera" (los dos
+  // casos arrancan en null). showLoader() recién pone loading=true en un
+  // useEffect, DESPUÉS del primer render — en ese primer frame race sigue
+  // siendo null (su valor inicial) y loading todavía es false, así que el
+  // mensaje "No hay próximas carreras..." se ve un instante antes de que
+  // tape todo el loader. raceChecked solo pasa a true cuando fetchRace()
+  // ya resolvió (haya o no carrera), para esperar ese resultado real en
+  // vez de guiarse por el estado inicial.
+  const [raceChecked, setRaceChecked] = useState(false);
   const [pointSystem, setPointSystem] = useState([]);
   const [predictions, setPredictions] = useState([]);
   const [invalidIndexes, setInvalidIndexes] = useState([]);
@@ -36,11 +46,6 @@ function Predictions() {
     predictions.length === pointSystem.length &&
     predictions.every(p => p !== "");
 
-  async function getCountry(iso2) {
-    let country = await countriesServices.getOneCountry(iso2);
-    return country;
-  }
-
   const fetchRace = useCallback(async () => {
     try {
       const newRace = await RacesServices.findCurrentOrNext();
@@ -48,9 +53,6 @@ function Predictions() {
         setRace(null);
         return null;
       }
-
-      const country = await getCountry(newRace.circuit.country);
-      newRace.raceCountry = country;
 
       setRace(newRace);
       setPointSystem(newRace.points_system.points);
@@ -68,6 +70,8 @@ function Predictions() {
       console.error("Error en fetchRace:", err);
       setRace(null);
       return null;
+    } finally {
+      setRaceChecked(true);
     }
   }, []);
 
@@ -245,130 +249,116 @@ function Predictions() {
 
   return (
     <div className="predictions-page page-wrapper">
-      <section className="page-section container text-center">
-      {race && (
-        <header className="page-header">
-          {race.raceCountry && (
-            <span className="circuit-country-detail section-label">
-              <span className="emoji-flag me-2">{race.raceCountry.emoji}</span>
-              {race.raceCountry.name}
-            </span>
-          )}
-
-          <h1 className="section-title">{race.circuit.gp_name}</h1>
-          {race.raceCountry && (
-            <span className="section-subtitle">{formatRaceDate(race.date_gp_start, race.date_gp_end, race.circuit?.timezone)}</span>
-          )}
-
-          <span className="qualy-label">
-            {race.points_system?.type?.toUpperCase() || "RACE"}
-          </span>
-
-          {!isPreWindow && (canPredict || (race && race.state !== "Finalizado")) && (
-            <div className="predictions-countdown">
-              {!isClosed && <span className="countdown-label">Tiempo restante para predecir:</span>}
-              <CountdownToRace
-                raceDate={race.date_race}
-                totalDuration={race.totalDuration}
-                onExpire={handleExpire}
-                onStartRace={handleStartRace}
-              />
-            </div>
-          )}
-
-          {!isPreWindow && !isClosed && (
-            <div className="prediction-status-container">
-              {currentPrediction ? (
-                <div className="prediction-status-banner status-saved">
-                  <span>✅ Tu predicción ya está guardada, pero podés editarla antes de que el contador llegue a 0.</span>
-                </div>
-              ) : (
-                <div className="prediction-status-banner status-missing">
-                  <span>💡 Todavía no realizaste tu predicción.</span>
-                </div>
-              )}
-            </div>
-          )}
-
-          {isPreWindow && timeToOpen !== null && (
-            <div className="mt-4 info-message">
-              <span>⏳ Las predicciones se habilitarán en</span>
-              <div className="prewindow-countdown">
-                <CountdownToOpen
-                  timeToOpen={timeToOpen}
-                  onOpen={() => {
-                    setCanPredict(true);
-                    setIsPreWindow(false);
-                  }}
-                />
-              </div>
-            </div>
-          )}
-        </header>
-      )}
-
-      {race === null && (
-        <div className="info-message">
-          📭 No hay próximas carreras para predecir en este momento. <br />
-          ¡Mantente atento a las próximas fechas!
+      {/* El encabezado (país/título/fecha/tag + contador + estado de la
+          predicción) ya no vive acá: lo muestra GpHeroBanner
+          variant="predictions" (montado en App.jsx, fuera de este
+          componente, mismo lugar donde antes se montaba NextRaceCTA — ver
+          el ternario de banners ahí). Diseño aprobado primero en el
+          laboratorio (GpHeroPrototype.jsx, variant="predictions"). */}
+      {race && !isPreWindow && (canPredict || race.state !== "Finalizado") && (
+        // CountdownToRace ya no se muestra (ese rol lo cumple el contador
+        // del banner de arriba) — se deja montado pero oculto SOLO por su
+        // efecto secundario: dispara handleStartRace cuando la carrera
+        // arranca, para cerrar las predicciones sin esperar un evento de
+        // socket. display:none en vez de borrar el componente: reusa la
+        // lógica ya probada en vez de reimplementarla acá.
+        <div style={{ display: "none" }} aria-hidden="true">
+          <CountdownToRace
+            raceDate={race.date_race}
+            totalDuration={race.totalDuration}
+            onExpire={handleExpire}
+            onStartRace={handleStartRace}
+          />
         </div>
       )}
 
+      {race && isPreWindow && timeToOpen !== null && (
+        // Pedido: "el cartel de las predicciones se habilitarán en X tiempo
+        // aparece por debajo del banner, todos los mensajes deberían aparecer
+        // junto al título" — el cartel visible para pre-ventana ahora vive en
+        // GpHeroBanner variant="predictions" (junto al título, como texto
+        // fijo en vez de un contador). CountdownToOpen sigue montado acá,
+        // oculto, SOLO por su efecto secundario onOpen (mismo patrón que
+        // CountdownToRace arriba): cuando se cumplen las 24hs, flippea
+        // canPredict/isPreWindow sin esperar un refetch ni un evento de socket.
+        <div style={{ display: "none" }} aria-hidden="true">
+          <CountdownToOpen
+            timeToOpen={timeToOpen}
+            onOpen={() => {
+              setCanPredict(true);
+              setIsPreWindow(false);
+            }}
+          />
+        </div>
+      )}
+
+      <section className="page-section container text-center">
+        {raceChecked && race === null && (
+          <div className="info-message">
+            📭 No hay próximas carreras para predecir en este momento. <br />
+            ¡Mantente atento a las próximas fechas!
+          </div>
+        )}
+      </section>
+
       {race && !isPreWindow && (
-        <div className="prediction-cards-container container">
-          {pointSystem.map((point, index) => {
-            const driverId = predictions[index];
+        <div className="gp-hero-banner__predict-below">
+          <div className="prediction-cards-container container">
+            {pointSystem.map((point, index) => {
+              const driverId = predictions[index];
 
-            return (
-              <div
-                key={index}
-                className={`prediction-card ${invalidIndexes.includes(index) ? "is-invalid" : ""} ${isClosed ? "is-disabled" : ""}`}
-              >
-                <div className="prediction-rank">
-                  {String(index + 1).padStart(2, '0')}
-                </div>
+              return (
+                <div
+                  key={index}
+                  className={`prediction-card ${invalidIndexes.includes(index) ? "is-invalid" : ""} ${isClosed ? "is-disabled" : ""}`}
+                >
+                  <div className="prediction-rank">
+                    {String(index + 1).padStart(2, '0')}
+                  </div>
 
-                <div className="prediction-select-wrapper">
-                  <SearchableSelect
-                    value={driverId || ""}
-                    onChange={(selected) => handleChange(index, selected?.value || "")}
-                    isDisabled={isClosed}
-                    options={drivers
-                      .filter((d) => (d.active === true && d.role === "titular") || d._id === driverId)
-                      .map((d) => ({
-                        _id: d._id,
-                        name: d.full_name,
-                        teamName: d.team_info?.name || "",
-                        color: d.team_info?.color || "#ccc"
-                      }))}
-                    placeholder="Seleccione un piloto"
-                  />
+                  <div className="prediction-select-wrapper">
+                    <SearchableSelect
+                      value={driverId || ""}
+                      onChange={(selected) => handleChange(index, selected?.value || "")}
+                      isDisabled={isClosed}
+                      options={drivers
+                        .filter((d) => (d.active === true && d.role === "titular") || d._id === driverId)
+                        .map((d) => ({
+                          _id: d._id,
+                          name: d.full_name,
+                          teamName: d.team_info?.name || "",
+                          color: d.team_info?.color || "#ccc"
+                        }))}
+                      placeholder="Seleccione un piloto"
+                    />
+                  </div>
                 </div>
+              );
+            })}
+
+            {race && !isClosed && (
+              <div className="prediction-actions">
+                <button
+                  className="btn-submit-prediction"
+                  onClick={onSubmit}
+                  disabled={!isFormComplete}
+                  title="Guardar predicción"
+                >
+                  <img src={crystalBallIcon} alt="Predecir" className="crystal-ball-icon" />
+                </button>
               </div>
-            );
-          })}
-
-          {race && !isClosed && (
-            <div className="prediction-actions">
-              <button
-                className="btn-submit-prediction"
-                onClick={onSubmit}
-                disabled={!isFormComplete}
-                title="Guardar predicción"
-              >
-                <img src={crystalBallIcon} alt="Predecir" className="crystal-ball-icon" />
-              </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
 
       {isClosed && !canPredict && race && !isPreWindow && (
-        <div className="info-message text-danger mt-4">
-          ⚠️ Las predicciones están cerradas para esta sesión.
-        </div>
+        <section className="page-section container text-center">
+          <div className="info-message text-danger mt-4">
+            ⚠️ Las predicciones están cerradas para esta sesión.
+          </div>
+        </section>
       )}
-      </section>
     </div>
   );
 }

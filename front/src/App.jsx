@@ -20,6 +20,7 @@ import TeamDetail from "./pages/TeamDetail";
 import Ranking from "./pages/Ranking";
 import Standings from "./pages/Standings";
 import NextRaceCTA from "./components/NextRaceCTA";
+import GpHeroBanner from "./components/GpHeroBanner";
 // Admin pages
 import Dashboard from "./pages/admin/Dashboard";
 import TeamCreate from "./pages/admin/team/TeamCreate";
@@ -68,6 +69,7 @@ function App() {
   const { loading } = useLoader();
 
   const isHome = location.pathname === "/";
+  const isPredictions = location.pathname === "/predictions";
 
   useEffect(() => {
     const initAuth = async () => {
@@ -166,9 +168,21 @@ function App() {
           autoClose={null}
           onClose={closeAlert}
         />
-        <NextRaceCTA />
+        {/* Banner con foto de fondo por GP — en Home y en Predicciones
+            (diseñado y probado en el laboratorio, ver rules/features/
+            banner-proxima-carrera-con-foto.md). En el resto de páginas
+            sigue NextRaceCTA sin cambios. userId (ya resuelto acá por el
+            auth) para que GpHeroBanner sepa si el usuario ya predijo esta
+            carrera, sin pedir el perfil de nuevo. */}
+        {isHome ? (
+          <GpHeroBanner />
+        ) : isPredictions ? (
+          <GpHeroBanner variant="predictions" userId={userId} />
+        ) : (
+          <NextRaceCTA />
+        )}
         {estaAutenticado && <Glossary />}
-        <main className={`main-content ${isHome ? 'home-content' : ''} ${(loading || cargando) ? 'is-loading' : ''}`}>
+        <main className={`main-content ${(isHome || isPredictions) ? 'hero-banner-content' : ''} ${(loading || cargando) ? 'is-loading' : ''}`}>
           {(loading || cargando) && <LoaderCar message={cargando ? "Iniciando..." : "Cargando..."} />}
           {!cargando && (
             <Routes>

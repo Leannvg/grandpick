@@ -27,6 +27,12 @@ function CircuitForm({
   const [imageFile, setImageFile] = useState(null);
   const [currentImage, setCurrentImage] = useState(initialData.img || "");
   const [previewUrl, setPreviewUrl] = useState("");
+  // Pedido: banner de fondo para el hero de próxima carrera en Home (foto
+  // específica del circuito, separada del mapa de pista de "Imagen" de
+  // arriba) — opcional, no todos los circuitos lo van a tener todavía.
+  const [bannerFile, setBannerFile] = useState(null);
+  const [currentBannerImage, setCurrentBannerImage] = useState(initialData.banner_img || "");
+  const [bannerPreviewUrl, setBannerPreviewUrl] = useState("");
 
   useEffect(() => {
     if (isEdit && initialData && Object.keys(initialData).length > 0) {
@@ -39,6 +45,7 @@ function CircuitForm({
       setCity(initialData.city || "");
       setTimezone(initialData.timezone || "");
       setCurrentImage(initialData.img || "");
+      setCurrentBannerImage(initialData.banner_img || "");
     }
   }, [initialData, isEdit]);
 
@@ -52,6 +59,16 @@ function CircuitForm({
     }
   }, [imageFile]);
 
+  useEffect(() => {
+    if (bannerFile) {
+      const objectUrl = URL.createObjectURL(bannerFile);
+      setBannerPreviewUrl(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setBannerPreviewUrl("");
+    }
+  }, [bannerFile]);
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -60,6 +77,16 @@ function CircuitForm({
     const renamedFile = new File([file], uniqueName, { type: file.type });
 
     setImageFile(renamedFile);
+  };
+
+  const handleBannerFileChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const uniqueName = Math.round(Math.random() * 1e9) + '-' + file.name;
+    const renamedFile = new File([file], uniqueName, { type: file.type });
+
+    setBannerFile(renamedFile);
   };
 
   async function handleSubmit(e) {
@@ -77,7 +104,7 @@ function CircuitForm({
       img: currentImage,
     };
 
-    await onSubmit(circuitData, imageFile, isEdit, currentImage);
+    await onSubmit(circuitData, imageFile, bannerFile, isEdit, currentImage);
   }
 
   return (
@@ -117,6 +144,52 @@ function CircuitForm({
             </div>
             {errorsForm.img && (
               <div className="invalid-feedback d-block text-start mt-1">{errorsForm.img}</div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Fila 0b: Banner (foto de fondo para el hero de próxima carrera en
+          Home) — opcional, distinta del mapa de pista de arriba. Mismo
+          patrón de preview/file input que "Imagen", solo que no es
+          obligatorio (sin currentBannerImage/bannerFile, el hero de Home
+          usa el degradado de respaldo). */}
+      <div className="row">
+        <div className="col-12">
+          <div className="text-center mb-2">
+            {(bannerPreviewUrl || currentBannerImage) && (
+              <div className="d-inline-block p-2 rounded-4 gp-circuit-image-container">
+                <img
+                  src={bannerPreviewUrl ? bannerPreviewUrl : getImageUrl(currentBannerImage, 500)}
+                  alt="Vista previa del banner"
+                  className="img-fluid rounded-3 gp-circuit-image"
+                  style={{ maxHeight: 140 }}
+                />
+              </div>
+            )}
+          </div>
+          <div className="gp-input-group-container">
+            <div className={`gp-input-group ${errorsForm.banner_img ? "is-invalid" : ""}`}>
+              <label className="gp-input-label gp-input-label-sm" htmlFor="field-banner-0b">Banner (opcional)</label>
+              <label
+                className="d-flex align-items-center bg-white px-3 flex-fill m-0 form-control gp-file-upload-label"
+              >
+                <input id="field-banner-0b"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBannerFileChange}
+                  className="d-none"
+                />
+                <span className="text-secondary fs-sm">
+                  {bannerFile ? bannerFile.name : (currentBannerImage ? "Banner cargado" : "Sin banner — se usa el fondo degradado")}
+                </span>
+              </label>
+            </div>
+            <div className="form-text">
+              Foto de fondo para el banner de próxima carrera en Home. Si no se carga, se muestra el fondo degradado.
+            </div>
+            {errorsForm.banner_img && (
+              <div className="invalid-feedback d-block text-start mt-1">{errorsForm.banner_img}</div>
             )}
           </div>
         </div>
