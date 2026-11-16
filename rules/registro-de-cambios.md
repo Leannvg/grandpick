@@ -2,6 +2,14 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-16 · Constructores: tramas por puesto de fondo
+
+- `UserPodium`: el podio de constructores usa de fondo las tramas
+  `assets/podium/team-pos1.png` (dorada), `team-pos2.png` (plateada) y
+  `team-pos3.png` (bronce), con el logo de la escudería grande encima
+  (`bgLogo`). Se elimina la variante `accentColor` (fondo del color de la
+  escudería). Pilotos y usuarios no cambian.
+
 ## 2026-11-13 · Podios de Standings con el diseño de UserPodium
 
 - `pages/Standings.jsx` (pilotos y constructores) pasa de `Podium` a

@@ -9,6 +9,12 @@
 // corta: fecha, título, 2-3 líneas de qué cambió y por qué.
 export const DESIGN_CHANGELOG = [
   {
+    date: "2026-11-16",
+    title: "Constructores: tramas por puesto de fondo en el podio",
+    summary:
+      "El podio de constructores usa de fondo la trama de pista del puesto (dorada, plateada, bronce) con el logo de la escudería grande encima, en lugar del color de la escudería.",
+  },
+  {
     date: "2026-11-13",
     title: "Campeonatos de pilotos y constructores con el diseño del podio de usuarios",
     summary:

@@ -154,5 +154,5 @@ capturado a tiempo por el admin.
 Standings usa `UserPodium` (ya no `Podium`). Pilotos: foto del piloto de fondo
 (`bg`), puesto a la izquierda, país a la derecha, footer isologo de la
 escudería (`team.isologo`, ahora devuelto por `/api/standings/drivers`) ·
-nombre · puntos. Constructores: fondo del color de la escudería con su logo
-grande, sin país; footer isologo · nombre · puntos.
+nombre · puntos. Constructores: trama por puesto (dorada / plateada / bronce,
+`assets/podium/team-pos1-3.png`) con el logo de la escudería grande encima, sin país; footer isologo · nombre · puntos.

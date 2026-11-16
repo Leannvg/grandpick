@@ -37,15 +37,7 @@
   pointer-events: none;
 }
 
-/* Constructores: color de la escudería con su logo grande */
-.user-podium__item--team {
-  background: linear-gradient(
-    135deg,
-    var(--team-color, var(--color-dark-blue)),
-    color-mix(in srgb, var(--team-color, var(--color-dark-blue)) 55%, #000)
-  );
-}
-
+/* Constructores: logo grande de la escudería encima de la trama del puesto */
 .user-podium__bg-logo {
   position: absolute;
   top: 46%;
@@ -54,6 +46,7 @@
   height: 46%;
   transform: translate(-50%, -50%);
   object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
 }
 
 .user-podium__rank {

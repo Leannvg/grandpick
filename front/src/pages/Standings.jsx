@@ -108,7 +108,6 @@ function Standings() {
         points: t.points,
         logo: t.isologo,
         bgLogo: t.logo || t.isologo,
-        accentColor: t.color,
     }));
 
     const podiumEntries = mode === "drivers" ? driversPodiumEntries : constructorsPodiumEntries;
