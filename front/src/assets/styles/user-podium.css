@@ -37,16 +37,21 @@
   pointer-events: none;
 }
 
-/* Constructores: logo grande de la escudería encima de la trama del puesto */
+/* Constructores: logo de la escudería sobre una placa blanca (mismo lenguaje que
+   el tag de país y el cuadradito del footer) para que se destaque de la trama */
 .user-podium__bg-logo {
   position: absolute;
   top: 46%;
   left: 50%;
-  width: 46%;
+  width: 40%;
   height: 46%;
+  padding: 12px;
+  box-sizing: border-box;
   transform: translate(-50%, -50%);
   object-fit: contain;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+  border-radius: var(--radius-general);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
 .user-podium__rank {

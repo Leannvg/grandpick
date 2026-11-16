@@ -2,6 +2,13 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-17 · Constructores: logo sobre placa blanca
+
+- El logo grande del podio de constructores se perdía sobre la trama gris.
+  Ahora va sobre una placa blanca redondeada (`.user-podium__bg-logo`, mismo
+  radio y color que el tag de país) y `Standings.jsx` pasa `isologo` primero
+  (`bgLogo: t.isologo || t.logo`), el que ya se ve bien sobre blanco en el footer.
+
 ## 2026-11-16 · Constructores: tramas por puesto de fondo
 
 - `UserPodium`: el podio de constructores usa de fondo las tramas

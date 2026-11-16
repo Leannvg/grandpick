@@ -9,6 +9,12 @@
 // corta: fecha, título, 2-3 líneas de qué cambió y por qué.
 export const DESIGN_CHANGELOG = [
   {
+    date: "2026-11-17",
+    title: "Constructores: logo sobre placa blanca en el podio",
+    summary:
+      "El logo grande de la escudería se perdía sobre la trama gris. Ahora va sobre una placa blanca redondeada (mismo estilo que el tag de país y el cuadradito del footer), usando el isologo.",
+  },
+  {
     date: "2026-11-16",
     title: "Constructores: tramas por puesto de fondo en el podio",
     summary:

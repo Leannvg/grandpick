@@ -107,7 +107,7 @@ function Standings() {
         lastName: "",
         points: t.points,
         logo: t.isologo,
-        bgLogo: t.logo || t.isologo,
+        bgLogo: t.isologo || t.logo,
     }));
 
     const podiumEntries = mode === "drivers" ? driversPodiumEntries : constructorsPodiumEntries;
