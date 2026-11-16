@@ -2,6 +2,12 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-18 · Podio de pilotos: foto anclada arriba
+
+- `.user-podium__item--photo .user-podium__bg` pasa de `object-position:
+  center 22%` a `center 0%`: la foto del piloto se ve desde arriba y no se
+  recorta la cabeza.
+
 ## 2026-11-17 · Constructores: logo sobre placa blanca
 
 - El logo grande del podio de constructores se perdía sobre la trama gris.

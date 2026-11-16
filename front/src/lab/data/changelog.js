@@ -9,6 +9,12 @@
 // corta: fecha, título, 2-3 líneas de qué cambió y por qué.
 export const DESIGN_CHANGELOG = [
   {
+    date: "2026-11-18",
+    title: "Podio de pilotos: foto anclada arriba",
+    summary:
+      "La foto del piloto en el podio de Standings se ancla al borde superior (antes al 22%) para que no se recorte la cabeza.",
+  },
+  {
     date: "2026-11-17",
     title: "Constructores: logo sobre placa blanca en el podio",
     summary:

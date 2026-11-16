@@ -26,7 +26,7 @@
 
 /* Foto de piloto: encuadre alto para que se vea la cara + degradé bajo la franja */
 .user-podium__item--photo .user-podium__bg {
-  object-position: center 22%;
+  object-position: center 0%;
 }
 
 .user-podium__item--photo::after {
