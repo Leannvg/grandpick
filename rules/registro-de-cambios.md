@@ -2,6 +2,19 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-19 · Constructores: tramas nuevas de fondo
+
+- `assets/podium/team-pos1.png`, `team-pos2.png` y `team-pos3.png` (podio de
+  constructores) reemplazadas por tramas sin el gris oscuro: dorado, plateado
+  y bronce de fondo con las ondas tono sobre tono. Sin cambios de código; el
+  logo sigue sobre su placa blanca.
+
+## 2026-11-19 · Podio de usuarios: ilustraciones nuevas
+
+- `assets/podium/pos1.png`, `pos2.png` y `pos3.png` (Ranking global, por GP y
+  Home) reemplazadas por versiones cuadradas con el fondo dorado / plateado /
+  bronce y las ondas de pista tono sobre tono. Sin cambios de código.
+
 ## 2026-11-18 · Podio de pilotos: foto anclada arriba
 
 - `.user-podium__item--photo .user-podium__bg` pasa de `object-position:

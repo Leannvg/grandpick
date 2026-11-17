@@ -9,6 +9,18 @@
 // corta: fecha, título, 2-3 líneas de qué cambió y por qué.
 export const DESIGN_CHANGELOG = [
   {
+    date: "2026-11-19",
+    title: "Constructores: tramas nuevas de fondo",
+    summary:
+      "El podio de constructores cambia las tramas de fondo: dorado, plateado y bronce a todo color con las ondas tono sobre tono, sin el gris oscuro de antes.",
+  },
+  {
+    date: "2026-11-19",
+    title: "Podio de usuarios: ilustraciones nuevas",
+    summary:
+      "Las tres ilustraciones del podio de Ranking global, por GP y Home pasan a fondo dorado / plateado / bronce con ondas de pista tono sobre tono, en línea con las tramas del podio de constructores.",
+  },
+  {
     date: "2026-11-18",
     title: "Podio de pilotos: foto anclada arriba",
     summary:
