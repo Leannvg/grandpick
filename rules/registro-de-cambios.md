@@ -2,6 +2,11 @@
 
 Orden cronológico inverso (lo más nuevo arriba).
 
+## 2026-11-20 · Podio de usuarios: nuevas ilustraciones de 2º y 3º
+
+- `assets/podium/pos2.png` y `pos3.png` reemplazadas por una versión con el
+  piloto más centrado y más grande. `pos1.png` no cambia. Sin cambios de código.
+
 ## 2026-11-19 · Constructores: tramas nuevas de fondo
 
 - `assets/podium/team-pos1.png`, `team-pos2.png` y `team-pos3.png` (podio de

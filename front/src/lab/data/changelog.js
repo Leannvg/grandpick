@@ -9,6 +9,12 @@
 // corta: fecha, título, 2-3 líneas de qué cambió y por qué.
 export const DESIGN_CHANGELOG = [
   {
+    date: "2026-11-20",
+    title: "Podio de usuarios: nuevas ilustraciones de 2º y 3º",
+    summary:
+      "Se reemplazan las ilustraciones del 2º (plateado) y el 3º (bronce) del podio de Ranking global, por GP y Home por una versión con el piloto más centrado. El 1º no cambia.",
+  },
+  {
     date: "2026-11-19",
     title: "Constructores: tramas nuevas de fondo",
     summary:
